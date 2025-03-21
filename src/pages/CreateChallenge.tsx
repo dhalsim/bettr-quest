@@ -142,19 +142,21 @@ const CreateChallenge = () => {
                 </RadioGroup>
               </div>
               
-              {/* How to prove? */}
-              <div className="mb-6">
-                <label htmlFor="proofMethod" className="block text-sm font-medium mb-2">
-                  How to prove?
-                </label>
-                <Textarea
-                  id="proofMethod"
-                  rows={3}
-                  placeholder="I will provide a video"
-                  value={proofMethod}
-                  onChange={(e) => setProofMethod(e.target.value)}
-                />
-              </div>
+              {/* How to prove? - Only show if visibility is public */}
+              {visibility === 'public' && (
+                <div className="mb-6">
+                  <label htmlFor="proofMethod" className="block text-sm font-medium mb-2">
+                    How to prove?
+                  </label>
+                  <Textarea
+                    id="proofMethod"
+                    rows={3}
+                    placeholder="I will provide a video"
+                    value={proofMethod}
+                    onChange={(e) => setProofMethod(e.target.value)}
+                  />
+                </div>
+              )}
               
               {/* Tags */}
               <TagsInput tags={tags} setTags={setTags} />
