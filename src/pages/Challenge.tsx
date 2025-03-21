@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Image, Flag } from 'lucide-react';
@@ -30,7 +29,7 @@ const initialProofs: Proof[] = [
     userId: 'user2',
     username: 'zen_master',
     createdAt: '2023-04-20T14:15:00Z',
-    description: 'I've completed the 30 days of meditation challenge! I started with just 5 minutes and built up to 20 minutes daily. My sleep has improved and I feel much calmer throughout the day. Here's my meditation journal as proof.',
+    description: "I've completed the 30 days of meditation challenge! I started with just 5 minutes and built up to 20 minutes daily. My sleep has improved and I feel much calmer throughout the day. Here's my meditation journal as proof.",
     imageUrl: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=600&auto=format',
     votes: {
       accept: 12,
