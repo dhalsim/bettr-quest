@@ -14,6 +14,7 @@ import MyChallenge from "./pages/MyChallenge";
 import NotFound from "./pages/NotFound";
 import Timeline from "./pages/Timeline";
 import ConnectNostr from "./pages/ConnectNostr";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/create" element={<CreateChallenge />} />
               <Route path="/my-challenges" element={<MyChallenge />} />
               <Route path="/connect" element={<ConnectNostr />} />
+              <Route path="/profile/:username" element={<Profile />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

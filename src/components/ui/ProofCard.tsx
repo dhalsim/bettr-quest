@@ -1,10 +1,10 @@
 
-import React, { useState } from 'react';
-import { User, ThumbsUp, ThumbsDown, Calendar, Flag } from 'lucide-react';
-import Button from './Button';
-import { toast } from 'sonner';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ThumbsUp, ThumbsDown, Clock } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-export interface Proof {
+export type Proof = {
   id: string;
   challengeId: string;
   userId: string;
@@ -16,160 +16,84 @@ export interface Proof {
     accept: number;
     reject: number;
   };
-  status: 'pending' | 'accepted' | 'rejected' | 'disputed';
-}
+  status: 'pending' | 'accepted' | 'rejected';
+};
 
 interface ProofCardProps {
   proof: Proof;
-  className?: string;
 }
 
-const ProofCard = ({ proof, className = '' }: ProofCardProps) => {
-  const { id, username, createdAt, description, imageUrl, votes, status } = proof;
-  const [currentVotes, setCurrentVotes] = useState(votes);
-  const [currentStatus, setCurrentStatus] = useState(status);
-  const [userVote, setUserVote] = useState<'accept' | 'reject' | null>(null);
-  
-  const formattedDate = new Date(createdAt).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-  });
-  
-  const handleVote = (voteType: 'accept' | 'reject') => {
-    // If user already voted this way, remove their vote
-    if (userVote === voteType) {
-      setCurrentVotes({
-        ...currentVotes,
-        [voteType]: currentVotes[voteType] - 1
-      });
-      setUserVote(null);
-      toast.info("Your vote has been removed");
-      return;
-    }
-    
-    // If user is changing their vote
-    const newVotes = { ...currentVotes };
-    
-    if (userVote) {
-      // Remove previous vote
-      newVotes[userVote] -= 1;
-    }
-    
-    // Add new vote
-    newVotes[voteType] += 1;
-    
-    setCurrentVotes(newVotes);
-    setUserVote(voteType);
-    
-    toast.success(`You voted to ${voteType} this proof`);
-    
-    // For demonstration - in a real app, this would be determined by an algorithm
-    if (voteType === 'accept' && newVotes.accept >= 5) {
-      setCurrentStatus('accepted');
-    } else if (voteType === 'reject' && newVotes.reject >= 5) {
-      setCurrentStatus('rejected');
-    }
-  };
-  
-  const reportProof = () => {
-    setCurrentStatus('disputed');
-    toast.success("This proof has been reported and will be reviewed by moderators");
-  };
-  
-  const getStatusBadge = () => {
-    switch (currentStatus) {
-      case 'accepted':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium text-green-500 bg-green-100">
-            <ThumbsUp size={12} />
-            Accepted
-          </span>
-        );
-      case 'rejected':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium text-red-500 bg-red-100">
-            <ThumbsDown size={12} />
-            Rejected
-          </span>
-        );
-      case 'disputed':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium text-amber-500 bg-amber-100">
-            <Flag size={12} />
-            Under Review
-          </span>
-        );
-      default:
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium text-primary bg-primary/10">
-            Pending
-          </span>
-        );
-    }
+const ProofCard: React.FC<ProofCardProps> = ({ proof }) => {
+  // Format date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    }) + ' at ' + date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
   
   return (
-    <div className={`rounded-2xl glass overflow-hidden ${className}`}>
+    <div className="glass rounded-2xl overflow-hidden">
       <div className="p-6">
-        <div className="flex justify-between items-start mb-4">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-              <User size={20} />
-            </div>
-            <div>
-              <h4 className="font-medium">{username}</h4>
-              <div className="flex items-center text-sm text-muted-foreground gap-1">
-                <Calendar size={14} />
-                <span>{formattedDate}</span>
-              </div>
+        <div className="flex items-center gap-4 mb-4">
+          <Avatar>
+            <AvatarFallback>{proof.username.charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+          
+          <div>
+            <Link to={`/profile/${proof.username}`} className="font-medium hover:text-primary hover:underline">
+              @{proof.username}
+            </Link>
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Clock size={12} />
+              <span>{formatDate(proof.createdAt)}</span>
             </div>
           </div>
-          {getStatusBadge()}
+          
+          <div className="ml-auto">
+            {proof.status === 'pending' ? (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500">
+                Pending
+              </span>
+            ) : proof.status === 'accepted' ? (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-500">
+                Accepted
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-500">
+                Rejected
+              </span>
+            )}
+          </div>
         </div>
         
-        <p className="text-foreground mb-4">{description}</p>
+        <p className="mb-4">{proof.description}</p>
         
-        {imageUrl && (
-          <div className="mb-6 rounded-lg overflow-hidden">
+        {proof.imageUrl && (
+          <div className="mb-6">
             <img 
-              src={imageUrl} 
+              src={proof.imageUrl} 
               alt="Proof" 
-              className="w-full h-auto object-cover" 
+              className="w-full h-auto rounded-lg" 
             />
           </div>
         )}
         
-        <div className="flex flex-wrap justify-between items-center pt-4 border-t border-border">
-          <div className="flex gap-2 mb-2 sm:mb-0">
-            <Button
-              variant={userVote === 'accept' ? 'primary' : 'outline'}
-              size="sm"
-              leftIcon={<ThumbsUp size={16} />}
-              onClick={() => handleVote('accept')}
-              disabled={currentStatus !== 'pending'}
-            >
-              Accept ({currentVotes.accept})
-            </Button>
-            <Button
-              variant={userVote === 'reject' ? 'primary' : 'outline'}
-              size="sm"
-              leftIcon={<ThumbsDown size={16} />}
-              onClick={() => handleVote('reject')}
-              disabled={currentStatus !== 'pending'}
-            >
-              Reject ({currentVotes.reject})
-            </Button>
-          </div>
+        <div className="flex items-center justify-end gap-4">
+          <button className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-green-500 transition-colors">
+            <ThumbsUp size={16} />
+            <span>{proof.votes.accept}</span>
+          </button>
           
-          <Button
-            variant="ghost"
-            size="sm"
-            leftIcon={<Flag size={16} />}
-            onClick={reportProof}
-            disabled={currentStatus === 'disputed'}
-          >
-            Report
-          </Button>
+          <button className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-red-500 transition-colors">
+            <ThumbsDown size={16} />
+            <span>{proof.votes.reject}</span>
+          </button>
         </div>
       </div>
     </div>

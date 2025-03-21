@@ -184,7 +184,10 @@ const Challenge = () => {
                   <div className="flex flex-wrap gap-6 items-center text-sm text-muted-foreground mb-6">
                     <div className="flex items-center gap-1.5">
                       <User size={14} />
-                      Created by {challengeData.username}
+                      Created by {' '}
+                      <Link to={`/profile/${challengeData.username}`} className="text-primary hover:underline">
+                        {challengeData.username}
+                      </Link>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Calendar size={14} />

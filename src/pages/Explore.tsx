@@ -1,10 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
-import { Search, Filter, X } from 'lucide-react';
-import ChallengeCard, { Challenge } from '@/components/ui/ChallengeCard';
+import React, { useState } from 'react';
+import { Search, Filter } from 'lucide-react';
+import Button from '@/components/ui/Button';
+import ChallengeCard from '@/components/ui/ChallengeCard';
 
 // Mock data for challenges
-const allChallenges: Challenge[] = [
+const allChallenges = [
   {
     id: '1',
     title: '30 Days of Meditation',
@@ -14,249 +15,154 @@ const allChallenges: Challenge[] = [
     createdAt: '2023-04-15T10:30:00Z',
     dueDate: '2023-05-15T10:30:00Z',
     category: 'Wellness',
-    status: 'active',
+    status: 'active' as const,
     imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format'
   },
   {
     id: '2',
-    title: 'Read 12 Books in a Year',
-    description: 'Challenge yourself to read one book per month for an entire year to expand your knowledge.',
+    title: 'Learn a New Language',
+    description: 'Study a new language for at least 15 minutes every day for 60 days.',
     userId: 'user2',
-    username: 'bookworm',
-    createdAt: '2023-03-01T08:15:00Z',
-    dueDate: '2024-03-01T08:15:00Z',
+    username: 'language_lover',
+    createdAt: '2023-04-10T15:45:00Z',
+    dueDate: '2023-06-10T15:45:00Z',
     category: 'Learning',
-    status: 'active',
-    imageUrl: 'https://images.unsplash.com/photo-1513001900722-370f803f498d?q=80&w=600&auto=format'
+    status: 'active' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1546500840-ae38253aba9b?q=80&w=600&auto=format'
   },
   {
     id: '3',
-    title: 'Zero Waste Challenge',
-    description: 'Minimize your waste production for a month by refusing, reducing, reusing, recycling, and composting.',
+    title: 'Daily Exercise Challenge',
+    description: 'Complete at least 30 minutes of physical activity every day for 21 days.',
     userId: 'user3',
-    username: 'eco_warrior',
-    createdAt: '2023-04-22T14:45:00Z',
-    dueDate: '2023-05-22T14:45:00Z',
-    category: 'Environment',
-    status: 'completed',
-    imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format'
+    username: 'fitness_enthusiast',
+    createdAt: '2023-04-05T08:20:00Z',
+    dueDate: '2023-04-26T08:20:00Z',
+    category: 'Fitness',
+    status: 'completed' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=600&auto=format'
   },
   {
     id: '4',
-    title: 'Couch to 5K Running Challenge',
-    description: 'Transform from a couch potato to a 5K runner in 8 weeks with this gradual training program.',
+    title: 'Learn to Code in 30 Days',
+    description: 'Build a small project every day for 30 days to improve your coding skills.',
     userId: 'user4',
-    username: 'fitness_fan',
-    createdAt: '2023-04-05T09:20:00Z',
-    dueDate: '2023-05-31T09:20:00Z',
-    category: 'Fitness',
-    status: 'active',
-    imageUrl: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format'
+    username: 'code_master',
+    createdAt: '2023-04-01T09:00:00Z',
+    dueDate: '2023-05-01T09:00:00Z',
+    category: 'Learning',
+    status: 'active' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format'
   },
   {
     id: '5',
-    title: 'Learn a New Language Basics',
-    description: 'Learn the basics of a new language in 30 days by practicing for 20 minutes each day.',
+    title: 'Daily Journaling',
+    description: 'Write in your journal every day for 30 days to reflect on your thoughts and experiences.',
     userId: 'user5',
-    username: 'language_lover',
-    createdAt: '2023-03-15T11:10:00Z',
-    dueDate: '2023-04-15T11:10:00Z',
-    category: 'Learning',
-    status: 'failed',
-    imageUrl: 'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?q=80&w=600&auto=format'
+    username: 'mindful_writer',
+    createdAt: '2023-03-15T11:30:00Z',
+    dueDate: '2023-04-15T11:30:00Z',
+    category: 'Wellness',
+    status: 'completed' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format'
   },
   {
     id: '6',
-    title: 'Digital Detox Weekend',
-    description: 'Spend a weekend without digital devices to reset your relationship with technology.',
+    title: 'Zero Waste Week',
+    description: 'Try to produce zero waste for 7 days by avoiding single-use products and packaging.',
     userId: 'user6',
-    username: 'digital_minimalist',
-    createdAt: '2023-04-18T16:30:00Z',
-    dueDate: '2023-04-23T16:30:00Z',
-    category: 'Wellness',
-    status: 'completed',
-    imageUrl: 'https://images.unsplash.com/photo-1499377193864-82682aefed04?q=80&w=600&auto=format'
-  },
-  {
-    id: '7',
-    title: '100 Days of Code',
-    description: 'Code for at least an hour every day for 100 days to build your programming skills.',
-    userId: 'user7',
-    username: 'code_ninja',
-    createdAt: '2023-02-01T13:45:00Z',
-    dueDate: '2023-05-12T13:45:00Z',
-    category: 'Learning',
-    status: 'active',
-    imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=600&auto=format'
-  },
-  {
-    id: '8',
-    title: 'Declutter Your Home in 30 Days',
-    description: 'Systematically declutter your entire living space over the course of a month.',
-    userId: 'user8',
-    username: 'tidy_home',
-    createdAt: '2023-04-01T10:00:00Z',
-    dueDate: '2023-05-01T10:00:00Z',
-    category: 'Lifestyle',
-    status: 'active',
-    imageUrl: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?q=80&w=600&auto=format'
+    username: 'eco_warrior',
+    createdAt: '2023-03-01T14:15:00Z',
+    dueDate: '2023-03-08T14:15:00Z',
+    category: 'Sustainability',
+    status: 'completed' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format'
   }
 ];
 
-// Extract unique categories
-const categories = Array.from(new Set(allChallenges.map(challenge => challenge.category)));
+const categories = ['All', 'Wellness', 'Fitness', 'Learning', 'Sustainability'];
 
 const Explore = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<string>('all');
-  const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>(allChallenges);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filteredChallenges, setFilteredChallenges] = useState(allChallenges);
   
-  // Filter challenges based on search term, categories, and status
-  useEffect(() => {
-    let filtered = [...allChallenges];
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
     
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(
-        challenge => 
-          challenge.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          challenge.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    
-    // Filter by categories
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter(challenge => 
-        selectedCategories.includes(challenge.category)
-      );
-    }
-    
-    // Filter by status
-    if (selectedStatus !== 'all') {
-      filtered = filtered.filter(challenge => challenge.status === selectedStatus);
-    }
+    // Filter challenges based on search query and selected category
+    const filtered = allChallenges.filter(challenge => {
+      const matchesQuery = challenge.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        challenge.description.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesCategory = selectedCategory === 'All' || challenge.category === selectedCategory;
+      
+      return matchesQuery && matchesCategory;
+    });
     
     setFilteredChallenges(filtered);
-  }, [searchTerm, selectedCategories, selectedStatus]);
-  
-  // Toggle category selection
-  const toggleCategory = (category: string) => {
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories(selectedCategories.filter(c => c !== category));
-    } else {
-      setSelectedCategories([...selectedCategories, category]);
-    }
-  };
-  
-  // Clear all filters
-  const clearFilters = () => {
-    setSearchTerm('');
-    setSelectedCategories([]);
-    setSelectedStatus('all');
   };
   
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">Explore Challenges</h1>
-        <p className="text-muted-foreground max-w-3xl mb-12">
-          Discover challenges created by our community. Filter by category, search for specific topics, or browse through all the inspiring ways people are bettering themselves.
-        </p>
+        <div className="mb-10">
+          <h1 className="text-3xl font-bold mb-2">Explore Challenges</h1>
+          <p className="text-muted-foreground">
+            Discover challenges created by the community and join them
+          </p>
+        </div>
         
-        {/* Search and Filters */}
-        <div className="glass rounded-xl p-6 mb-12">
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
-            {/* Search input */}
+        <div className="glass rounded-2xl p-6 mb-10">
+          <form onSubmit={handleSearch} className="flex flex-col gap-4 md:flex-row">
             <div className="relative flex-grow">
-              <Search className="absolute left-3 top-3 text-muted-foreground" size={18} />
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <Search className="h-5 w-5 text-muted-foreground" />
+              </div>
               <input
                 type="text"
+                className="pl-10 px-4 py-3 w-full bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
                 placeholder="Search challenges..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                >
-                  <X size={18} />
-                </button>
-              )}
             </div>
             
-            {/* Status filter */}
-            <div className="min-w-36">
+            <div className="relative w-full md:w-48">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <Filter className="h-5 w-5 text-muted-foreground" />
+              </div>
               <select
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="pl-10 px-4 py-3 w-full bg-background border border-border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
               >
-                <option value="all">All Statuses</option>
-                <option value="active">Active</option>
-                <option value="completed">Completed</option>
-                <option value="failed">Failed</option>
+                {categories.map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
               </select>
             </div>
-          </div>
-          
-          {/* Category filters */}
-          <div>
-            <div className="flex items-center mb-3">
-              <Filter size={16} className="mr-2 text-muted-foreground" />
-              <span className="text-sm font-medium">Categories</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => toggleCategory(category)}
-                  className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-                    selectedCategories.includes(category)
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-              {(searchTerm || selectedCategories.length > 0 || selectedStatus !== 'all') && (
-                <button
-                  onClick={clearFilters}
-                  className="px-3 py-1.5 rounded-full text-sm bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors"
-                >
-                  Clear Filters
-                </button>
-              )}
-            </div>
-          </div>
+            
+            <Button type="submit" className="md:w-auto">
+              Search
+            </Button>
+          </form>
         </div>
         
-        {/* Results */}
-        <div>
-          <div className="mb-6 flex justify-between items-center">
-            <h2 className="text-2xl font-semibold">
-              {filteredChallenges.length} {filteredChallenges.length === 1 ? 'Challenge' : 'Challenges'} Found
-            </h2>
+        {filteredChallenges.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredChallenges.map((challenge) => (
+              <ChallengeCard key={challenge.id} challenge={challenge} />
+            ))}
           </div>
-          
-          {filteredChallenges.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredChallenges.map(challenge => (
-                <ChallengeCard key={challenge.id} challenge={challenge} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 glass rounded-2xl">
-              <h3 className="text-xl font-medium mb-2">No challenges found</h3>
-              <p className="text-muted-foreground">
-                Try adjusting your search or filter criteria to find what you're looking for.
-              </p>
-            </div>
-          )}
-        </div>
+        ) : (
+          <div className="text-center py-20 glass rounded-2xl">
+            <h3 className="text-xl font-medium mb-2">No challenges found</h3>
+            <p className="text-muted-foreground">
+              Try adjusting your search or category filters
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
