@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Select,
@@ -20,9 +19,9 @@ export interface ChallengeTemplate {
 export const challengeTemplates: ChallengeTemplate[] = [
   { 
     id: 'book', 
-    name: 'Finish up a book', 
-    description: 'I want to read an entire book from start to finish. I\'ll set a timeline that works for me and track my daily progress.',
-    suggestedTags: ['reading', 'learning', 'personal-growth']
+    name: 'Finish Economics Book Chapter 4', 
+    description: 'I want to complete Chapter 4 of my economics textbook by the end of this week. I\'ll track my progress and take notes on key concepts.',
+    suggestedTags: ['reading', 'learning', 'economics']
   },
   { 
     id: 'run', 
