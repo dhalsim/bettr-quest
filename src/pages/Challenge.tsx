@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Clock, Tag, Send, Image, Flag, X } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, Tag, Send, Image, Flag, X, Check, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
@@ -205,18 +206,18 @@ const Challenge = () => {
                   <div className="mt-8 flex items-center justify-between">
                     <Button 
                       variant="primary"
-                      rightIcon={<ArrowDown size={16} />}
                       onClick={() => document.getElementById('submit-proof')?.scrollIntoView({ behavior: 'smooth' })}
                     >
                       Submit Your Proof
+                      <ArrowDown size={16} className="ml-2" />
                     </Button>
                     
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      leftIcon={<Flag size={16} />}
                       onClick={reportChallenge}
                     >
+                      <Flag size={16} className="mr-2" />
                       Report Challenge
                     </Button>
                   </div>
@@ -295,9 +296,9 @@ const Challenge = () => {
                     variant="primary"
                     type="submit"
                     className="w-full"
-                    leftIcon={<Send size={16} />}
                     isLoading={isSubmitting}
                   >
+                    <Send size={16} className="mr-2" />
                     Submit Proof
                   </Button>
                 </form>
@@ -306,5 +307,17 @@ const Challenge = () => {
           </div>
         </div>
         
-        <
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold mb-6">Community Proofs</h2>
+          <div className="grid gap-6">
+            {proofs.map((proof) => (
+              <ProofCard key={proof.id} proof={proof} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
+export default Challenge;
