@@ -1,12 +1,10 @@
-
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Image, Flag, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
 
-// Mock data for a single challenge
 const challengeData = {
   id: '1',
   title: '30 Days of Meditation',
@@ -22,7 +20,6 @@ const challengeData = {
   completionRate: 68
 };
 
-// Mock data for proofs
 const initialProofs: Proof[] = [
   {
     id: 'proof1',
@@ -56,13 +53,13 @@ const initialProofs: Proof[] = [
 
 const Challenge = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [proofs, setProofs] = useState(initialProofs);
   const [newProof, setNewProof] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   
-  // Format dates
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -71,7 +68,6 @@ const Challenge = () => {
     });
   };
   
-  // Calculate days remaining
   const calculateDaysRemaining = () => {
     const dueDate = new Date(challengeData.dueDate);
     const today = new Date();
@@ -82,13 +78,11 @@ const Challenge = () => {
   
   const daysRemaining = calculateDaysRemaining();
   
-  // Handle image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setSelectedImage(file);
       
-      // Create preview URL
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);
@@ -97,7 +91,6 @@ const Challenge = () => {
     }
   };
   
-  // Handle proof submission
   const handleSubmitProof = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -108,7 +101,6 @@ const Challenge = () => {
     
     setIsSubmitting(true);
     
-    // Simulate submission delay
     setTimeout(() => {
       const newProofItem: Proof = {
         id: `proof${Date.now()}`,
@@ -135,9 +127,12 @@ const Challenge = () => {
     }, 1500);
   };
   
-  // Report challenge
   const reportChallenge = () => {
     toast.success("Thank you for your report. Our moderators will review this challenge.");
+  };
+  
+  const handleCategoryClick = () => {
+    navigate(`/explore?category=${challengeData.category}`);
   };
   
   return (
@@ -150,7 +145,6 @@ const Challenge = () => {
           </Link>
           
           <div className="flex flex-col lg:flex-row gap-10">
-            {/* Challenge Details */}
             <div className="flex-grow lg:w-2/3">
               <div className="glass rounded-2xl overflow-hidden">
                 {challengeData.imageUrl && (
@@ -165,7 +159,10 @@ const Challenge = () => {
                 
                 <div className="p-8">
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                    <span 
+                      onClick={handleCategoryClick}
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+                    >
                       <Tag size={12} />
                       {challengeData.category}
                     </span>
@@ -227,7 +224,6 @@ const Challenge = () => {
               </div>
             </div>
             
-            {/* Submit Proof Form */}
             <div className="lg:w-1/3" id="submit-proof">
               <div className="glass rounded-2xl p-6 sticky top-32">
                 <h2 className="text-xl font-semibold mb-4">Submit Your Proof</h2>
@@ -310,71 +306,5 @@ const Challenge = () => {
           </div>
         </div>
         
-        {/* Proofs Section */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-semibold mb-6">
-            Community Proofs ({proofs.length})
-          </h2>
-          
-          {proofs.length > 0 ? (
-            <div className="space-y-8">
-              {proofs.map(proof => (
-                <ProofCard key={proof.id} proof={proof} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 glass rounded-2xl">
-              <h3 className="text-xl font-medium mb-2">No proofs submitted yet</h3>
-              <p className="text-muted-foreground mb-4">
-                Be the first to complete this challenge and submit your proof!
-              </p>
-              <Button 
-                variant="primary"
-                onClick={() => document.getElementById('submit-proof')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Submit Your Proof
-              </Button>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
+        <
 
-const Check = ({ size = 24, ...props }: { size?: number }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round"
-    {...props}
-  >
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-);
-
-const ArrowDown = ({ size = 24, ...props }: { size?: number }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round"
-    {...props}
-  >
-    <line x1="12" y1="5" x2="12" y2="19" />
-    <polyline points="19 12 12 19 5 12" />
-  </svg>
-);
-
-export default Challenge;

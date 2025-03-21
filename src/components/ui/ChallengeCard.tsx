@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, User, Clock, UserPlus, UserCheck } from 'lucide-react';
-import { Button } from './button';
+import { Button } from '@/components/ui/button';
 
 type Challenge = {
   id: string;
@@ -23,6 +23,7 @@ interface ChallengeCardProps {
 
 const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
   const [isFollowing, setIsFollowing] = useState(false);
+  const navigate = useNavigate();
   
   // Format the date for display
   const formatDate = (dateString: string) => {
@@ -53,6 +54,13 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
     e.stopPropagation();
     setIsFollowing(!isFollowing);
   };
+
+  // Navigate to explore page with category filter
+  const handleCategoryClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/explore?category=${challenge.category}`);
+  };
   
   return (
     <Link to={`/challenge/${challenge.id}`} className="block group">
@@ -69,7 +77,10 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
         
         <div className="p-6">
           <div className="flex justify-between items-start mb-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+            <span 
+              onClick={handleCategoryClick}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+            >
               {challenge.category}
             </span>
             
@@ -97,9 +108,9 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
             <Button
               variant={isFollowing ? "outline" : "secondary"}
               size="sm"
-              leftIcon={isFollowing ? <UserCheck size={16} /> : <UserPlus size={16} />}
               onClick={toggleFollow}
             >
+              {isFollowing ? <UserCheck size={16} className="mr-2" /> : <UserPlus size={16} className="mr-2" />}
               {isFollowing ? 'Following' : 'Follow'}
             </Button>
           </div>

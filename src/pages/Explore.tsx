@@ -1,8 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChallengeCard from '@/components/ui/ChallengeCard';
+import { useSearchParams } from 'react-router-dom';
 
 // Mock data for challenges
 const allChallenges = [
@@ -83,9 +84,25 @@ const allChallenges = [
 const categories = ['All', 'Wellness', 'Fitness', 'Learning', 'Sustainability'];
 
 const Explore = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+  
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam && categories.includes(categoryParam) ? categoryParam : 'All');
   const [filteredChallenges, setFilteredChallenges] = useState(allChallenges);
+  
+  // Apply initial filtering based on URL parameter
+  useEffect(() => {
+    if (categoryParam && categories.includes(categoryParam)) {
+      setSelectedCategory(categoryParam);
+      
+      const filtered = allChallenges.filter(challenge => {
+        return categoryParam === 'All' || challenge.category === categoryParam;
+      });
+      
+      setFilteredChallenges(filtered);
+    }
+  }, [categoryParam]);
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,6 +118,26 @@ const Explore = () => {
     });
     
     setFilteredChallenges(filtered);
+    
+    // Update URL parameters
+    if (selectedCategory !== 'All') {
+      setSearchParams({ category: selectedCategory });
+    } else {
+      setSearchParams({});
+    }
+  };
+  
+  // Handle category change
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const category = e.target.value;
+    setSelectedCategory(category);
+    
+    // Update URL parameters immediately when changing category
+    if (category !== 'All') {
+      setSearchParams({ category });
+    } else {
+      setSearchParams({});
+    }
   };
   
   return (
@@ -135,7 +172,7 @@ const Explore = () => {
               <select
                 className="pl-10 px-4 py-3 w-full bg-background border border-border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20"
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                onChange={handleCategoryChange}
               >
                 {categories.map(category => (
                   <option key={category} value={category}>{category}</option>
