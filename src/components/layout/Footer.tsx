@@ -9,7 +9,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="font-display text-foreground font-bold text-2xl flex items-center">
-              <span className="text-primary">bettr</span>quest
+              <span className="text-primary">bettr</span>
+              <span className="text-primary">.</span>
+              quest
             </Link>
             <p className="mt-4 text-muted-foreground max-w-md">
               Challenge yourself to be better, one quest at a time. Create, share, and complete personal challenges with a community that supports your growth.
