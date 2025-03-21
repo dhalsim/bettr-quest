@@ -1,30 +1,51 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Key, UserPlus, Link as LinkIcon, AlertTriangle } from 'lucide-react';
+import { Key, UserPlus, Link as LinkIcon, AlertTriangle, QrCode } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
 const ConnectNostr = () => {
   const [nsec, setNsec] = useState('');
+  const [bunkerUrl, setBunkerUrl] = useState('');
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [connectionMethod, setConnectionMethod] = useState<'nsec' | 'bunker'>('nsec');
   const navigate = useNavigate();
+  const bunkerUrlRef = useRef<HTMLInputElement>(null);
 
   const handleConnect = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
     
-    // Simulate connection delay
-    setTimeout(() => {
-      // Store authentication in localStorage (in a real app, this would be handled by a Nostr library)
-      localStorage.setItem('nostr_logged_in', 'true');
+    try {
+      if (connectionMethod === 'bunker') {
+        if (!bunkerUrl) {
+          setError('Please enter a valid Bunker URL');
+          return;
+        }
+        // Store bunker URL in localStorage (in a real app, this would be handled by a Nostr library)
+        localStorage.setItem('nostr_bunker_url', bunkerUrl);
+      } else {
+        if (!nsec) {
+          setError('Please enter a valid private key');
+          return;
+        }
+        // Store nsec in localStorage (in a real app, this would be handled by a Nostr library)
+        localStorage.setItem('nostr_private_key', nsec);
+      }
       
+      localStorage.setItem('nostr_logged_in', 'true');
       toast.success("Successfully connected to Nostr!");
-      setIsLoading(false);
       navigate('/timeline');
-    }, 1500);
+    } catch (err) {
+      setError('Failed to connect. Please check your credentials and try again.');
+      console.error('Connection error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   const generateNewAccount = () => {
@@ -41,6 +62,11 @@ const ConnectNostr = () => {
       setIsLoading(false);
       toast.success("New Nostr key generated! Make sure to save this private key securely.");
     }, 1500);
+  };
+
+  const handleScanQR = () => {
+    // In a real app, this would open the camera for QR scanning
+    toast.info("QR code scanning would be implemented here");
   };
   
   return (
@@ -145,24 +171,81 @@ const ConnectNostr = () => {
           ) : (
             <div>
               <h2 className="text-xl font-semibold mb-4">Connect Existing Account</h2>
+              
+              <div className="flex gap-4 mb-6">
+                <button
+                  className={`flex-1 p-4 rounded-lg border-2 transition-all
+                    ${connectionMethod === 'nsec' 
+                      ? 'border-primary bg-primary/5' 
+                      : 'border-border hover:border-primary/30 hover:bg-primary/5'}`}
+                  onClick={() => setConnectionMethod('nsec')}
+                >
+                  <span className="font-medium">Private Key (nsec)</span>
+                </button>
+                <button
+                  className={`flex-1 p-4 rounded-lg border-2 transition-all
+                    ${connectionMethod === 'bunker' 
+                      ? 'border-primary bg-primary/5' 
+                      : 'border-border hover:border-primary/30 hover:bg-primary/5'}`}
+                  onClick={() => setConnectionMethod('bunker')}
+                >
+                  <span className="font-medium">Bunker URL</span>
+                </button>
+              </div>
+
               <form onSubmit={handleConnect}>
-                <div className="mb-6">
-                  <label htmlFor="nsec" className="block text-sm font-medium mb-1">
-                    Your Private Key (nsec)
-                  </label>
-                  <Input
-                    id="nsec"
-                    type="password"
-                    placeholder="nsec1..."
-                    value={nsec}
-                    onChange={(e) => setNsec(e.target.value)}
-                    className="font-mono"
-                    required
-                  />
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Enter your Nostr private key (nsec) to connect your account
-                  </p>
-                </div>
+                {connectionMethod === 'bunker' ? (
+                  <div className="mb-6">
+                    <p className="text-muted-foreground mb-4">
+                      Generate a Bunker URL using a remote signer like Amber (Android), Nostrify
+                      (iOS), or nsec.app (Web). Then paste it here.
+                    </p>
+                    <div className="relative mb-4">
+                      <Input
+                        ref={bunkerUrlRef}
+                        type="text"
+                        placeholder="bunker://..."
+                        value={bunkerUrl}
+                        onChange={(e) => setBunkerUrl(e.target.value)}
+                        className="font-mono"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full"
+                        onClick={handleScanQR}
+                        leftIcon={<QrCode size={18} />}
+                      >
+                        Or scan QR Code
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mb-6">
+                    <label htmlFor="nsec" className="block text-sm font-medium mb-1">
+                      Your Private Key (nsec)
+                    </label>
+                    <Input
+                      id="nsec"
+                      type="password"
+                      placeholder="nsec1..."
+                      value={nsec}
+                      onChange={(e) => setNsec(e.target.value)}
+                      className="font-mono"
+                      required
+                    />
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Enter your Nostr private key (nsec) to connect your account
+                    </p>
+                  </div>
+                )}
+                
+                {error && (
+                  <p className="text-red-600 text-sm mb-4">{error}</p>
+                )}
                 
                 <Button
                   type="submit"
