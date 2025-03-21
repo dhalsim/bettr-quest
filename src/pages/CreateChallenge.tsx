@@ -101,7 +101,7 @@ const CreateChallenge = () => {
                 <Input
                   type="text"
                   id="title"
-                  placeholder="What is your challenge?"
+                  placeholder="What is your quest?"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
@@ -116,7 +116,7 @@ const CreateChallenge = () => {
                 <Textarea
                   id="description"
                   rows={5}
-                  placeholder="Describe your challenge in detail. What are the rules? How can people complete it?"
+                  placeholder="Describe your quest in detail. What are the rules, requirements to complete?"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
