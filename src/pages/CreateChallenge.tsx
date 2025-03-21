@@ -87,7 +87,7 @@ const CreateChallenge = () => {
         
         <div className="glass rounded-2xl overflow-hidden">
           <div className="p-8">
-            <h1 className="text-2xl font-bold mb-8">Create a Challenge</h1>
+            <h1 className="text-2xl font-bold mb-8">Creating a Quest for myself</h1>
             
             <form onSubmit={handleSubmit}>
               {/* Template Selection */}
@@ -96,7 +96,7 @@ const CreateChallenge = () => {
               {/* Challenge Title */}
               <div className="mb-6">
                 <label htmlFor="title" className="block text-sm font-medium mb-2">
-                  Challenge Title
+                  Title
                 </label>
                 <Input
                   type="text"
@@ -170,7 +170,7 @@ const CreateChallenge = () => {
               />
               
               {/* Submit Button */}
-              <div className="flex justify-end">
+              <div className="flex justify-start">
                 <Button
                   type="submit"
                   disabled={isSubmitting}
@@ -181,7 +181,7 @@ const CreateChallenge = () => {
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Creating Challenge...
                     </>
-                  ) : 'Create Challenge'}
+                  ) : 'Save & Preview'}
                 </Button>
               </div>
             </form>

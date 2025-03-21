@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Select,
@@ -56,7 +57,7 @@ interface TemplateSelectorProps {
 const ChallengeTemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTemplate }) => {
   return (
     <div className="mb-8">
-      <h2 className="text-lg font-medium mb-3">Templates (Optional)</h2>
+      <h2 className="text-lg font-medium mb-3">Select a template (optional)</h2>
       <Select onValueChange={onSelectTemplate}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="I want to..." />
