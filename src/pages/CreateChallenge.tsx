@@ -24,11 +24,13 @@ const CreateChallenge = () => {
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
     video: File | null,
-    audio: Blob | null
+    audio: Blob | null,
+    recordedVideo: Blob | null
   }>({
     image: null,
     video: null,
-    audio: null
+    audio: null,
+    recordedVideo: null
   });
   
   // Apply template
