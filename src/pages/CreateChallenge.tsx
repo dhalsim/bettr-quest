@@ -179,26 +179,24 @@ const CreateChallenge = () => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="private" id="private" />
-                    <Label htmlFor="private">Private (no proofs)</Label>
+                    <Label htmlFor="private">Private</Label>
                   </div>
                 </RadioGroup>
               </div>
               
-              {/* How to prove? - Only show if visibility is public */}
-              {visibility === 'public' && (
-                <div className="mb-6">
-                  <label htmlFor="proofMethod" className="block text-sm font-medium mb-2">
-                    How to prove?
-                  </label>
-                  <Textarea
-                    id="proofMethod"
-                    rows={3}
-                    placeholder="I will provide a video"
-                    value={proofMethod}
-                    onChange={(e) => setProofMethod(e.target.value)}
-                  />
-                </div>
-              )}
+              {/* How to prove? - Show for both public and private challenges */}
+              <div className="mb-6">
+                <label htmlFor="proofMethod" className="block text-sm font-medium mb-2">
+                  How to prove?
+                </label>
+                <Textarea
+                  id="proofMethod"
+                  rows={3}
+                  placeholder="I will provide a video"
+                  value={proofMethod}
+                  onChange={(e) => setProofMethod(e.target.value)}
+                />
+              </div>
               
               {/* Tags */}
               <TagsInput tags={tags} setTags={setTags} />
