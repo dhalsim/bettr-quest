@@ -35,7 +35,7 @@ const userChallenges = [
   {
     id: '2',
     title: 'Morning Gratitude Practice',
-    description: 'Write down three things you're grateful for every morning for 21 days.',
+    description: 'Write down three things you\'re grateful for every morning for 21 days.',
     userId: 'user1',
     username: 'mindfulness_guru',
     createdAt: '2023-05-01T08:45:00Z',
