@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Explore from "./pages/Explore";
 import Challenge from "./pages/Challenge";
 import CreateChallenge from "./pages/CreateChallenge";
+import MyChallenge from "./pages/MyChallenge";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
               <Route path="/explore" element={<Explore />} />
               <Route path="/challenge/:id" element={<Challenge />} />
               <Route path="/create" element={<CreateChallenge />} />
+              <Route path="/my-challenges" element={<MyChallenge />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

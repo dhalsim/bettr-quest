@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Clock, Tag, Send, Image, Flag } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, Tag, Send, Image, Flag, X } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
