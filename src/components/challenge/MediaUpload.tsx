@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { XCircle, Image, Video, Mic, Camera, Play, Trash, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -231,8 +230,6 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange }) => {
   
   return (
     <div className="mb-8 space-y-6">
-      <h2 className="text-lg font-medium mb-3">Challenge Media</h2>
-      
       {/* Upload Media Section */}
       <div>
         <h3 className="text-sm font-medium mb-2">Upload Media</h3>

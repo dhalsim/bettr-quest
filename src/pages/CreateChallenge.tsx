@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
@@ -16,6 +15,7 @@ const CreateChallenge = () => {
   
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [proofMethod, setProofMethod] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [dueDate, setDueDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -116,6 +116,20 @@ const CreateChallenge = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
+                />
+              </div>
+              
+              {/* How to prove? */}
+              <div className="mb-6">
+                <label htmlFor="proofMethod" className="block text-sm font-medium mb-2">
+                  How to prove?
+                </label>
+                <Textarea
+                  id="proofMethod"
+                  rows={3}
+                  placeholder="I will provide a video"
+                  value={proofMethod}
+                  onChange={(e) => setProofMethod(e.target.value)}
                 />
               </div>
               
