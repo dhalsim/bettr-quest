@@ -23,6 +23,7 @@ const CreateChallenge = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [dueDate, setDueDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [proofChallenger, setProofChallenger] = useState('no-one');
   
   // Media states (will be updated by MediaUpload component)
   const [mediaFiles, setMediaFiles] = useState<{
@@ -163,6 +164,33 @@ const CreateChallenge = () => {
               
               {/* Due Date */}
               <DateSelector dueDate={dueDate} setDueDate={setDueDate} />
+              
+              {/* Who can challenge a proof */}
+              <div className="mb-6">
+                <div className="block text-sm font-medium mb-2">Who can challenge a proof</div>
+                <RadioGroup 
+                  value={proofChallenger} 
+                  onValueChange={setProofChallenger}
+                  className="grid grid-cols-1 gap-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="no-one" id="no-one" />
+                    <Label htmlFor="no-one">No one (only private)</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="anyone" id="anyone" />
+                    <Label htmlFor="anyone">Anyone (only public)</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="coach" id="coach" />
+                    <Label htmlFor="coach">Find a coach</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="ai" id="ai" />
+                    <Label htmlFor="ai">AI (only private)</Label>
+                  </div>
+                </RadioGroup>
+              </div>
               
               {/* Media Section */}
               <MediaUpload 
