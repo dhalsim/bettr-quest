@@ -19,11 +19,9 @@ import Profile from "./pages/Profile";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+  <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-grow">
@@ -41,9 +39,11 @@ const App = () => (
           </main>
           <Footer />
         </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+        <Toaster />
+        <Sonner />
+      </TooltipProvider>
+    </QueryClientProvider>
+  </BrowserRouter>
 );
 
 export default App;
