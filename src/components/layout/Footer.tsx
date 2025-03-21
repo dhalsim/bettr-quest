@@ -31,7 +31,7 @@ const Footer = () => {
         
         <div className="mt-12 pt-8 border-t border-border flex justify-center md:justify-start">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} bettrquest. All rights reserved.
+            © {new Date().getFullYear()} bettr.quest. All rights reserved.
           </p>
         </div>
       </div>

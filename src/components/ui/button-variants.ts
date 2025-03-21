@@ -1,3 +1,4 @@
+
 import { cva } from "class-variance-authority"
 
 export const buttonVariants = cva(
@@ -29,4 +30,6 @@ export const buttonVariants = cva(
       size: "default",
     },
   }
-) 
+)
+
+export default buttonVariants;
