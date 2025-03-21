@@ -21,31 +21,31 @@ export const challengeTemplates: ChallengeTemplate[] = [
   { 
     id: 'book', 
     name: 'Finish up a book', 
-    description: 'Read an entire book from start to finish. Set a timeline that works for you and track your daily progress.',
+    description: 'I want to read an entire book from start to finish. I\'ll set a timeline that works for me and track my daily progress.',
     suggestedTags: ['reading', 'learning', 'personal-growth']
   },
   { 
     id: 'run', 
     name: 'Run 3 km', 
-    description: 'Challenge yourself to run 3 kilometers within a specific timeframe. Start slow and build up your stamina day by day.',
+    description: 'I\'m challenging myself to run 3 kilometers within a specific timeframe. I\'ll start slow and build up my stamina day by day.',
     suggestedTags: ['fitness', 'running', 'health']
   },
   { 
     id: 'closet', 
     name: 'Organize My Closet', 
-    description: 'Declutter and organize your entire closet. Sort items into keep, donate, and discard piles. Document your progress!',
+    description: 'I need to declutter and organize my entire closet. I\'ll sort items into keep, donate, and discard piles. I\'ll document my progress!',
     suggestedTags: ['organization', 'home', 'lifestyle']
   },
   { 
     id: 'business', 
     name: 'Write a business plan', 
-    description: 'Create a comprehensive business plan for your idea or startup. Include market analysis, financial projections, and marketing strategy.',
+    description: 'I want to create a comprehensive business plan for my idea or startup. I\'ll include market analysis, financial projections, and marketing strategy.',
     suggestedTags: ['business', 'entrepreneurship', 'planning']
   },
   { 
     id: 'meditation', 
     name: 'Daily meditation practice', 
-    description: 'Build a daily meditation habit. Start with just 5 minutes per day and work your way up to longer sessions.',
+    description: 'I\'m building a daily meditation habit. I\'ll start with just 5 minutes per day and work my way up to longer sessions.',
     suggestedTags: ['mindfulness', 'wellness', 'mental-health']
   }
 ];
