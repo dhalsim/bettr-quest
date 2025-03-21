@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PlusCircle, Filter } from 'lucide-react';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 
 // Mock data for user challenges

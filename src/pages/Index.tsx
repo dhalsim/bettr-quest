@@ -2,7 +2,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle } from 'lucide-react';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 
 // Mock data for featured challenges

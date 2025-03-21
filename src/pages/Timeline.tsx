@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserPlus, UserCheck } from 'lucide-react';
 import ChallengeCard from '@/components/ui/ChallengeCard';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 // Mock data for timeline challenges (from people you follow)
 const timelineChallenges = [

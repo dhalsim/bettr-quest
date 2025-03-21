@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Search, Filter } from 'lucide-react';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 
 // Mock data for challenges
