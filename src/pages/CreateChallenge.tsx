@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import MediaUpload from '@/components/challenge/MediaUpload';
 import DateSelector from '@/components/challenge/DateSelector';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const CreateChallenge = () => {
   const navigate = useNavigate();
@@ -23,7 +24,8 @@ const CreateChallenge = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [dueDate, setDueDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [proofChallenger, setProofChallenger] = useState('no-one');
+  const [proofChallenger, setProofChallenger] = useState('anyone'); // Default to 'anyone' for public
+  const [validationError, setValidationError] = useState<string | null>(null);
   
   // Media states (will be updated by MediaUpload component)
   const [mediaFiles, setMediaFiles] = useState<{
@@ -37,6 +39,45 @@ const CreateChallenge = () => {
     audio: null,
     recordedVideo: null
   });
+  
+  // Update proof challenger when visibility changes
+  useEffect(() => {
+    if (visibility === 'public') {
+      setProofChallenger('anyone');
+      setValidationError(null);
+    } else {
+      setProofChallenger('no-one');
+      setValidationError(null);
+    }
+  }, [visibility]);
+  
+  // Handle proof challenger change
+  const handleProofChallengerChange = (value: string) => {
+    // Validate selection based on visibility
+    if (visibility === 'public' && (value === 'no-one' || value === 'ai')) {
+      setValidationError("This option is only available for private challenges");
+      // Reset to default for public after a short delay
+      setTimeout(() => {
+        setProofChallenger('anyone');
+        setValidationError(null);
+      }, 3000);
+      return;
+    }
+    
+    if (visibility === 'private' && value === 'anyone') {
+      setValidationError("This option is only available for public challenges");
+      // Reset to default for private after a short delay
+      setTimeout(() => {
+        setProofChallenger('no-one');
+        setValidationError(null);
+      }, 3000);
+      return;
+    }
+    
+    // Valid selection
+    setProofChallenger(value);
+    setValidationError(null);
+  };
   
   // Apply template
   const applyTemplate = (templateId: string) => {
@@ -168,9 +209,17 @@ const CreateChallenge = () => {
               {/* Who can challenge a proof */}
               <div className="mb-6">
                 <div className="block text-sm font-medium mb-2">Who can challenge a proof</div>
+                
+                {validationError && (
+                  <Alert variant="destructive" className="mb-3">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>{validationError}</AlertDescription>
+                  </Alert>
+                )}
+                
                 <RadioGroup 
                   value={proofChallenger} 
-                  onValueChange={setProofChallenger}
+                  onValueChange={handleProofChallengerChange}
                   className="grid grid-cols-1 gap-2"
                 >
                   <div className="flex items-center space-x-2">
