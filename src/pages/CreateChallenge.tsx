@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
@@ -9,12 +10,15 @@ import ChallengeTemplateSelector, { challengeTemplates } from '@/components/chal
 import TagsInput from '@/components/challenge/TagsInput';
 import MediaUpload from '@/components/challenge/MediaUpload';
 import DateSelector from '@/components/challenge/DateSelector';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const CreateChallenge = () => {
   const navigate = useNavigate();
   
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [visibility, setVisibility] = useState('public');
   const [proofMethod, setProofMethod] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [dueDate, setDueDate] = useState('');
@@ -117,6 +121,25 @@ const CreateChallenge = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   required
                 />
+              </div>
+              
+              {/* Visibility */}
+              <div className="mb-6">
+                <div className="block text-sm font-medium mb-2">Visibility</div>
+                <RadioGroup 
+                  value={visibility} 
+                  onValueChange={setVisibility}
+                  className="flex space-x-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="public" id="public" />
+                    <Label htmlFor="public">Public</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="private" id="private" />
+                    <Label htmlFor="private">Private (no proofs)</Label>
+                  </div>
+                </RadioGroup>
               </div>
               
               {/* How to prove? */}
