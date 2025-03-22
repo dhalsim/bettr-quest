@@ -1,14 +1,37 @@
 
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Clock, Tag, Send, Image, Flag, X, Check, ArrowDown } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
 import MediaUpload from '@/components/challenge/MediaUpload';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const questData = {
+// Define the status types for Quest and Proof
+type QuestStatus = 'pending' | 'on_review' | 'success' | 'failed' | 'in_dispute';
+
+// Quest data type
+interface Quest {
+  id: string;
+  title: string;
+  description: string;
+  userId: string;
+  username: string;
+  createdAt: string;
+  dueDate: string;
+  category: string;
+  status: QuestStatus;
+  imageUrl: string;
+  participants: number;
+  completionRate: number | null;
+  visibility: 'public' | 'private';
+  lockedAmount?: number; // Amount of sats locked by creator
+}
+
+const questData: Quest = {
   id: '1',
   title: 'Meditate for 20 minutes tomorrow',
   description: 'I want to begin my meditation practice by dedicating 20 minutes tomorrow to mindful meditation. This will help me reduce stress and improve focus.',
@@ -17,11 +40,12 @@ const questData = {
   createdAt: '2023-04-15T10:30:00Z',
   dueDate: '2023-04-16T10:30:00Z',
   category: 'Wellness',
-  status: 'pending' as const,
+  status: 'pending',
   imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
   participants: 1,
   completionRate: null,
-  visibility: 'public' as const
+  visibility: 'public',
+  lockedAmount: 1000, // Example: 1000 sats locked
 };
 
 const initialProofs: Proof[] = [
@@ -41,15 +65,16 @@ const initialProofs: Proof[] = [
   }
 ];
 
-const Challenge = () => {
+const QuestPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { profile } = useNostrAuth();
   const [proofs, setProofs] = useState(initialProofs);
   const [newProof, setNewProof] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeTab, setActiveTab] = useState('details');
   
-  // Media states (will be handled by MediaUpload component)
+  // Media states handled by MediaUpload component
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
     video: File | null,
@@ -90,6 +115,8 @@ const Challenge = () => {
       return 'bg-green-500/10 text-green-500';
     } else if (status === 'failed') {
       return 'bg-red-500/10 text-red-500';
+    } else if (status === 'in_dispute') {
+      return 'bg-orange-500/10 text-orange-500';
     } else {
       return 'bg-blue-500/10 text-blue-500';
     }
@@ -105,6 +132,8 @@ const Challenge = () => {
       return 'Success';
     } else if (status === 'failed') {
       return 'Failed';
+    } else if (status === 'in_dispute') {
+      return 'In Dispute';
     } else {
       return 'Pending';
     }
@@ -224,9 +253,44 @@ const Challenge = () => {
                     </div>
                   </div>
                   
-                  <div className="prose prose-slate max-w-none">
-                    <p className="text-foreground">{questData.description}</p>
-                  </div>
+                  <Tabs defaultValue="details" onValueChange={setActiveTab} className="mt-6">
+                    <TabsList className="mb-6">
+                      <TabsTrigger value="details">Details</TabsTrigger>
+                      <TabsTrigger value="escrow">Escrow & Rewards</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="details" className="space-y-4">
+                      <div className="prose prose-slate max-w-none">
+                        <p className="text-foreground">{questData.description}</p>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="escrow" className="space-y-4">
+                      <div className="bg-secondary/20 p-6 rounded-lg">
+                        <h3 className="text-lg font-medium mb-4">Escrow Information</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <p className="text-sm text-muted-foreground mb-2">Creator Locked Amount</p>
+                            <p className="text-xl font-semibold">{questData.lockedAmount?.toLocaleString() || 0} sats</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground mb-2">Status</p>
+                            <p className="text-xl font-semibold">{getStatusText()}</p>
+                          </div>
+                        </div>
+                        
+                        <Separator className="my-6" />
+                        
+                        <div>
+                          <h4 className="text-md font-medium mb-3">Reward Distribution</h4>
+                          <p className="text-sm text-muted-foreground">
+                            If the proof is accepted, the acceptor will receive a reward from the locked amount. 
+                            Multiple acceptors will split the reward equally.
+                          </p>
+                        </div>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
                   
                   <div className="mt-8 flex items-center justify-between">
                     {isQuestCreator && (
@@ -307,4 +371,4 @@ const Challenge = () => {
   );
 };
 
-export default Challenge;
+export default QuestPage;
