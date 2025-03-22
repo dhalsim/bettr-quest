@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Key, UserPlus, Link as LinkIcon, AlertTriangle, QrCode } from 'lucide-react';
@@ -16,6 +15,13 @@ const ConnectNostr = () => {
   const navigate = useNavigate();
   const bunkerUrlRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('nostr_logged_in') === 'true';
+    if (isLoggedIn) {
+      navigate('/timeline');
+    }
+  }, [navigate]);
+
   const handleConnect = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -25,16 +31,16 @@ const ConnectNostr = () => {
       if (connectionMethod === 'bunker') {
         if (!bunkerUrl) {
           setError('Please enter a valid Bunker URL');
+          setIsLoading(false);
           return;
         }
-        // Store bunker URL in localStorage (in a real app, this would be handled by a Nostr library)
         localStorage.setItem('nostr_bunker_url', bunkerUrl);
       } else {
         if (!nsec) {
           setError('Please enter a valid private key');
+          setIsLoading(false);
           return;
         }
-        // Store nsec in localStorage (in a real app, this would be handled by a Nostr library)
         localStorage.setItem('nostr_private_key', nsec);
       }
       
@@ -44,7 +50,6 @@ const ConnectNostr = () => {
     } catch (err) {
       setError('Failed to connect. Please check your credentials and try again.');
       console.error('Connection error:', err);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -52,9 +57,7 @@ const ConnectNostr = () => {
   const generateNewAccount = () => {
     setIsLoading(true);
     
-    // Simulate account creation delay
     setTimeout(() => {
-      // Generate a fake nsec (in a real app, this would use a Nostr library)
       const mockNsec = 'nsec1' + Array(59).fill(0).map(() => 
         "0123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 36)]
       ).join('');
@@ -66,7 +69,6 @@ const ConnectNostr = () => {
   };
 
   const handleScanQR = () => {
-    // In a real app, this would open the camera for QR scanning
     toast.info("QR code scanning would be implemented here");
   };
   
