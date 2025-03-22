@@ -1,9 +1,12 @@
+
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Image, Flag, X, Check, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
+import MediaUpload from '@/components/challenge/MediaUpload';
+import { useNostrAuth } from '@/hooks/useNostrAuth';
 
 const questData = {
   id: '1',
@@ -41,11 +44,23 @@ const initialProofs: Proof[] = [
 const Challenge = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { profile } = useNostrAuth();
   const [proofs, setProofs] = useState(initialProofs);
   const [newProof, setNewProof] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  
+  // Media states (will be handled by MediaUpload component)
+  const [mediaFiles, setMediaFiles] = useState<{
+    image: File | null,
+    video: File | null,
+    audio: Blob | null,
+    recordedVideo: Blob | null
+  }>({
+    image: null,
+    video: null,
+    audio: null,
+    recordedVideo: null
+  });
   
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -95,19 +110,6 @@ const Challenge = () => {
     }
   };
   
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedImage(file);
-      
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  
   const handleSubmitProof = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -126,7 +128,7 @@ const Challenge = () => {
         username: 'you',
         createdAt: new Date().toISOString(),
         description: newProof,
-        imageUrl: previewUrl || undefined,
+        imageUrl: mediaFiles.image ? URL.createObjectURL(mediaFiles.image) : undefined,
         votes: {
           accept: 0,
           reject: 0
@@ -136,8 +138,12 @@ const Challenge = () => {
       
       setProofs([newProofItem, ...proofs]);
       setNewProof('');
-      setSelectedImage(null);
-      setPreviewUrl(null);
+      setMediaFiles({
+        image: null,
+        video: null,
+        audio: null,
+        recordedVideo: null
+      });
       setIsSubmitting(false);
       
       toast.success("Your proof has been submitted for review!");
@@ -151,6 +157,9 @@ const Challenge = () => {
   const handleCategoryClick = () => {
     navigate(`/explore?category=${questData.category}`);
   };
+  
+  // Check if current user is the quest creator
+  const isQuestCreator = profile?.username === questData.username;
   
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
@@ -220,18 +229,21 @@ const Challenge = () => {
                   </div>
                   
                   <div className="mt-8 flex items-center justify-between">
-                    <Button 
-                      variant="primary"
-                      onClick={() => document.getElementById('submit-proof')?.scrollIntoView({ behavior: 'smooth' })}
-                    >
-                      Submit Your Proof
-                      <ArrowDown size={16} className="ml-2" />
-                    </Button>
+                    {isQuestCreator && (
+                      <Button 
+                        variant="primary"
+                        onClick={() => document.getElementById('submit-proof')?.scrollIntoView({ behavior: 'smooth' })}
+                      >
+                        Submit Your Proof
+                        <ArrowDown size={16} className="ml-2" />
+                      </Button>
+                    )}
                     
                     <Button 
                       variant="ghost" 
                       size="sm" 
                       onClick={reportChallenge}
+                      className={isQuestCreator ? "" : "ml-auto"}
                     >
                       <Flag size={16} className="mr-2" />
                       Report Quest
@@ -241,85 +253,44 @@ const Challenge = () => {
               </div>
             </div>
             
-            <div className="lg:w-1/3" id="submit-proof">
-              <div className="glass rounded-2xl p-6 sticky top-32">
-                <h2 className="text-xl font-semibold mb-4">Submit Your Proof</h2>
-                <form onSubmit={handleSubmitProof}>
-                  <div className="mb-4">
-                    <label htmlFor="proof-description" className="block text-sm font-medium mb-1">
-                      How did you complete this quest?
-                    </label>
-                    <textarea
-                      id="proof-description"
-                      rows={5}
-                      placeholder="Describe how you completed your quest..."
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
-                      value={newProof}
-                      onChange={(e) => setNewProof(e.target.value)}
-                      required
-                    />
-                  </div>
-                  
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium mb-1">
-                      Add Photo (Optional)
-                    </label>
-                    <div className="flex items-center justify-center border-2 border-dashed border-border rounded-lg p-4 cursor-pointer hover:bg-secondary/50 transition-colors"
-                      onClick={() => document.getElementById('proof-image')?.click()}
-                    >
-                      <input
-                        type="file"
-                        id="proof-image"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleImageChange}
+            {isQuestCreator && (
+              <div className="lg:w-1/3" id="submit-proof">
+                <div className="glass rounded-2xl p-6 sticky top-32">
+                  <h2 className="text-xl font-semibold mb-4">Submit Your Proof</h2>
+                  <form onSubmit={handleSubmitProof}>
+                    <div className="mb-4">
+                      <label htmlFor="proof-description" className="block text-sm font-medium mb-1">
+                        How did you complete this quest?
+                      </label>
+                      <textarea
+                        id="proof-description"
+                        rows={5}
+                        placeholder="Describe how you completed your quest..."
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
+                        value={newProof}
+                        onChange={(e) => setNewProof(e.target.value)}
+                        required
                       />
-                      
-                      {previewUrl ? (
-                        <div className="relative w-full">
-                          <img 
-                            src={previewUrl} 
-                            alt="Proof Preview" 
-                            className="w-full h-48 object-cover rounded-md" 
-                          />
-                          <button
-                            type="button"
-                            className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70 transition-colors"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedImage(null);
-                              setPreviewUrl(null);
-                            }}
-                          >
-                            <X size={16} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="text-center">
-                          <Image className="mx-auto h-10 w-10 text-muted-foreground mb-2" />
-                          <p className="text-sm text-muted-foreground">
-                            Click to upload an image
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            PNG, JPG up to 10MB
-                          </p>
-                        </div>
-                      )}
                     </div>
-                  </div>
-                  
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    className="w-full"
-                    isLoading={isSubmitting}
-                  >
-                    <Send size={16} className="mr-2" />
-                    Submit Proof
-                  </Button>
-                </form>
+                    
+                    {/* Media Upload Section */}
+                    <MediaUpload 
+                      onMediaChange={files => setMediaFiles(files)}
+                    />
+                    
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      className="w-full"
+                      isLoading={isSubmitting}
+                    >
+                      <Send size={16} className="mr-2" />
+                      Submit Proof
+                    </Button>
+                  </form>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         
