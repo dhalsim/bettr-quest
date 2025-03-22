@@ -1,7 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, PlusCircle, UserCircle, LogOut } from 'lucide-react';
+import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 // Mock authentication state - in a real app this would come from a Nostr context
 const useNostrAuth = () => {
@@ -63,13 +71,8 @@ const Header = () => {
                 <PlusCircle size={18} />
                 <span>New Challenge</span>
               </Link>
-              <button
-                onClick={logout}
-                className="text-foreground/80 hover:text-foreground flex items-center gap-2"
-              >
-                <LogOut size={18} />
-                <span>Log Out</span>
-              </button>
+              
+              <UserMenu logout={logout} />
             </div>
           ) : (
             <Link 
@@ -91,7 +94,7 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu - kept the same as requested */}
       {isMenuOpen && (
         <div className="absolute top-full left-0 right-0 glass animate-fade-in py-6 px-6 md:hidden">
           <nav className="flex flex-col space-y-6">
@@ -105,6 +108,20 @@ const Header = () => {
                 >
                   <PlusCircle size={18} />
                   <span>New Challenge</span>
+                </Link>
+                <Link
+                  to="/my-challenges"
+                  className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
+                >
+                  <User size={18} />
+                  <span>My Challenges</span>
+                </Link>
+                <Link
+                  to="/profile"
+                  className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
+                >
+                  <Settings size={18} />
+                  <span>Profile</span>
                 </Link>
                 <button
                   onClick={logout}
@@ -130,6 +147,40 @@ const Header = () => {
   );
 };
 
+const UserMenu = ({ logout }: { logout: () => void }) => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+          <Avatar className="h-10 w-10 border-2 border-primary hover:border-primary/80 transition-colors">
+            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=bettrquest" alt="User avatar" />
+            <AvatarFallback>UN</AvatarFallback>
+          </Avatar>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56 mt-2 bg-popover" align="end">
+        <DropdownMenuItem asChild>
+          <Link to="/my-challenges" className="flex items-center gap-2 cursor-pointer">
+            <User size={16} />
+            <span>My Challenges</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/profile" className="flex items-center gap-2 cursor-pointer">
+            <Settings size={16} />
+            <span>Profile</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={logout} className="flex items-center gap-2 cursor-pointer text-destructive">
+          <LogOut size={16} />
+          <span>Log Out</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 const NavLinks = ({ mobile = false, isLoggedIn = false }: { mobile?: boolean, isLoggedIn?: boolean }) => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
@@ -137,7 +188,6 @@ const NavLinks = ({ mobile = false, isLoggedIn = false }: { mobile?: boolean, is
   const links = [
     { to: "/explore", label: "Explore" },
     ...(isLoggedIn ? [{ to: "/timeline", label: "Timeline" }] : []),
-    { to: "/my-challenges", label: "My Challenges" },
     { to: "/coach-directory", label: "Coach Directory" },
     ...(isLoggedIn ? [{ to: "/register-coach", label: "Register as Coach" }] : []),
   ];
