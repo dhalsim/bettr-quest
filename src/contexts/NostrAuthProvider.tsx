@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NostrAuthContext, NostrProfile } from './NostrAuthContext';
+import { NostrAuthContext, NostrProfile } from '@/contexts/NostrAuthContext';
 
 // Default profile for testing purposes
 const defaultProfile: NostrProfile = {
