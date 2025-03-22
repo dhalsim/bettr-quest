@@ -1,13 +1,13 @@
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus, UserCheck } from 'lucide-react';
-import ChallengeCard from '@/components/ui/ChallengeCard';
+import QuestCard from '@/components/ui/QuestCard';
 import { Button } from '@/components/ui/button';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
+import { Quest } from '@/components/ui/QuestCard';
 
 // Mock data for timeline quests (from people you follow)
-const timelineQuests = [
+const timelineQuests: Quest[] = [
   {
     id: '1',
     title: 'Meditate for 20 minutes tomorrow',
@@ -17,9 +17,9 @@ const timelineQuests = [
     createdAt: '2023-04-15T10:30:00Z',
     dueDate: '2023-04-16T10:30:00Z',
     category: 'Wellness',
-    status: 'pending' as const,
+    status: 'pending',
     imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
-    visibility: 'public' as const
+    visibility: 'public'
   },
   {
     id: '2',
@@ -30,9 +30,9 @@ const timelineQuests = [
     createdAt: '2023-04-08T14:20:00Z',
     dueDate: '2023-04-12T14:20:00Z',
     category: 'Learning',
-    status: 'on_review' as const,
+    status: 'on_review',
     imageUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600&auto=format',
-    visibility: 'public' as const
+    visibility: 'public'
   },
   {
     id: '3',
@@ -43,9 +43,9 @@ const timelineQuests = [
     createdAt: '2023-04-10T09:15:00Z',
     dueDate: '2023-04-20T09:15:00Z',
     category: 'Fitness',
-    status: 'success' as const,
+    status: 'success',
     imageUrl: 'https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=600&auto=format',
-    visibility: 'public' as const
+    visibility: 'public'
   },
   {
     id: '4',
@@ -56,9 +56,9 @@ const timelineQuests = [
     createdAt: '2023-04-12T16:45:00Z',
     dueDate: '2023-04-13T16:45:00Z',
     category: 'Creativity',
-    status: 'failed' as const,
+    status: 'failed',
     imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=600&auto=format',
-    visibility: 'public' as const
+    visibility: 'public'
   },
   {
     id: '5',
@@ -131,7 +131,7 @@ const Timeline = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {timelineQuests.map((quest) => (
                   <Link key={quest.id} to={`/quest/${quest.id}`}>
-                    <ChallengeCard challenge={quest} />
+                    <QuestCard quest={quest} />
                   </Link>
                 ))}
               </div>

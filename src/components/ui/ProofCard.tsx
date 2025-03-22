@@ -16,7 +16,7 @@ export type Proof = {
     accept: number;
     reject: number;
   };
-  status: 'pending' | 'accepted' | 'rejected';
+  status: 'pending' | 'accepted' | 'rejected' | 'in_dispute';
 };
 
 interface ProofCardProps {

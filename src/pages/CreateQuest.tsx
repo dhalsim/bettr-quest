@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Loader2, AlertTriangle } from 'lucide-react';
@@ -6,15 +5,15 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import ChallengeTemplateSelector, { challengeTemplates } from '@/components/challenge/ChallengeTemplateSelector';
-import TagsInput from '@/components/challenge/TagsInput';
-import MediaUpload from '@/components/challenge/MediaUpload';
-import DateSelector from '@/components/challenge/DateSelector';
+import QuestTemplateSelector, { questTemplates } from '@/components/quest/QuestTemplateSelector';
+import TagsInput from '@/components/quest/TagsInput';
+import MediaUpload from '@/components/quest/MediaUpload';
+import DateSelector from '@/components/quest/DateSelector';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-const CreateChallenge = () => {
+const CreateQuest = () => {
   const navigate = useNavigate();
   
   const [title, setTitle] = useState('');
@@ -81,14 +80,12 @@ const CreateChallenge = () => {
   
   // Apply template
   const applyTemplate = (templateId: string) => {
-    const template = challengeTemplates.find(t => t.id === templateId);
+    const template = questTemplates.find(t => t.id === templateId);
     if (template) {
       // Adjust template names to be more quest-like (one-time achievements)
       let adjustedName = template.name;
       if (adjustedName.includes('30 Days')) {
         adjustedName = adjustedName.replace('30 Days', 'Today');
-      } else if (adjustedName.includes('Challenge')) {
-        adjustedName = adjustedName.replace('Challenge', 'Quest');
       }
       
       setTitle(adjustedName);
@@ -141,7 +138,7 @@ const CreateChallenge = () => {
             
             <form onSubmit={handleSubmit}>
               {/* Template Selection */}
-              <ChallengeTemplateSelector onSelectTemplate={applyTemplate} />
+              <QuestTemplateSelector onSelectTemplate={applyTemplate} />
               
               {/* Quest Title */}
               <div className="mb-6">
@@ -275,4 +272,4 @@ const CreateChallenge = () => {
   );
 };
 
-export default CreateChallenge;
+export default CreateQuest;

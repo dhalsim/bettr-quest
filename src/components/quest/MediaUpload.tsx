@@ -239,11 +239,11 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange }) => {
             className={`border-2 border-dashed rounded-lg p-6 transition-colors ${
               imagePreview ? 'border-primary/50' : 'border-border hover:bg-secondary/50'
             } cursor-pointer`}
-            onClick={() => document.getElementById('challenge-image')?.click()}
+            onClick={() => document.getElementById('quest-image')?.click()}
           >
             <input
               type="file"
-              id="challenge-image"
+              id="quest-image"
               accept="image/*"
               className="hidden"
               onChange={(e) => handleFileChange(e, 'image')}
@@ -253,7 +253,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange }) => {
               <div className="relative">
                 <img
                   src={imagePreview}
-                  alt="Challenge Preview"
+                  alt="Quest Preview"
                   className="w-full h-48 object-cover rounded-md"
                 />
                 <button
@@ -282,11 +282,11 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange }) => {
             className={`border-2 border-dashed rounded-lg p-6 transition-colors ${
               videoPreview ? 'border-primary/50' : 'border-border hover:bg-secondary/50'
             } cursor-pointer`}
-            onClick={() => document.getElementById('challenge-video')?.click()}
+            onClick={() => document.getElementById('quest-video')?.click()}
           >
             <input
               type="file"
-              id="challenge-video"
+              id="quest-video"
               accept="video/*"
               className="hidden"
               onChange={(e) => handleFileChange(e, 'video')}

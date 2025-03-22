@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +13,7 @@ const Footer = () => {
               quest
             </Link>
             <p className="mt-4 text-muted-foreground max-w-md">
-              Challenge yourself to be better, one quest at a time. Create, share, and complete personal challenges with a community that supports your growth.
+              Quest yourself to be better, one quest at a time. Create, share, and complete personal quests with a community that supports your growth.
             </p>
           </div>
           
@@ -23,8 +22,8 @@ const Footer = () => {
             <nav className="flex flex-col space-y-3">
               <FooterLink to="/">Home</FooterLink>
               <FooterLink to="/explore">Explore</FooterLink>
-              <FooterLink to="/my-challenges">My Challenges</FooterLink>
-              <FooterLink to="/create">Create Challenge</FooterLink>
+              <FooterLink to="/my-quests">My Quests</FooterLink>
+              <FooterLink to="/create">Create Quest</FooterLink>
             </nav>
           </div>
         </div>

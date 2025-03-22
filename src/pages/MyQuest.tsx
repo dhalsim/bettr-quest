@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PlusCircle, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ChallengeCard from '@/components/ui/ChallengeCard';
+import QuestCard from '@/components/ui/QuestCard';
 
 // Mock data for user quests
 const userQuests = [
@@ -48,7 +47,7 @@ const userQuests = [
   }
 ];
 
-const MyChallenge = () => {
+const MyQuest = () => {
   const [filter, setFilter] = useState<'all' | 'pending' | 'on_review' | 'success' | 'failed'>('all');
   
   const filteredQuests = userQuests.filter(quest => {
@@ -95,7 +94,7 @@ const MyChallenge = () => {
         {filteredQuests.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredQuests.map((quest) => (
-              <ChallengeCard key={quest.id} challenge={quest} />
+              <QuestCard key={quest.id} quest={quest} />
             ))}
           </div>
         ) : (
@@ -125,4 +124,4 @@ const MyChallenge = () => {
   );
 };
 
-export default MyChallenge;
+export default MyQuest;

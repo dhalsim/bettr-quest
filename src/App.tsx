@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,8 +9,8 @@ import Footer from "@/components/layout/Footer";
 import Index from "./pages/Index";
 import Explore from "./pages/Explore";
 import QuestPage from "./pages/Quest";
-import CreateChallenge from "./pages/CreateChallenge";
-import MyChallenge from "./pages/MyChallenge";
+import CreateQuest from "./pages/CreateQuest";
+import MyQuest from "./pages/MyQuest";
 import NotFound from "./pages/NotFound";
 import Timeline from "./pages/Timeline";
 import ConnectNostr from "./pages/ConnectNostr";
@@ -34,8 +33,8 @@ const App = () => (
                 <Route path="/explore" element={<Explore />} />
                 <Route path="/timeline" element={<Timeline />} />
                 <Route path="/quest/:id" element={<QuestPage />} />
-                <Route path="/create" element={<CreateChallenge />} />
-                <Route path="/my-challenges" element={<MyChallenge />} />
+                <Route path="/create" element={<CreateQuest />} />
+                <Route path="/my-quests" element={<MyQuest />} />
                 <Route path="/connect" element={<ConnectNostr />} />
                 <Route path="/profile/:username" element={<Profile />} />
                 <Route path="/coach-directory" element={<CoachDirectory />} />

@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
-import MediaUpload from '@/components/challenge/MediaUpload';
+import MediaUpload from '@/components/quest/MediaUpload';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -89,7 +88,7 @@ const mockQuests: Record<string, Quest> = {
   "4": {
     id: '4',
     title: 'Write a short story in one day',
-    description: 'Challenge myself to write a 1000-word short story in a single day to boost creativity and overcome writer's block.',
+    description: "Challenge myself to write a 1000-word short story in a single day to boost creativity and overcome writer's block.",
     userId: 'user4',
     username: 'storyteller',
     createdAt: '2023-04-12T16:45:00Z',
@@ -338,7 +337,7 @@ const QuestPage = () => {
     }, 1500);
   };
   
-  const reportChallenge = () => {
+  const reportQuest = () => {
     toast.success("Thank you for your report. Our moderators will review this quest.");
   };
   
@@ -475,7 +474,7 @@ const QuestPage = () => {
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      onClick={reportChallenge}
+                      onClick={reportQuest}
                       className={isQuestCreator ? "" : "ml-auto"}
                     >
                       <Flag size={16} className="mr-2" />

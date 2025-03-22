@@ -1,12 +1,11 @@
-
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ChallengeCard from '@/components/ui/ChallengeCard';
+import QuestCard from '@/components/ui/QuestCard';
 
-// Mock data for featured challenges
-const featuredChallenges = [
+// Mock data for featured quests
+const featuredQuests = [
   {
     id: '1',
     title: 'Meditate for 10 minutes',
@@ -84,15 +83,15 @@ const Index = () => {
       <section className="pt-32 pb-20 px-6 bg-gradient-to-b from-background to-secondary/30">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-            Challenge Yourself to <span className="text-primary">Become Better</span>
+            Quest Yourself to <span className="text-primary">Become Better</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10">
-            Create personal challenges, track your progress, and get community validation for your achievements.
+            Create personal quests, track your progress, and get community validation for your achievements.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/explore">
               <Button size="lg" rightIcon={<ArrowRight size={18} />}>
-                Explore Challenges
+                Explore Quests
               </Button>
             </Link>
             <Link to="/create">
@@ -106,11 +105,11 @@ const Index = () => {
           <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="glass rounded-2xl p-6">
               <div className="text-3xl font-bold text-primary mb-2">15,000+</div>
-              <div className="text-muted-foreground">Challenges Created</div>
+              <div className="text-muted-foreground">Quests Created</div>
             </div>
             <div className="glass rounded-2xl p-6">
               <div className="text-3xl font-bold text-primary mb-2">8,500+</div>
-              <div className="text-muted-foreground">Challenges Completed</div>
+              <div className="text-muted-foreground">Quests Completed</div>
             </div>
             <div className="glass rounded-2xl p-6">
               <div className="text-3xl font-bold text-primary mb-2">25,000+</div>
@@ -120,14 +119,14 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Featured Challenges */}
+      {/* Featured Quests */}
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-3xl font-bold mb-4">Featured Challenges</h2>
+              <h2 className="text-3xl font-bold mb-4">Featured Quests</h2>
               <p className="text-muted-foreground max-w-2xl">
-                Discover popular challenges that others are taking on to improve themselves.
+                Discover popular quests that others are taking on to improve themselves.
               </p>
             </div>
             <Link to="/explore" className="hidden md:flex items-center text-primary hover:underline">
@@ -136,15 +135,15 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredChallenges.map((challenge) => (
-              <ChallengeCard key={challenge.id} challenge={challenge} />
+            {featuredQuests.map((quest) => (
+              <QuestCard key={quest.id} quest={quest} />
             ))}
           </div>
           
           <div className="mt-12 text-center md:hidden">
             <Link to="/explore">
               <Button variant="outline" rightIcon={<ArrowRight size={16} />}>
-                View All Challenges
+                View All Quests
               </Button>
             </Link>
           </div>
@@ -166,9 +165,9 @@ const Index = () => {
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
                 <Target size={24} />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Create Challenge</h3>
+              <h3 className="text-xl font-semibold mb-3">Create Quest</h3>
               <p className="text-muted-foreground">
-                Define your personal challenge with clear goals and timeframes.
+                Define your personal quest with clear goals and timeframes.
               </p>
             </div>
             
@@ -178,7 +177,7 @@ const Index = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">Take Action</h3>
               <p className="text-muted-foreground">
-                Work on your challenge consistently and track your progress.
+                Work on your quest consistently and track your progress.
               </p>
             </div>
             
@@ -210,11 +209,11 @@ const Index = () => {
         <div className="max-w-4xl mx-auto glass rounded-3xl p-12">
           <h2 className="text-3xl font-bold mb-6">Ready to Become Better?</h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Start your personal growth journey today by creating your first challenge or exploring what others are achieving.
+            Start your personal growth journey today by creating your first quest or exploring what others are achieving.
           </p>
           <Link to="/create">
             <Button size="lg" rightIcon={<ArrowRight size={18} />}>
-              Start Your First Challenge
+              Start Your First Quest
             </Button>
           </Link>
         </div>

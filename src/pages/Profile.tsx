@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, User, Calendar, Activity, Award } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import ChallengeCard from '@/components/ui/ChallengeCard';
+import QuestCard from '@/components/ui/QuestCard';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -17,8 +17,8 @@ const userData = {
   following: 73
 };
 
-// Mock challenges created by the user
-const userChallenges = [
+// Mock quests created by the user
+const userQuests = [
   {
     id: '1',
     title: 'Meditate for 10 minutes',
@@ -168,11 +168,11 @@ const Profile = () => {
           </div>
         </div>
         
-        <Tabs defaultValue="challenges">
+        <Tabs defaultValue="quests">
           <TabsList className="glass mb-8">
-            <TabsTrigger value="challenges" className="flex items-center gap-2">
+            <TabsTrigger value="quests" className="flex items-center gap-2">
               <Award size={16} />
-              Challenges
+              Quests
             </TabsTrigger>
             <TabsTrigger value="activity" className="flex items-center gap-2">
               <Activity size={16} />
@@ -180,17 +180,17 @@ const Profile = () => {
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="challenges">
-            <h2 className="text-2xl font-semibold mb-6">Challenges by {userData.username}</h2>
-            {userChallenges.length > 0 ? (
+          <TabsContent value="quests">
+            <h2 className="text-2xl font-semibold mb-6">Quests by {userData.username}</h2>
+            {userQuests.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {userChallenges.map((challenge) => (
-                  <ChallengeCard key={challenge.id} challenge={challenge} />
+                {userQuests.map((quest) => (
+                  <QuestCard key={quest.id} quest={quest} />
                 ))}
               </div>
             ) : (
               <div className="text-center py-16 glass rounded-2xl">
-                <p className="text-muted-foreground">No challenges created yet</p>
+                <p className="text-muted-foreground">No quests created yet</p>
               </div>
             )}
           </TabsContent>
@@ -216,8 +216,8 @@ const Profile = () => {
                           <Link to={`/profile/${activity.username}`} className="text-primary hover:underline">
                             @{activity.username}
                           </Link>
-                          {' '}for the challenge{' '}
-                          <Link to={`/challenge/${activity.challengeId}`} className="text-primary hover:underline">
+                          {' '}for the quest{' '}
+                          <Link to={`/quest/${activity.challengeId}`} className="text-primary hover:underline">
                             {activity.challengeTitle}
                           </Link>
                         </p>
@@ -226,8 +226,8 @@ const Profile = () => {
                       <div>
                         <p>
                           <span className="font-medium">{userData.username}</span>
-                          {' '}created a new challenge:{' '}
-                          <Link to={`/challenge/${activity.challengeId}`} className="text-primary hover:underline">
+                          {' '}created a new quest:{' '}
+                          <Link to={`/quest/${activity.challengeId}`} className="text-primary hover:underline">
                             {activity.challengeTitle}
                           </Link>
                         </p>

@@ -62,7 +62,7 @@ const Header = () => {
                 className="btn-primary flex items-center gap-2"
               >
                 <PlusCircle size={18} />
-                <span>New Challenge</span>
+                <span>New Quest</span>
               </Link>
               
               <UserMenu logout={handleLogout} profile={profile} />
@@ -100,14 +100,14 @@ const Header = () => {
                   className="btn-primary flex items-center justify-center gap-2"
                 >
                   <PlusCircle size={18} />
-                  <span>New Challenge</span>
+                  <span>New Quest</span>
                 </Link>
                 <Link
-                  to="/my-challenges"
+                  to="/my-quests"
                   className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
                 >
                   <User size={18} />
-                  <span>My Challenges</span>
+                  <span>My Quests</span>
                 </Link>
                 <Link
                   to="/profile"
@@ -158,9 +158,9 @@ const UserMenu = ({ logout, profile }: { logout: () => void, profile: NostrProfi
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 mt-2 bg-popover" align="end">
         <DropdownMenuItem asChild>
-          <Link to="/my-challenges" className="flex items-center gap-2 cursor-pointer">
+          <Link to="/my-quests" className="flex items-center gap-2 cursor-pointer">
             <User size={16} />
-            <span>My Challenges</span>
+            <span>My Quests</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

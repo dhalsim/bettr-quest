@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, User, Clock, UserPlus, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-type Quest = {
+export type Quest = {
   id: string;
   title: string;
   description: string;
@@ -13,16 +12,16 @@ type Quest = {
   createdAt: string;
   dueDate: string;
   category: string;
-  status: 'pending' | 'on_review' | 'success' | 'failed';
+  status: 'pending' | 'on_review' | 'success' | 'failed' | 'in_dispute';
   imageUrl?: string;
   visibility: 'public' | 'private';
 };
 
-interface ChallengeCardProps {
-  challenge: Quest;
+interface QuestCardProps {
+  quest: Quest;
 }
 
-const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
+const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const navigate = useNavigate();
   
@@ -37,7 +36,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
   
   // Calculate days remaining until due date
   const calculateDaysRemaining = () => {
-    const dueDate = new Date(challenge.dueDate);
+    const dueDate = new Date(quest.dueDate);
     const today = new Date();
     const differenceInTime = dueDate.getTime() - today.getTime();
     const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
@@ -58,12 +57,12 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
   const handleCategoryClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate(`/explore?category=${challenge.category}`);
+    navigate(`/explore?category=${quest.category}`);
   };
   
   // Get the appropriate status badge color
   const getStatusBadgeClass = () => {
-    switch (challenge.status) {
+    switch (quest.status) {
       case 'pending':
         return 'bg-blue-500/10 text-blue-500';
       case 'on_review':
@@ -79,7 +78,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
 
   // Get the status display text
   const getStatusText = () => {
-    switch (challenge.status) {
+    switch (quest.status) {
       case 'pending':
         return 'Pending';
       case 'on_review':
@@ -94,13 +93,13 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
   };
   
   return (
-    <Link to={`/challenge/${challenge.id}`} className="block group">
+    <Link to={`/quest/${quest.id}`} className="block group">
       <div className="glass rounded-2xl h-full overflow-hidden transition-transform group-hover:translate-y-[-4px] group-hover:shadow-lg">
-        {challenge.imageUrl && (
+        {quest.imageUrl && (
           <div className="h-52 w-full">
             <img 
-              src={challenge.imageUrl} 
-              alt={challenge.title} 
+              src={quest.imageUrl} 
+              alt={quest.title} 
               className="w-full h-full object-cover" 
             />
           </div>
@@ -112,7 +111,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
               onClick={handleCategoryClick}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
             >
-              {challenge.category}
+              {quest.category}
             </span>
             
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium
@@ -122,16 +121,16 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
             </span>
           </div>
           
-          <h3 className="text-xl font-semibold mb-3">{challenge.title}</h3>
+          <h3 className="text-xl font-semibold mb-3">{quest.title}</h3>
           
           <p className="text-muted-foreground text-sm mb-5 line-clamp-2">
-            {challenge.description}
+            {quest.description}
           </p>
           
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <User size={14} />
-              <span>@{challenge.username}</span>
+              <span>@{quest.username}</span>
             </div>
             
             <Button
@@ -147,7 +146,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
           <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-4 text-xs text-muted-foreground">
             <div className="flex items-center gap-1.5">
               <Calendar size={12} />
-              <span>{formatDate(challenge.createdAt)}</span>
+              <span>{formatDate(quest.createdAt)}</span>
             </div>
             
             <div className="flex items-center gap-1.5">
@@ -165,4 +164,4 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
   );
 };
 
-export default ChallengeCard;
+export default QuestCard;

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Select,
@@ -8,16 +7,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// Challenge template type
-export interface ChallengeTemplate {
+// Quest template type
+export interface QuestTemplate {
   id: string;
   name: string;
   description: string;
   suggestedTags: string[];
 }
 
-// Challenge templates data
-export const challengeTemplates: ChallengeTemplate[] = [
+// Quest templates data
+export const questTemplates: QuestTemplate[] = [
   { 
     id: 'book', 
     name: 'Finish Economics Book Chapter 4', 
@@ -54,7 +53,7 @@ interface TemplateSelectorProps {
   onSelectTemplate: (templateId: string) => void;
 }
 
-const ChallengeTemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTemplate }) => {
+const QuestTemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTemplate }) => {
   return (
     <div className="mb-8">
       <h2 className="text-lg font-medium mb-3">Select a template (optional)</h2>
@@ -63,7 +62,7 @@ const ChallengeTemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTe
           <SelectValue placeholder="I want to..." />
         </SelectTrigger>
         <SelectContent>
-          {challengeTemplates.map(template => (
+          {questTemplates.map(template => (
             <SelectItem key={template.id} value={template.id}>
               {template.name}
             </SelectItem>
@@ -74,4 +73,4 @@ const ChallengeTemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTe
   );
 };
 
-export default ChallengeTemplateSelector;
+export default QuestTemplateSelector;

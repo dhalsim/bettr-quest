@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ChallengeCard from '@/components/ui/ChallengeCard';
+import QuestCard from '@/components/ui/QuestCard';
 import { useSearchParams } from 'react-router-dom';
 
 // Mock data for quests with updated examples
@@ -195,7 +194,7 @@ const Explore = () => {
         {filteredQuests.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredQuests.map((quest) => (
-              <ChallengeCard key={quest.id} challenge={quest} />
+              <QuestCard key={quest.id} quest={quest} />
             ))}
           </div>
         ) : (
