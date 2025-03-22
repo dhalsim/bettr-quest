@@ -16,7 +16,7 @@ import NotFound from "./pages/NotFound";
 import Timeline from "./pages/Timeline";
 import ConnectNostr from "./pages/ConnectNostr";
 import Profile from "./pages/Profile";
-import CoachDirectory from "./pages/CoachDirectory";
+import CoachDirectory from "./pages/coach-directory";
 import RegisterCoach from "./pages/RegisterCoach";
 
 const queryClient = new QueryClient();
