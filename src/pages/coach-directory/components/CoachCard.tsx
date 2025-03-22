@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { formatSats } from '..';
-import { Coach } from '..';
+import { Coach, formatSats } from '../utils';
 
 interface CoachCardProps {
   coach: Coach;

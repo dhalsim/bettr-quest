@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { allSpecializations, formatSats, pricingOptions } from '..';
+import { allSpecializations, formatSats, pricingOptions } from '../utils';
 import { Coach } from '..';
 
 interface CoachFiltersProps {
