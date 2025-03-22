@@ -23,6 +23,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from "@/hooks/use-toast";
+import { useNostrAuth } from '@/contexts/NostrAuthContext';
 
 // All available specialization tags
 const availableTags = [
@@ -52,17 +53,10 @@ const RegisterCoach = () => {
   const [tagInput, setTagInput] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
-  
-  // Mock user profile data (from Nostr)
-  const userProfile = {
-    name: "Jane Smith",
-    username: "jane_smith",
-    profileImage: "https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
-  };
+  const { isLoggedIn, profile } = useNostrAuth();
   
   // Check if user is logged in
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('nostr_logged_in') === 'true';
     if (!isLoggedIn) {
       navigate('/connect', { replace: true });
       toast({
@@ -71,7 +65,7 @@ const RegisterCoach = () => {
         variant: "destructive",
       });
     }
-  }, [navigate, toast]);
+  }, [isLoggedIn, navigate, toast]);
 
   // Initialize form with default values
   const form = useForm<FormValues>({
@@ -99,7 +93,7 @@ const RegisterCoach = () => {
     const coachData = {
       ...values,
       specializations,
-      user: userProfile,
+      user: profile,
     };
     
     console.log("Coach registration data:", coachData);
@@ -154,6 +148,11 @@ const RegisterCoach = () => {
     tag => !specializations.includes(tag)
   );
   
+  // If not logged in or no profile, don't render the form
+  if (!isLoggedIn || !profile) {
+    return null;
+  }
+  
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-3xl mx-auto">
@@ -168,13 +167,13 @@ const RegisterCoach = () => {
             
             <div className="flex items-center gap-4 mb-8 p-4 bg-background/50 rounded-lg">
               <Avatar className="h-16 w-16 border-2 border-primary/20">
-                <AvatarImage src={userProfile.profileImage} alt={userProfile.name} />
-                <AvatarFallback>{userProfile.name.charAt(0)}</AvatarFallback>
+                <AvatarImage src={profile.profileImage} alt={profile.name} />
+                <AvatarFallback>{profile.name.charAt(0)}</AvatarFallback>
               </Avatar>
               
               <div>
-                <h2 className="text-xl font-semibold">{userProfile.name}</h2>
-                <p className="text-muted-foreground">@{userProfile.username}</p>
+                <h2 className="text-xl font-semibold">{profile.name}</h2>
+                <p className="text-muted-foreground">@{profile.username}</p>
               </div>
             </div>
             

@@ -10,57 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-// Create a context for Nostr authentication to make it accessible throughout the app
-import { createContext, useContext } from 'react';
-
-export interface NostrAuthContextType {
-  isLoggedIn: boolean;
-  logout: () => void;
-  login: () => void;
-}
-
-export const NostrAuthContext = createContext<NostrAuthContextType>({
-  isLoggedIn: false,
-  logout: () => {},
-  login: () => {},
-});
-
-// Custom hook to use the Nostr authentication context
-export const useNostrAuth = () => {
-  return useContext(NostrAuthContext);
-};
-
-// Provider component to wrap the app with the Nostr auth context
-export const NostrAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem('nostr_logged_in') === 'true';
-  });
-
-  const logout = () => {
-    localStorage.removeItem('nostr_logged_in');
-    localStorage.removeItem('nostr_private_key');
-    localStorage.removeItem('nostr_bunker_url');
-    setIsLoggedIn(false);
-  };
-
-  const login = () => {
-    localStorage.setItem('nostr_logged_in', 'true');
-    setIsLoggedIn(true);
-  };
-
-  return (
-    <NostrAuthContext.Provider value={{ isLoggedIn, logout, login }}>
-      {children}
-    </NostrAuthContext.Provider>
-  );
-};
+import { useNostrAuth } from '@/contexts/NostrAuthContext';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { isLoggedIn, logout } = useNostrAuth();
+  const { isLoggedIn, logout, profile } = useNostrAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -109,7 +65,7 @@ const Header = () => {
                 <span>New Challenge</span>
               </Link>
               
-              <UserMenu logout={handleLogout} />
+              <UserMenu logout={handleLogout} profile={profile} />
             </div>
           ) : (
             <Link 
@@ -131,7 +87,7 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile menu - kept the same as requested */}
+      {/* Mobile menu */}
       {isMenuOpen && (
         <div className="absolute top-full left-0 right-0 glass animate-fade-in py-6 px-6 md:hidden">
           <nav className="flex flex-col space-y-6">
@@ -184,14 +140,20 @@ const Header = () => {
   );
 };
 
-const UserMenu = ({ logout }: { logout: () => void }) => {
+// Separate component for the user menu
+const UserMenu = ({ logout, profile }: { logout: () => void, profile: any }) => {
+  const initials = profile?.name ? profile.name.charAt(0).toUpperCase() : 'U';
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
           <Avatar className="h-10 w-10 border-2 border-primary hover:border-primary/80 transition-colors">
-            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=bettrquest" alt="User avatar" />
-            <AvatarFallback>UN</AvatarFallback>
+            <AvatarImage 
+              src={profile?.profileImage || "https://api.dicebear.com/7.x/avataaars/svg?seed=bettrquest"} 
+              alt={profile?.name || "User"} 
+            />
+            <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
@@ -203,7 +165,7 @@ const UserMenu = ({ logout }: { logout: () => void }) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link to="/profile" className="flex items-center gap-2 cursor-pointer">
+          <Link to={`/profile/${profile?.username || 'user'}`} className="flex items-center gap-2 cursor-pointer">
             <Settings size={16} />
             <span>Profile</span>
           </Link>
@@ -218,6 +180,7 @@ const UserMenu = ({ logout }: { logout: () => void }) => {
   );
 };
 
+// Separate component for navigation links
 const NavLinks = ({ mobile = false, isLoggedIn = false }: { mobile?: boolean, isLoggedIn?: boolean }) => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;

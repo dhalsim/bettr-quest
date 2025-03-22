@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus, UserCheck } from 'lucide-react';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 import { Button } from '@/components/ui/button';
-import { useNostrAuth } from '@/components/layout/Header';
+import { useNostrAuth } from '@/contexts/NostrAuthContext';
 
 // Mock data for timeline challenges (from people you follow)
 const timelineChallenges = [
@@ -119,12 +119,13 @@ const Timeline = () => {
                       <p className="text-sm text-muted-foreground">{user.bio}</p>
                     </div>
                     <Button
-                      variant={user.following ? "outline" : "primary"}
+                      variant={user.following ? "outline" : "default"}
                       size="sm"
-                      leftIcon={user.following ? <UserCheck size={16} /> : <UserPlus size={16} />}
                       onClick={() => toggleFollow(user.id)}
+                      className="flex items-center gap-1"
                     >
-                      {user.following ? 'Following' : 'Follow'}
+                      {user.following ? <UserCheck size={16} /> : <UserPlus size={16} />}
+                      <span>{user.following ? 'Following' : 'Follow'}</span>
                     </Button>
                   </div>
                 ))}
