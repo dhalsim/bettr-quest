@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings } from 'lucide-react';
@@ -10,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useNostrAuth } from '@/contexts/NostrAuthContext';
+import { useNostrAuth } from '@/hooks/useNostrAuth';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -140,7 +139,6 @@ const Header = () => {
   );
 };
 
-// Separate component for the user menu
 const UserMenu = ({ logout, profile }: { logout: () => void, profile: any }) => {
   const initials = profile?.name ? profile.name.charAt(0).toUpperCase() : 'U';
   
@@ -180,7 +178,6 @@ const UserMenu = ({ logout, profile }: { logout: () => void, profile: any }) => 
   );
 };
 
-// Separate component for navigation links
 const NavLinks = ({ mobile = false, isLoggedIn = false }: { mobile?: boolean, isLoggedIn?: boolean }) => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;

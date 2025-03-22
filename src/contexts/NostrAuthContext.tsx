@@ -1,5 +1,4 @@
-
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 // Nostr profile interface
 export interface NostrProfile {
@@ -31,11 +30,6 @@ export const NostrAuthContext = createContext<NostrAuthContextType>({
   login: () => {},
   updateProfile: () => {},
 });
-
-// Custom hook to use the Nostr authentication context
-export const useNostrAuth = () => {
-  return useContext(NostrAuthContext);
-};
 
 // Provider component to wrap the app with the Nostr auth context
 export const NostrAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

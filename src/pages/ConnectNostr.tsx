@@ -4,7 +4,7 @@ import { Key, UserPlus, Link as LinkIcon, AlertTriangle, QrCode } from 'lucide-r
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { useNostrAuth } from '@/contexts/NostrAuthContext';
+import { useNostrAuth } from '@/hooks/useNostrAuth';
 
 const ConnectNostr = () => {
   const [nsec, setNsec] = useState('');
