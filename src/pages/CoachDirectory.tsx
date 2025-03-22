@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -85,6 +86,7 @@ const formatSats = (sats: number) => {
 
 const CoachDirectory = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [specializationSearch, setSpecializationSearch] = useState('');
   const [selectedSpecializations, setSelectedSpecializations] = useState<string[]>([]);
   const [selectedPricingOption, setSelectedPricingOption] = useState('any');
   const [rateRange, setRateRange] = useState([0, 100000]);
@@ -92,6 +94,14 @@ const CoachDirectory = () => {
   // Get min and max rates from the mock data
   const minRate = Math.min(...mockCoaches.map(coach => coach.rateAmount));
   const maxRate = Math.max(...mockCoaches.map(coach => coach.rateAmount));
+  
+  // Filter specializations based on search
+  const filteredSpecializations = useMemo(() => {
+    if (!specializationSearch.trim()) return allSpecializations;
+    return allSpecializations.filter(tag => 
+      tag.toLowerCase().includes(specializationSearch.toLowerCase())
+    );
+  }, [specializationSearch]);
   
   // Filter coaches based on selected filters
   const filteredCoaches = mockCoaches.filter(coach => {
@@ -131,6 +141,7 @@ const CoachDirectory = () => {
   // Reset all filters
   const resetFilters = () => {
     setSearchQuery('');
+    setSpecializationSearch('');
     setSelectedSpecializations([]);
     setSelectedPricingOption('any');
     setRateRange([minRate, maxRate]);
@@ -191,11 +202,28 @@ const CoachDirectory = () => {
               </div>
             </div>
             
-            {/* Specialization tags */}
+            {/* Specialization search and tags */}
             <div className="mb-6">
               <label className="block text-sm font-medium mb-2">Specializations</label>
+              <div className="relative mb-3">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Search specializations..."
+                  className="pl-9"
+                  value={specializationSearch}
+                  onChange={(e) => setSpecializationSearch(e.target.value)}
+                />
+                {specializationSearch && (
+                  <button 
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    onClick={() => setSpecializationSearch('')}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
               <div className="flex flex-wrap gap-2">
-                {allSpecializations.map(tag => (
+                {filteredSpecializations.map(tag => (
                   <Badge 
                     key={tag}
                     variant={selectedSpecializations.includes(tag) ? "default" : "outline"}
@@ -270,7 +298,7 @@ const CoachDirectory = () => {
           {/* Coaches list */}
           <div className="lg:col-span-3">
             {filteredCoaches.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-10">
                 {filteredCoaches.map(coach => (
                   <div key={coach.id}>
                     <Link to={`/profile/${coach.username}`}>
