@@ -157,7 +157,7 @@ const CoachDirectory = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Filters sidebar */}
-          <div className="glass rounded-xl p-6 h-fit lg:sticky lg:top-32">
+          <div className="glass rounded-xl p-6 h-fit lg:sticky lg:top-32 border-2 border-gray-300">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-semibold">Filters</h2>
               <Button 
@@ -274,7 +274,7 @@ const CoachDirectory = () => {
               <div className="space-y-6">
                 {filteredCoaches.map(coach => (
                   <Link to={`/profile/${coach.username}`} key={coach.id}>
-                    <div className="glass rounded-xl overflow-hidden transition-all hover:shadow-md hover:bg-card/70">
+                    <div className="glass rounded-xl overflow-hidden transition-all hover:shadow-md hover:bg-card/70 border-2 border-gray-300">
                       <div className="p-6">
                         <div className="flex items-start gap-4">
                           <Avatar className="h-16 w-16 border-2 border-primary/20">
@@ -321,7 +321,7 @@ const CoachDirectory = () => {
                 ))}
               </div>
             ) : (
-              <div className="glass rounded-xl p-12 text-center">
+              <div className="glass rounded-xl p-12 text-center border-2 border-gray-300">
                 <h3 className="text-xl font-semibold mb-2">No coaches found</h3>
                 <p className="text-muted-foreground mb-4">
                   Try adjusting your filters to find more coaches
