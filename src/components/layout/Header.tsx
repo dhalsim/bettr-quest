@@ -139,6 +139,8 @@ const NavLinks = ({ mobile = false, isLoggedIn = false }: { mobile?: boolean, is
     { to: "/explore", label: "Explore" },
     ...(isLoggedIn ? [{ to: "/timeline", label: "Timeline" }] : []),
     { to: "/my-challenges", label: "My Challenges" },
+    { to: "/coach-directory", label: "Coach Directory" },
+    ...(isLoggedIn ? [{ to: "/register-coach", label: "Register as Coach" }] : []),
   ];
 
   return (
