@@ -271,7 +271,7 @@ const CoachDirectory = () => {
           {/* Coaches list */}
           <div className="lg:col-span-3">
             {filteredCoaches.length > 0 ? (
-              <div className="space-y-6">
+              <div className="space-y-10">
                 {filteredCoaches.map(coach => (
                   <Link to={`/profile/${coach.username}`} key={coach.id}>
                     <div className="glass rounded-xl overflow-hidden transition-all hover:shadow-md hover:bg-card/70 border-2 border-gray-300">
