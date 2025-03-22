@@ -4,6 +4,7 @@ import { Key, UserPlus, Link as LinkIcon, AlertTriangle, QrCode } from 'lucide-r
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { useNostrAuth } from '@/components/layout/Header';
 
 const ConnectNostr = () => {
   const [nsec, setNsec] = useState('');
@@ -14,13 +15,13 @@ const ConnectNostr = () => {
   const [connectionMethod, setConnectionMethod] = useState<'nsec' | 'bunker'>('nsec');
   const navigate = useNavigate();
   const bunkerUrlRef = useRef<HTMLInputElement>(null);
+  const { isLoggedIn, login } = useNostrAuth();
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('nostr_logged_in') === 'true';
     if (isLoggedIn) {
       navigate('/timeline');
     }
-  }, [navigate]);
+  }, [isLoggedIn, navigate]);
 
   const handleConnect = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +45,7 @@ const ConnectNostr = () => {
         localStorage.setItem('nostr_private_key', nsec);
       }
       
-      localStorage.setItem('nostr_logged_in', 'true');
+      login();
       toast.success("Successfully connected to Nostr!");
       navigate('/timeline');
     } catch (err) {

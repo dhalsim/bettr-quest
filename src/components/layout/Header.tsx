@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -11,18 +11,49 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-// Mock authentication state - in a real app this would come from a Nostr context
-const useNostrAuth = () => {
+// Create a context for Nostr authentication to make it accessible throughout the app
+import { createContext, useContext } from 'react';
+
+export interface NostrAuthContextType {
+  isLoggedIn: boolean;
+  logout: () => void;
+  login: () => void;
+}
+
+export const NostrAuthContext = createContext<NostrAuthContextType>({
+  isLoggedIn: false,
+  logout: () => {},
+  login: () => {},
+});
+
+// Custom hook to use the Nostr authentication context
+export const useNostrAuth = () => {
+  return useContext(NostrAuthContext);
+};
+
+// Provider component to wrap the app with the Nostr auth context
+export const NostrAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem('nostr_logged_in') === 'true';
   });
 
   const logout = () => {
     localStorage.removeItem('nostr_logged_in');
+    localStorage.removeItem('nostr_private_key');
+    localStorage.removeItem('nostr_bunker_url');
     setIsLoggedIn(false);
   };
 
-  return { isLoggedIn, logout };
+  const login = () => {
+    localStorage.setItem('nostr_logged_in', 'true');
+    setIsLoggedIn(true);
+  };
+
+  return (
+    <NostrAuthContext.Provider value={{ isLoggedIn, logout, login }}>
+      {children}
+    </NostrAuthContext.Provider>
+  );
 };
 
 const Header = () => {
@@ -30,6 +61,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { isLoggedIn, logout } = useNostrAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,6 +75,11 @@ const Header = () => {
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <header 
@@ -72,7 +109,7 @@ const Header = () => {
                 <span>New Challenge</span>
               </Link>
               
-              <UserMenu logout={logout} />
+              <UserMenu logout={handleLogout} />
             </div>
           ) : (
             <Link 
@@ -124,7 +161,7 @@ const Header = () => {
                   <span>Profile</span>
                 </Link>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
                 >
                   <LogOut size={18} />

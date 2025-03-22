@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "@/components/layout/Header";
+import Header, { NostrAuthProvider } from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Index from "./pages/Index";
 import Explore from "./pages/Explore";
@@ -24,27 +24,29 @@ const App = () => (
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/explore" element={<Explore />} />
-              <Route path="/timeline" element={<Timeline />} />
-              <Route path="/challenge/:id" element={<Challenge />} />
-              <Route path="/create" element={<CreateChallenge />} />
-              <Route path="/my-challenges" element={<MyChallenge />} />
-              <Route path="/connect" element={<ConnectNostr />} />
-              <Route path="/profile/:username" element={<Profile />} />
-              <Route path="/coach-directory" element={<CoachDirectory />} />
-              <Route path="/register-coach" element={<RegisterCoach />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-        <Toaster />
-        <Sonner />
+        <NostrAuthProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/explore" element={<Explore />} />
+                <Route path="/timeline" element={<Timeline />} />
+                <Route path="/challenge/:id" element={<Challenge />} />
+                <Route path="/create" element={<CreateChallenge />} />
+                <Route path="/my-challenges" element={<MyChallenge />} />
+                <Route path="/connect" element={<ConnectNostr />} />
+                <Route path="/profile/:username" element={<Profile />} />
+                <Route path="/coach-directory" element={<CoachDirectory />} />
+                <Route path="/register-coach" element={<RegisterCoach />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+          <Toaster />
+          <Sonner />
+        </NostrAuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   </BrowserRouter>

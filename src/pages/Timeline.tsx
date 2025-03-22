@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus, UserCheck } from 'lucide-react';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 import { Button } from '@/components/ui/button';
+import { useNostrAuth } from '@/components/layout/Header';
 
 // Mock data for timeline challenges (from people you follow)
 const timelineChallenges = [
@@ -56,6 +58,14 @@ const suggestedUsers = [
 
 const Timeline = () => {
   const [users, setUsers] = useState(suggestedUsers);
+  const { isLoggedIn } = useNostrAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/connect');
+    }
+  }, [isLoggedIn, navigate]);
 
   const toggleFollow = (userId: string) => {
     setUsers(users.map(user => 
