@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
+import { NostrProfile } from '@/contexts/NostrAuthContext';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -139,7 +140,7 @@ const Header = () => {
   );
 };
 
-const UserMenu = ({ logout, profile }: { logout: () => void, profile: any }) => {
+const UserMenu = ({ logout, profile }: { logout: () => void, profile: NostrProfile }) => {
   const initials = profile?.name ? profile.name.charAt(0).toUpperCase() : 'U';
   
   return (
