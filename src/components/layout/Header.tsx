@@ -135,7 +135,6 @@ const NavLinks = ({ mobile = false, isLoggedIn = false }: { mobile?: boolean, is
   const isActive = (path: string) => location.pathname === path;
   
   const links = [
-    { to: "/", label: "Home" },
     { to: "/explore", label: "Explore" },
     ...(isLoggedIn ? [{ to: "/timeline", label: "Timeline" }] : []),
     { to: "/my-challenges", label: "My Challenges" },
