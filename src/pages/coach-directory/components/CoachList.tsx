@@ -2,9 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { formatSats } from '..';
 import CoachCard from './CoachCard';
-import { Coach } from '..';
+import { Coach } from '../utils';
 
 interface CoachListProps {
   coaches: Coach[];

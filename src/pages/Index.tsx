@@ -9,39 +9,42 @@ import ChallengeCard from '@/components/ui/ChallengeCard';
 const featuredChallenges = [
   {
     id: '1',
-    title: '30 Days of Meditation',
-    description: 'Meditate for at least 10 minutes every day for 30 days to build a consistent practice.',
+    title: 'Meditate for 10 minutes',
+    description: 'Meditate for at least 10 minutes to establish a mindfulness practice.',
     userId: 'user1',
     username: 'mindfulness_guru',
     createdAt: '2023-04-15T10:30:00Z',
     dueDate: '2023-05-15T10:30:00Z',
     category: 'Wellness',
-    status: 'active' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format'
+    status: 'pending' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
+    visibility: 'public' as const
   },
   {
     id: '2',
-    title: 'Read 12 Books in a Year',
-    description: 'Challenge yourself to read one book per month for an entire year to expand your knowledge.',
+    title: 'Read a book chapter',
+    description: 'Read one chapter of a book to expand your knowledge.',
     userId: 'user2',
     username: 'bookworm',
     createdAt: '2023-03-01T08:15:00Z',
-    dueDate: '2024-03-01T08:15:00Z',
+    dueDate: '2023-03-10T08:15:00Z',
     category: 'Learning',
-    status: 'active' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1513001900722-370f803f498d?q=80&w=600&auto=format'
+    status: 'pending' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1513001900722-370f803f498d?q=80&w=600&auto=format',
+    visibility: 'public' as const
   },
   {
     id: '3',
-    title: 'Zero Waste Challenge',
-    description: 'Minimize your waste production for a month by refusing, reducing, reusing, recycling, and composting.',
+    title: 'Zero Waste Day',
+    description: 'Minimize your waste production for a day by refusing, reducing, reusing, recycling, and composting.',
     userId: 'user3',
     username: 'eco_warrior',
     createdAt: '2023-04-22T14:45:00Z',
-    dueDate: '2023-05-22T14:45:00Z',
+    dueDate: '2023-04-23T14:45:00Z',
     category: 'Environment',
-    status: 'completed' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format'
+    status: 'success' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format',
+    visibility: 'public' as const
   }
 ];
 

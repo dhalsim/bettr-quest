@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Image, Flag, X, Check, ArrowDown } from 'lucide-react';
@@ -6,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
 
-// Updated mock data to reflect a Quest instead of a Challenge
 const questData = {
   id: '1',
   title: 'Meditate for 20 minutes tomorrow',
@@ -67,35 +65,33 @@ const Challenge = () => {
   
   const daysRemaining = calculateDaysRemaining();
 
-  // Get appropriate status badge styling
   const getStatusBadgeClass = () => {
-    switch (questData.status) {
-      case 'pending':
-        return 'bg-blue-500/10 text-blue-500';
-      case 'on_review':
-        return 'bg-yellow-500/10 text-yellow-500';
-      case 'success':
-        return 'bg-green-500/10 text-green-500';
-      case 'failed':
-        return 'bg-red-500/10 text-red-500';
-      default:
-        return 'bg-blue-500/10 text-blue-500';
+    const status = questData.status;
+    if (status === 'pending') {
+      return 'bg-blue-500/10 text-blue-500';
+    } else if (status === 'on_review') {
+      return 'bg-yellow-500/10 text-yellow-500';
+    } else if (status === 'success') {
+      return 'bg-green-500/10 text-green-500';
+    } else if (status === 'failed') {
+      return 'bg-red-500/10 text-red-500';
+    } else {
+      return 'bg-blue-500/10 text-blue-500';
     }
   };
 
-  // Get the status display text
   const getStatusText = () => {
-    switch (questData.status) {
-      case 'pending':
-        return 'Pending';
-      case 'on_review':
-        return 'On Review';
-      case 'success':
-        return 'Success';
-      case 'failed':
-        return 'Failed';
-      default:
-        return 'Pending';
+    const status = questData.status;
+    if (status === 'pending') {
+      return 'Pending';
+    } else if (status === 'on_review') {
+      return 'On Review';
+    } else if (status === 'success') {
+      return 'Success';
+    } else if (status === 'failed') {
+      return 'Failed';
+    } else {
+      return 'Pending';
     }
   };
   

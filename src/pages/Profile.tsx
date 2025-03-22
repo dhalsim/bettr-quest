@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, User, Calendar, Activity, Award } from 'lucide-react';
@@ -22,39 +21,42 @@ const userData = {
 const userChallenges = [
   {
     id: '1',
-    title: '30 Days of Meditation',
-    description: 'Meditate for at least 10 minutes every day for 30 days to build a consistent practice.',
+    title: 'Meditate for 10 minutes',
+    description: 'Meditate for at least 10 minutes to establish a mindfulness practice.',
     userId: 'user1',
     username: 'mindfulness_guru',
     createdAt: '2023-04-15T10:30:00Z',
     dueDate: '2023-05-15T10:30:00Z',
     category: 'Wellness',
-    status: 'active' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format'
+    status: 'pending' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
+    visibility: 'public' as const
   },
   {
     id: '2',
-    title: 'Morning Gratitude Practice',
-    description: 'Write down three things you\'re grateful for every morning for 21 days.',
+    title: 'Morning Gratitude',
+    description: 'Write down three things you\'re grateful for this morning.',
     userId: 'user1',
     username: 'mindfulness_guru',
     createdAt: '2023-05-01T08:45:00Z',
-    dueDate: '2023-05-22T08:45:00Z',
+    dueDate: '2023-05-02T08:45:00Z',
     category: 'Wellness',
-    status: 'active' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=600&auto=format'
+    status: 'pending' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=600&auto=format',
+    visibility: 'public' as const
   },
   {
     id: '3',
-    title: 'Digital Detox Challenge',
-    description: 'Reduce your screen time by 50% for 14 days to reconnect with the offline world.',
+    title: 'Digital Detox Hour',
+    description: 'Take a break from all digital devices for one hour.',
     userId: 'user1',
     username: 'mindfulness_guru',
     createdAt: '2023-03-10T14:20:00Z',
-    dueDate: '2023-03-24T14:20:00Z',
+    dueDate: '2023-03-10T18:20:00Z',
     category: 'Wellness',
-    status: 'completed' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1534705867302-2a41394d2a3b?q=80&w=600&auto=format'
+    status: 'success' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1534705867302-2a41394d2a3b?q=80&w=600&auto=format',
+    visibility: 'public' as const
   }
 ];
 
@@ -65,7 +67,7 @@ const userActivities = [
     type: 'proof_review',
     action: 'accepted',
     username: 'zen_master',
-    challengeTitle: '30 Days of Meditation',
+    challengeTitle: 'Meditate for 10 minutes',
     challengeId: '1',
     timestamp: '2023-04-22T15:30:00Z'
   },
@@ -74,14 +76,14 @@ const userActivities = [
     type: 'proof_review',
     action: 'rejected',
     username: 'wellness_beginner',
-    challengeTitle: 'Digital Detox Challenge',
+    challengeTitle: 'Digital Detox Hour',
     challengeId: '3',
     timestamp: '2023-03-20T09:15:00Z'
   },
   {
     id: 'act3',
     type: 'challenge_created',
-    challengeTitle: 'Morning Gratitude Practice',
+    challengeTitle: 'Morning Gratitude',
     challengeId: '2',
     timestamp: '2023-05-01T08:45:00Z'
   }
