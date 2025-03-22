@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -29,47 +29,190 @@ interface Quest {
   completionRate: number | null;
   visibility: 'public' | 'private';
   lockedAmount?: number; // Amount of sats locked by creator
+  inDispute?: boolean;
+  escrowStatus?: 'locked' | 'distributed' | 'in_process';
 }
 
-const questData: Quest = {
-  id: '1',
-  title: 'Meditate for 20 minutes tomorrow',
-  description: 'I want to begin my meditation practice by dedicating 20 minutes tomorrow to mindful meditation. This will help me reduce stress and improve focus.',
-  userId: 'user1',
-  username: 'mindfulness_guru',
-  createdAt: '2023-04-15T10:30:00Z',
-  dueDate: '2023-04-16T10:30:00Z',
-  category: 'Wellness',
-  status: 'pending',
-  imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
-  participants: 1,
-  completionRate: null,
-  visibility: 'public',
-  lockedAmount: 1000, // Example: 1000 sats locked
-};
-
-const initialProofs: Proof[] = [
-  {
-    id: 'proof1',
-    challengeId: '1',
+// Mock quests with different scenarios
+const mockQuests: Record<string, Quest> = {
+  "1": {
+    id: '1',
+    title: 'Meditate for 20 minutes tomorrow',
+    description: 'I want to begin my meditation practice by dedicating 20 minutes tomorrow to mindful meditation. This will help me reduce stress and improve focus.',
     userId: 'user1',
     username: 'mindfulness_guru',
-    createdAt: '2023-04-16T14:15:00Z',
-    description: "I completed my 20-minute meditation session this morning. I used the Headspace app and focused on breathing exercises. I feel much calmer and ready for the day.",
-    imageUrl: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=600&auto=format',
-    votes: {
-      accept: 1,
-      reject: 0
-    },
-    status: 'accepted'
+    createdAt: '2023-04-15T10:30:00Z',
+    dueDate: '2023-04-16T10:30:00Z',
+    category: 'Wellness',
+    status: 'pending',
+    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
+    participants: 1,
+    completionRate: null,
+    visibility: 'public',
+    lockedAmount: 1000, // Example: 1000 sats locked
+    escrowStatus: 'locked'
+  },
+  "2": {
+    id: '2',
+    title: 'Learn 5 phrases in Italian',
+    description: 'I will learn and memorize 5 useful Italian phrases for my upcoming trip to Rome. This will help me navigate and connect with locals better.',
+    userId: 'user2',
+    username: 'polyglot_learner',
+    createdAt: '2023-04-08T14:20:00Z',
+    dueDate: '2023-04-12T14:20:00Z',
+    category: 'Learning',
+    status: 'on_review',
+    imageUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600&auto=format',
+    participants: 3,
+    completionRate: 75,
+    visibility: 'public',
+    lockedAmount: 2000,
+    escrowStatus: 'locked'
+  },
+  "3": {
+    id: '3',
+    title: 'Run 5km in under 30 minutes',
+    description: 'I want to improve my running pace and complete a 5km run in under 30 minutes. This will be a personal record for me.',
+    userId: 'user3',
+    username: 'runner_joe',
+    createdAt: '2023-04-10T09:15:00Z',
+    dueDate: '2023-04-20T09:15:00Z',
+    category: 'Fitness',
+    status: 'success',
+    imageUrl: 'https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=600&auto=format',
+    participants: 5,
+    completionRate: 100,
+    visibility: 'public',
+    lockedAmount: 3000,
+    escrowStatus: 'distributed'
+  },
+  "4": {
+    id: '4',
+    title: 'Write a short story in one day',
+    description: 'Challenge myself to write a 1000-word short story in a single day to boost creativity and overcome writer's block.',
+    userId: 'user4',
+    username: 'storyteller',
+    createdAt: '2023-04-12T16:45:00Z',
+    dueDate: '2023-04-13T16:45:00Z',
+    category: 'Creativity',
+    status: 'failed',
+    imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=600&auto=format',
+    participants: 1,
+    completionRate: 0,
+    visibility: 'public',
+    lockedAmount: 1500,
+    escrowStatus: 'distributed'
+  },
+  "5": {
+    id: '5',
+    title: 'Complete a challenging coding problem',
+    description: 'I will solve a difficult algorithm problem from LeetCode to improve my problem-solving skills.',
+    userId: 'user5',
+    username: 'code_ninja',
+    createdAt: '2023-04-14T11:30:00Z',
+    dueDate: '2023-04-18T11:30:00Z',
+    category: 'Technology',
+    status: 'in_dispute',
+    imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=600&auto=format',
+    participants: 2,
+    completionRate: null,
+    visibility: 'public',
+    lockedAmount: 5000,
+    escrowStatus: 'in_process',
+    inDispute: true
   }
-];
+};
+
+// Mock proofs for each quest
+const mockProofs: Record<string, Proof[]> = {
+  "1": [
+    {
+      id: 'proof1_1',
+      challengeId: '1',
+      userId: 'user1',
+      username: 'mindfulness_guru',
+      createdAt: '2023-04-16T14:15:00Z',
+      description: "I completed my 20-minute meditation session this morning. I used the Headspace app and focused on breathing exercises. I feel much calmer and ready for the day.",
+      imageUrl: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=600&auto=format',
+      votes: {
+        accept: 1,
+        reject: 0
+      },
+      status: 'accepted'
+    }
+  ],
+  "2": [
+    {
+      id: 'proof2_1',
+      challengeId: '2',
+      userId: 'user2',
+      username: 'polyglot_learner',
+      createdAt: '2023-04-12T10:30:00Z',
+      description: "I've learned these 5 Italian phrases: 'Buongiorno' (Good morning), 'Grazie' (Thank you), 'Per favore' (Please), 'Mi scusi' (Excuse me), and 'Dov'è il bagno?' (Where is the bathroom?). I practiced with an Italian friend who confirmed my pronunciation.",
+      imageUrl: 'https://images.unsplash.com/photo-1530538095376-a4936b5c6c4b?q=80&w=600&auto=format',
+      votes: {
+        accept: 2,
+        reject: 1
+      },
+      status: 'pending'
+    }
+  ],
+  "3": [
+    {
+      id: 'proof3_1',
+      challengeId: '3',
+      userId: 'user3',
+      username: 'runner_joe',
+      createdAt: '2023-04-18T08:45:00Z',
+      description: "I did it! Completed my 5km run in 28:42. I've attached a screenshot from my running app showing the time and distance. The weather was perfect this morning, which helped a lot.",
+      imageUrl: 'https://images.unsplash.com/photo-1560073562-f36a05efa160?q=80&w=600&auto=format',
+      votes: {
+        accept: 5,
+        reject: 0
+      },
+      status: 'accepted'
+    }
+  ],
+  "4": [
+    {
+      id: 'proof4_1',
+      challengeId: '4',
+      userId: 'user4',
+      username: 'storyteller',
+      createdAt: '2023-04-13T23:50:00Z',
+      description: "I tried my best but only managed to write 600 words. I got stuck halfway through and couldn't finish the story in time. I'll try again with a smaller goal next time.",
+      imageUrl: null,
+      votes: {
+        accept: 0,
+        reject: 3
+      },
+      status: 'rejected'
+    }
+  ],
+  "5": [
+    {
+      id: 'proof5_1',
+      challengeId: '5',
+      userId: 'user5',
+      username: 'code_ninja',
+      createdAt: '2023-04-17T16:20:00Z',
+      description: "I solved the 'Merge K Sorted Lists' problem with an optimized approach using a priority queue. My solution has O(n log k) time complexity. I've attached a screenshot of my accepted solution and runtime stats.",
+      imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=600&auto=format',
+      votes: {
+        accept: 1,
+        reject: 1
+      },
+      status: 'in_dispute'
+    }
+  ]
+};
 
 const QuestPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { profile } = useNostrAuth();
-  const [proofs, setProofs] = useState(initialProofs);
+  const [proofs, setProofs] = useState<Proof[]>([]);
+  const [questData, setQuestData] = useState<Quest | null>(null);
   const [newProof, setNewProof] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
@@ -86,6 +229,22 @@ const QuestPage = () => {
     audio: null,
     recordedVideo: null
   });
+  
+  // Load quest data based on id
+  useEffect(() => {
+    if (id && mockQuests[id]) {
+      setQuestData(mockQuests[id]);
+      setProofs(mockProofs[id] || []);
+    } else {
+      // Default to the first quest if id doesn't exist
+      setQuestData(mockQuests["1"]);
+      setProofs(mockProofs["1"] || []);
+    }
+  }, [id]);
+  
+  if (!questData) {
+    return <div className="min-h-screen pt-32 pb-20 px-6">Loading quest...</div>;
+  }
   
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -274,9 +433,19 @@ const QuestPage = () => {
                             <p className="text-xl font-semibold">{questData.lockedAmount?.toLocaleString() || 0} sats</p>
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground mb-2">Status</p>
-                            <p className="text-xl font-semibold">{getStatusText()}</p>
+                            <p className="text-sm text-muted-foreground mb-2">Escrow Status</p>
+                            <p className="text-xl font-semibold capitalize">{questData.escrowStatus || 'Locked'}</p>
                           </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground mb-2">Quest Status</p>
+                            <p className="text-xl font-semibold capitalize">{getStatusText()}</p>
+                          </div>
+                          {questData.inDispute && (
+                            <div>
+                              <p className="text-sm text-muted-foreground mb-2">Dispute Status</p>
+                              <p className="text-xl font-semibold text-orange-500">Under Review</p>
+                            </div>
+                          )}
                         </div>
                         
                         <Separator className="my-6" />

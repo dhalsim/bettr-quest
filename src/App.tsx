@@ -9,7 +9,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Index from "./pages/Index";
 import Explore from "./pages/Explore";
-import QuestPage from "./pages/Challenge";
+import QuestPage from "./pages/Quest";
 import CreateChallenge from "./pages/CreateChallenge";
 import MyChallenge from "./pages/MyChallenge";
 import NotFound from "./pages/NotFound";
@@ -33,7 +33,7 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/explore" element={<Explore />} />
                 <Route path="/timeline" element={<Timeline />} />
-                <Route path="/challenge/:id" element={<QuestPage />} />
+                <Route path="/quest/:id" element={<QuestPage />} />
                 <Route path="/create" element={<CreateChallenge />} />
                 <Route path="/my-challenges" element={<MyChallenge />} />
                 <Route path="/connect" element={<ConnectNostr />} />
