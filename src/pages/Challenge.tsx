@@ -6,49 +6,37 @@ import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
 
-const challengeData = {
+// Updated mock data to reflect a Quest instead of a Challenge
+const questData = {
   id: '1',
-  title: '30 Days of Meditation',
-  description: 'Meditate for at least 10 minutes every day for 30 days to build a consistent practice. This helps reduce stress, improve focus, and develop mindfulness in daily activities. Track your sessions and note any changes in your mental state throughout the challenge.',
+  title: 'Meditate for 20 minutes tomorrow',
+  description: 'I want to begin my meditation practice by dedicating 20 minutes tomorrow to mindful meditation. This will help me reduce stress and improve focus.',
   userId: 'user1',
   username: 'mindfulness_guru',
   createdAt: '2023-04-15T10:30:00Z',
-  dueDate: '2023-05-15T10:30:00Z',
+  dueDate: '2023-04-16T10:30:00Z',
   category: 'Wellness',
-  status: 'active' as const,
+  status: 'pending' as const,
   imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
-  participants: 24,
-  completionRate: 68
+  participants: 1,
+  completionRate: null,
+  visibility: 'public' as const
 };
 
 const initialProofs: Proof[] = [
   {
     id: 'proof1',
     challengeId: '1',
-    userId: 'user2',
-    username: 'zen_master',
-    createdAt: '2023-04-20T14:15:00Z',
-    description: "I've completed the 30 days of meditation challenge! I started with just 5 minutes and built up to 20 minutes daily. My sleep has improved and I feel much calmer throughout the day. Here's my meditation journal as proof.",
+    userId: 'user1',
+    username: 'mindfulness_guru',
+    createdAt: '2023-04-16T14:15:00Z',
+    description: "I completed my 20-minute meditation session this morning. I used the Headspace app and focused on breathing exercises. I feel much calmer and ready for the day.",
     imageUrl: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=600&auto=format',
     votes: {
-      accept: 12,
-      reject: 2
+      accept: 1,
+      reject: 0
     },
     status: 'accepted'
-  },
-  {
-    id: 'proof2',
-    challengeId: '1',
-    userId: 'user3',
-    username: 'mindful_beginner',
-    createdAt: '2023-04-18T09:45:00Z',
-    description: 'Just finished my 30 day meditation journey! It was challenging to make time every day, but I managed to do at least 10 minutes even on busy days. My meditation app stats show my streak.',
-    imageUrl: 'https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0?q=80&w=600&auto=format',
-    votes: {
-      accept: 8,
-      reject: 5
-    },
-    status: 'pending'
   }
 ];
 
@@ -70,7 +58,7 @@ const Challenge = () => {
   };
   
   const calculateDaysRemaining = () => {
-    const dueDate = new Date(challengeData.dueDate);
+    const dueDate = new Date(questData.dueDate);
     const today = new Date();
     const differenceInTime = dueDate.getTime() - today.getTime();
     const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
@@ -78,6 +66,38 @@ const Challenge = () => {
   };
   
   const daysRemaining = calculateDaysRemaining();
+
+  // Get appropriate status badge styling
+  const getStatusBadgeClass = () => {
+    switch (questData.status) {
+      case 'pending':
+        return 'bg-blue-500/10 text-blue-500';
+      case 'on_review':
+        return 'bg-yellow-500/10 text-yellow-500';
+      case 'success':
+        return 'bg-green-500/10 text-green-500';
+      case 'failed':
+        return 'bg-red-500/10 text-red-500';
+      default:
+        return 'bg-blue-500/10 text-blue-500';
+    }
+  };
+
+  // Get the status display text
+  const getStatusText = () => {
+    switch (questData.status) {
+      case 'pending':
+        return 'Pending';
+      case 'on_review':
+        return 'On Review';
+      case 'success':
+        return 'Success';
+      case 'failed':
+        return 'Failed';
+      default:
+        return 'Pending';
+    }
+  };
   
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -96,7 +116,7 @@ const Challenge = () => {
     e.preventDefault();
     
     if (!newProof.trim()) {
-      toast.error("Please describe how you completed the challenge");
+      toast.error("Please describe how you completed your quest");
       return;
     }
     
@@ -105,7 +125,7 @@ const Challenge = () => {
     setTimeout(() => {
       const newProofItem: Proof = {
         id: `proof${Date.now()}`,
-        challengeId: challengeData.id,
+        challengeId: questData.id,
         userId: 'current-user',
         username: 'you',
         createdAt: new Date().toISOString(),
@@ -124,16 +144,16 @@ const Challenge = () => {
       setPreviewUrl(null);
       setIsSubmitting(false);
       
-      toast.success("Your proof has been submitted successfully!");
+      toast.success("Your proof has been submitted for review!");
     }, 1500);
   };
   
   const reportChallenge = () => {
-    toast.success("Thank you for your report. Our moderators will review this challenge.");
+    toast.success("Thank you for your report. Our moderators will review this quest.");
   };
   
   const handleCategoryClick = () => {
-    navigate(`/explore?category=${challengeData.category}`);
+    navigate(`/explore?category=${questData.category}`);
   };
   
   return (
@@ -148,11 +168,11 @@ const Challenge = () => {
           <div className="flex flex-col lg:flex-row gap-10">
             <div className="flex-grow lg:w-2/3">
               <div className="glass rounded-2xl overflow-hidden">
-                {challengeData.imageUrl && (
+                {questData.imageUrl && (
                   <div className="h-72 md:h-96 w-full">
                     <img 
-                      src={challengeData.imageUrl} 
-                      alt={challengeData.title} 
+                      src={questData.imageUrl} 
+                      alt={questData.title} 
                       className="w-full h-full object-cover" 
                     />
                   </div>
@@ -165,42 +185,42 @@ const Challenge = () => {
                       className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
                     >
                       <Tag size={12} />
-                      {challengeData.category}
+                      {questData.category}
+                    </span>
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass()}`}>
+                      <Check size={12} />
+                      {getStatusText()}
                     </span>
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
                       <User size={12} />
-                      {challengeData.participants} Participants
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-500">
-                      <Check size={12} />
-                      {challengeData.completionRate}% Completion Rate
+                      {questData.visibility === 'public' ? 'Public' : 'Private'} Quest
                     </span>
                   </div>
                   
-                  <h1 className="text-3xl font-bold mb-4">{challengeData.title}</h1>
+                  <h1 className="text-3xl font-bold mb-4">{questData.title}</h1>
                   
                   <div className="flex flex-wrap gap-6 items-center text-sm text-muted-foreground mb-6">
                     <div className="flex items-center gap-1.5">
                       <User size={14} />
                       Created by {' '}
-                      <Link to={`/profile/${challengeData.username}`} className="text-primary hover:underline">
-                        {challengeData.username}
+                      <Link to={`/profile/${questData.username}`} className="text-primary hover:underline">
+                        {questData.username}
                       </Link>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Calendar size={14} />
-                      Created on {formatDate(challengeData.createdAt)}
+                      Created on {formatDate(questData.createdAt)}
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Clock size={14} />
                       {daysRemaining > 0 
                         ? `${daysRemaining} days remaining` 
-                        : 'Challenge ended'}
+                        : 'Due date passed'}
                     </div>
                   </div>
                   
                   <div className="prose prose-slate max-w-none">
-                    <p className="text-foreground">{challengeData.description}</p>
+                    <p className="text-foreground">{questData.description}</p>
                   </div>
                   
                   <div className="mt-8 flex items-center justify-between">
@@ -218,7 +238,7 @@ const Challenge = () => {
                       onClick={reportChallenge}
                     >
                       <Flag size={16} className="mr-2" />
-                      Report Challenge
+                      Report Quest
                     </Button>
                   </div>
                 </div>
@@ -231,12 +251,12 @@ const Challenge = () => {
                 <form onSubmit={handleSubmitProof}>
                   <div className="mb-4">
                     <label htmlFor="proof-description" className="block text-sm font-medium mb-1">
-                      How did you complete this challenge?
+                      How did you complete this quest?
                     </label>
                     <textarea
                       id="proof-description"
                       rows={5}
-                      placeholder="Describe your journey and how you completed the challenge..."
+                      placeholder="Describe how you completed your quest..."
                       className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
                       value={newProof}
                       onChange={(e) => setNewProof(e.target.value)}
@@ -308,7 +328,7 @@ const Challenge = () => {
         </div>
         
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">Community Proofs</h2>
+          <h2 className="text-2xl font-bold mb-6">Submitted Proofs</h2>
           <div className="grid gap-6">
             {proofs.map((proof) => (
               <ProofCard key={proof.id} proof={proof} />

@@ -5,52 +5,55 @@ import { PlusCircle, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 
-// Mock data for user challenges
-const userChallenges = [
+// Mock data for user quests
+const userQuests = [
   {
     id: '1',
-    title: '30 Days of Meditation',
-    description: 'Meditate for at least 10 minutes every day for 30 days to build a consistent practice.',
+    title: 'Meditate for 20 minutes tomorrow',
+    description: 'I want to begin my meditation practice by dedicating 20 minutes tomorrow to mindful meditation.',
     userId: 'user1',
     username: 'mindfulness_guru',
     createdAt: '2023-04-15T10:30:00Z',
-    dueDate: '2023-05-15T10:30:00Z',
+    dueDate: '2023-04-16T10:30:00Z',
     category: 'Wellness',
-    status: 'active' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format'
+    status: 'pending' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
+    visibility: 'public' as const
   },
   {
     id: '4',
-    title: 'Learn to Code in 30 Days',
-    description: 'Build a small project every day for 30 days to improve your coding skills.',
+    title: 'Build a simple calculator app',
+    description: 'I will code a basic calculator app using JavaScript to practice my coding skills.',
     userId: 'current-user',
     username: 'you',
     createdAt: '2023-04-01T09:00:00Z',
-    dueDate: '2023-05-01T09:00:00Z',
+    dueDate: '2023-04-05T09:00:00Z',
     category: 'Learning',
-    status: 'active' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format'
+    status: 'on_review' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format',
+    visibility: 'public' as const
   },
   {
     id: '5',
-    title: 'Daily Journaling',
-    description: 'Write in your journal every day for 30 days to reflect on your thoughts and experiences.',
+    title: 'Write a reflection journal entry',
+    description: 'I will write a detailed journal entry reflecting on my personal growth this month.',
     userId: 'current-user',
     username: 'you',
     createdAt: '2023-03-15T11:30:00Z',
-    dueDate: '2023-04-15T11:30:00Z',
+    dueDate: '2023-03-16T11:30:00Z',
     category: 'Wellness',
-    status: 'completed' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format'
+    status: 'success' as const,
+    imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format',
+    visibility: 'private' as const
   }
 ];
 
 const MyChallenge = () => {
-  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [filter, setFilter] = useState<'all' | 'pending' | 'on_review' | 'success' | 'failed'>('all');
   
-  const filteredChallenges = userChallenges.filter(challenge => {
+  const filteredQuests = userQuests.filter(quest => {
     if (filter === 'all') return true;
-    return challenge.status === filter;
+    return quest.status === filter;
   });
   
   return (
@@ -58,9 +61,9 @@ const MyChallenge = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-10">
           <div>
-            <h1 className="text-3xl font-bold mb-2">My Challenges</h1>
+            <h1 className="text-3xl font-bold mb-2">My Quests</h1>
             <p className="text-muted-foreground">
-              Track and manage all your personal challenges
+              Track and manage all your personal quests
             </p>
           </div>
           
@@ -69,42 +72,50 @@ const MyChallenge = () => {
               <select
                 className="pl-10 pr-4 py-2 rounded-lg border border-border bg-background appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20"
                 value={filter}
-                onChange={(e) => setFilter(e.target.value as 'all' | 'active' | 'completed')}
+                onChange={(e) => setFilter(e.target.value as 'all' | 'pending' | 'on_review' | 'success' | 'failed')}
               >
-                <option value="all">All Challenges</option>
-                <option value="active">Active</option>
-                <option value="completed">Completed</option>
+                <option value="all">All Quests</option>
+                <option value="pending">Pending</option>
+                <option value="on_review">On Review</option>
+                <option value="success">Success</option>
+                <option value="failed">Failed</option>
               </select>
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={16} />
             </div>
             
             <Link to="/create">
-              <Button leftIcon={<PlusCircle size={18} />}>
-                Create Challenge
+              <Button className="flex items-center gap-2">
+                <PlusCircle size={18} />
+                Create Quest
               </Button>
             </Link>
           </div>
         </div>
         
-        {filteredChallenges.length > 0 ? (
+        {filteredQuests.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredChallenges.map((challenge) => (
-              <ChallengeCard key={challenge.id} challenge={challenge} />
+            {filteredQuests.map((quest) => (
+              <ChallengeCard key={quest.id} challenge={quest} />
             ))}
           </div>
         ) : (
           <div className="text-center py-20 glass rounded-2xl">
-            <h3 className="text-xl font-medium mb-2">No challenges found</h3>
+            <h3 className="text-xl font-medium mb-2">No quests found</h3>
             <p className="text-muted-foreground mb-6">
               {filter === 'all' 
-                ? "You haven't created or joined any challenges yet." 
-                : filter === 'active'
-                  ? "You don't have any active challenges."
-                  : "You haven't completed any challenges yet."}
+                ? "You haven't created any quests yet." 
+                : filter === 'pending'
+                  ? "You don't have any pending quests."
+                  : filter === 'on_review'
+                    ? "You don't have any quests under review."
+                    : filter === 'success'
+                      ? "You haven't completed any quests successfully yet."
+                      : "You don't have any failed quests."}
             </p>
             <Link to="/create">
-              <Button leftIcon={<PlusCircle size={18} />}>
-                Create Your First Challenge
+              <Button className="flex items-center gap-2">
+                <PlusCircle size={18} />
+                Create Your First Quest
               </Button>
             </Link>
           </div>

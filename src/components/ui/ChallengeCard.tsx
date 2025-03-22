@@ -4,21 +4,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, User, Clock, UserPlus, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-type Challenge = {
+type Quest = {
   id: string;
   title: string;
   description: string;
   userId: string;
   username: string;
   createdAt: string;
-  dueDate?: string;
+  dueDate: string;
   category: string;
-  status: 'active' | 'completed';
+  status: 'pending' | 'on_review' | 'success' | 'failed';
   imageUrl?: string;
+  visibility: 'public' | 'private';
 };
 
 interface ChallengeCardProps {
-  challenge: Challenge;
+  challenge: Quest;
 }
 
 const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
@@ -36,8 +37,6 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
   
   // Calculate days remaining until due date
   const calculateDaysRemaining = () => {
-    if (!challenge.dueDate) return null;
-    
     const dueDate = new Date(challenge.dueDate);
     const today = new Date();
     const differenceInTime = dueDate.getTime() - today.getTime();
@@ -60,6 +59,38 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
     e.preventDefault();
     e.stopPropagation();
     navigate(`/explore?category=${challenge.category}`);
+  };
+  
+  // Get the appropriate status badge color
+  const getStatusBadgeClass = () => {
+    switch (challenge.status) {
+      case 'pending':
+        return 'bg-blue-500/10 text-blue-500';
+      case 'on_review':
+        return 'bg-yellow-500/10 text-yellow-500';
+      case 'success':
+        return 'bg-green-500/10 text-green-500';
+      case 'failed':
+        return 'bg-red-500/10 text-red-500';
+      default:
+        return 'bg-blue-500/10 text-blue-500';
+    }
+  };
+
+  // Get the status display text
+  const getStatusText = () => {
+    switch (challenge.status) {
+      case 'pending':
+        return 'Pending';
+      case 'on_review':
+        return 'On Review';
+      case 'success':
+        return 'Success';
+      case 'failed':
+        return 'Failed';
+      default:
+        return 'Pending';
+    }
   };
   
   return (
@@ -85,11 +116,9 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
             </span>
             
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium
-              ${challenge.status === 'active' 
-                ? 'bg-blue-500/10 text-blue-500' 
-                : 'bg-green-500/10 text-green-500'}`}
+              ${getStatusBadgeClass()}`}
             >
-              {challenge.status === 'active' ? 'Active' : 'Completed'}
+              {getStatusText()}
             </span>
           </div>
           
@@ -121,16 +150,14 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
               <span>{formatDate(challenge.createdAt)}</span>
             </div>
             
-            {daysRemaining !== null && (
-              <div className="flex items-center gap-1.5">
-                <Clock size={12} />
-                <span>
-                  {daysRemaining > 0 
-                    ? `${daysRemaining} days remaining` 
-                    : 'Challenge ended'}
-                </span>
-              </div>
-            )}
+            <div className="flex items-center gap-1.5">
+              <Clock size={12} />
+              <span>
+                {daysRemaining > 0 
+                  ? `${daysRemaining} days remaining` 
+                  : 'Due date passed'}
+              </span>
+            </div>
           </div>
         </div>
       </div>

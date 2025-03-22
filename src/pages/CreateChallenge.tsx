@@ -55,7 +55,7 @@ const CreateChallenge = () => {
   const handleProofChallengerChange = (value: string) => {
     // Validate selection based on visibility
     if (visibility === 'public' && (value === 'no-one' || value === 'ai')) {
-      setValidationError("This option is only available for private challenges");
+      setValidationError("This option is only available for private quests");
       // Reset to default for public after a short delay
       setTimeout(() => {
         setProofChallenger('anyone');
@@ -65,7 +65,7 @@ const CreateChallenge = () => {
     }
     
     if (visibility === 'private' && value === 'anyone') {
-      setValidationError("This option is only available for public challenges");
+      setValidationError("This option is only available for public quests");
       // Reset to default for private after a short delay
       setTimeout(() => {
         setProofChallenger('no-one');
@@ -83,7 +83,15 @@ const CreateChallenge = () => {
   const applyTemplate = (templateId: string) => {
     const template = challengeTemplates.find(t => t.id === templateId);
     if (template) {
-      setTitle(template.name);
+      // Adjust template names to be more quest-like (one-time achievements)
+      let adjustedName = template.name;
+      if (adjustedName.includes('30 Days')) {
+        adjustedName = adjustedName.replace('30 Days', 'Today');
+      } else if (adjustedName.includes('Challenge')) {
+        adjustedName = adjustedName.replace('Challenge', 'Quest');
+      }
+      
+      setTitle(adjustedName);
       setDescription(template.description);
       setTags(template.suggestedTags);
     }
@@ -95,17 +103,17 @@ const CreateChallenge = () => {
     
     // Form validation
     if (!title.trim()) {
-      toast.error("Please enter a challenge title");
+      toast.error("Please enter a quest title");
       return;
     }
     
     if (!description.trim()) {
-      toast.error("Please enter a challenge description");
+      toast.error("Please enter a quest description");
       return;
     }
     
     if (!dueDate) {
-      toast.error("Please set a due date for your challenge");
+      toast.error("Please set a due date for your quest");
       return;
     }
     
@@ -114,7 +122,7 @@ const CreateChallenge = () => {
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Challenge created successfully!");
+      toast.success("Quest created successfully!");
       navigate('/explore');
     }, 1500);
   };
@@ -135,7 +143,7 @@ const CreateChallenge = () => {
               {/* Template Selection */}
               <ChallengeTemplateSelector onSelectTemplate={applyTemplate} />
               
-              {/* Challenge Title */}
+              {/* Quest Title */}
               <div className="mb-6">
                 <label htmlFor="title" className="block text-sm font-medium mb-2">
                   Title
@@ -150,7 +158,7 @@ const CreateChallenge = () => {
                 />
               </div>
               
-              {/* Challenge Description */}
+              {/* Quest Description */}
               <div className="mb-6">
                 <label htmlFor="description" className="block text-sm font-medium mb-2">
                   Description
@@ -158,7 +166,7 @@ const CreateChallenge = () => {
                 <Textarea
                   id="description"
                   rows={5}
-                  placeholder="Describe your quest in detail. What are the rules, requirements to complete?"
+                  placeholder="Describe your quest in detail. What do you want to accomplish?"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
@@ -184,15 +192,15 @@ const CreateChallenge = () => {
                 </RadioGroup>
               </div>
               
-              {/* How to prove? - Show for both public and private challenges */}
+              {/* How to prove? - Show for both public and private quests */}
               <div className="mb-6">
                 <label htmlFor="proofMethod" className="block text-sm font-medium mb-2">
-                  How to prove?
+                  How will you prove completion?
                 </label>
                 <Textarea
                   id="proofMethod"
                   rows={3}
-                  placeholder="I will provide a video"
+                  placeholder="I will provide a video showing my completed work"
                   value={proofMethod}
                   onChange={(e) => setProofMethod(e.target.value)}
                 />
@@ -206,7 +214,7 @@ const CreateChallenge = () => {
               
               {/* Who can challenge a proof */}
               <div className="mb-6">
-                <div className="block text-sm font-medium mb-2">Who can challenge a proof</div>
+                <div className="block text-sm font-medium mb-2">Who can review your proof</div>
                 
                 {validationError && (
                   <Alert variant="destructive" className="mb-3">
@@ -254,7 +262,7 @@ const CreateChallenge = () => {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creating Challenge...
+                      Creating Quest...
                     </>
                   ) : 'Save & Preview'}
                 </Button>
