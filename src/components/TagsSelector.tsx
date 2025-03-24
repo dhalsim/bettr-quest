@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
-import { Search, XCircle, Plus, TagIcon } from 'lucide-react';
+import { Search, XCircle, Plus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export interface TagItem {
   name: string;
@@ -32,7 +32,6 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
   maxVisibleTags = 5,
   allowCustomTags = true,
 }) => {
-  const [tagInput, setTagInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   
@@ -52,10 +51,28 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
   // Get the limited tags to display in the main view - now shows filtered tags when searching
   const visibleTags = filteredTags.slice(0, maxVisibleTags);
   
+  // Check if current search query exactly matches any existing tag
+  const tagExists = searchQuery.trim() !== '' && 
+    sortedAvailableTags.some(tag => 
+      tag.name.toLowerCase() === searchQuery.trim().toLowerCase()
+    );
+  
+  // Check if current search query is in selected tags
+  const tagAlreadySelected = searchQuery.trim() !== '' && 
+    selectedTags.some(tag => 
+      tag.toLowerCase() === searchQuery.trim().toLowerCase()
+    );
+  
+  // Determine if we should show the add custom tag button
+  const showAddCustomTag = allowCustomTags && 
+    searchQuery.trim() !== '' && 
+    !tagExists && 
+    !tagAlreadySelected;
+  
   const handleAddCustomTag = () => {
-    if (!tagInput.trim() || !onCustomTagAdd) return;
+    if (!searchQuery.trim() || !onCustomTagAdd) return;
     
-    const normalizedInput = tagInput.trim();
+    const normalizedInput = searchQuery.trim();
     
     // Check if tag already exists
     if (selectedTags.includes(normalizedInput)) {
@@ -63,13 +80,24 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
     }
     
     onCustomTagAdd(normalizedInput);
-    setTagInput('');
+    setSearchQuery('');
   };
   
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleAddCustomTag();
+      
+      // If tag doesn't exist and allowCustomTags is enabled, add it as custom tag
+      if (showAddCustomTag) {
+        handleAddCustomTag();
+      }
+      // Otherwise, if there's a tag in filteredTags that's not already selected, select it
+      else if (filteredTags.length > 0 && !tagAlreadySelected) {
+        const firstTag = filteredTags[0].name;
+        if (!selectedTags.includes(firstTag)) {
+          onTagToggle(firstTag);
+        }
+      }
     }
   };
 
@@ -105,26 +133,6 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
           <p className="text-sm text-muted-foreground">No tags selected yet</p>
         )}
       </div>
-      
-      {/* Search and add custom tag */}
-      {allowCustomTags && (
-        <div className="flex gap-2 mb-4">
-          <Input
-            placeholder="Add a custom tag..."
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <Button 
-            type="button" 
-            onClick={handleAddCustomTag}
-            variant="outline"
-            size="icon"
-          >
-            <Plus size={18} />
-          </Button>
-        </div>
-      )}
       
       {/* Quick-select tags - now with a search box for popular tags */}
       <div>
@@ -189,14 +197,15 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
           </Dialog>
         </div>
 
-        {/* Add search input for the main tag view */}
+        {/* Search input with conditional add custom tag button */}
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
-            placeholder="Search tags..."
-            className="pl-9"
+            placeholder="Search or add custom tags..."
+            className="pl-9 pr-12"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           {searchQuery && (
             <button 
@@ -205,6 +214,30 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
             >
               <XCircle className="h-4 w-4" />
             </button>
+          )}
+          
+          {/* Custom tag add button with tooltip */}
+          {showAddCustomTag && (
+            <div className="absolute right-10 top-1/2 transform -translate-y-1/2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      type="button"
+                      onClick={handleAddCustomTag}
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                    >
+                      <Plus size={16} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Add a custom tag</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           )}
         </div>
         
