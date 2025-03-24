@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -100,6 +101,7 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
           onTagToggle={toggleSpecialization}
           allowCustomTags={false}
           maxVisibleTags={5}
+          searchPlaceholder="Search by typing"
         />
       </div>
       

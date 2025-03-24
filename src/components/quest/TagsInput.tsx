@@ -51,6 +51,7 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags, setTags }) => {
       onCustomTagAdd={addCustomTag}
       maxVisibleTags={5}
       allowCustomTags={true}
+      searchPlaceholder="Search by typing"
     />
   );
 };
