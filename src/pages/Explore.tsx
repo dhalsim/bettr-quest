@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -186,6 +187,7 @@ const Explore = () => {
               onTagToggle={toggleTag}
               allowCustomTags={false}
               maxVisibleTags={5}
+              searchPlaceholder="Search by typing"
             />
             
             <Button type="submit" className="w-full md:w-auto">

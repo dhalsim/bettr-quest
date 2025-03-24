@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, XCircle, Plus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -20,6 +21,7 @@ interface TagsSelectorProps {
   onCustomTagAdd?: (tag: string) => void;
   maxVisibleTags?: number;
   allowCustomTags?: boolean;
+  searchPlaceholder?: string;
 }
 
 const TagsSelector: React.FC<TagsSelectorProps> = ({
@@ -31,6 +33,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
   onCustomTagAdd,
   maxVisibleTags = 5,
   allowCustomTags = true,
+  searchPlaceholder = "Search or add custom tags..."
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -201,7 +204,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
-            placeholder="Search or add custom tags..."
+            placeholder={searchPlaceholder}
             className="pl-9 pr-12"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
