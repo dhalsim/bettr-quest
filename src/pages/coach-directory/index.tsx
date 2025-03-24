@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import CoachFilters from './components/CoachFilters';
@@ -8,7 +9,6 @@ export type Coach = typeof mockCoaches[0];
 
 const CoachDirectory = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [specializationSearch, setSpecializationSearch] = useState('');
   const [selectedSpecializations, setSelectedSpecializations] = useState<string[]>([]);
   const [selectedPricingOption, setSelectedPricingOption] = useState('any');
   const [rateRange, setRateRange] = useState([0, 100000]);
@@ -46,10 +46,18 @@ const CoachDirectory = () => {
   // Reset all filters
   const resetFilters = () => {
     setSearchQuery('');
-    setSpecializationSearch('');
     setSelectedSpecializations([]);
     setSelectedPricingOption('any');
     setRateRange([minRate, maxRate]);
+  };
+  
+  // Toggle specialization selection
+  const toggleSpecialization = (tag: string) => {
+    if (selectedSpecializations.includes(tag)) {
+      setSelectedSpecializations(selectedSpecializations.filter(t => t !== tag));
+    } else {
+      setSelectedSpecializations([...selectedSpecializations, tag]);
+    }
   };
   
   return (
@@ -75,16 +83,8 @@ const CoachDirectory = () => {
           <CoachFilters 
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            specializationSearch={specializationSearch}
-            setSpecializationSearch={setSpecializationSearch}
             selectedSpecializations={selectedSpecializations}
-            toggleSpecialization={(tag) => {
-              if (selectedSpecializations.includes(tag)) {
-                setSelectedSpecializations(selectedSpecializations.filter(t => t !== tag));
-              } else {
-                setSelectedSpecializations([...selectedSpecializations, tag]);
-              }
-            }}
+            toggleSpecialization={toggleSpecialization}
             selectedPricingOption={selectedPricingOption}
             setSelectedPricingOption={setSelectedPricingOption}
             rateRange={rateRange}
