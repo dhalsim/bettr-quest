@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, XCircle, Plus, TagIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -48,10 +49,8 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
     tag.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
   
-  // Get the limited tags to display in the main view
-  const visibleTags = searchQuery 
-    ? filteredTags.slice(0, maxVisibleTags) 
-    : sortedAvailableTags.slice(0, maxVisibleTags);
+  // Get the limited tags to display in the main view - now shows filtered tags when searching
+  const visibleTags = filteredTags.slice(0, maxVisibleTags);
   
   const handleAddCustomTag = () => {
     if (!tagInput.trim() || !onCustomTagAdd) return;
@@ -127,7 +126,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
         </div>
       )}
       
-      {/* Quick-select tags */}
+      {/* Quick-select tags - now with a search box for popular tags */}
       <div>
         <div className="flex justify-between mb-2">
           <p className="text-sm font-medium">Popular tags:</p>
@@ -189,6 +188,26 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
             </DialogContent>
           </Dialog>
         </div>
+
+        {/* Add search input for the main tag view */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+          <Input
+            placeholder="Search tags..."
+            className="pl-9"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button 
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              onClick={() => setSearchQuery('')}
+            >
+              <XCircle className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+        
         <div className="flex flex-wrap gap-2">
           {visibleTags.map(tag => (
             <Badge 
