@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, User, Calendar, Activity, Award, MessageSquare, Star } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -169,6 +170,8 @@ const Profile = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [profileData, setProfileData] = useState(userData);
   const [reviews, setReviews] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState('quests');
+  const reviewsRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     // If we have a username and it exists in our coach profiles, use that data
@@ -213,6 +216,14 @@ const Profile = () => {
   const toggleFollow = () => {
     setIsFollowing(!isFollowing);
   };
+
+  const handleReviewsClick = () => {
+    setActiveTab('reviews');
+    // Use setTimeout to ensure the tab content is rendered before scrolling
+    setTimeout(() => {
+      reviewsRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
   
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
@@ -249,7 +260,10 @@ const Profile = () => {
                     <span className="text-sm font-medium">
                       {profileData.rating.toFixed(1)}/5
                     </span>
-                    <span className="text-sm text-muted-foreground">
+                    <span 
+                      className="text-sm text-primary hover:underline cursor-pointer" 
+                      onClick={handleReviewsClick}
+                    >
                       ({profileData.reviewCount} reviews)
                     </span>
                   </div>
@@ -283,7 +297,7 @@ const Profile = () => {
           </div>
         </div>
         
-        <Tabs defaultValue="quests">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="glass mb-8">
             <TabsTrigger value="quests" className="flex items-center gap-2">
               <Award size={16} />
@@ -368,7 +382,7 @@ const Profile = () => {
           </TabsContent>
           
           {profileData.isCoach && (
-            <TabsContent value="reviews">
+            <TabsContent value="reviews" ref={reviewsRef}>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-semibold">Reviews</h2>
                 <div className="flex items-center gap-2">
