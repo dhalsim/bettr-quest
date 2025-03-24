@@ -143,7 +143,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
       {/* Quick-select tags with search */}
       <div>
         <div className="flex justify-between mb-2">
-          <p className="text-sm font-medium">Popular tags:</p>
+          <p className="text-sm font-medium">Tags:</p>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="link" size="sm" className="h-auto p-0">

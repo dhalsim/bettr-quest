@@ -194,9 +194,9 @@ const RegisterCoach = () => {
                 
                 {/* Specializations */}
                 <div>
+                  <label className="block text-sm font-medium mb-1">Specializations</label>
+                  <p className="text-sm text-muted-foreground mb-3">Add tags representing your areas of expertise.</p>
                   <TagsSelector
-                    title="Specializations"
-                    description="Add tags representing your areas of expertise."
                     selectedTags={specializations}
                     availableTags={availableTags}
                     onTagToggle={toggleSpecialization}

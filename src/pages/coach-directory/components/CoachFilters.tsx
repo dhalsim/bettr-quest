@@ -1,4 +1,3 @@
-
 import React, { useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -39,9 +38,8 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
   resetFilters,
   mockCoaches
 }) => {
-  // Convert specializations to TagItem format with popularity
+  // Calculate popularity based on how many coaches have each specialization
   const specializationTags: TagItem[] = useMemo(() => {
-    // Calculate popularity based on how many coaches have each specialization
     const specializationCounts = new Map<string, number>();
     
     mockCoaches.forEach(coach => {
@@ -95,9 +93,8 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
       
       {/* Specialization tags using TagsSelector */}
       <div className="mb-6">
+        <label className="block text-sm font-medium mb-2">Specializations</label>
         <TagsSelector
-          title="Specializations"
-          description="Filter coaches by their specializations"
           selectedTags={selectedSpecializations}
           availableTags={specializationTags}
           onTagToggle={toggleSpecialization}
