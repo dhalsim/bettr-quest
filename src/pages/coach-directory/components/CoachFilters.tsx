@@ -92,10 +92,10 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
         </div>
       </div>
       
-      {/* Specialization tags using TagsSelector */}
+      {/* Specialization tags using TagsSelector with title passed through props */}
       <div className="mb-6">
-        <label className="block text-sm font-medium mb-2">Specializations</label>
         <TagsSelector
+          title="Specializations"
           selectedTags={selectedSpecializations}
           availableTags={specializationTags}
           onTagToggle={toggleSpecialization}
