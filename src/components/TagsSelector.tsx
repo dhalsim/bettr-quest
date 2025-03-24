@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, XCircle, Plus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -134,10 +133,6 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
             />
           </Badge>
         ))}
-        
-        {selectedTags.length === 0 && (
-          <p className="text-sm text-muted-foreground">No tags selected yet</p>
-        )}
       </div>
       
       {/* Quick-select tags with search */}

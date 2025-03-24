@@ -45,8 +45,6 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags, setTags }) => {
 
   return (
     <TagsSelector
-      title="Tags"
-      description="Add tags to categorize your quest"
       selectedTags={tags}
       availableTags={popularTags}
       onTagToggle={toggleTag}
