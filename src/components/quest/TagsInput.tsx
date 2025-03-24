@@ -1,79 +1,59 @@
 
-import React, { useState } from 'react';
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Tag, X, Plus } from 'lucide-react';
+import React from 'react';
+import TagsSelector, { TagItem } from '@/components/TagsSelector';
 
 interface TagsInputProps {
   tags: string[];
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const TagsInput: React.FC<TagsInputProps> = ({ tags, setTags }) => {
-  const [newTag, setNewTag] = useState('');
+// Popular tags for quests
+const popularTags: TagItem[] = [
+  { name: "Fitness", popularity: 100 },
+  { name: "Learning", popularity: 95 },
+  { name: "Productivity", popularity: 90 },
+  { name: "Wellness", popularity: 85 },
+  { name: "Meditation", popularity: 80 },
+  { name: "Reading", popularity: 75 },
+  { name: "Coding", popularity: 70 },
+  { name: "Writing", popularity: 65 },
+  { name: "Finance", popularity: 60 },
+  { name: "Health", popularity: 55 },
+  { name: "Creative", popularity: 50 },
+  { name: "Skills", popularity: 45 },
+  { name: "Personal", popularity: 40 },
+  { name: "Professional", popularity: 35 },
+  { name: "Social", popularity: 30 },
+];
 
-  const addTag = () => {
-    if (newTag.trim() && !tags.includes(newTag.trim())) {
-      setTags([...tags, newTag.trim()]);
-      setNewTag('');
+const TagsInput: React.FC<TagsInputProps> = ({ tags, setTags }) => {
+  // Handle toggling a tag
+  const toggleTag = (tag: string) => {
+    if (tags.includes(tag)) {
+      setTags(tags.filter(t => t !== tag));
+    } else {
+      setTags([...tags, tag]);
     }
   };
-
-  const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
-  };
-
-  const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addTag();
+  
+  // Handle adding a custom tag
+  const addCustomTag = (tag: string) => {
+    if (!tags.includes(tag)) {
+      setTags([...tags, tag]);
     }
   };
 
   return (
-    <div className="mb-6">
-      <label htmlFor="tags" className="block text-sm font-medium mb-2">
-        Tags
-      </label>
-      <div className="mb-2 flex flex-wrap gap-2">
-        {tags.map(tag => (
-          <div 
-            key={tag} 
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary"
-          >
-            <Tag size={14} />
-            {tag}
-            <button
-              type="button"
-              onClick={() => removeTag(tag)}
-              className="ml-1 text-primary/70 hover:text-primary"
-            >
-              <X size={14} />
-            </button>
-          </div>
-        ))}
-      </div>
-      
-      <div className="flex">
-        <Input
-          id="new-tag"
-          placeholder="Add a tag"
-          value={newTag}
-          onChange={(e) => setNewTag(e.target.value)}
-          onKeyDown={handleTagKeyDown}
-          className="w-full"
-        />
-        <Button 
-          type="button" 
-          variant="outline" 
-          size="icon" 
-          onClick={addTag}
-          className="ml-2"
-        >
-          <Plus size={16} />
-        </Button>
-      </div>
-    </div>
+    <TagsSelector
+      title="Tags"
+      description="Add tags to categorize your quest"
+      selectedTags={tags}
+      availableTags={popularTags}
+      onTagToggle={toggleTag}
+      onCustomTagAdd={addCustomTag}
+      maxVisibleTags={5}
+      allowCustomTags={true}
+    />
   );
 };
 

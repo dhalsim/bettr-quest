@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ArrowLeft, XCircle, PlusCircle, Save } from 'lucide-react';
+import { ArrowLeft, Save } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -20,16 +21,32 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import { useToast } from "@/hooks/use-toast";
 import { useNostrAuth } from '@/hooks/useNostrAuth';
+import TagsSelector, { TagItem } from '@/components/TagsSelector';
 
-// All available specialization tags
-const availableTags = [
-  "Fitness", "Nutrition", "Wellness", "Meditation", "Productivity", 
-  "Coding", "Technology", "Education", "Finance", "Art", 
-  "Music", "Writing", "Language", "Travel", "Photography",
-  "Cooking", "Business", "Marketing", "Design", "Reading"
+// All available specialization tags with popularity scores
+const availableTags: TagItem[] = [
+  { name: "Fitness", popularity: 95 },
+  { name: "Nutrition", popularity: 90 },
+  { name: "Wellness", popularity: 85 },
+  { name: "Meditation", popularity: 78 },
+  { name: "Productivity", popularity: 75 },
+  { name: "Coding", popularity: 70 },
+  { name: "Technology", popularity: 65 },
+  { name: "Education", popularity: 60 },
+  { name: "Finance", popularity: 58 },
+  { name: "Art", popularity: 55 },
+  { name: "Music", popularity: 53 },
+  { name: "Writing", popularity: 50 },
+  { name: "Language", popularity: 48 },
+  { name: "Travel", popularity: 45 },
+  { name: "Photography", popularity: 42 },
+  { name: "Cooking", popularity: 40 },
+  { name: "Business", popularity: 38 },
+  { name: "Marketing", popularity: 35 },
+  { name: "Design", popularity: 33 },
+  { name: "Reading", popularity: 30 }
 ];
 
 // Form validation schema
@@ -49,7 +66,6 @@ type FormValues = z.infer<typeof formSchema>;
 
 const RegisterCoach = () => {
   const [specializations, setSpecializations] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isLoggedIn, profile } = useNostrAuth();
@@ -107,45 +123,21 @@ const RegisterCoach = () => {
     navigate('/coach-directory');
   };
   
-  // Add a specialization tag
-  const addTag = () => {
-    if (!tagInput.trim()) return;
-    
-    // Normalize input
-    const normalizedInput = tagInput.trim();
-    
-    // Check if tag already exists
-    if (specializations.includes(normalizedInput)) {
-      toast({
-        title: "Tag already added",
-        description: `'${normalizedInput}' is already in your specializations.`,
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setSpecializations([...specializations, normalizedInput]);
-    setTagInput('');
-  };
-  
-  // Remove a specialization tag
-  const removeTag = (tagToRemove: string) => {
-    setSpecializations(specializations.filter(tag => tag !== tagToRemove));
-  };
-  
-  // Handle predefined tag selection
-  const addPredefinedTag = (tag: string) => {
+  // Toggle a specialization tag
+  const toggleSpecialization = (tag: string) => {
     if (specializations.includes(tag)) {
-      removeTag(tag);
+      setSpecializations(specializations.filter(t => t !== tag));
     } else {
       setSpecializations([...specializations, tag]);
     }
   };
   
-  // Filter available tags that aren't already selected
-  const filteredAvailableTags = availableTags.filter(
-    tag => !specializations.includes(tag)
-  );
+  // Add a custom specialization tag
+  const addCustomSpecialization = (tag: string) => {
+    if (!specializations.includes(tag)) {
+      setSpecializations([...specializations, tag]);
+    }
+  };
   
   // If not logged in or no profile, don't render the form
   if (!isLoggedIn || !profile) {
@@ -202,71 +194,16 @@ const RegisterCoach = () => {
                 
                 {/* Specializations */}
                 <div>
-                  <FormLabel>Specializations</FormLabel>
-                  <FormDescription className="mb-2">
-                    Add tags representing your areas of expertise.
-                  </FormDescription>
-                  
-                  {/* Selected tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {specializations.map(tag => (
-                      <Badge 
-                        key={tag} 
-                        className="px-3 py-1 text-sm flex items-center gap-1"
-                      >
-                        {tag}
-                        <XCircle 
-                          size={14} 
-                          className="cursor-pointer ml-1" 
-                          onClick={() => removeTag(tag)}
-                        />
-                      </Badge>
-                    ))}
-                    
-                    {specializations.length === 0 && (
-                      <p className="text-sm text-muted-foreground">No specializations added yet</p>
-                    )}
-                  </div>
-                  
-                  {/* Custom tag input */}
-                  <div className="flex gap-2 mb-4">
-                    <Input
-                      placeholder="Add a custom specialization..."
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          addTag();
-                        }
-                      }}
-                    />
-                    <Button 
-                      type="button" 
-                      onClick={addTag}
-                      variant="outline"
-                      size="icon"
-                    >
-                      <PlusCircle size={18} />
-                    </Button>
-                  </div>
-                  
-                  {/* Predefined tags */}
-                  <div>
-                    <p className="text-sm font-medium mb-2">Popular specializations:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {availableTags.map(tag => (
-                        <Badge 
-                          key={tag}
-                          variant={specializations.includes(tag) ? "default" : "outline"}
-                          className="cursor-pointer"
-                          onClick={() => addPredefinedTag(tag)}
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
+                  <TagsSelector
+                    title="Specializations"
+                    description="Add tags representing your areas of expertise."
+                    selectedTags={specializations}
+                    availableTags={availableTags}
+                    onTagToggle={toggleSpecialization}
+                    onCustomTagAdd={addCustomSpecialization}
+                    maxVisibleTags={5}
+                    allowCustomTags={true}
+                  />
                 </div>
                 
                 {/* Pricing Options */}

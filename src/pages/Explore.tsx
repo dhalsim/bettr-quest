@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/ui/QuestCard';
 import { useSearchParams } from 'react-router-dom';
+import TagsSelector, { TagItem } from '@/components/TagsSelector';
 
 // Mock data for quests with updated examples
 const allQuests = [
@@ -86,63 +87,70 @@ const allQuests = [
   }
 ];
 
-const categories = ['All', 'Wellness', 'Fitness', 'Learning', 'Sustainability'];
+// Categories converted to tags with popularity
+const availableTags: TagItem[] = [
+  { name: "Wellness", popularity: 90 },
+  { name: "Fitness", popularity: 85 },
+  { name: "Learning", popularity: 80 },
+  { name: "Sustainability", popularity: 75 },
+  { name: "Productivity", popularity: 70 },
+  { name: "Technology", popularity: 65 },
+  { name: "Music", popularity: 60 },
+  { name: "Art", popularity: 55 },
+  { name: "Writing", popularity: 50 },
+  { name: "Finance", popularity: 45 },
+  { name: "Travel", popularity: 40 },
+  { name: "Food", popularity: 35 },
+  { name: "Photography", popularity: 30 },
+  { name: "Reading", popularity: 25 },
+  { name: "Gaming", popularity: 20 },
+];
 
 const Explore = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
   
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(categoryParam && categories.includes(categoryParam) ? categoryParam : 'All');
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    categoryParam && categoryParam !== 'All' ? [categoryParam] : []
+  );
   const [filteredQuests, setFilteredQuests] = useState(allQuests);
   
-  // Apply initial filtering based on URL parameter
+  // Apply filtering when selectedTags or searchQuery changes
   useEffect(() => {
-    if (categoryParam && categories.includes(categoryParam)) {
-      setSelectedCategory(categoryParam);
-      
-      const filtered = allQuests.filter(quest => {
-        return categoryParam === 'All' || quest.category === categoryParam;
-      });
-      
-      setFilteredQuests(filtered);
-    }
-  }, [categoryParam]);
-  
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Filter quests based on search query and selected category
+    // Filter quests based on search query and selected tags
     const filtered = allQuests.filter(quest => {
       const matchesQuery = quest.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         quest.description.toLowerCase().includes(searchQuery.toLowerCase());
       
-      const matchesCategory = selectedCategory === 'All' || quest.category === selectedCategory;
+      const matchesTags = selectedTags.length === 0 || 
+        selectedTags.includes(quest.category);
       
-      return matchesQuery && matchesCategory;
+      return matchesQuery && matchesTags;
     });
     
     setFilteredQuests(filtered);
     
     // Update URL parameters
-    if (selectedCategory !== 'All') {
-      setSearchParams({ category: selectedCategory });
+    if (selectedTags.length === 1) {
+      setSearchParams({ category: selectedTags[0] });
     } else {
       setSearchParams({});
+    }
+  }, [selectedTags, searchQuery, setSearchParams]);
+  
+  // Toggle tag selection
+  const toggleTag = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter(t => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
     }
   };
   
-  // Handle category change
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const category = e.target.value;
-    setSelectedCategory(category);
-    
-    // Update URL parameters immediately when changing category
-    if (category !== 'All') {
-      setSearchParams({ category });
-    } else {
-      setSearchParams({});
-    }
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // The filtering is already handled by the useEffect
   };
   
   return (
@@ -156,8 +164,8 @@ const Explore = () => {
         </div>
         
         <div className="glass rounded-2xl p-6 mb-10">
-          <form onSubmit={handleSearch} className="flex flex-col gap-4 md:flex-row">
-            <div className="relative flex-grow">
+          <form onSubmit={handleSearch} className="space-y-4">
+            <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <Search className="h-5 w-5 text-muted-foreground" />
               </div>
@@ -170,22 +178,17 @@ const Explore = () => {
               />
             </div>
             
-            <div className="relative w-full md:w-48">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <Filter className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <select
-                className="pl-10 px-4 py-3 w-full bg-background border border-border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20"
-                value={selectedCategory}
-                onChange={handleCategoryChange}
-              >
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
+            <TagsSelector
+              title="Filter by Categories"
+              description="Select categories to filter quests"
+              selectedTags={selectedTags}
+              availableTags={availableTags}
+              onTagToggle={toggleTag}
+              allowCustomTags={false}
+              maxVisibleTags={5}
+            />
             
-            <Button type="submit" className="md:w-auto">
+            <Button type="submit" className="w-full md:w-auto">
               Search
             </Button>
           </form>

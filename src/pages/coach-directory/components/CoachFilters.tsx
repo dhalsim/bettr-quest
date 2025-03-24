@@ -3,18 +3,16 @@ import React, { useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { allSpecializations, formatSats, pricingOptions } from '../utils';
 import { Coach } from '..';
+import TagsSelector, { TagItem } from '@/components/TagsSelector';
 
 interface CoachFiltersProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  specializationSearch: string;
-  setSpecializationSearch: (search: string) => void;
   selectedSpecializations: string[];
   toggleSpecialization: (tag: string) => void;
   selectedPricingOption: string;
@@ -30,8 +28,6 @@ interface CoachFiltersProps {
 const CoachFilters: React.FC<CoachFiltersProps> = ({
   searchQuery,
   setSearchQuery,
-  specializationSearch,
-  setSpecializationSearch,
   selectedSpecializations,
   toggleSpecialization,
   selectedPricingOption,
@@ -43,13 +39,23 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
   resetFilters,
   mockCoaches
 }) => {
-  // Filter specializations based on search
-  const filteredSpecializations = useMemo(() => {
-    if (!specializationSearch.trim()) return allSpecializations;
-    return allSpecializations.filter(tag => 
-      tag.toLowerCase().includes(specializationSearch.toLowerCase())
-    );
-  }, [specializationSearch]);
+  // Convert specializations to TagItem format with popularity
+  const specializationTags: TagItem[] = useMemo(() => {
+    // Calculate popularity based on how many coaches have each specialization
+    const specializationCounts = new Map<string, number>();
+    
+    mockCoaches.forEach(coach => {
+      coach.specializations.forEach(spec => {
+        const count = specializationCounts.get(spec) || 0;
+        specializationCounts.set(spec, count + 1);
+      });
+    });
+    
+    return allSpecializations.map(spec => ({
+      name: spec,
+      popularity: specializationCounts.get(spec) || 0
+    }));
+  }, [mockCoaches]);
 
   return (
     <div className="glass rounded-xl p-6 h-fit lg:sticky lg:top-32 border-2 border-gray-300">
@@ -87,38 +93,17 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
         </div>
       </div>
       
-      {/* Specialization search and tags */}
+      {/* Specialization tags using TagsSelector */}
       <div className="mb-6">
-        <label className="block text-sm font-medium mb-2">Specializations</label>
-        <div className="relative mb-3">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search specializations..."
-            className="pl-9"
-            value={specializationSearch}
-            onChange={(e) => setSpecializationSearch(e.target.value)}
-          />
-          {specializationSearch && (
-            <button 
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              onClick={() => setSpecializationSearch('')}
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {filteredSpecializations.map(tag => (
-            <Badge 
-              key={tag}
-              variant={selectedSpecializations.includes(tag) ? "default" : "outline"}
-              className="cursor-pointer"
-              onClick={() => toggleSpecialization(tag)}
-            >
-              {tag}
-            </Badge>
-          ))}
-        </div>
+        <TagsSelector
+          title="Specializations"
+          description="Filter coaches by their specializations"
+          selectedTags={selectedSpecializations}
+          availableTags={specializationTags}
+          onTagToggle={toggleSpecialization}
+          allowCustomTags={false}
+          maxVisibleTags={5}
+        />
       </div>
       
       {/* Pricing option */}
