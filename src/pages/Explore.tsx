@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -117,9 +116,7 @@ const Explore = () => {
   );
   const [filteredQuests, setFilteredQuests] = useState(allQuests);
   
-  // Apply filtering when selectedTags or searchQuery changes
   useEffect(() => {
-    // Filter quests based on search query and selected tags
     const filtered = allQuests.filter(quest => {
       const matchesQuery = quest.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         quest.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -132,7 +129,6 @@ const Explore = () => {
     
     setFilteredQuests(filtered);
     
-    // Update URL parameters
     if (selectedTags.length === 1) {
       setSearchParams({ category: selectedTags[0] });
     } else {
@@ -140,7 +136,6 @@ const Explore = () => {
     }
   }, [selectedTags, searchQuery, setSearchParams]);
   
-  // Toggle tag selection
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter(t => t !== tag));
@@ -151,7 +146,6 @@ const Explore = () => {
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // The filtering is already handled by the useEffect
   };
   
   return (
@@ -180,8 +174,6 @@ const Explore = () => {
             </div>
             
             <TagsSelector
-              title="Filter by Categories"
-              description="Select categories to filter quests"
               selectedTags={selectedTags}
               availableTags={availableTags}
               onTagToggle={toggleTag}
