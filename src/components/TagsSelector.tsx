@@ -134,7 +134,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
         )}
       </div>
       
-      {/* Quick-select tags - now with a search box for popular tags */}
+      {/* Quick-select tags with search */}
       <div>
         <div className="flex justify-between mb-2">
           <p className="text-sm font-medium">Popular tags:</p>
@@ -186,7 +186,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
                     </Badge>
                   ))}
                   
-                  {filteredTags.length === 0 && (
+                  {filteredTags.length === 0 && showAddCustomTag && (
                     <p className="text-sm text-muted-foreground py-4 w-full text-center">
                       No matching tags found
                     </p>
@@ -197,7 +197,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
           </Dialog>
         </div>
 
-        {/* Search input with conditional add custom tag button */}
+        {/* Single search input with conditional add custom tag button */}
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
