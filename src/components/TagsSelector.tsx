@@ -25,8 +25,8 @@ interface TagsSelectorProps {
 }
 
 const TagsSelector: React.FC<TagsSelectorProps> = ({
-  title = "Tags",
-  description = "Select tags that best represent this item.",
+  title,
+  description,
   selectedTags,
   availableTags,
   onTagToggle,
@@ -111,10 +111,13 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
   
   return (
     <div className="space-y-3">
-      <div>
-        <label className="block text-sm font-medium mb-1">{title}</label>
-        <p className="text-sm text-muted-foreground mb-3">{description}</p>
-      </div>
+      {/* Only show title and description if they are provided */}
+      {(title || description) && (
+        <div>
+          {title && <label className="block text-sm font-medium mb-1">{title}</label>}
+          {description && <p className="text-sm text-muted-foreground mb-3">{description}</p>}
+        </div>
+      )}
       
       {/* Selected tags */}
       <div className="flex flex-wrap gap-2 mb-4">
