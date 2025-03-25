@@ -1,450 +1,348 @@
-import React, { useState, useRef } from 'react';
-import { XCircle, Image, Video, Mic, Camera, Play, Trash, Loader2 } from 'lucide-react';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { Upload, Image, Video, Mic, Trash2, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface MediaUploadProps {
-  onMediaChange?: (files: {
+  onMediaChange: (files: {
     image: File | null,
     video: File | null,
     audio: Blob | null,
     recordedVideo: Blob | null
   }) => void;
+  previewUrl?: string;
 }
 
-const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange }) => {
-  // Media upload states
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [videoPreview, setVideoPreview] = useState<string | null>(null);
+const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) => {
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
+  const [recordedAudio, setRecordedAudio] = useState<Blob | null>(null);
+  const [recordedVideo, setRecordedVideo] = useState<Blob | null>(null);
   
-  // Audio recording states
-  const [isAudioRecording, setIsAudioRecording] = useState(false);
-  const [audioURL, setAudioURL] = useState<string | null>(null);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const audioRecorder = useRef<MediaRecorder | null>(null);
-  const audioChunks = useRef<BlobPart[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingType, setRecordingType] = useState<'audio' | 'video' | null>(null);
+  const [showRecordingModal, setShowRecordingModal] = useState(false);
   
-  // Video recording states
-  const [isVideoRecording, setIsVideoRecording] = useState(false);
-  const [recordedVideoURL, setRecordedVideoURL] = useState<string | null>(null);
-  const [recordedVideoBlob, setRecordedVideoBlob] = useState<Blob | null>(null);
-  const videoRecorder = useRef<MediaRecorder | null>(null);
-  const videoChunks = useRef<BlobPart[]>([]);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const chunksRef = useRef<BlobPart[]>([]);
   const videoPreviewRef = useRef<HTMLVideoElement>(null);
-  const videoStreamRef = useRef<MediaStream | null>(null);
-
-  // Notify parent component of media changes
-  const notifyMediaChange = () => {
-    if (onMediaChange) {
-      onMediaChange({
-        image: imageFile,
-        video: videoFile,
-        audio: audioBlob,
-        recordedVideo: recordedVideoBlob
-      });
-    }
-  };
   
-  // Handle media file selection
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'video') => {
+  // Handle prefilled image URL when provided
+  useEffect(() => {
+    if (previewUrl) {
+      setImagePreviews(prev => [...prev, previewUrl]);
+    }
+  }, [previewUrl]);
+  
+  // Notify parent component when media changes
+  useEffect(() => {
+    onMediaChange({
+      image: selectedImage,
+      video: selectedVideo,
+      audio: recordedAudio,
+      recordedVideo: recordedVideo
+    });
+  }, [selectedImage, selectedVideo, recordedAudio, recordedVideo, onMediaChange]);
+  
+  // Clean up media streams when component unmounts
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
+  
+  // Handle image selection
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setSelectedImage(file);
       
-      // Create preview URL
+      // Create URL for preview
       const reader = new FileReader();
-      reader.onloadend = () => {
-        if (type === 'image') {
-          setImageFile(file);
-          setImagePreview(reader.result as string);
-        } else {
-          setVideoFile(file);
-          setVideoPreview(reader.result as string);
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setImagePreviews([e.target.result as string]);
         }
-        notifyMediaChange();
       };
       reader.readAsDataURL(file);
     }
   };
   
-  // Audio recording functions
-  const startAudioRecording = async () => {
+  // Handle video selection
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedVideo(e.target.files[0]);
+    }
+  };
+  
+  // Clear all media
+  const handleClearMedia = () => {
+    setSelectedImage(null);
+    setSelectedVideo(null);
+    setRecordedAudio(null);
+    setRecordedVideo(null);
+    setImagePreviews([]);
+    
+    // Reset file input values
+    if (imageInputRef.current) imageInputRef.current.value = '';
+    if (videoInputRef.current) videoInputRef.current.value = '';
+  };
+  
+  // Start audio/video recording
+  const startRecording = async (type: 'audio' | 'video') => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      setIsAudioRecording(true);
-      audioChunks.current = [];
-      
-      const recorder = new MediaRecorder(stream);
-      audioRecorder.current = recorder;
-      
-      recorder.ondataavailable = (e) => {
-        audioChunks.current.push(e.data);
+      // Request media permissions
+      const constraints = {
+        audio: true,
+        video: type === 'video'
       };
       
-      recorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setAudioURL(audioUrl);
-        setAudioBlob(audioBlob);
-        setIsAudioRecording(false);
-        notifyMediaChange();
-      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
       
-      recorder.start();
-    } catch (error) {
-      console.error("Error starting audio recording:", error);
-      setIsAudioRecording(false);
-    }
-  };
-  
-  const stopAudioRecording = () => {
-    if (audioRecorder.current) {
-      audioRecorder.current.stop();
-      // Stop all audio tracks
-      if (audioRecorder.current.stream) {
-        audioRecorder.current.stream.getTracks().forEach(track => track.stop());
-      }
-    }
-  };
-  
-  const toggleAudioRecording = () => {
-    if (isAudioRecording) {
-      stopAudioRecording();
-    } else {
-      startAudioRecording();
-    }
-  };
-  
-  const playAudio = () => {
-    if (audioURL) {
-      const audio = new Audio(audioURL);
-      audio.play();
-    }
-  };
-  
-  const removeAudio = () => {
-    if (audioURL) {
-      URL.revokeObjectURL(audioURL);
-    }
-    setAudioURL(null);
-    setAudioBlob(null);
-    notifyMediaChange();
-  };
-  
-  // Video recording functions
-  const startVideoRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: "user",
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
-        },
-        audio: true
-      });
-      
-      setIsVideoRecording(true);
-      videoChunks.current = [];
-      
-      // Display live preview
-      if (videoPreviewRef.current) {
+      // If video, set the stream to the video element for preview
+      if (type === 'video' && videoPreviewRef.current) {
         videoPreviewRef.current.srcObject = stream;
-        videoPreviewRef.current.play();
       }
       
-      videoStreamRef.current = stream;
+      // Setup media recorder
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      chunksRef.current = [];
       
-      const recorder = new MediaRecorder(stream);
-      videoRecorder.current = recorder;
-      
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          videoChunks.current.push(e.data);
-        }
+      mediaRecorder.ondataavailable = (e) => {
+        chunksRef.current.push(e.data);
       };
       
-      recorder.onstop = () => {
-        const videoBlob = new Blob(videoChunks.current, { type: 'video/webm' });
-        const videoUrl = URL.createObjectURL(videoBlob);
-        setRecordedVideoURL(videoUrl);
-        setRecordedVideoBlob(videoBlob);
-        setIsVideoRecording(false);
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunksRef.current, {
+          type: type === 'audio' ? 'audio/wav' : 'video/webm'
+        });
         
-        // Stop the live preview
-        if (videoStreamRef.current) {
-          videoStreamRef.current.getTracks().forEach(track => track.stop());
+        if (type === 'audio') {
+          setRecordedAudio(blob);
+        } else {
+          setRecordedVideo(blob);
         }
         
-        if (videoPreviewRef.current) {
-          videoPreviewRef.current.srcObject = null;
+        // Stop all tracks
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop());
         }
-        
-        notifyMediaChange();
+        streamRef.current = null;
       };
       
-      recorder.start(1000); // Collect data every second
-    } catch (error) {
-      console.error("Error starting video recording:", error);
-      setIsVideoRecording(false);
+      // Start recording
+      mediaRecorder.start();
+      setIsRecording(true);
+      setRecordingType(type);
+      
+    } catch (err) {
+      console.error('Error accessing media devices:', err);
+      alert('Could not access your microphone or camera. Please check your permissions.');
+      setShowRecordingModal(false);
     }
   };
   
-  const stopVideoRecording = () => {
-    if (videoRecorder.current && videoRecorder.current.state !== 'inactive') {
-      videoRecorder.current.stop();
+  // Stop recording
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      setRecordingType(null);
     }
   };
   
-  const toggleVideoRecording = () => {
-    if (isVideoRecording) {
-      stopVideoRecording();
-    } else {
-      startVideoRecording();
-    }
+  // Handle opening recording modal
+  const openRecordingModal = (type: 'audio' | 'video') => {
+    setShowRecordingModal(true);
+    setTimeout(() => startRecording(type), 500); // Short delay to let the modal open
   };
   
-  const removeRecordedVideo = () => {
-    if (recordedVideoURL) {
-      URL.revokeObjectURL(recordedVideoURL);
-    }
-    
-    setRecordedVideoURL(null);
-    setRecordedVideoBlob(null);
-    
-    notifyMediaChange();
-  };
-
-  const removeImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setImageFile(null);
-    setImagePreview(null);
-    notifyMediaChange();
-  };
-
-  const removeVideo = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setVideoFile(null);
-    setVideoPreview(null);
-    notifyMediaChange();
+  // Handle closing recording modal
+  const closeRecordingModal = () => {
+    stopRecording();
+    setShowRecordingModal(false);
   };
   
   return (
-    <div className="mb-8 space-y-6">
-      {/* Upload Media Section */}
-      <div>
-        <h3 className="text-sm font-medium mb-2">Upload Media</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Image Upload */}
-          <div
-            className={`border-2 border-dashed rounded-lg p-6 transition-colors ${
-              imagePreview ? 'border-primary/50' : 'border-border hover:bg-secondary/50'
-            } cursor-pointer`}
-            onClick={() => document.getElementById('quest-image')?.click()}
+    <div className="mb-6">
+      <h3 className="block text-sm font-medium mb-4">Add Media (Optional)</h3>
+      
+      <div className="flex flex-wrap gap-3 mb-4">
+        <Button 
+          type="button" 
+          variant="outline"
+          onClick={() => imageInputRef.current?.click()}
+        >
+          <Image size={16} className="mr-2" />
+          Image
+        </Button>
+        
+        <Button 
+          type="button" 
+          variant="outline"
+          onClick={() => videoInputRef.current?.click()}
+        >
+          <Video size={16} className="mr-2" />
+          Video
+        </Button>
+        
+        <Button 
+          type="button" 
+          variant="outline"
+          onClick={() => openRecordingModal('audio')}
+        >
+          <Mic size={16} className="mr-2" />
+          Record Audio
+        </Button>
+        
+        <Button 
+          type="button" 
+          variant="outline"
+          onClick={() => openRecordingModal('video')}
+        >
+          <Camera size={16} className="mr-2" />
+          Record Video
+        </Button>
+        
+        {(selectedImage || selectedVideo || recordedAudio || recordedVideo || imagePreviews.length > 0) && (
+          <Button 
+            type="button" 
+            variant="destructive"
+            onClick={handleClearMedia}
           >
-            <input
-              type="file"
-              id="quest-image"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => handleFileChange(e, 'image')}
-            />
-            
-            {imagePreview ? (
-              <div className="relative">
-                <img
-                  src={imagePreview}
-                  alt="Quest Preview"
-                  className="w-full h-48 object-cover rounded-md"
-                />
-                <button
-                  type="button"
-                  className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70 transition-colors"
-                  onClick={removeImage}
-                >
-                  <XCircle size={18} />
-                </button>
-              </div>
-            ) : (
-              <div className="text-center">
-                <Image className="mx-auto h-12 w-12 text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">
-                  Upload an image
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  PNG, JPG up to 10MB
-                </p>
-              </div>
-            )}
-          </div>
-          
-          {/* Video Upload */}
-          <div
-            className={`border-2 border-dashed rounded-lg p-6 transition-colors ${
-              videoPreview ? 'border-primary/50' : 'border-border hover:bg-secondary/50'
-            } cursor-pointer`}
-            onClick={() => document.getElementById('quest-video')?.click()}
-          >
-            <input
-              type="file"
-              id="quest-video"
-              accept="video/*"
-              className="hidden"
-              onChange={(e) => handleFileChange(e, 'video')}
-            />
-            
-            {videoPreview ? (
-              <div className="relative">
-                <video
-                  src={videoPreview}
-                  controls
-                  className="w-full h-48 object-cover rounded-md"
-                />
-                <button
-                  type="button"
-                  className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70 transition-colors"
-                  onClick={removeVideo}
-                >
-                  <XCircle size={18} />
-                </button>
-              </div>
-            ) : (
-              <div className="text-center">
-                <Video className="mx-auto h-12 w-12 text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">
-                  Upload a video
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  MP4, WebM up to 100MB
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+            <Trash2 size={16} className="mr-2" />
+            Clear Media
+          </Button>
+        )}
       </div>
       
-      {/* Recordings Section */}
-      <div>
-        <h3 className="text-sm font-medium mb-2">Recordings</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Audio Recording */}
-          <div>
-            <div className="border-2 border-dashed rounded-lg p-6 bg-secondary/30">
-              <div className="text-center mb-2">
-                <Mic className="mx-auto h-10 w-10 text-muted-foreground mb-2" />
-                <p className="text-sm font-medium">Audio Recording</p>
-              </div>
-              
-              {audioURL ? (
-                <div className="flex items-center gap-3 bg-secondary/30 p-4 rounded-lg">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={playAudio}
-                    className="h-10 w-10 rounded-full"
-                  >
-                    <Play size={16} />
-                  </Button>
-                  <div className="flex-1">
-                    <div className="h-2 bg-primary/30 rounded-full">
-                      <div className="h-2 w-1/3 bg-primary rounded-full"></div>
-                    </div>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={removeAudio}
-                    className="h-8 w-8 rounded-full"
-                  >
-                    <Trash size={14} />
-                  </Button>
+      {/* Hidden file inputs */}
+      <input 
+        type="file" 
+        accept="image/*" 
+        ref={imageInputRef} 
+        className="hidden"
+        onChange={handleImageChange}
+      />
+      <input 
+        type="file" 
+        accept="video/*" 
+        ref={videoInputRef} 
+        className="hidden"
+        onChange={handleVideoChange}
+      />
+      
+      {/* Media Previews */}
+      <div className="mt-4 space-y-2">
+        {/* Image Previews */}
+        {imagePreviews.length > 0 && (
+          <div className="mb-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {imagePreviews.map((src, idx) => (
+                <div key={idx} className="relative h-40 rounded-md overflow-hidden">
+                  <img 
+                    src={src} 
+                    alt={`Preview ${idx + 1}`} 
+                    className="h-full w-full object-cover" 
+                  />
                 </div>
-              ) : (
-                <Button
-                  type="button"
-                  variant={isAudioRecording ? "destructive" : "outline"}
-                  onClick={toggleAudioRecording}
-                  className="w-full h-10 gap-2"
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {/* Video Preview */}
+        {selectedVideo && (
+          <div className="mb-3">
+            <h4 className="text-sm font-medium mb-1">Video Selected:</h4>
+            <p className="text-sm text-muted-foreground">{selectedVideo.name}</p>
+          </div>
+        )}
+        
+        {/* Audio Preview */}
+        {recordedAudio && (
+          <div className="mb-3">
+            <h4 className="text-sm font-medium mb-1">Audio Recorded:</h4>
+            <audio controls className="w-full">
+              <source src={URL.createObjectURL(recordedAudio)} type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        )}
+        
+        {/* Recorded Video Preview */}
+        {recordedVideo && (
+          <div className="mb-3">
+            <h4 className="text-sm font-medium mb-1">Video Recorded:</h4>
+            <video controls className="w-full max-h-60 rounded-md">
+              <source src={URL.createObjectURL(recordedVideo)} type="video/webm" />
+              Your browser does not support the video element.
+            </video>
+          </div>
+        )}
+      </div>
+      
+      {/* Recording Dialog */}
+      <Dialog open={showRecordingModal} onOpenChange={setShowRecordingModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {recordingType === 'audio' ? 'Recording Audio' : 'Recording Video'}
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="flex flex-col items-center justify-center py-4">
+            {recordingType === 'video' && (
+              <video 
+                ref={videoPreviewRef} 
+                autoPlay 
+                muted 
+                className="w-full h-64 bg-black rounded-md mb-4"
+              />
+            )}
+            
+            {recordingType === 'audio' && (
+              <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center mb-4">
+                <Mic size={32} className="text-white" />
+              </div>
+            )}
+            
+            <div className="flex space-x-3 mt-4">
+              {isRecording ? (
+                <Button 
+                  variant="destructive"
+                  onClick={stopRecording}
                 >
-                  {isAudioRecording ? (
-                    <>
-                      <span className="animate-pulse h-2 w-2 rounded-full bg-current"></span>
-                      Recording... Click to stop
-                    </>
-                  ) : (
-                    <>
-                      <Mic size={16} /> Record Audio
-                    </>
-                  )}
+                  Stop Recording
+                </Button>
+              ) : (
+                <Button 
+                  variant="default"
+                  onClick={() => startRecording(recordingType || 'audio')}
+                >
+                  Start Recording
                 </Button>
               )}
-            </div>
-          </div>
-          
-          {/* Video Recording */}
-          <div>
-            <div className="border-2 border-dashed rounded-lg p-6 bg-secondary/30">
-              <div className="text-center mb-2">
-                <Camera className="mx-auto h-10 w-10 text-muted-foreground mb-2" />
-                <p className="text-sm font-medium">Video Recording</p>
-              </div>
               
-              {recordedVideoURL ? (
-                <div className="relative">
-                  <video
-                    src={recordedVideoURL}
-                    controls
-                    className="w-full h-36 object-cover rounded-md"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={removeRecordedVideo}
-                    className="absolute top-2 right-2 h-8 w-8 rounded-full bg-black/50 hover:bg-black/70"
-                  >
-                    <Trash size={14} />
-                  </Button>
-                </div>
-              ) : (
-                <div>
-                  {isVideoRecording ? (
-                    <div className="relative">
-                      <video
-                        ref={videoPreviewRef}
-                        className="w-full h-36 object-cover rounded-md"
-                        muted
-                      />
-                      <div className="absolute top-2 right-2">
-                        <span className="animate-pulse h-2 w-2 rounded-full bg-red-500 inline-block mr-1"></span>
-                        <span className="text-xs bg-black/50 text-white px-2 py-1 rounded-md">Recording</span>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        onClick={toggleVideoRecording}
-                        className="w-full mt-2"
-                      >
-                        Stop Recording
-                      </Button>
-                    </div>
-                  ) : (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={toggleVideoRecording}
-                      className="w-full h-10 gap-2"
-                    >
-                      <Camera size={16} /> Record Video
-                    </Button>
-                  )}
-                </div>
-              )}
+              <Button 
+                variant="outline"
+                onClick={closeRecordingModal}
+              >
+                Close
+              </Button>
             </div>
           </div>
-        </div>
-      </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

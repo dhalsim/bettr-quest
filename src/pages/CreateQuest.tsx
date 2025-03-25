@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -15,12 +16,20 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const CreateQuest = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  // Parse query parameters for prefilled data
+  const queryParams = new URLSearchParams(location.search);
+  const prefilledTitle = queryParams.get('title') || '';
+  const prefilledDescription = queryParams.get('description') || '';
+  const prefilledCategory = queryParams.get('category') || '';
+  const prefilledImageUrl = queryParams.get('imageUrl') || '';
+  
+  const [title, setTitle] = useState(prefilledTitle);
+  const [description, setDescription] = useState(prefilledDescription);
   const [visibility, setVisibility] = useState('public');
   const [proofMethod, setProofMethod] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(prefilledCategory ? [prefilledCategory] : []);
   const [dueDate, setDueDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [proofChallenger, setProofChallenger] = useState('anyone'); // Default to 'anyone' for public
@@ -38,6 +47,19 @@ const CreateQuest = () => {
     audio: null,
     recordedVideo: null
   });
+  
+  // Update page title to reflect creating new or copied quest
+  useEffect(() => {
+    if (prefilledTitle) {
+      document.title = `New Quest (Copied) | Quest Platform`;
+    } else {
+      document.title = `Create New Quest | Quest Platform`;
+    }
+    
+    return () => {
+      document.title = 'Quest Platform';
+    };
+  }, [prefilledTitle]);
   
   // Update proof challenger when visibility changes
   useEffect(() => {
@@ -134,11 +156,13 @@ const CreateQuest = () => {
         
         <div className="glass rounded-2xl overflow-hidden">
           <div className="p-8">
-            <h1 className="text-2xl font-bold mb-8">Creating a Quest for myself</h1>
+            <h1 className="text-2xl font-bold mb-8">
+              {prefilledTitle ? "Creating a Copy of Quest" : "Creating a Quest for myself"}
+            </h1>
             
             <form onSubmit={handleSubmit}>
-              {/* Template Selection */}
-              <QuestTemplateSelector onSelectTemplate={applyTemplate} />
+              {/* Template Selection - only show if not from copied quest */}
+              {!prefilledTitle && <QuestTemplateSelector onSelectTemplate={applyTemplate} />}
               
               {/* Quest Title */}
               <div className="mb-6">
@@ -247,6 +271,7 @@ const CreateQuest = () => {
               {/* Media Section */}
               <MediaUpload 
                 onMediaChange={files => setMediaFiles(files)}
+                previewUrl={prefilledImageUrl}
               />
               
               {/* Submit Button */}

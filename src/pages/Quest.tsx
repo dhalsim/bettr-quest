@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown } from 'lucide-react';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
+import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
@@ -345,6 +346,20 @@ const QuestPage = () => {
     navigate(`/explore?category=${questData.category}`);
   };
   
+  // Add copy quest function
+  const handleCopyQuest = () => {
+    // Create a query string with the quest data
+    const params = new URLSearchParams({
+      title: questData.title,
+      description: questData.description,
+      category: questData.category,
+      imageUrl: questData.imageUrl || ''
+    });
+    
+    navigate(`/create?${params.toString()}`);
+    toast.success("Quest details copied! Customize your new quest.");
+  };
+  
   // Check if current user is the quest creator
   const isQuestCreator = profile?.username === questData.username;
   
@@ -389,7 +404,20 @@ const QuestPage = () => {
                     </span>
                   </div>
                   
-                  <h1 className="text-3xl font-bold mb-4">{questData.title}</h1>
+                  <div className="flex justify-between items-center mb-4">
+                    <h1 className="text-3xl font-bold">
+                      {questData.title}
+                    </h1>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={handleCopyQuest}
+                      className="ml-2"
+                    >
+                      <Copy size={16} className="mr-2" />
+                      Copy Quest
+                    </Button>
+                  </div>
                   
                   <div className="flex flex-wrap gap-6 items-center text-sm text-muted-foreground mb-6">
                     <div className="flex items-center gap-1.5">
