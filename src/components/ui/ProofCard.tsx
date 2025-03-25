@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ThumbsUp, ThumbsDown, Clock, Check, X } from 'lucide-react';
@@ -12,6 +11,7 @@ export type Proof = {
   challengeId: string;
   userId: string;
   username: string;
+  title: string;
   createdAt: string;
   description: string;
   imageUrl?: string;
@@ -60,14 +60,15 @@ const ProofCard: React.FC<ProofCardProps> = ({
       return;
     }
     
-    navigate("/escrow-deposit", {
+    navigate('/escrow-deposit', {
       state: {
-        type: "verify",
-        proofTitle: proof.description,
+        type: 'verify',
+        proofTitle: proof.title,
         proofDescription: proof.description,
-        questTitle: questTitle,
-        questDescription: questDescription,
-        proofId: proof.id
+        questTitle,
+        questDescription,
+        proofId: proof.id,
+        questId: proof.challengeId
       }
     });
   };
@@ -78,14 +79,15 @@ const ProofCard: React.FC<ProofCardProps> = ({
       return;
     }
     
-    navigate("/escrow-deposit", {
+    navigate('/escrow-deposit', {
       state: {
-        type: "contest",
-        proofTitle: proof.description,
+        type: 'contest',
+        proofTitle: proof.title,
         proofDescription: proof.description,
-        questTitle: questTitle,
-        questDescription: questDescription,
-        proofId: proof.id
+        questTitle,
+        questDescription,
+        proofId: proof.id,
+        questId: proof.challengeId
       }
     });
   };

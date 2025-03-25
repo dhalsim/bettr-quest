@@ -25,15 +25,6 @@ const Footer = () => {
               <FooterLink to="/explore">Explore</FooterLink>
               <FooterLink to="/my-quests">My Quests</FooterLink>
               <FooterLink to="/create">Create Quest</FooterLink>
-              <a 
-                href="https://github.com/dhalsim/bettr-quest"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
-              >
-                <GitHubIcon size={16} />
-                Open Source on GitHub
-              </a>
             </nav>
           </div>
         </div>
@@ -42,9 +33,14 @@ const Footer = () => {
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} bettr.quest. All rights reserved.
           </p>
-          <p className="text-sm text-muted-foreground">
-            Open source project built with ❤️
-          </p>
+          <a 
+            href="https://github.com/dhalsim/bettr-quest"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
+          >
+            Free Open Source Software <GitHubIcon size={16} />
+          </a>
         </div>
       </div>
     </footer>

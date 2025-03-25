@@ -127,6 +127,7 @@ const mockProofs: Record<string, Proof[]> = {
       challengeId: '1',
       userId: 'user1',
       username: 'mindfulness_guru',
+      title: 'Morning Meditation Session Complete',
       createdAt: '2023-04-16T14:15:00Z',
       description: "I completed my 20-minute meditation session this morning. I used the Headspace app and focused on breathing exercises. I feel much calmer and ready for the day.",
       imageUrl: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=600&auto=format',
@@ -143,6 +144,7 @@ const mockProofs: Record<string, Proof[]> = {
       challengeId: '2',
       userId: 'user2',
       username: 'polyglot_learner',
+      title: 'Italian Phrases Mastered',
       createdAt: '2023-04-12T10:30:00Z',
       description: "I've learned these 5 Italian phrases: 'Buongiorno' (Good morning), 'Grazie' (Thank you), 'Per favore' (Please), 'Mi scusi' (Excuse me), and 'Dov'è il bagno?' (Where is the bathroom?). I practiced with an Italian friend who confirmed my pronunciation.",
       imageUrl: 'https://images.unsplash.com/photo-1530538095376-a4936b5c6c4b?q=80&w=600&auto=format',
@@ -159,6 +161,7 @@ const mockProofs: Record<string, Proof[]> = {
       challengeId: '3',
       userId: 'user3',
       username: 'runner_joe',
+      title: '5km Run Achievement',
       createdAt: '2023-04-18T08:45:00Z',
       description: "I did it! Completed my 5km run in 28:42. I've attached a screenshot from my running app showing the time and distance. The weather was perfect this morning, which helped a lot.",
       imageUrl: 'https://images.unsplash.com/photo-1560073562-f36a05efa160?q=80&w=600&auto=format',
@@ -175,6 +178,7 @@ const mockProofs: Record<string, Proof[]> = {
       challengeId: '4',
       userId: 'user4',
       username: 'storyteller',
+      title: 'Story Writing Progress',
       createdAt: '2023-04-13T23:50:00Z',
       description: "I tried my best but only managed to write 600 words. I got stuck halfway through and couldn't finish the story in time. I'll try again with a smaller goal next time.",
       imageUrl: null,
@@ -191,6 +195,7 @@ const mockProofs: Record<string, Proof[]> = {
       challengeId: '5',
       userId: 'user5',
       username: 'code_ninja',
+      title: 'Algorithm Challenge Solution',
       createdAt: '2023-04-17T16:20:00Z',
       description: "I solved the 'Merge K Sorted Lists' problem with an optimized approach using a priority queue. My solution has O(n log k) time complexity. I've attached a screenshot of my accepted solution and runtime stats.",
       imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=600&auto=format',
@@ -307,6 +312,7 @@ const QuestPage = () => {
         challengeId: questData.id,
         userId: 'current-user',
         username: 'you',
+        title: 'New Proof Submission',
         createdAt: new Date().toISOString(),
         description: newProof,
         imageUrl: mediaFiles.image ? URL.createObjectURL(mediaFiles.image) : undefined,
@@ -623,6 +629,8 @@ const QuestPage = () => {
                 key={proof.id} 
                 proof={proof} 
                 questLockedAmount={questData.lockedAmount}
+                questTitle={questData.title}
+                questDescription={questData.description}
               />
             ))}
             

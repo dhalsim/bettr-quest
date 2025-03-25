@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
@@ -139,15 +138,21 @@ const EscrowDeposit = () => {
           {isProofVerification && 'proofTitle' in state && 'proofDescription' in state && (
             <ProofDetailsCard 
               title={state.proofTitle} 
-              description={state.proofDescription} 
+              description={state.proofDescription}
+              proofLink={`/quest/${state.questId}/proof/${state.proofId}`}
+              questTitle={state.questTitle}
+              questDescription={state.questDescription}
+              questLink={getQuestLink()}
             />
           )}
           
-          <QuestDetailsCard 
-            title={state.questTitle}
-            description={state.questDescription}
-            questLink={getQuestLink()}
-          />
+          {!isProofVerification && (
+            <QuestDetailsCard 
+              title={state.questTitle}
+              description={state.questDescription}
+              questLink={getQuestLink()}
+            />
+          )}
           
           <div className="space-y-8">
             <LockAmountSection 

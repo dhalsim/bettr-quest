@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NostrAuthProvider } from "@/contexts/NostrAuthProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import ScrollToTop from "@/components/utils/ScrollToTop";
 import Index from "./pages/Index";
 import Explore from "./pages/Explore";
 import QuestPage from "./pages/Quest";
@@ -26,6 +27,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <NostrAuthProvider>
+          <ScrollToTop />
           <div className="flex flex-col min-h-screen">
             <Header />
             <main className="flex-grow">

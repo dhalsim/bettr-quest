@@ -1,21 +1,59 @@
-
 import React from 'react';
+import { ExternalLink } from 'lucide-react';
 
 interface ProofDetailsCardProps {
   title: string;
   description: string;
+  proofLink: string;
+  questTitle: string;
+  questDescription: string;
+  questLink: string;
 }
 
-const ProofDetailsCard = ({ title, description }: ProofDetailsCardProps) => {
+const ProofDetailsCard: React.FC<ProofDetailsCardProps> = ({
+  title,
+  description,
+  proofLink,
+  questTitle,
+  questDescription,
+  questLink
+}) => {
   return (
-    <div className="bg-secondary/10 rounded-lg p-4 border border-border/50 mb-8">
-      <div className="flex items-center gap-3 mb-2">
-        <h2 className="text-xl font-semibold">Proof Details</h2>
+    <div className="bg-secondary/10 rounded-lg p-6 border border-border/50 mb-8">
+      <div className="mb-6">
+        <div className="text-sm text-muted-foreground mb-2">Verifying Proof:</div>
+        <div className="flex items-center gap-3">
+          <a 
+            href={proofLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:text-primary transition-colors group"
+          >
+            <ExternalLink size={18} className="group-hover:text-primary" />
+            <h2 className="text-xl font-semibold">{title}</h2>
+          </a>
+        </div>
+        <p className="text-muted-foreground mt-2">{description}</p>
       </div>
-      <h3 className="text-lg font-medium mb-2">{title}</h3>
-      <p className="text-muted-foreground">
-        {description}
-      </p>
+
+      {/* Quest Section - Nested within proof context */}
+      <div className="mt-6 pt-6 border-t border-border/30">
+        <div className="bg-background/50 rounded-lg p-4">
+          <div className="text-sm text-muted-foreground mb-2">For the Quest:</div>
+          <div className="flex items-center gap-3">
+            <a 
+              href={questLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-primary transition-colors group"
+            >
+              <ExternalLink size={16} className="group-hover:text-primary" />
+              <h3 className="text-base font-medium">{questTitle}</h3>
+            </a>
+          </div>
+          <p className="text-sm text-muted-foreground mt-2">{questDescription}</p>
+        </div>
+      </div>
     </div>
   );
 };
