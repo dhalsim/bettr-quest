@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 
-// Mock notification types
+// Notification types
 export type NotificationType = 'zap' | 'review' | 'proof' | 'reminder' | 'message';
 
 export interface Notification {
@@ -15,6 +15,7 @@ export interface Notification {
   questId?: string;
   questTitle?: string;
   amount?: number;
+  messageContent?: string; // Add message content field for DMs
 }
 
 // Mock notifications data
@@ -68,11 +69,18 @@ const mockNotifications: Notification[] = [
     read: true,
     username: 'lightning_user',
     userAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=lightning',
+    messageContent: 'Hey, I was wondering if you could help me with a quest idea?'
   }
 ];
 
 export const useNotifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+  const [unreadCount, setUnreadCount] = useState<number>(0);
+  
+  // Update unread count whenever notifications change
+  useEffect(() => {
+    setUnreadCount(notifications.filter(n => !n.read).length);
+  }, [notifications]);
   
   // Mark all as read
   const markAllAsRead = () => {
@@ -97,7 +105,7 @@ export const useNotifications = () => {
 
   // Get unread count
   const getUnreadCount = () => {
-    return notifications.filter(n => !n.read).length;
+    return unreadCount;
   };
   
   // Format timestamp helper
@@ -130,6 +138,6 @@ export const useNotifications = () => {
     markAsRead, 
     getUnreadCount,
     formatTimestamp,
-    hasUnread: getUnreadCount() > 0
+    hasUnread: unreadCount > 0
   };
 };

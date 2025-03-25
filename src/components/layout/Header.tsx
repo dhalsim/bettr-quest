@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun, Bell } from 'lucide-react';
@@ -146,7 +145,7 @@ const Header = () => {
                   <Bell size={18} />
                   <span>Notifications</span>
                   {getUnreadCount() > 0 && (
-                    <NotificationBadge count={getUnreadCount()} className="static ml-2" />
+                    <NotificationBadge count={getUnreadCount()} className="static ml-2 -mt-0" />
                   )}
                 </Link>
                 <Link
@@ -208,6 +207,7 @@ const UserMenu = ({
   hasUnread: boolean
 }) => {
   const initials = profile?.name ? profile.name.charAt(0).toUpperCase() : 'U';
+  const navigate = useNavigate();
   
   return (
     <DropdownMenu>
@@ -232,16 +232,14 @@ const UserMenu = ({
             <span>My Quests</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/notifications" className="flex items-center gap-2 cursor-pointer relative">
-            <Bell size={16} />
-            <span>Notifications</span>
-            {unreadCount > 0 && (
-              <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-5 text-center">
-                {unreadCount}
-              </span>
-            )}
-          </Link>
+        <DropdownMenuItem onClick={() => navigate("/notifications")} className="flex items-center gap-2 cursor-pointer relative">
+          <Bell size={16} />
+          <span>Notifications</span>
+          {unreadCount > 0 && (
+            <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-5 text-center">
+              {unreadCount}
+            </span>
+          )}
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to={`/profile/${profile?.username || 'user'}`} className="flex items-center gap-2 cursor-pointer">

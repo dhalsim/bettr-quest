@@ -21,7 +21,7 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
   }
   
   return (
-    <span className={`absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white ${className}`}>
+    <span className={`flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white ${className}`}>
       {count}
     </span>
   );
