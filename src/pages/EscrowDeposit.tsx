@@ -1,13 +1,16 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { ExternalLink, LockIcon, Shield, Users, Check, X } from 'lucide-react';
+import { ExternalLink, LockIcon, Shield, Users, Check, X, ArrowUpRight } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface QuestLocationState {
   questTitle: string;
   questDescription: string;
+  questId?: string;
   type?: undefined;
 }
 
@@ -18,6 +21,7 @@ interface ProofLocationState {
   questTitle: string;
   questDescription: string;
   proofId: string;
+  questId: string;
 }
 
 type LocationState = QuestLocationState | ProofLocationState;
@@ -25,9 +29,29 @@ type LocationState = QuestLocationState | ProofLocationState;
 const EscrowDeposit = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const state = location.state as LocationState;
+  const [state, setState] = useState<LocationState | null>(null);
   
-  const isProofVerification = state && state.type === 'verify' || state?.type === 'contest';
+  useEffect(() => {
+    // Set state from location or redirect to explore if missing
+    if (location.state) {
+      setState(location.state as LocationState);
+    } else {
+      navigate('/explore');
+    }
+  }, [location, navigate]);
+  
+  // Guard against null state during initial render or after refresh
+  if (!state) {
+    return (
+      <div className="min-h-screen pt-32 pb-20 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <h1 className="text-3xl font-bold mb-4">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
+  
+  const isProofVerification = 'type' in state && (state.type === 'verify' || state.type === 'contest');
   
   const [rewardPercentage, setRewardPercentage] = useState(5);
   const baseLockAmount = isProofVerification ? 10000 : 20000; // sats
@@ -41,13 +65,23 @@ const EscrowDeposit = () => {
     return isProofVerification ? baseLockAmount + fees : baseLockAmount + calculateRewardAmount() + fees;
   };
   
+  const getQuestLink = () => {
+    if (isProofVerification && 'questId' in state) {
+      return `/quest/${state.questId}`;
+    } else if (!isProofVerification && 'questId' in state) {
+      return `/quest/${state.questId}`;
+    } else {
+      return `/quest/2`; // Fallback
+    }
+  };
+  
   const handleConfirmDeposit = () => {
     // TODO: Implement deposit logic
     // For now, just navigate back to the quest page
-    navigate('/quest/2'); // We're hardcoding to quest/2 for now
+    navigate(getQuestLink());
     
     // Show a toast based on the type of deposit
-    if (isProofVerification) {
+    if (isProofVerification && 'type' in state) {
       if (state.type === 'verify') {
         // Show verification toast
       } else {
@@ -58,13 +92,37 @@ const EscrowDeposit = () => {
     }
   };
   
+  const renderRewardInfo = () => {
+    if (!isProofVerification) {
+      return null;
+    }
+    
+    if ('type' in state && state.type === 'verify') {
+      return (
+        <Alert className="mb-6 bg-green-50 border-green-200">
+          <AlertDescription className="text-green-800">
+            If your verification is correct, you'll receive <span className="font-bold">your locked amount + rewards</span> set aside by the quest creator.
+          </AlertDescription>
+        </Alert>
+      );
+    } else if ('type' in state && state.type === 'contest') {
+      return (
+        <Alert className="mb-6 bg-red-50 border-red-200">
+          <AlertDescription className="text-red-800">
+            If your contest is valid, you'll receive <span className="font-bold">your locked amount + the entire locked amount of the quest</span>.
+          </AlertDescription>
+        </Alert>
+      );
+    }
+  };
+  
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-2xl mx-auto">
         {/* Introduction Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">
-            {isProofVerification 
+            {isProofVerification && 'type' in state
               ? state.type === 'verify' 
                 ? 'Verify Proof' 
                 : 'Contest Proof' 
@@ -72,7 +130,7 @@ const EscrowDeposit = () => {
             }
           </h1>
           <p className="text-muted-foreground">
-            {isProofVerification 
+            {isProofVerification && 'type' in state
               ? state.type === 'verify' 
                 ? 'Lock some sats to verify this proof. You\'ll earn rewards if your verification is correct.'
                 : 'Lock some sats to contest this proof. You\'ll receive the full locked amount if your contest is validated.'
@@ -81,24 +139,36 @@ const EscrowDeposit = () => {
           </p>
         </div>
 
+        {renderRewardInfo()}
+
         <div className="glass rounded-2xl p-8 border border-border/50">
-          {isProofVerification && (
+          {isProofVerification && 'proofTitle' in state && 'proofDescription' in state && (
             <div className="bg-secondary/10 rounded-lg p-4 border border-border/50 mb-8">
               <div className="flex items-center gap-3 mb-2">
                 <h2 className="text-xl font-semibold">Proof Details</h2>
               </div>
+              <h3 className="text-lg font-medium mb-2">{state.proofTitle}</h3>
               <p className="text-muted-foreground">
-                {isProofVerification && 'proofDescription' in state ? state.proofDescription : ''}
+                {state.proofDescription}
               </p>
             </div>
           )}
           
           {/* Quest Info */}
           <div className="bg-secondary/10 rounded-lg p-4 border border-border/50 mb-8">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-3">
               <h2 className="text-xl font-semibold">Quest Details</h2>
+              <a 
+                href={getQuestLink()} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center text-primary hover:underline"
+              >
+                View Quest <ArrowUpRight size={16} className="ml-1" />
+              </a>
             </div>
-            <p className="text-muted-foreground mt-2">
+            <h3 className="text-lg font-medium mt-2 mb-2">{state.questTitle}</h3>
+            <p className="text-muted-foreground">
               {state.questDescription}
             </p>
           </div>
@@ -195,12 +265,12 @@ const EscrowDeposit = () => {
               size="lg"
               className="w-full"
               onClick={handleConfirmDeposit}
-              leftIcon={isProofVerification 
+              leftIcon={isProofVerification && 'type' in state
                 ? (state.type === 'verify' ? <Check size={16} /> : <X size={16} />)
                 : <LockIcon size={16} />
               }
             >
-              {isProofVerification 
+              {isProofVerification && 'type' in state
                 ? state.type === 'verify' 
                   ? 'Confirm Verification' 
                   : 'Confirm Contest'
