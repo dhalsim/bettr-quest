@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import GitHubIcon from '@/components/icons/GitHubIcon';
 
 const Footer = () => {
   return (
@@ -24,13 +25,25 @@ const Footer = () => {
               <FooterLink to="/explore">Explore</FooterLink>
               <FooterLink to="/my-quests">My Quests</FooterLink>
               <FooterLink to="/create">Create Quest</FooterLink>
+              <a 
+                href="https://github.com/dhalsim/bettr-quest"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
+              >
+                <GitHubIcon size={16} />
+                Open Source on GitHub
+              </a>
             </nav>
           </div>
         </div>
         
-        <div className="mt-12 pt-8 border-t border-border flex justify-center md:justify-start">
+        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-center md:justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} bettr.quest. All rights reserved.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Open source project built with ❤️
           </p>
         </div>
       </div>
