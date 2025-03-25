@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy } from 'lucide-react';
@@ -408,15 +407,17 @@ const QuestPage = () => {
                     <h1 className="text-3xl font-bold">
                       {questData.title}
                     </h1>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={handleCopyQuest}
-                      className="ml-2"
-                    >
-                      <Copy size={16} className="mr-2" />
-                      Copy Quest
-                    </Button>
+                    {profile && !isQuestCreator && (
+                      <Button 
+                        variant="primary"
+                        size="sm"
+                        onClick={handleCopyQuest}
+                        className="ml-2"
+                      >
+                        <Copy size={16} className="mr-2" />
+                        Copy Quest
+                      </Button>
+                    )}
                   </div>
                   
                   <div className="flex flex-wrap gap-6 items-center text-sm text-muted-foreground mb-6">
