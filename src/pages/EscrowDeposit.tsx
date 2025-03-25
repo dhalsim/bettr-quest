@@ -27,7 +27,7 @@ const EscrowDeposit = () => {
   const navigate = useNavigate();
   const state = location.state as LocationState;
   
-  const isProofVerification = state.type === 'verify' || state.type === 'contest';
+  const isProofVerification = state && state.type === 'verify' || state?.type === 'contest';
   
   const [rewardPercentage, setRewardPercentage] = useState(5);
   const baseLockAmount = isProofVerification ? 10000 : 20000; // sats
@@ -87,7 +87,9 @@ const EscrowDeposit = () => {
               <div className="flex items-center gap-3 mb-2">
                 <h2 className="text-xl font-semibold">Proof Details</h2>
               </div>
-              <p className="text-muted-foreground">{state.proofDescription}</p>
+              <p className="text-muted-foreground">
+                {isProofVerification && 'proofDescription' in state ? state.proofDescription : ''}
+              </p>
             </div>
           )}
           
@@ -97,7 +99,7 @@ const EscrowDeposit = () => {
               <h2 className="text-xl font-semibold">Quest Details</h2>
             </div>
             <p className="text-muted-foreground mt-2">
-              {isProofVerification ? state.questDescription : state.questDescription}
+              {state.questDescription}
             </p>
           </div>
           
