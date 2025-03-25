@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
@@ -8,11 +8,10 @@ import MediaUpload from '@/components/quest/MediaUpload';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
-// Define the status types for Quest and Proof
 type QuestStatus = 'pending' | 'on_review' | 'success' | 'failed' | 'in_dispute';
 
-// Quest data type
 interface Quest {
   id: string;
   title: string;
@@ -27,12 +26,11 @@ interface Quest {
   participants: number;
   completionRate: number | null;
   visibility: 'public' | 'private';
-  lockedAmount?: number; // Amount of sats locked by creator
+  lockedAmount?: number;
   inDispute?: boolean;
   escrowStatus?: 'locked' | 'distributed' | 'in_process';
 }
 
-// Mock quests with different scenarios
 const mockQuests: Record<string, Quest> = {
   "1": {
     id: '1',
@@ -48,7 +46,7 @@ const mockQuests: Record<string, Quest> = {
     participants: 1,
     completionRate: null,
     visibility: 'public',
-    lockedAmount: 1000, // Example: 1000 sats locked
+    lockedAmount: 1000,
     escrowStatus: 'locked'
   },
   "2": {
@@ -122,7 +120,6 @@ const mockQuests: Record<string, Quest> = {
   }
 };
 
-// Mock proofs for each quest
 const mockProofs: Record<string, Proof[]> = {
   "1": [
     {
@@ -209,14 +206,13 @@ const mockProofs: Record<string, Proof[]> = {
 const QuestPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { profile } = useNostrAuth();
+  const { profile, isLoggedIn } = useNostrAuth();
   const [proofs, setProofs] = useState<Proof[]>([]);
   const [questData, setQuestData] = useState<Quest | null>(null);
   const [newProof, setNewProof] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
   
-  // Media states handled by MediaUpload component
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
     video: File | null,
@@ -229,13 +225,11 @@ const QuestPage = () => {
     recordedVideo: null
   });
   
-  // Load quest data based on id
   useEffect(() => {
     if (id && mockQuests[id]) {
       setQuestData(mockQuests[id]);
       setProofs(mockProofs[id] || []);
     } else {
-      // Default to the first quest if id doesn't exist
       setQuestData(mockQuests["1"]);
       setProofs(mockProofs["1"] || []);
     }
@@ -345,9 +339,7 @@ const QuestPage = () => {
     navigate(`/explore?category=${questData.category}`);
   };
   
-  // Add copy quest function
   const handleCopyQuest = () => {
-    // Create a query string with the quest data
     const params = new URLSearchParams({
       title: questData.title,
       description: questData.description,
@@ -359,8 +351,10 @@ const QuestPage = () => {
     toast.success("Quest details copied! Customize your new quest.");
   };
   
-  // Check if current user is the quest creator
   const isQuestCreator = profile?.username === questData.username;
+  
+  const verificationReward = Math.round((questData.lockedAmount || 0) * 0.05);
+  const contestReward = questData.lockedAmount || 0;
   
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
@@ -437,6 +431,64 @@ const QuestPage = () => {
                       {daysRemaining > 0 
                         ? `${daysRemaining} days remaining` 
                         : 'Due date passed'}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
+                    <div className="flex flex-wrap justify-between items-center gap-4">
+                      <div>
+                        <h3 className="text-lg font-medium mb-1">Quest Rewards</h3>
+                        <p className="text-sm text-muted-foreground">Locked amount: <span className="font-semibold text-foreground">{questData.lockedAmount?.toLocaleString() || 0} sats</span></p>
+                      </div>
+                      
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <div className="bg-green-500/10 text-green-500 px-3 py-2 rounded-md text-sm">
+                          <div className="font-medium">Verification Reward</div>
+                          <div className="font-bold">{verificationReward} sats</div>
+                        </div>
+                        <div className="bg-red-500/10 text-red-500 px-3 py-2 rounded-md text-sm">
+                          <div className="font-medium">Contest Reward</div>
+                          <div className="font-bold">{contestReward} sats</div>
+                        </div>
+                      </div>
+                      
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" size="sm">Learn how rewards work</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>How Quest Rewards Work</DialogTitle>
+                            <DialogDescription>
+                              <div className="mt-4 space-y-4">
+                                <div>
+                                  <h4 className="font-medium mb-1 flex items-center gap-2 text-green-500">
+                                    <CircleCheck size={16} /> Verification Reward
+                                  </h4>
+                                  <p className="text-sm">
+                                    Verifying legitimate proofs earns you 5% of the locked amount ({verificationReward} sats). 
+                                    If multiple users verify, the reward is split equally.
+                                  </p>
+                                </div>
+                                
+                                <div>
+                                  <h4 className="font-medium mb-1 flex items-center gap-2 text-red-500">
+                                    <CircleX size={16} /> Contest Reward
+                                  </h4>
+                                  <p className="text-sm">
+                                    Successfully contesting a fraudulent proof earns you the entire locked amount ({contestReward} sats). 
+                                    Make sure you have evidence before contesting!
+                                  </p>
+                                </div>
+                                
+                                <div className="pt-2 border-t border-border">
+                                  <p className="text-sm font-medium">The quest creator has locked {questData.lockedAmount?.toLocaleString() || 0} sats to ensure accountability.</p>
+                                </div>
+                              </div>
+                            </DialogDescription>
+                          </DialogHeader>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </div>
                   
@@ -534,7 +586,6 @@ const QuestPage = () => {
                       />
                     </div>
                     
-                    {/* Media Upload Section */}
                     <MediaUpload 
                       onMediaChange={files => setMediaFiles(files)}
                     />
@@ -556,11 +607,30 @@ const QuestPage = () => {
         </div>
         
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">Submitted Proofs</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">Submitted Proofs</h2>
+            {!isLoggedIn && (
+              <Link to="/connect" className="text-primary font-medium hover:underline flex items-center">
+                <User size={16} className="mr-1.5" />
+                Connect to earn rewards
+              </Link>
+            )}
+          </div>
+          
           <div className="grid gap-6">
             {proofs.map((proof) => (
-              <ProofCard key={proof.id} proof={proof} />
+              <ProofCard 
+                key={proof.id} 
+                proof={proof} 
+                questLockedAmount={questData.lockedAmount}
+              />
             ))}
+            
+            {proofs.length === 0 && (
+              <div className="glass rounded-2xl p-8 text-center">
+                <p className="text-muted-foreground">No proofs have been submitted yet.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

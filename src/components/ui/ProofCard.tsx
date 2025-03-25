@@ -1,8 +1,11 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ThumbsUp, ThumbsDown, Clock } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Clock, Check, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { useNostrAuth } from '@/hooks/useNostrAuth';
+import { toast } from 'sonner';
 
 export type Proof = {
   id: string;
@@ -21,9 +24,12 @@ export type Proof = {
 
 interface ProofCardProps {
   proof: Proof;
+  questLockedAmount?: number;
 }
 
-const ProofCard: React.FC<ProofCardProps> = ({ proof }) => {
+const ProofCard: React.FC<ProofCardProps> = ({ proof, questLockedAmount = 0 }) => {
+  const { isLoggedIn } = useNostrAuth();
+  
   // Format date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -35,6 +41,25 @@ const ProofCard: React.FC<ProofCardProps> = ({ proof }) => {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  // Calculate reward amount (5% of locked amount)
+  const rewardAmount = Math.round(questLockedAmount * 0.05);
+  
+  const handleVerify = () => {
+    if (!isLoggedIn) {
+      toast.error("Please connect your wallet to verify proofs");
+      return;
+    }
+    toast.success(`You've verified this proof. You'll receive ${rewardAmount} sats if accepted!`);
+  };
+  
+  const handleContest = () => {
+    if (!isLoggedIn) {
+      toast.error("Please connect your wallet to contest proofs");
+      return;
+    }
+    toast.success(`You've contested this proof. You could receive ${questLockedAmount} sats if your contest is validated!`);
   };
   
   return (
@@ -64,6 +89,10 @@ const ProofCard: React.FC<ProofCardProps> = ({ proof }) => {
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-500">
                 Accepted
               </span>
+            ) : proof.status === 'in_dispute' ? (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500/10 text-orange-500">
+                In Dispute
+              </span>
             ) : (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-500">
                 Rejected
@@ -84,16 +113,51 @@ const ProofCard: React.FC<ProofCardProps> = ({ proof }) => {
           </div>
         )}
         
-        <div className="flex items-center justify-end gap-4">
-          <button className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-green-500 transition-colors">
-            <ThumbsUp size={16} />
-            <span>{proof.votes.accept}</span>
-          </button>
-          
-          <button className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-red-500 transition-colors">
-            <ThumbsDown size={16} />
-            <span>{proof.votes.reject}</span>
-          </button>
+        <div className="border-t border-border mt-4 pt-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 text-muted-foreground">
+                <ThumbsUp size={16} />
+                <span>{proof.votes.accept}</span>
+              </div>
+              
+              <div className="flex items-center gap-1.5 text-muted-foreground">
+                <ThumbsDown size={16} />
+                <span>{proof.votes.reject}</span>
+              </div>
+            </div>
+            
+            {proof.status === 'pending' && (
+              <div className="flex gap-3 w-full sm:w-auto">
+                {isLoggedIn ? (
+                  <>
+                    <Button 
+                      className="bg-green-500 hover:bg-green-600 text-white" 
+                      size="sm"
+                      onClick={handleVerify}
+                    >
+                      <Check size={16} className="mr-1.5" />
+                      Verify
+                    </Button>
+                    <Button 
+                      className="bg-red-500 hover:bg-red-600 text-white" 
+                      size="sm"
+                      onClick={handleContest}
+                    >
+                      <X size={16} className="mr-1.5" />
+                      Contest
+                    </Button>
+                  </>
+                ) : (
+                  <div className="w-full sm:w-auto">
+                    <Link to="/connect" className="text-primary font-medium text-sm hover:underline">
+                      Connect to earn rewards
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
