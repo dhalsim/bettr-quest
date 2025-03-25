@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ThumbsUp, ThumbsDown, Clock, Check, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -25,10 +25,18 @@ export type Proof = {
 interface ProofCardProps {
   proof: Proof;
   questLockedAmount?: number;
+  questTitle?: string;
+  questDescription?: string;
 }
 
-const ProofCard: React.FC<ProofCardProps> = ({ proof, questLockedAmount = 0 }) => {
+const ProofCard: React.FC<ProofCardProps> = ({ 
+  proof, 
+  questLockedAmount = 0,
+  questTitle = "",
+  questDescription = "" 
+}) => {
   const { isLoggedIn } = useNostrAuth();
+  const navigate = useNavigate();
   
   // Format date
   const formatDate = (dateString: string) => {
@@ -51,7 +59,17 @@ const ProofCard: React.FC<ProofCardProps> = ({ proof, questLockedAmount = 0 }) =
       toast.error("Please connect your wallet to verify proofs");
       return;
     }
-    toast.success(`You've verified this proof. You'll receive ${rewardAmount} sats if accepted!`);
+    
+    navigate("/escrow-deposit", {
+      state: {
+        type: "verify",
+        proofTitle: proof.description,
+        proofDescription: proof.description,
+        questTitle: questTitle,
+        questDescription: questDescription,
+        proofId: proof.id
+      }
+    });
   };
   
   const handleContest = () => {
@@ -59,7 +77,17 @@ const ProofCard: React.FC<ProofCardProps> = ({ proof, questLockedAmount = 0 }) =
       toast.error("Please connect your wallet to contest proofs");
       return;
     }
-    toast.success(`You've contested this proof. You could receive ${questLockedAmount} sats if your contest is validated!`);
+    
+    navigate("/escrow-deposit", {
+      state: {
+        type: "contest",
+        proofTitle: proof.description,
+        proofDescription: proof.description,
+        questTitle: questTitle,
+        questDescription: questDescription,
+        proofId: proof.id
+      }
+    });
   };
   
   return (

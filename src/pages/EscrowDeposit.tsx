@@ -1,21 +1,36 @@
+
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { ExternalLink, LockIcon, Shield, Users } from 'lucide-react';
+import { ExternalLink, LockIcon, Shield, Users, Check, X } from 'lucide-react';
 
-interface LocationState {
+interface QuestLocationState {
   questTitle: string;
   questDescription: string;
+  type?: undefined;
 }
+
+interface ProofLocationState {
+  type: 'verify' | 'contest';
+  proofTitle: string;
+  proofDescription: string;
+  questTitle: string;
+  questDescription: string;
+  proofId: string;
+}
+
+type LocationState = QuestLocationState | ProofLocationState;
 
 const EscrowDeposit = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { questTitle, questDescription } = location.state as LocationState;
+  const state = location.state as LocationState;
+  
+  const isProofVerification = state.type === 'verify' || state.type === 'contest';
   
   const [rewardPercentage, setRewardPercentage] = useState(5);
-  const baseLockAmount = 20000; // sats
+  const baseLockAmount = isProofVerification ? 10000 : 20000; // sats
   const fees = 1000; // sats
   
   const calculateRewardAmount = () => {
@@ -23,13 +38,24 @@ const EscrowDeposit = () => {
   };
   
   const calculateTotal = () => {
-    return baseLockAmount + calculateRewardAmount() + fees;
+    return isProofVerification ? baseLockAmount + fees : baseLockAmount + calculateRewardAmount() + fees;
   };
   
   const handleConfirmDeposit = () => {
     // TODO: Implement deposit logic
-    // For now, just navigate to the quest page
-    navigate('/quest/1'); // Replace with actual quest ID
+    // For now, just navigate back to the quest page
+    navigate('/quest/2'); // We're hardcoding to quest/2 for now
+    
+    // Show a toast based on the type of deposit
+    if (isProofVerification) {
+      if (state.type === 'verify') {
+        // Show verification toast
+      } else {
+        // Show contest toast
+      }
+    } else {
+      // Show quest creation toast
+    }
   };
   
   return (
@@ -37,28 +63,42 @@ const EscrowDeposit = () => {
       <div className="max-w-2xl mx-auto">
         {/* Introduction Section */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-4">Secure Your Commitment</h1>
+          <h1 className="text-3xl font-bold mb-4">
+            {isProofVerification 
+              ? state.type === 'verify' 
+                ? 'Verify Proof' 
+                : 'Contest Proof' 
+              : 'Secure Your Commitment'
+            }
+          </h1>
           <p className="text-muted-foreground">
-            Lock some sats in our secure escrow to strengthen your commitment. You'll get them back when you complete your quest.
-            Set rewards to incentivize the community to verify your proof of completion.
+            {isProofVerification 
+              ? state.type === 'verify' 
+                ? 'Lock some sats to verify this proof. You\'ll earn rewards if your verification is correct.'
+                : 'Lock some sats to contest this proof. You\'ll receive the full locked amount if your contest is validated.'
+              : 'Lock some sats in our secure escrow to strengthen your commitment. You\'ll get them back when you complete your quest.'
+            }
           </p>
         </div>
 
         <div className="glass rounded-2xl p-8 border border-border/50">
+          {isProofVerification && (
+            <div className="bg-secondary/10 rounded-lg p-4 border border-border/50 mb-8">
+              <div className="flex items-center gap-3 mb-2">
+                <h2 className="text-xl font-semibold">Proof Details</h2>
+              </div>
+              <p className="text-muted-foreground">{state.proofDescription}</p>
+            </div>
+          )}
+          
           {/* Quest Info */}
           <div className="bg-secondary/10 rounded-lg p-4 border border-border/50 mb-8">
             <div className="flex items-center gap-3">
-              <a 
-                href={`/quest/1`} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 hover:text-primary transition-colors"
-              >
-                <ExternalLink size={18} />
-                <h2 className="text-xl font-semibold">{questTitle}</h2>
-              </a>
+              <h2 className="text-xl font-semibold">Quest Details</h2>
             </div>
-            <p className="text-muted-foreground mt-2">{questDescription}</p>
+            <p className="text-muted-foreground mt-2">
+              {isProofVerification ? state.questDescription : state.questDescription}
+            </p>
           </div>
           
           <div className="space-y-8">
@@ -71,39 +111,43 @@ const EscrowDeposit = () => {
                 <h2 className="text-lg font-semibold mb-2">Lock amount</h2>
                 <p className="text-2xl font-bold">{baseLockAmount.toLocaleString()} sats</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  This amount will be locked in escrow until you complete your quest.
-                  Think of it as a self-imposed security deposit to keep you motivated.
+                  {isProofVerification 
+                    ? 'This amount will be locked until the proof verification is complete.'
+                    : 'This amount will be locked in escrow until you complete your quest.'
+                  }
                 </p>
               </div>
             </div>
             
-            {/* Rewards Section */}
-            <div className="bg-secondary/10 rounded-lg p-6 border border-border/50">
-              <div className="flex items-center gap-3 mb-4">
-                <Users size={20} className="text-primary" />
-                <h3 className="text-lg font-semibold">Community Rewards</h3>
-              </div>
-              <p className="text-sm text-muted-foreground mb-6">
-                Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion.
-                Higher rewards attract more verifiers and faster responses.
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Reward: {rewardPercentage}%</span>
-                  <span>{calculateRewardAmount().toLocaleString()} sats</span>
+            {/* Rewards Section - Only show for quest creation */}
+            {!isProofVerification && (
+              <div className="bg-secondary/10 rounded-lg p-6 border border-border/50">
+                <div className="flex items-center gap-3 mb-4">
+                  <Users size={20} className="text-primary" />
+                  <h3 className="text-lg font-semibold">Community Rewards</h3>
                 </div>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion.
+                  Higher rewards attract more verifiers and faster responses.
+                </p>
                 
-                <Slider
-                  value={[rewardPercentage]}
-                  onValueChange={(values) => setRewardPercentage(values[0])}
-                  min={1}
-                  max={20}
-                  step={1}
-                  className="w-full"
-                />
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Reward: {rewardPercentage}%</span>
+                    <span>{calculateRewardAmount().toLocaleString()} sats</span>
+                  </div>
+                  
+                  <Slider
+                    value={[rewardPercentage]}
+                    onValueChange={(values) => setRewardPercentage(values[0])}
+                    min={1}
+                    max={20}
+                    step={1}
+                    className="w-full"
+                  />
+                </div>
               </div>
-            </div>
+            )}
             
             {/* Summary Section */}
             <div className="bg-secondary/5 rounded-lg p-6 border border-border/50">
@@ -117,10 +161,14 @@ const EscrowDeposit = () => {
                   <span>Lock Amount</span>
                   <span>{baseLockAmount.toLocaleString()} sats</span>
                 </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span>Community Rewards</span>
-                  <span>{calculateRewardAmount().toLocaleString()} sats</span>
-                </div>
+                
+                {!isProofVerification && (
+                  <div className="flex justify-between items-center text-sm">
+                    <span>Community Rewards</span>
+                    <span>{calculateRewardAmount().toLocaleString()} sats</span>
+                  </div>
+                )}
+                
                 <div className="flex justify-between items-center text-sm">
                   <span>Platform Fees</span>
                   <span>{fees.toLocaleString()} sats</span>
@@ -131,9 +179,11 @@ const EscrowDeposit = () => {
                     <span>Total to Lock</span>
                     <span className="text-red-500">{calculateTotal().toLocaleString()} sats</span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    You'll get back {baseLockAmount.toLocaleString()} sats upon successful completion
-                  </p>
+                  {!isProofVerification && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      You'll get back {baseLockAmount.toLocaleString()} sats upon successful completion
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -143,9 +193,17 @@ const EscrowDeposit = () => {
               size="lg"
               className="w-full"
               onClick={handleConfirmDeposit}
+              leftIcon={isProofVerification 
+                ? (state.type === 'verify' ? <Check size={16} /> : <X size={16} />)
+                : <LockIcon size={16} />
+              }
             >
-              <LockIcon size={16} className="mr-2" />
-              Lock {calculateTotal().toLocaleString()} sats
+              {isProofVerification 
+                ? state.type === 'verify' 
+                  ? 'Confirm Verification' 
+                  : 'Confirm Contest'
+                : `Lock ${calculateTotal().toLocaleString()} sats`
+              }
             </Button>
           </div>
         </div>
@@ -154,4 +212,4 @@ const EscrowDeposit = () => {
   );
 };
 
-export default EscrowDeposit; 
+export default EscrowDeposit;
