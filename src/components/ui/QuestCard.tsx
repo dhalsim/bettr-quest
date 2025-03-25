@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Calendar, User, Clock, UserPlus, UserCheck } from 'lucide-react';
+import { Calendar, User, Clock, UserPlus, UserCheck, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export type Quest = {
@@ -15,6 +15,7 @@ export type Quest = {
   status: 'pending' | 'on_review' | 'success' | 'failed' | 'in_dispute';
   imageUrl?: string;
   visibility: 'public' | 'private';
+  totalZapped?: number;
 };
 
 interface QuestCardProps {
@@ -25,7 +26,6 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const navigate = useNavigate();
   
-  // Format the date for display
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -34,7 +34,6 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
     });
   };
   
-  // Calculate days remaining until due date
   const calculateDaysRemaining = () => {
     const dueDate = new Date(quest.dueDate);
     const today = new Date();
@@ -45,22 +44,21 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   };
   
   const daysRemaining = calculateDaysRemaining();
+  const isQuestActive = daysRemaining > 0 && 
+                      (quest.status === 'pending' || quest.status === 'on_review');
   
-  // Toggle following state
   const toggleFollow = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsFollowing(!isFollowing);
   };
 
-  // Navigate to explore page with category filter
   const handleCategoryClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     navigate(`/explore?category=${quest.category}`);
   };
   
-  // Get the appropriate status badge color
   const getStatusBadgeClass = () => {
     switch (quest.status) {
       case 'pending':
@@ -76,7 +74,6 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
     }
   };
 
-  // Get the status display text
   const getStatusText = () => {
     switch (quest.status) {
       case 'pending':
@@ -143,20 +140,29 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
             </Button>
           </div>
           
-          <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-4 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1.5">
-              <Calendar size={12} />
-              <span>{formatDate(quest.createdAt)}</span>
+          <div className="mt-4 pt-4 border-t border-border flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5">
+                <Calendar size={12} />
+                <span>{formatDate(quest.createdAt)}</span>
+              </div>
+              
+              <div className="flex items-center gap-1.5">
+                <Clock size={12} />
+                <span>
+                  {daysRemaining > 0 
+                    ? `${daysRemaining} days remaining` 
+                    : 'Due date passed'}
+                </span>
+              </div>
             </div>
             
-            <div className="flex items-center gap-1.5">
-              <Clock size={12} />
-              <span>
-                {daysRemaining > 0 
-                  ? `${daysRemaining} days remaining` 
-                  : 'Due date passed'}
-              </span>
-            </div>
+            {quest.totalZapped && quest.totalZapped > 0 && (
+              <div className="flex items-center gap-1.5 text-yellow-500">
+                <Zap size={12} />
+                <span>{quest.totalZapped.toLocaleString()} sats</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

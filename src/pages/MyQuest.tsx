@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PlusCircle, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/ui/QuestCard';
 
-// Mock data for user quests
+// Mock data for user quests with zap amounts and updated dates
 const userQuests = [
   {
     id: '1',
@@ -13,11 +14,12 @@ const userQuests = [
     userId: 'user1',
     username: 'mindfulness_guru',
     createdAt: '2023-04-15T10:30:00Z',
-    dueDate: '2023-04-16T10:30:00Z',
+    dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days from now
     category: 'Wellness',
     status: 'pending' as const,
     imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
-    visibility: 'public' as const
+    visibility: 'public' as const,
+    totalZapped: 1500
   },
   {
     id: '4',
@@ -26,11 +28,12 @@ const userQuests = [
     userId: 'current-user',
     username: 'you',
     createdAt: '2023-04-01T09:00:00Z',
-    dueDate: '2023-04-05T09:00:00Z',
+    dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day from now
     category: 'Learning',
     status: 'on_review' as const,
     imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format',
-    visibility: 'public' as const
+    visibility: 'public' as const,
+    totalZapped: 300
   },
   {
     id: '5',
@@ -39,11 +42,12 @@ const userQuests = [
     userId: 'current-user',
     username: 'you',
     createdAt: '2023-03-15T11:30:00Z',
-    dueDate: '2023-03-16T11:30:00Z',
+    dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago (expired)
     category: 'Wellness',
     status: 'success' as const,
     imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format',
-    visibility: 'private' as const
+    visibility: 'private' as const,
+    totalZapped: 850
   }
 ];
 

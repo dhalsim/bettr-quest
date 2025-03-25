@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
@@ -9,6 +9,7 @@ import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import ZapModal from '@/components/quest/ZapModal';
 
 type QuestStatus = 'pending' | 'on_review' | 'success' | 'failed' | 'in_dispute';
 
@@ -29,6 +30,7 @@ interface Quest {
   lockedAmount?: number;
   inDispute?: boolean;
   escrowStatus?: 'locked' | 'distributed' | 'in_process';
+  totalZapped?: number;
 }
 
 const mockQuests: Record<string, Quest> = {
@@ -39,7 +41,7 @@ const mockQuests: Record<string, Quest> = {
     userId: 'user1',
     username: 'mindfulness_guru',
     createdAt: '2023-04-15T10:30:00Z',
-    dueDate: '2023-04-16T10:30:00Z',
+    dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
     category: 'Wellness',
     status: 'pending',
     imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
@@ -47,7 +49,8 @@ const mockQuests: Record<string, Quest> = {
     completionRate: null,
     visibility: 'public',
     lockedAmount: 1000,
-    escrowStatus: 'locked'
+    escrowStatus: 'locked',
+    totalZapped: 1500
   },
   "2": {
     id: '2',
@@ -56,7 +59,7 @@ const mockQuests: Record<string, Quest> = {
     userId: 'user2',
     username: 'polyglot_learner',
     createdAt: '2023-04-08T14:20:00Z',
-    dueDate: '2023-04-12T14:20:00Z',
+    dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
     category: 'Learning',
     status: 'on_review',
     imageUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600&auto=format',
@@ -64,7 +67,8 @@ const mockQuests: Record<string, Quest> = {
     completionRate: 75,
     visibility: 'public',
     lockedAmount: 2000,
-    escrowStatus: 'locked'
+    escrowStatus: 'locked',
+    totalZapped: 800
   },
   "3": {
     id: '3',
@@ -73,7 +77,7 @@ const mockQuests: Record<string, Quest> = {
     userId: 'user3',
     username: 'runner_joe',
     createdAt: '2023-04-10T09:15:00Z',
-    dueDate: '2023-04-20T09:15:00Z',
+    dueDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     category: 'Fitness',
     status: 'success',
     imageUrl: 'https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=600&auto=format',
@@ -81,7 +85,8 @@ const mockQuests: Record<string, Quest> = {
     completionRate: 100,
     visibility: 'public',
     lockedAmount: 3000,
-    escrowStatus: 'distributed'
+    escrowStatus: 'distributed',
+    totalZapped: 5000
   },
   "4": {
     id: '4',
@@ -90,7 +95,7 @@ const mockQuests: Record<string, Quest> = {
     userId: 'user4',
     username: 'storyteller',
     createdAt: '2023-04-12T16:45:00Z',
-    dueDate: '2023-04-13T16:45:00Z',
+    dueDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
     category: 'Creativity',
     status: 'failed',
     imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=600&auto=format',
@@ -98,7 +103,8 @@ const mockQuests: Record<string, Quest> = {
     completionRate: 0,
     visibility: 'public',
     lockedAmount: 1500,
-    escrowStatus: 'distributed'
+    escrowStatus: 'distributed',
+    totalZapped: 200
   },
   "5": {
     id: '5',
@@ -107,7 +113,7 @@ const mockQuests: Record<string, Quest> = {
     userId: 'user5',
     username: 'code_ninja',
     createdAt: '2023-04-14T11:30:00Z',
-    dueDate: '2023-04-18T11:30:00Z',
+    dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
     category: 'Technology',
     status: 'in_dispute',
     imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=600&auto=format',
@@ -116,7 +122,8 @@ const mockQuests: Record<string, Quest> = {
     visibility: 'public',
     lockedAmount: 5000,
     escrowStatus: 'in_process',
-    inDispute: true
+    inDispute: true,
+    totalZapped: 3200
   }
 };
 
@@ -217,6 +224,7 @@ const QuestPage = () => {
   const [newProof, setNewProof] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
+  const [zapModalOpen, setZapModalOpen] = useState(false);
   
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
@@ -357,7 +365,21 @@ const QuestPage = () => {
     toast.success("Quest details copied! Customize your new quest.");
   };
   
+  const handleZapComplete = (amount: number) => {
+    if (questData) {
+      const updatedQuest = {
+        ...questData,
+        totalZapped: (questData.totalZapped || 0) + amount
+      };
+      setQuestData(updatedQuest);
+      
+      toast.success(`You've zapped ${amount} sats to "${questData.title}"!`);
+    }
+  };
+  
   const isQuestCreator = profile?.username === questData.username;
+  const isQuestActive = new Date(questData.dueDate) > new Date() && 
+                      (questData.status === 'pending' || questData.status === 'on_review');
   
   const verificationReward = Math.round((questData.lockedAmount || 0) * 0.05);
   const contestReward = questData.lockedAmount || 0;
@@ -401,23 +423,44 @@ const QuestPage = () => {
                       <User size={12} />
                       {questData.visibility === 'public' ? 'Public' : 'Private'} Quest
                     </span>
+                    
+                    {questData.totalZapped && questData.totalZapped > 0 && (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500">
+                        <Zap size={12} />
+                        {questData.totalZapped.toLocaleString()} sats
+                      </span>
+                    )}
                   </div>
                   
                   <div className="flex justify-between items-center mb-4">
                     <h1 className="text-3xl font-bold">
                       {questData.title}
                     </h1>
-                    {profile && !isQuestCreator && (
-                      <Button 
-                        variant="primary"
-                        size="sm"
-                        onClick={handleCopyQuest}
-                        className="ml-2"
-                      >
-                        <Copy size={16} className="mr-2" />
-                        Copy Quest
-                      </Button>
-                    )}
+                    
+                    <div className="flex gap-2">
+                      {isLoggedIn && isQuestActive && !isQuestCreator && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => setZapModalOpen(true)}
+                          className="flex items-center gap-1 bg-yellow-500/10 text-yellow-500 border-yellow-500/20 hover:bg-yellow-500/20"
+                        >
+                          <Zap size={16} className="mr-1" />
+                          Zap ⚡️
+                        </Button>
+                      )}
+                      
+                      {profile && !isQuestCreator && (
+                        <Button 
+                          variant="primary"
+                          size="sm"
+                          onClick={handleCopyQuest}
+                        >
+                          <Copy size={16} className="mr-2" />
+                          Copy Quest
+                        </Button>
+                      )}
+                    </div>
                   </div>
                   
                   <div className="flex flex-wrap gap-6 items-center text-sm text-muted-foreground mb-6">
@@ -642,8 +685,19 @@ const QuestPage = () => {
           </div>
         </div>
       </div>
+      
+      {isLoggedIn && (
+        <ZapModal
+          open={zapModalOpen}
+          onOpenChange={setZapModalOpen}
+          questTitle={questData.title}
+          questId={questData.id}
+          onZapComplete={handleZapComplete}
+        />
+      )}
     </div>
   );
 };
 
 export default QuestPage;
+
