@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Bell, MessageCircle, Zap, Calendar, CheckCircle } from 'lucide-react';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { Button } from '@/components/ui/button';
@@ -45,6 +45,11 @@ const Notifications = () => {
     );
   }
 
+  const handleMarkAllAsRead = () => {
+    markAllAsRead();
+    // We don't need additional state update here since the hook now handles it
+  };
+
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-3xl mx-auto">
@@ -53,7 +58,7 @@ const Notifications = () => {
           {hasUnread && (
             <Button 
               variant="outline" 
-              onClick={markAllAsRead}
+              onClick={handleMarkAllAsRead}
             >
               Mark all as read
             </Button>

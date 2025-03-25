@@ -79,7 +79,8 @@ export const useNotifications = () => {
   
   // Update unread count whenever notifications change
   useEffect(() => {
-    setUnreadCount(notifications.filter(n => !n.read).length);
+    const count = notifications.filter(n => !n.read).length;
+    setUnreadCount(count);
   }, [notifications]);
   
   // Mark all as read
@@ -90,6 +91,8 @@ export const useNotifications = () => {
         read: true
       }))
     );
+    // Immediately update unread count to zero
+    setUnreadCount(0);
   };
 
   // Mark single notification as read
@@ -101,6 +104,8 @@ export const useNotifications = () => {
           : notification
       )
     );
+    // We don't need to manually update unreadCount here
+    // as the useEffect will handle it when notifications change
   };
 
   // Get unread count
