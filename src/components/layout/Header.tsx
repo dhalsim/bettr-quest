@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings } from 'lucide-react';
+import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -11,6 +12,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { NostrProfile } from '@/contexts/NostrAuthContext';
+import { Switch } from '@/components/ui/switch';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,6 +21,7 @@ const Header = () => {
   const location = useLocation();
   const { isLoggedIn, logout, profile } = useNostrAuth();
   const navigate = useNavigate();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,6 +61,8 @@ const Header = () => {
           
           {isLoggedIn ? (
             <div className="flex items-center gap-4">
+              <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+              
               <Link 
                 to="/create" 
                 className="btn-primary flex items-center gap-2"
@@ -68,13 +74,17 @@ const Header = () => {
               <UserMenu logout={handleLogout} profile={profile} />
             </div>
           ) : (
-            <Link 
-              to="/connect" 
-              className="btn-primary flex items-center gap-2"
-            >
-              <UserCircle size={18} />
-              <span>Connect with Nostr</span>
-            </Link>
+            <div className="flex items-center gap-4">
+              <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+              
+              <Link 
+                to="/connect" 
+                className="btn-primary flex items-center gap-2"
+              >
+                <UserCircle size={18} />
+                <span>Connect with Nostr</span>
+              </Link>
+            </div>
           )}
         </div>
 
@@ -92,6 +102,15 @@ const Header = () => {
         <div className="absolute top-full left-0 right-0 glass animate-fade-in py-6 px-6 md:hidden">
           <nav className="flex flex-col space-y-6">
             <NavLinks mobile isLoggedIn={isLoggedIn} />
+            
+            <div className="flex items-center justify-between border-t border-foreground/10 pt-4">
+              <span className="text-sm text-foreground/80">Dark Mode</span>
+              <Switch 
+                checked={isDarkMode}
+                onCheckedChange={toggleDarkMode}
+                aria-label="Toggle dark mode"
+              />
+            </div>
             
             {isLoggedIn ? (
               <>
@@ -137,6 +156,22 @@ const Header = () => {
         </div>
       )}
     </header>
+  );
+};
+
+const DarkModeToggle = ({ isDarkMode, toggleDarkMode }: { isDarkMode: boolean; toggleDarkMode: () => void }) => {
+  return (
+    <button 
+      onClick={toggleDarkMode}
+      className="p-2 rounded-full hover:bg-foreground/10 transition-colors"
+      aria-label="Toggle dark mode"
+    >
+      {isDarkMode ? (
+        <Sun size={20} className="text-foreground" />
+      ) : (
+        <Moon size={20} className="text-foreground" />
+      )}
+    </button>
   );
 };
 
