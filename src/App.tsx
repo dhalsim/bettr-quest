@@ -17,6 +17,7 @@ import ConnectNostr from "./pages/ConnectNostr";
 import Profile from "./pages/Profile";
 import CoachDirectory from "./pages/coach-directory";
 import RegisterCoach from "./pages/RegisterCoach";
+import EscrowDeposit from "./pages/EscrowDeposit";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
                 <Route path="/timeline" element={<Timeline />} />
                 <Route path="/quest/:id" element={<QuestPage />} />
                 <Route path="/create" element={<CreateQuest />} />
+                <Route path="/escrow-deposit" element={<EscrowDeposit />} />
                 <Route path="/my-quests" element={<MyQuest />} />
                 <Route path="/connect" element={<ConnectNostr />} />
                 <Route path="/profile/:username" element={<Profile />} />

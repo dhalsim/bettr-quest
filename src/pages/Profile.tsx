@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, User, Calendar, Activity, Award, MessageSquare, Star } from 'lucide-react';
@@ -8,6 +7,16 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import StarRating from '@/components/ui/StarRating';
+
+interface Review {
+  id: string;
+  reviewerUsername: string;
+  reviewerDisplayName: string;
+  reviewerImage: string;
+  rating: number;
+  content: string;
+  date: string;
+}
 
 // Mock user data
 const userData = {
@@ -169,7 +178,7 @@ const Profile = () => {
   const { username } = useParams<{ username: string }>();
   const [isFollowing, setIsFollowing] = useState(false);
   const [profileData, setProfileData] = useState(userData);
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [activeTab, setActiveTab] = useState('quests');
   const reviewsRef = useRef<HTMLDivElement>(null);
   

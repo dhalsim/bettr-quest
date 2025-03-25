@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Loader2, AlertTriangle } from 'lucide-react';
@@ -138,11 +137,16 @@ const CreateQuest = () => {
     
     setIsSubmitting(true);
     
-    // Simulate form submission
+    // Navigate to escrow deposit page with quest details
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Quest created successfully!");
-      navigate('/explore');
+      toast.success("Quest created! Please set up the escrow deposit.");
+      navigate('/escrow-deposit', {
+        state: {
+          questTitle: title,
+          questDescription: description
+        }
+      });
     }, 1500);
   };
   
