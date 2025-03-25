@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,6 +20,7 @@ import Profile from "./pages/Profile";
 import CoachDirectory from "./pages/coach-directory";
 import RegisterCoach from "./pages/RegisterCoach";
 import EscrowDeposit from "./pages/EscrowDeposit";
+import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +45,7 @@ const App = () => (
                 <Route path="/profile/:username" element={<Profile />} />
                 <Route path="/coach-directory" element={<CoachDirectory />} />
                 <Route path="/register-coach" element={<RegisterCoach />} />
+                <Route path="/notifications" element={<Notifications />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

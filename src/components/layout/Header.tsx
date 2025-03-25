@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun } from 'lucide-react';
+import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun, Bell } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -14,6 +14,8 @@ import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { NostrProfile } from '@/contexts/NostrAuthContext';
 import { Switch } from '@/components/ui/switch';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import NotificationBadge from '@/components/ui/NotificationBadge';
+import { useNotifications } from '@/hooks/useNotifications';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,6 +24,7 @@ const Header = () => {
   const { isLoggedIn, logout, profile } = useNostrAuth();
   const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { getUnreadCount, hasUnread } = useNotifications();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,7 +74,12 @@ const Header = () => {
                 <span>New Quest</span>
               </Link>
               
-              <UserMenu logout={handleLogout} profile={profile} />
+              <UserMenu 
+                logout={handleLogout} 
+                profile={profile} 
+                unreadCount={getUnreadCount()}
+                hasUnread={hasUnread} 
+              />
             </div>
           ) : (
             <div className="flex items-center gap-4">
@@ -89,10 +97,13 @@ const Header = () => {
         </div>
 
         <button 
-          className="md:hidden text-foreground" 
+          className="md:hidden text-foreground relative" 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
+          {isLoggedIn && hasUnread && (
+            <NotificationBadge showDot className="z-10" />
+          )}
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
@@ -129,7 +140,17 @@ const Header = () => {
                   <span>My Quests</span>
                 </Link>
                 <Link
-                  to="/profile"
+                  to="/notifications"
+                  className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2 relative"
+                >
+                  <Bell size={18} />
+                  <span>Notifications</span>
+                  {getUnreadCount() > 0 && (
+                    <NotificationBadge count={getUnreadCount()} className="static ml-2" />
+                  )}
+                </Link>
+                <Link
+                  to={`/profile/${profile?.username || 'user'}`}
                   className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
                 >
                   <Settings size={18} />
@@ -175,13 +196,26 @@ const DarkModeToggle = ({ isDarkMode, toggleDarkMode }: { isDarkMode: boolean; t
   );
 };
 
-const UserMenu = ({ logout, profile }: { logout: () => void, profile: NostrProfile }) => {
+const UserMenu = ({ 
+  logout, 
+  profile,
+  unreadCount,
+  hasUnread
+}: { 
+  logout: () => void, 
+  profile: NostrProfile,
+  unreadCount: number,
+  hasUnread: boolean
+}) => {
   const initials = profile?.name ? profile.name.charAt(0).toUpperCase() : 'U';
   
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+        <button className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 relative">
+          {hasUnread && (
+            <NotificationBadge showDot />
+          )}
           <Avatar className="h-10 w-10 border-2 border-primary hover:border-primary/80 transition-colors">
             <AvatarImage 
               src={profile?.profileImage || "https://api.dicebear.com/7.x/avataaars/svg?seed=bettrquest"} 
@@ -196,6 +230,17 @@ const UserMenu = ({ logout, profile }: { logout: () => void, profile: NostrProfi
           <Link to="/my-quests" className="flex items-center gap-2 cursor-pointer">
             <User size={16} />
             <span>My Quests</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/notifications" className="flex items-center gap-2 cursor-pointer relative">
+            <Bell size={16} />
+            <span>Notifications</span>
+            {unreadCount > 0 && (
+              <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-5 text-center">
+                {unreadCount}
+              </span>
+            )}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
