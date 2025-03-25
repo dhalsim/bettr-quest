@@ -6,6 +6,7 @@ import { Slider } from '@/components/ui/slider';
 import { ExternalLink, LockIcon, Shield, Users, Check, X, ArrowUpRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useToast } from "@/hooks/use-toast";
 
 interface QuestLocationState {
   questTitle: string;
@@ -29,7 +30,9 @@ type LocationState = QuestLocationState | ProofLocationState;
 const EscrowDeposit = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [state, setState] = useState<LocationState | null>(null);
+  const [rewardPercentage, setRewardPercentage] = useState(5);
   
   useEffect(() => {
     // Set state from location or redirect to explore if missing
@@ -53,7 +56,6 @@ const EscrowDeposit = () => {
   
   const isProofVerification = 'type' in state && (state.type === 'verify' || state.type === 'contest');
   
-  const [rewardPercentage, setRewardPercentage] = useState(5);
   const baseLockAmount = isProofVerification ? 10000 : 20000; // sats
   const fees = 1000; // sats
   
@@ -83,12 +85,24 @@ const EscrowDeposit = () => {
     // Show a toast based on the type of deposit
     if (isProofVerification && 'type' in state) {
       if (state.type === 'verify') {
-        // Show verification toast
+        toast({
+          title: "Verification Submitted",
+          description: "Your verification has been submitted and your sats have been locked.",
+          variant: "default",
+        });
       } else {
-        // Show contest toast
+        toast({
+          title: "Contest Submitted",
+          description: "Your contest has been submitted and your sats have been locked.",
+          variant: "default",
+        });
       }
     } else {
-      // Show quest creation toast
+      toast({
+        title: "Quest Created",
+        description: "Your quest has been created and your sats have been locked.",
+        variant: "default",
+      });
     }
   };
   
@@ -114,6 +128,8 @@ const EscrowDeposit = () => {
         </Alert>
       );
     }
+    
+    return null;
   };
   
   return (
