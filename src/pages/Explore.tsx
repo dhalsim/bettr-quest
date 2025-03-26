@@ -4,107 +4,10 @@ import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/ui/QuestCard';
 import { useSearchParams } from 'react-router-dom';
 import TagsSelector, { TagItem } from '@/components/TagsSelector';
+import { mockQuests, mockTags } from '@/mock/data';
 
-// Mock data for quests with updated examples
-const allQuests = [
-  {
-    id: '1',
-    title: 'Meditate for 20 minutes tomorrow',
-    description: 'I want to begin my meditation practice by dedicating 20 minutes tomorrow to mindful meditation.',
-    userId: 'user1',
-    username: 'mindfulness_guru',
-    createdAt: '2023-04-15T10:30:00Z',
-    dueDate: '2023-04-16T10:30:00Z',
-    category: 'Wellness',
-    status: 'pending' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  },
-  {
-    id: '2',
-    title: 'Learn 10 new Spanish words',
-    description: 'I will learn and memorize 10 new Spanish words by the end of this week.',
-    userId: 'user2',
-    username: 'language_lover',
-    createdAt: '2023-04-10T15:45:00Z',
-    dueDate: '2023-04-17T15:45:00Z',
-    category: 'Learning',
-    status: 'pending' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1546500840-ae38253aba9b?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  },
-  {
-    id: '3',
-    title: 'Go for a 5K run',
-    description: 'I will complete a 5K run this weekend to improve my cardiovascular health.',
-    userId: 'user3',
-    username: 'fitness_enthusiast',
-    createdAt: '2023-04-05T08:20:00Z',
-    dueDate: '2023-04-09T08:20:00Z',
-    category: 'Fitness',
-    status: 'success' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  },
-  {
-    id: '4',
-    title: 'Build a simple calculator app',
-    description: 'I will code a basic calculator app using JavaScript to practice my coding skills.',
-    userId: 'user4',
-    username: 'code_master',
-    createdAt: '2023-04-01T09:00:00Z',
-    dueDate: '2023-04-05T09:00:00Z',
-    category: 'Learning',
-    status: 'on_review' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  },
-  {
-    id: '5',
-    title: 'Write a reflection journal entry',
-    description: 'I will write a detailed journal entry reflecting on my personal growth this month.',
-    userId: 'user5',
-    username: 'mindful_writer',
-    createdAt: '2023-03-15T11:30:00Z',
-    dueDate: '2023-03-16T11:30:00Z',
-    category: 'Wellness',
-    status: 'success' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  },
-  {
-    id: '6',
-    title: 'Have a zero-waste day',
-    description: 'I will attempt to produce zero waste for an entire day by avoiding single-use products.',
-    userId: 'user6',
-    username: 'eco_warrior',
-    createdAt: '2023-03-01T14:15:00Z',
-    dueDate: '2023-03-02T14:15:00Z',
-    category: 'Sustainability',
-    status: 'failed' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  }
-];
-
-// Categories converted to tags with popularity
-const availableTags: TagItem[] = [
-  { name: "Wellness", popularity: 90 },
-  { name: "Fitness", popularity: 85 },
-  { name: "Learning", popularity: 80 },
-  { name: "Sustainability", popularity: 75 },
-  { name: "Productivity", popularity: 70 },
-  { name: "Technology", popularity: 65 },
-  { name: "Music", popularity: 60 },
-  { name: "Art", popularity: 55 },
-  { name: "Writing", popularity: 50 },
-  { name: "Finance", popularity: 45 },
-  { name: "Travel", popularity: 40 },
-  { name: "Food", popularity: 35 },
-  { name: "Photography", popularity: 30 },
-  { name: "Reading", popularity: 25 },
-  { name: "Gaming", popularity: 20 },
-];
+// Convert mockQuests object to array for explore page
+const allQuests = Object.values(mockQuests);
 
 const Explore = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -175,7 +78,7 @@ const Explore = () => {
             
             <TagsSelector
               selectedTags={selectedTags}
-              availableTags={availableTags}
+              availableTags={mockTags}
               onTagToggle={toggleTag}
               allowCustomTags={false}
               maxVisibleTags={5}

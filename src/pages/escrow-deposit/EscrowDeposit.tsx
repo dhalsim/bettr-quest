@@ -8,25 +8,8 @@ import LockAmountSection from '@/components/escrow/LockAmountSection';
 import RewardsSlider from '@/components/escrow/RewardsSlider';
 import SummarySection from '@/components/escrow/SummarySection';
 import ConfirmButton from '@/components/escrow/ConfirmButton';
-
-interface QuestLocationState {
-  questTitle: string;
-  questDescription: string;
-  questId?: string;
-  type?: undefined;
-}
-
-interface ProofLocationState {
-  type: 'verify' | 'contest';
-  proofTitle: string;
-  proofDescription: string;
-  questTitle: string;
-  questDescription: string;
-  proofId: string;
-  questId: string;
-}
-
-type LocationState = QuestLocationState | ProofLocationState;
+import { decodeLocationState, type LocationState } from './validation';
+import { validateLocationState } from '@/lib/validation-utils';
 
 const EscrowDeposit = () => {
   const location = useLocation();
@@ -36,13 +19,21 @@ const EscrowDeposit = () => {
   const [rewardPercentage, setRewardPercentage] = useState(5);
   
   useEffect(() => {
-    // Set state from location or redirect to explore if missing
     if (location.state) {
-      setState(location.state as LocationState);
+      const validatedState = validateLocationState(decodeLocationState, location.state, {
+        toast,
+        navigate,
+        log: true,
+        navigateOnError: '/explore'
+      });
+      
+      if (validatedState) {
+        setState(validatedState);
+      }
     } else {
       navigate('/explore');
     }
-  }, [location, navigate]);
+  }, [location, navigate, toast]);
   
   // Guard against null state during initial render or after refresh
   if (!state) {
@@ -55,27 +46,25 @@ const EscrowDeposit = () => {
     );
   }
   
-  const isProofVerification = 'type' in state && (state.type === 'verify' || state.type === 'contest');
+  const isProofVerification = state.type === 'proof-verify' || state.type === 'proof-contest';
   
-  const baseLockAmount = isProofVerification ? 10000 : 20000; // sats
-  const fees = 1000; // sats
+  // For proof verification/contest, user locks 10k sats
+  // For quest creation, user locks 20k sats
+  const userLockAmount = isProofVerification ? 10000 : 20000;
+  const platformFees = 1000;
   
-  const calculateRewardAmount = () => {
-    return Math.floor(baseLockAmount * (rewardPercentage / 100));
+  const calculateCommunityReward = () => {
+    return Math.floor(userLockAmount * (rewardPercentage / 100));
   };
   
-  const calculateTotal = () => {
-    return isProofVerification ? baseLockAmount + fees : baseLockAmount + calculateRewardAmount() + fees;
+  const calculateTotalToLock = () => {
+    return isProofVerification 
+      ? userLockAmount + platformFees 
+      : userLockAmount + calculateCommunityReward() + platformFees;
   };
   
   const getQuestLink = () => {
-    if (isProofVerification && 'questId' in state) {
-      return `/quest/${state.questId}`;
-    } else if (!isProofVerification && 'questId' in state) {
-      return `/quest/${state.questId}`;
-    } else {
-      return `/quest/2`; // Fallback
-    }
+    return `/quest/${state.questId}`;
   };
   
   const handleConfirmDeposit = () => {
@@ -84,21 +73,19 @@ const EscrowDeposit = () => {
     navigate(getQuestLink());
     
     // Show a toast based on the type of deposit
-    if (isProofVerification && 'type' in state) {
-      if (state.type === 'verify') {
-        toast({
-          title: "Verification Submitted",
-          description: "Your verification has been submitted and your sats have been locked.",
-          variant: "default",
-        });
-      } else {
-        toast({
-          title: "Contest Submitted",
-          description: "Your contest has been submitted and your sats have been locked.",
-          variant: "default",
-        });
-      }
-    } else {
+    if (state.type === 'proof-verify') {
+      toast({
+        title: "Verification Submitted",
+        description: "Your verification has been submitted and your sats have been locked.",
+        variant: "default",
+      });
+    } else if (state.type === 'proof-contest') {
+      toast({
+        title: "Contest Submitted",
+        description: "Your contest has been submitted and your sats have been locked.",
+        variant: "default",
+      });
+    } else if (state.type === 'quest') {
       toast({
         title: "Quest Created",
         description: "Your quest has been created and your sats have been locked.",
@@ -113,29 +100,25 @@ const EscrowDeposit = () => {
         {/* Introduction Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">
-            {isProofVerification && 'type' in state
-              ? state.type === 'verify' 
-                ? 'Verify Proof' 
-                : 'Contest Proof' 
-              : 'Secure Your Commitment'
+            {state.type === 'proof-verify'
+              ? 'Verify Proof' 
+              : 'Contest Proof' 
             }
           </h1>
           <p className="text-muted-foreground">
-            {isProofVerification && 'type' in state
-              ? state.type === 'verify' 
-                ? 'Lock some sats to verify this proof. You\'ll earn rewards if your verification is correct.'
-                : 'Lock some sats to contest this proof. You\'ll receive the full locked amount if your contest is validated.'
-              : 'Lock some sats in our secure escrow to strengthen your commitment. You\'ll get them back when you complete your quest.'
+            {state.type === 'proof-verify'
+              ? 'Lock some sats to verify this proof. You\'ll earn rewards if your verification is correct.'
+              : 'Lock some sats to contest this proof. You\'ll receive the full locked amount if your contest is validated.'
             }
           </p>
         </div>
 
-        {isProofVerification && 'type' in state && (
+        {isProofVerification && (
           <RewardInfo type={state.type} />
         )}
 
         <div className="glass rounded-2xl p-8 border border-border/50">
-          {isProofVerification && 'proofTitle' in state && 'proofDescription' in state && (
+          {isProofVerification && (
             <ProofDetailsCard 
               title={state.proofTitle} 
               description={state.proofDescription}
@@ -156,7 +139,7 @@ const EscrowDeposit = () => {
           
           <div className="space-y-8">
             <LockAmountSection 
-              amount={baseLockAmount} 
+              amount={userLockAmount} 
               isProofVerification={isProofVerification} 
             />
             
@@ -164,22 +147,24 @@ const EscrowDeposit = () => {
               <RewardsSlider 
                 percentage={rewardPercentage}
                 onPercentageChange={setRewardPercentage}
-                rewardAmount={calculateRewardAmount()}
+                rewardAmount={calculateCommunityReward()}
               />
             )}
             
             <SummarySection 
-              baseLockAmount={baseLockAmount}
-              rewardAmount={calculateRewardAmount()}
-              fees={fees}
-              total={calculateTotal()}
+              userLockAmount={userLockAmount}
+              communityReward={calculateCommunityReward()}
+              platformFees={platformFees}
+              totalToLock={calculateTotalToLock()}
               isProofVerification={isProofVerification}
+              verificationType={state.type === 'proof-verify' ? 'verify' : 'contest'}
+              questRewardAmount={state.questRewardAmount}
+              questLockedAmount={state.questLockedAmount}
             />
             
             <ConfirmButton 
-              isProofVerification={isProofVerification}
-              type={'type' in state ? state.type : undefined}
-              totalAmount={calculateTotal()}
+              type={state.type}
+              totalAmount={calculateTotalToLock()}
               onConfirm={handleConfirmDeposit}
             />
           </div>
@@ -189,4 +174,4 @@ const EscrowDeposit = () => {
   );
 };
 
-export default EscrowDeposit;
+export default EscrowDeposit; 

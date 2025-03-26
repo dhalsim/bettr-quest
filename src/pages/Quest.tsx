@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
@@ -11,217 +11,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ZapModal from '@/components/quest/ZapModal';
 import { useIsMobile } from '@/hooks/use-mobile';
-
-type QuestStatus = 'pending' | 'on_review' | 'success' | 'failed' | 'in_dispute';
-
-interface Quest {
-  id: string;
-  title: string;
-  description: string;
-  userId: string;
-  username: string;
-  createdAt: string;
-  dueDate: string;
-  category: string;
-  status: QuestStatus;
-  imageUrl: string;
-  participants: number;
-  completionRate: number | null;
-  visibility: 'public' | 'private';
-  lockedAmount?: number;
-  inDispute?: boolean;
-  escrowStatus?: 'locked' | 'distributed' | 'in_process';
-  totalZapped?: number;
-}
-
-const mockQuests: Record<string, Quest> = {
-  "1": {
-    id: '1',
-    title: 'Meditate for 20 minutes tomorrow',
-    description: 'I want to begin my meditation practice by dedicating 20 minutes tomorrow to mindful meditation. This will help me reduce stress and improve focus.',
-    userId: 'user1',
-    username: 'mindfulness_guru',
-    createdAt: '2023-04-15T10:30:00Z',
-    dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Wellness',
-    status: 'pending',
-    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
-    participants: 1,
-    completionRate: null,
-    visibility: 'public',
-    lockedAmount: 1000,
-    escrowStatus: 'locked',
-    totalZapped: 1500
-  },
-  "2": {
-    id: '2',
-    title: 'Learn 5 phrases in Italian',
-    description: 'I will learn and memorize 5 useful Italian phrases for my upcoming trip to Rome. This will help me navigate and connect with locals better.',
-    userId: 'user2',
-    username: 'polyglot_learner',
-    createdAt: '2023-04-08T14:20:00Z',
-    dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Learning',
-    status: 'on_review',
-    imageUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600&auto=format',
-    participants: 3,
-    completionRate: 75,
-    visibility: 'public',
-    lockedAmount: 2000,
-    escrowStatus: 'locked',
-    totalZapped: 800
-  },
-  "3": {
-    id: '3',
-    title: 'Run 5km in under 30 minutes',
-    description: 'I want to improve my running pace and complete a 5km run in under 30 minutes. This will be a personal record for me.',
-    userId: 'user3',
-    username: 'runner_joe',
-    createdAt: '2023-04-10T09:15:00Z',
-    dueDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Fitness',
-    status: 'success',
-    imageUrl: 'https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=600&auto=format',
-    participants: 5,
-    completionRate: 100,
-    visibility: 'public',
-    lockedAmount: 3000,
-    escrowStatus: 'distributed',
-    totalZapped: 5000
-  },
-  "4": {
-    id: '4',
-    title: 'Write a short story in one day',
-    description: "Challenge myself to write a 1000-word short story in a single day to boost creativity and overcome writer's block.",
-    userId: 'user4',
-    username: 'storyteller',
-    createdAt: '2023-04-12T16:45:00Z',
-    dueDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Creativity',
-    status: 'failed',
-    imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=600&auto=format',
-    participants: 1,
-    completionRate: 0,
-    visibility: 'public',
-    lockedAmount: 1500,
-    escrowStatus: 'distributed',
-    totalZapped: 200
-  },
-  "5": {
-    id: '5',
-    title: 'Complete a challenging coding problem',
-    description: 'I will solve a difficult algorithm problem from LeetCode to improve my problem-solving skills.',
-    userId: 'user5',
-    username: 'code_ninja',
-    createdAt: '2023-04-14T11:30:00Z',
-    dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Technology',
-    status: 'in_dispute',
-    imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=600&auto=format',
-    participants: 2,
-    completionRate: null,
-    visibility: 'public',
-    lockedAmount: 5000,
-    escrowStatus: 'in_process',
-    inDispute: true,
-    totalZapped: 3200
-  }
-};
-
-const mockProofs: Record<string, Proof[]> = {
-  "1": [
-    {
-      id: 'proof1_1',
-      challengeId: '1',
-      userId: 'user1',
-      username: 'mindfulness_guru',
-      title: 'Morning Meditation Session Complete',
-      createdAt: '2023-04-16T14:15:00Z',
-      description: "I completed my 20-minute meditation session this morning. I used the Headspace app and focused on breathing exercises. I feel much calmer and ready for the day.",
-      imageUrl: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=600&auto=format',
-      votes: {
-        accept: 1,
-        reject: 0
-      },
-      status: 'accepted'
-    }
-  ],
-  "2": [
-    {
-      id: 'proof2_1',
-      challengeId: '2',
-      userId: 'user2',
-      username: 'polyglot_learner',
-      title: 'Italian Phrases Mastered',
-      createdAt: '2023-04-12T10:30:00Z',
-      description: "I've learned these 5 Italian phrases: 'Buongiorno' (Good morning), 'Grazie' (Thank you), 'Per favore' (Please), 'Mi scusi' (Excuse me), and 'Dov'è il bagno?' (Where is the bathroom?). I practiced with an Italian friend who confirmed my pronunciation.",
-      imageUrl: 'https://images.unsplash.com/photo-1530538095376-a4936b5c6c4b?q=80&w=600&auto=format',
-      votes: {
-        accept: 2,
-        reject: 1
-      },
-      status: 'pending'
-    }
-  ],
-  "3": [
-    {
-      id: 'proof3_1',
-      challengeId: '3',
-      userId: 'user3',
-      username: 'runner_joe',
-      title: '5km Run Achievement',
-      createdAt: '2023-04-18T08:45:00Z',
-      description: "I did it! Completed my 5km run in 28:42. I've attached a screenshot from my running app showing the time and distance. The weather was perfect this morning, which helped a lot.",
-      imageUrl: 'https://images.unsplash.com/photo-1560073562-f36a05efa160?q=80&w=600&auto=format',
-      votes: {
-        accept: 5,
-        reject: 0
-      },
-      status: 'accepted'
-    }
-  ],
-  "4": [
-    {
-      id: 'proof4_1',
-      challengeId: '4',
-      userId: 'user4',
-      username: 'storyteller',
-      title: 'Story Writing Progress',
-      createdAt: '2023-04-13T23:50:00Z',
-      description: "I tried my best but only managed to write 600 words. I got stuck halfway through and couldn't finish the story in time. I'll try again with a smaller goal next time.",
-      imageUrl: null,
-      votes: {
-        accept: 0,
-        reject: 3
-      },
-      status: 'rejected'
-    }
-  ],
-  "5": [
-    {
-      id: 'proof5_1',
-      challengeId: '5',
-      userId: 'user5',
-      username: 'code_ninja',
-      title: 'Algorithm Challenge Solution',
-      createdAt: '2023-04-17T16:20:00Z',
-      description: "I solved the 'Merge K Sorted Lists' problem with an optimized approach using a priority queue. My solution has O(n log k) time complexity. I've attached a screenshot of my accepted solution and runtime stats.",
-      imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=600&auto=format',
-      votes: {
-        accept: 1,
-        reject: 1
-      },
-      status: 'in_dispute'
-    }
-  ]
-};
+import { LockedQuest, SavedQuest } from '@/types/quest';
+import { mockQuests, mockProofs } from '@/mock/data';
 
 const QuestPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { profile, isLoggedIn } = useNostrAuth();
   const [proofs, setProofs] = useState<Proof[]>([]);
-  const [questData, setQuestData] = useState<Quest | null>(null);
+  const [questData, setQuestData] = useState<LockedQuest | SavedQuest | null>(null);
   const [newProof, setNewProof] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
@@ -274,9 +72,7 @@ const QuestPage = () => {
 
   const getStatusBadgeClass = () => {
     const status = questData.status;
-    if (status === 'pending') {
-      return 'bg-blue-500/10 text-blue-500';
-    } else if (status === 'on_review') {
+    if (status === 'on_review') {
       return 'bg-yellow-500/10 text-yellow-500';
     } else if (status === 'success') {
       return 'bg-green-500/10 text-green-500';
@@ -291,9 +87,7 @@ const QuestPage = () => {
 
   const getStatusText = () => {
     const status = questData.status;
-    if (status === 'pending') {
-      return 'Pending';
-    } else if (status === 'on_review') {
+    if (status === 'on_review') {
       return 'On Review';
     } else if (status === 'success') {
       return 'Success';
@@ -302,7 +96,7 @@ const QuestPage = () => {
     } else if (status === 'in_dispute') {
       return 'In Dispute';
     } else {
-      return 'Pending';
+      return 'Saved';
     }
   };
   
@@ -330,7 +124,6 @@ const QuestPage = () => {
           accept: 0,
           reject: 0
         },
-        status: 'pending'
       };
       
       setProofs([newProofItem, ...proofs]);
@@ -368,10 +161,10 @@ const QuestPage = () => {
   };
   
   const handleZapComplete = (amount: number) => {
-    if (questData) {
+    if (questData && isLockedQuest(questData)) {
       const updatedQuest = {
         ...questData,
-        totalZapped: (questData.totalZapped || 0) + amount
+        totalZapped: questData.totalZapped + amount
       };
       setQuestData(updatedQuest);
       
@@ -381,10 +174,42 @@ const QuestPage = () => {
   
   const isQuestCreator = profile?.username === questData.username;
   const isQuestActive = new Date(questData.dueDate) > new Date() && 
-                      (questData.status === 'pending' || questData.status === 'on_review');
+                      (questData.status === 'on_review');
   
-  const verificationReward = Math.round((questData.lockedAmount || 0) * 0.05);
-  const contestReward = questData.lockedAmount || 0;
+  // Helper function to check if quest is locked
+  const isLockedQuest = (quest: LockedQuest | SavedQuest): quest is LockedQuest => {
+    return 'lockedAmount' in quest && 'rewardAmount' in quest && 'escrowStatus' in quest;
+  };
+
+  // Helper function to get quest reward amount
+  const getQuestRewardAmount = (quest: LockedQuest | SavedQuest): number => {
+    return isLockedQuest(quest) ? quest.rewardAmount : 0;
+  };
+
+  // Helper function to get locked amount
+  const getLockedAmount = (quest: LockedQuest | SavedQuest): number => {
+    return isLockedQuest(quest) ? quest.lockedAmount : 0;
+  };
+
+  // Helper function to get escrow status
+  const getEscrowStatus = (quest: LockedQuest | SavedQuest): 'locked' | 'distributed' | 'in_process' | undefined => {
+    return isLockedQuest(quest) ? quest.escrowStatus : undefined;
+  };
+
+  // Helper function to check if quest is in dispute
+  const isInDispute = (quest: LockedQuest | SavedQuest): boolean => {
+    return isLockedQuest(quest) ? quest.inDispute || false : false;
+  };
+
+  // Helper function to get total zapped amount
+  const getTotalZapped = (quest: LockedQuest | SavedQuest): number => {
+    return isLockedQuest(quest) ? quest.totalZapped : 0;
+  };
+
+  // Calculate rewards
+  const verificationReward = questData ? getQuestRewardAmount(questData) : 0;
+  const contestReward = questData ? getLockedAmount(questData) : 0;
+  const totalZapped = questData ? getTotalZapped(questData) : 0;
   
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
@@ -426,10 +251,10 @@ const QuestPage = () => {
                       {questData.visibility === 'public' ? 'Public' : 'Private'} Quest
                     </span>
                     
-                    {questData.totalZapped && questData.totalZapped > 0 && (
+                    {totalZapped > 0 && (
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500">
                         <Zap size={12} />
-                        {questData.totalZapped.toLocaleString()} sats
+                        {totalZapped.toLocaleString()} sats
                       </span>
                     )}
                   </div>
@@ -489,17 +314,17 @@ const QuestPage = () => {
                     <div className="flex flex-wrap justify-between items-center gap-4">
                       <div>
                         <h3 className="text-lg font-medium mb-1">Quest Rewards</h3>
-                        <p className="text-sm text-muted-foreground">Locked amount: <span className="font-semibold text-foreground">{questData.lockedAmount?.toLocaleString() || 0} sats</span></p>
+                        <p className="text-sm text-muted-foreground">Locked amount: <span className="font-semibold text-foreground">{getLockedAmount(questData).toLocaleString() || 0} sats</span></p>
                       </div>
                       
                       <div className="flex flex-col sm:flex-row gap-3">
                         <div className="bg-green-500/10 text-green-500 px-3 py-2 rounded-md text-sm">
                           <div className="font-medium">Verification Reward</div>
-                          <div className="font-bold">{verificationReward} sats</div>
+                          <div className="font-bold">{verificationReward.toLocaleString()} sats</div>
                         </div>
                         <div className="bg-red-500/10 text-red-500 px-3 py-2 rounded-md text-sm">
                           <div className="font-medium">Contest Reward</div>
-                          <div className="font-bold">{contestReward} sats</div>
+                          <div className="font-bold">{contestReward.toLocaleString()} sats</div>
                         </div>
                       </div>
                       
@@ -517,7 +342,7 @@ const QuestPage = () => {
                                     <CircleCheck size={16} /> Verification Reward
                                   </h4>
                                   <p className="text-sm">
-                                    Verifying legitimate proofs earns you 5% of the locked amount ({verificationReward} sats). 
+                                    Verifying legitimate proofs earns you {verificationReward.toLocaleString()} sats. 
                                     If multiple users verify, the reward is split equally.
                                   </p>
                                 </div>
@@ -527,13 +352,13 @@ const QuestPage = () => {
                                     <CircleX size={16} /> Contest Reward
                                   </h4>
                                   <p className="text-sm">
-                                    Successfully contesting a fraudulent proof earns you the entire locked amount ({contestReward} sats). 
-                                    Make sure you have evidence before contesting!
+                                    Successfully contesting a fraudulent proof earns you the entire locked amount ({contestReward.toLocaleString()} sats). 
+                                    Make sure you have evidence before contesting! If multiple users contest, the amount will be split equally. 
                                   </p>
                                 </div>
                                 
                                 <div className="pt-2 border-t border-border">
-                                  <p className="text-sm font-medium">The quest creator has locked {questData.lockedAmount?.toLocaleString() || 0} sats to ensure accountability.</p>
+                                  <p className="text-sm font-medium">The quest creator has locked {getLockedAmount(questData).toLocaleString() || 0} sats to ensure accountability.</p>
                                 </div>
                               </div>
                             </DialogDescription>
@@ -561,17 +386,17 @@ const QuestPage = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <p className="text-sm text-muted-foreground mb-2">Creator Locked Amount</p>
-                            <p className="text-xl font-semibold">{questData.lockedAmount?.toLocaleString() || 0} sats</p>
+                            <p className="text-xl font-semibold">{getLockedAmount(questData).toLocaleString() || 0} sats</p>
                           </div>
                           <div>
                             <p className="text-sm text-muted-foreground mb-2">Escrow Status</p>
-                            <p className="text-xl font-semibold capitalize">{questData.escrowStatus || 'Locked'}</p>
+                            <p className="text-xl font-semibold capitalize">{getEscrowStatus(questData) || 'Locked'}</p>
                           </div>
                           <div>
                             <p className="text-sm text-muted-foreground mb-2">Quest Status</p>
                             <p className="text-xl font-semibold capitalize">{getStatusText()}</p>
                           </div>
-                          {questData.inDispute && (
+                          {isInDispute(questData) && (
                             <div>
                               <p className="text-sm text-muted-foreground mb-2">Dispute Status</p>
                               <p className="text-xl font-semibold text-orange-500">Under Review</p>
@@ -670,12 +495,14 @@ const QuestPage = () => {
           
           <div className="grid gap-6">
             {proofs.map((proof) => (
-              <ProofCard 
-                key={proof.id} 
-                proof={proof} 
-                questLockedAmount={questData.lockedAmount}
+              <ProofCard
+                key={proof.id}
+                proof={proof}
                 questTitle={questData.title}
                 questDescription={questData.description}
+                questLockedAmount={getLockedAmount(questData)}
+                questRewardAmount={getQuestRewardAmount(questData)}
+                questStatus={questData.status}
               />
             ))}
             

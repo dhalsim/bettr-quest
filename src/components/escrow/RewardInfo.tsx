@@ -1,15 +1,14 @@
 
-import React from 'react';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface RewardInfoProps {
-  type?: 'verify' | 'contest';
+  type: 'proof-verify' | 'proof-contest';
 }
 
 const RewardInfo = ({ type }: RewardInfoProps) => {
   if (!type) return null;
   
-  if (type === 'verify') {
+  if (type === 'proof-verify') {
     return (
       <Alert className="mb-6 bg-green-50 border-green-200">
         <AlertDescription className="text-green-800">
@@ -17,7 +16,7 @@ const RewardInfo = ({ type }: RewardInfoProps) => {
         </AlertDescription>
       </Alert>
     );
-  } else if (type === 'contest') {
+  } else if (type === 'proof-contest') {
     return (
       <Alert className="mb-6 bg-red-50 border-red-200">
         <AlertDescription className="text-red-800">
@@ -26,8 +25,6 @@ const RewardInfo = ({ type }: RewardInfoProps) => {
       </Alert>
     );
   }
-  
-  return null;
 };
 
 export default RewardInfo;

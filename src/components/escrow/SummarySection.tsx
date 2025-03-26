@@ -2,21 +2,25 @@ import React from 'react';
 import { Shield } from 'lucide-react';
 
 interface SummarySectionProps {
-  baseLockAmount: number;
-  rewardAmount: number;
-  fees: number;
-  total: number;
+  userLockAmount: number;
+  communityReward: number;
+  platformFees: number;
+  totalToLock: number;
   isProofVerification: boolean;
   verificationType?: 'verify' | 'contest';
+  questRewardAmount?: number;
+  questLockedAmount?: number;
 }
 
 const SummarySection: React.FC<SummarySectionProps> = ({
-  baseLockAmount,
-  rewardAmount,
-  fees,
-  total,
+  userLockAmount,
+  communityReward,
+  platformFees,
+  totalToLock,
   isProofVerification,
-  verificationType
+  verificationType,
+  questRewardAmount = 0,
+  questLockedAmount = 0
 }) => {
   return (
     <div className="bg-secondary/5 rounded-lg p-6 border border-border/50">
@@ -27,26 +31,40 @@ const SummarySection: React.FC<SummarySectionProps> = ({
       
       <div className="space-y-3">
         <div className="flex justify-between items-center text-sm">
-          <span>Lock Amount</span>
-          <span>{baseLockAmount.toLocaleString()} sats</span>
+          <span>Your Lock Amount</span>
+          <span>{userLockAmount.toLocaleString()} sats</span>
         </div>
         
         {!isProofVerification && (
           <div className="flex justify-between items-center text-sm">
             <span>Community Rewards</span>
-            <span>{rewardAmount.toLocaleString()} sats</span>
+            <span>{communityReward.toLocaleString()} sats</span>
+          </div>
+        )}
+        
+        {isProofVerification && verificationType === 'contest' && (
+          <div className="flex justify-between items-center text-sm text-red-500">
+            <span>Contest Reward</span>
+            <span>{(userLockAmount + questLockedAmount).toLocaleString()} sats</span>
+          </div>
+        )}
+        
+        {isProofVerification && verificationType === 'verify' && (
+          <div className="flex justify-between items-center text-sm text-green-500">
+            <span>Verification Reward</span>
+            <span>{questRewardAmount.toLocaleString()} sats</span>
           </div>
         )}
         
         <div className="flex justify-between items-center text-sm">
           <span>Platform Fees</span>
-          <span>{fees.toLocaleString()} sats</span>
+          <span>{platformFees.toLocaleString()} sats</span>
         </div>
         
         <div className="pt-3 border-t border-border/50">
-          <div className="flex justify-between items-center text-lg font-bold">
-            <span>Total to Lock</span>
-            <span className="text-red-500">{total.toLocaleString()} sats</span>
+          <div className="flex justify-between items-center">
+            <span className="font-medium">Total to Lock</span>
+            <span className="font-bold">{totalToLock.toLocaleString()} sats</span>
           </div>
           
           {isProofVerification ? (
@@ -55,28 +73,27 @@ const SummarySection: React.FC<SummarySectionProps> = ({
               {verificationType === 'verify' ? (
                 <>
                   <p className="text-sm text-green-500">
-                    ✓ If your verification is correct: You'll receive {Math.floor(baseLockAmount * 1.2).toLocaleString()} sats
-                    <span className="text-muted-foreground"> (+20% reward)</span>
+                    ✓ If your verification is correct: You'll receive {questRewardAmount.toLocaleString()} sats
                   </p>
                   <p className="text-sm text-red-500">
-                    ✗ If your verification is incorrect: You'll lose your locked amount
+                    ✗ If your verification is incorrect: You'll lose your locked amount ({userLockAmount.toLocaleString()} sats)
                   </p>
                 </>
               ) : (
                 <>
                   <p className="text-sm text-green-500">
-                    ✓ If your contest is valid: You'll receive {Math.floor(baseLockAmount * 1.5).toLocaleString()} sats
-                    <span className="text-muted-foreground"> (+50% from the proof submitter's stake)</span>
+                    ✓ If your contest is valid: You'll receive {(userLockAmount + questLockedAmount).toLocaleString()} sats
+                    <span className="text-muted-foreground"> (+{questLockedAmount.toLocaleString()} sats from the quest)</span>
                   </p>
                   <p className="text-sm text-red-500">
-                    ✗ If your contest is invalid: You'll lose your locked amount
+                    ✗ If your contest is invalid: You'll lose your locked amount ({userLockAmount.toLocaleString()} sats)
                   </p>
                 </>
               )}
             </div>
           ) : (
             <p className="text-xs text-muted-foreground mt-1">
-              You'll get back {baseLockAmount.toLocaleString()} sats upon successful completion
+              You'll get back {userLockAmount.toLocaleString()} sats upon successful completion
             </p>
           )}
         </div>

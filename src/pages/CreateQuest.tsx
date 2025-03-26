@@ -12,6 +12,7 @@ import DateSelector from '@/components/quest/DateSelector';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { QuestLocationState } from './escrow-deposit/validation';
 
 const CreateQuest = () => {
   const navigate = useNavigate();
@@ -136,16 +137,22 @@ const CreateQuest = () => {
     }
     
     setIsSubmitting(true);
+
+    const createLocationState = (type: 'quest'): QuestLocationState => ({
+      type,
+      questTitle: title,
+      questDescription: description,
+      questId: 'random-id',
+      questRewardAmount: 0, // This will be set by the user in the escrow deposit page
+      questLockedAmount: 0  // This will be set by the user in the escrow deposit page
+    });
     
     // Navigate to escrow deposit page with quest details
     setTimeout(() => {
       setIsSubmitting(false);
       toast.success("Quest created! Please set up the escrow deposit.");
       navigate('/escrow-deposit', {
-        state: {
-          questTitle: title,
-          questDescription: description
-        }
+        state: createLocationState('quest')
       });
     }, 1500);
   };

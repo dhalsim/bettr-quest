@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { toast } from 'sonner';
+import { ProofLocationState } from '@/pages/escrow-deposit/validation';
 
 export type Proof = {
   id: string;
@@ -19,21 +20,24 @@ export type Proof = {
     accept: number;
     reject: number;
   };
-  status: 'pending' | 'accepted' | 'rejected' | 'in_dispute';
 };
 
 interface ProofCardProps {
   proof: Proof;
-  questLockedAmount?: number;
-  questTitle?: string;
-  questDescription?: string;
+  questTitle: string;
+  questDescription: string;
+  questLockedAmount: number;
+  questRewardAmount: number;
+  questStatus: 'on_review' | 'success' | 'failed' | 'in_dispute' | 'saved';
 }
 
 const ProofCard: React.FC<ProofCardProps> = ({ 
   proof, 
-  questLockedAmount = 0,
-  questTitle = "",
-  questDescription = "" 
+  questTitle,
+  questDescription,
+  questLockedAmount,
+  questRewardAmount,
+  questStatus
 }) => {
   const { isLoggedIn } = useNostrAuth();
   const navigate = useNavigate();
@@ -51,9 +55,18 @@ const ProofCard: React.FC<ProofCardProps> = ({
     });
   };
 
-  // Calculate reward amount (5% of locked amount)
-  const rewardAmount = Math.round(questLockedAmount * 0.05);
-  
+  const createLocationState = (type: 'proof-verify' | 'proof-contest'): ProofLocationState => ({
+    type,
+    proofTitle: proof.title,
+    proofDescription: proof.description,
+    questTitle,
+    questDescription,
+    questLockedAmount,
+    questRewardAmount,
+    proofId: proof.id,
+    questId: proof.challengeId
+  });
+
   const handleVerify = () => {
     if (!isLoggedIn) {
       toast.error("Please connect your wallet to verify proofs");
@@ -61,15 +74,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
     }
     
     navigate('/escrow-deposit', {
-      state: {
-        type: 'verify',
-        proofTitle: proof.title,
-        proofDescription: proof.description,
-        questTitle,
-        questDescription,
-        proofId: proof.id,
-        questId: proof.challengeId
-      }
+      state: createLocationState('proof-verify')
     });
   };
   
@@ -80,15 +85,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
     }
     
     navigate('/escrow-deposit', {
-      state: {
-        type: 'contest',
-        proofTitle: proof.title,
-        proofDescription: proof.description,
-        questTitle,
-        questDescription,
-        proofId: proof.id,
-        questId: proof.challengeId
-      }
+      state: createLocationState('proof-contest')
     });
   };
   
@@ -111,15 +108,15 @@ const ProofCard: React.FC<ProofCardProps> = ({
           </div>
           
           <div className="ml-auto">
-            {proof.status === 'pending' ? (
+            {questStatus === 'on_review' ? (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500">
                 Pending
               </span>
-            ) : proof.status === 'accepted' ? (
+            ) : questStatus === 'success' ? (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-500">
                 Accepted
               </span>
-            ) : proof.status === 'in_dispute' ? (
+            ) : questStatus === 'in_dispute' ? (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500/10 text-orange-500">
                 In Dispute
               </span>
@@ -157,7 +154,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
               </div>
             </div>
             
-            {proof.status === 'pending' && (
+            {(questStatus === 'on_review') && (
               <div className="flex gap-3 w-full sm:w-auto">
                 {isLoggedIn ? (
                   <>

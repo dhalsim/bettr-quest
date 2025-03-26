@@ -19,7 +19,7 @@ import ConnectNostr from "./pages/ConnectNostr";
 import Profile from "./pages/Profile";
 import CoachDirectory from "./pages/coach-directory";
 import RegisterCoach from "./pages/RegisterCoach";
-import EscrowDeposit from "./pages/EscrowDeposit";
+import EscrowDeposit from "./pages/escrow-deposit/EscrowDeposit";
 import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient();
