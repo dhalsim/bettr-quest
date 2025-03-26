@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ZapModal from '@/components/quest/ZapModal';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type QuestStatus = 'pending' | 'on_review' | 'success' | 'failed' | 'in_dispute';
 
@@ -225,6 +226,7 @@ const QuestPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
   const [zapModalOpen, setZapModalOpen] = useState(false);
+  const isMobile = useIsMobile();
   
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
@@ -432,13 +434,13 @@ const QuestPage = () => {
                     )}
                   </div>
                   
-                  <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-3xl font-bold">
-                      {questData.title}
-                    </h1>
-                    
-                    <div className="flex gap-2">
-                      {isLoggedIn && isQuestActive && !isQuestCreator && (
+                  <h1 className="text-3xl font-bold mb-4">
+                    {questData.title}
+                  </h1>
+                  
+                  {isLoggedIn && isQuestActive && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {!isQuestCreator && (
                         <Button 
                           variant="outline" 
                           size="sm"
@@ -461,7 +463,7 @@ const QuestPage = () => {
                         </Button>
                       )}
                     </div>
-                  </div>
+                  )}
                   
                   <div className="flex flex-wrap gap-6 items-center text-sm text-muted-foreground mb-6">
                     <div className="flex items-center gap-1.5">
@@ -700,4 +702,3 @@ const QuestPage = () => {
 };
 
 export default QuestPage;
-

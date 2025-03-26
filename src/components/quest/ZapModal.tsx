@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ZapModalProps {
   open: boolean;
@@ -32,6 +33,7 @@ const ZapModal: React.FC<ZapModalProps> = ({
   const [step, setStep] = useState<'amount' | 'invoice' | 'success'>('amount');
   const [invoice, setInvoice] = useState<string>('');
   const [copied, setCopied] = useState(false);
+  const isMobile = useIsMobile();
   
   const inputRef = useRef<HTMLInputElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -140,7 +142,7 @@ const ZapModal: React.FC<ZapModalProps> = ({
         <div className="p-4">
           {step === 'amount' && (
             <>
-              <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-3 mb-4`}>
                 {[100, 200, 500, 1000].map((amount) => (
                   <Button
                     key={amount}
