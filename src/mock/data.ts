@@ -232,4 +232,201 @@ export const mockTags = [
   { name: "Photography", popularity: 30 },
   { name: "Reading", popularity: 25 },
   { name: "Gaming", popularity: 20 }
-]; 
+];
+
+// Mock user profiles data
+export const mockUserProfiles = {
+  'coach_alex': {
+    username: 'coach_alex',
+    displayName: 'Coach Alex',
+    bio: 'Certified fitness trainer with 7+ years of experience. Specializing in strength training and nutrition planning.',
+    joinedDate: '2022-05-10T08:20:00Z',
+    profileImage: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=300&auto=format',
+    followers: 1240,
+    following: 86,
+    isCoach: true,
+    rating: 4.9,
+    reviewCount: 124
+  },
+  'mindfulness_guru': {
+    username: 'mindfulness_guru',
+    displayName: 'Mindfulness Guru',
+    bio: 'Meditation instructor and wellness advocate. Creating challenges to help people improve their mental health and wellbeing.',
+    joinedDate: '2023-01-15T10:30:00Z',
+    profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format',
+    followers: 248,
+    following: 73,
+    isCoach: true,
+    rating: 4.7,
+    reviewCount: 32
+  },
+  'polyglot_learner': {
+    username: 'polyglot_learner',
+    displayName: 'Polyglot Learner',
+    bio: 'Language enthusiast learning multiple languages. Creating quests to track my progress and connect with other language learners.',
+    joinedDate: '2023-02-20T09:15:00Z',
+    profileImage: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=300&auto=format',
+    followers: 156,
+    following: 42,
+    isCoach: false,
+    rating: 0,
+    reviewCount: 0
+  },
+  'runner_joe': {
+    username: 'runner_joe',
+    displayName: 'Runner Joe',
+    bio: 'Marathon runner and fitness enthusiast. Setting challenging running goals and helping others achieve their fitness targets.',
+    joinedDate: '2022-08-05T14:30:00Z',
+    profileImage: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=300&auto=format',
+    followers: 892,
+    following: 128,
+    isCoach: true,
+    rating: 4.8,
+    reviewCount: 67
+  },
+  'storyteller': {
+    username: 'storyteller',
+    displayName: 'Creative Storyteller',
+    bio: 'Writer and storyteller crafting tales that inspire and entertain. Creating writing challenges to spark creativity.',
+    joinedDate: '2023-03-12T11:20:00Z',
+    profileImage: 'https://images.unsplash.com/photo-1519682337058-a94d519337bc?q=80&w=300&auto=format',
+    followers: 445,
+    following: 89,
+    isCoach: false,
+    rating: 0,
+    reviewCount: 0
+  },
+  'code_ninja': {
+    username: 'code_ninja',
+    displayName: 'Code Ninja',
+    bio: 'Software developer passionate about solving complex problems. Creating coding challenges to help others improve their skills.',
+    joinedDate: '2022-11-30T16:45:00Z',
+    profileImage: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=300&auto=format',
+    followers: 1234,
+    following: 156,
+    isCoach: true,
+    rating: 4.9,
+    reviewCount: 89
+  },
+  'jane_smith': {
+    username: 'jane_smith',
+    displayName: 'Jane Smith',
+    bio: 'Default user profile for testing purposes.',
+    joinedDate: '2023-01-01T00:00:00Z',
+    profileImage: 'https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
+    followers: 0,
+    following: 0,
+    isCoach: false,
+    rating: 0,
+    reviewCount: 0
+  },
+  'zen_master': {
+    username: 'zen_master',
+    displayName: 'Zen Master',
+    bio: 'Experienced meditation practitioner sharing wisdom and techniques.',
+    joinedDate: '2022-12-15T10:00:00Z',
+    profileImage: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=300&auto=format',
+    followers: 234,
+    following: 45,
+    isCoach: false,
+    rating: 0,
+    reviewCount: 0
+  },
+  'wellness_beginner': {
+    username: 'wellness_beginner',
+    displayName: 'Wellness Beginner',
+    bio: 'Starting my wellness journey and learning from the community.',
+    joinedDate: '2023-04-01T09:00:00Z',
+    profileImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=300&auto=format',
+    followers: 45,
+    following: 67,
+    isCoach: false,
+    rating: 0,
+    reviewCount: 0
+  }
+};
+
+// Mock user activities data
+export const mockUserActivities = [
+  {
+    id: 'act1',
+    type: 'proof_review',
+    action: 'accepted',
+    username: 'zen_master',
+    challengeTitle: 'Meditate for 10 minutes',
+    challengeId: '1',
+    timestamp: '2023-04-22T15:30:00Z'
+  },
+  {
+    id: 'act2',
+    type: 'proof_review',
+    action: 'rejected',
+    username: 'wellness_beginner',
+    challengeTitle: 'Digital Detox Hour',
+    challengeId: '3',
+    timestamp: '2023-03-20T09:15:00Z'
+  },
+  {
+    id: 'act3',
+    type: 'challenge_created',
+    challengeTitle: 'Morning Gratitude',
+    challengeId: '2',
+    timestamp: '2023-05-01T08:45:00Z'
+  }
+];
+
+// Mock reviews data
+export const mockReviews = {
+  'coach_alex': [
+    {
+      id: 'rev1',
+      reviewerUsername: 'fitness_enthusiast',
+      reviewerDisplayName: 'Emma Wilson',
+      reviewerImage: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=300&auto=format',
+      rating: 5,
+      content: 'Coach Alex completely transformed my approach to fitness. The personalized training plan was exactly what I needed!',
+      date: '2023-11-15T14:30:00Z'
+    },
+    {
+      id: 'rev2',
+      reviewerUsername: 'wellness_seeker',
+      reviewerDisplayName: 'Mark Johnson',
+      reviewerImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format',
+      rating: 4.5,
+      content: 'Great coach who really knows his stuff. Very responsive and supportive throughout my fitness journey.',
+      date: '2023-10-22T09:15:00Z'
+    },
+    {
+      id: 'rev3',
+      reviewerUsername: 'health_first',
+      reviewerDisplayName: 'Sarah Miller',
+      reviewerImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format',
+      rating: 5,
+      content: 'The nutrition advice alone was worth every penny. I\'ve lost 15 pounds and feel amazing!',
+      date: '2023-09-05T16:45:00Z'
+    }
+  ],
+  'mindfulness_guru': [
+    {
+      id: 'rev4',
+      reviewerUsername: 'zen_student',
+      reviewerDisplayName: 'David Chen',
+      reviewerImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&auto=format',
+      rating: 5,
+      content: 'The meditation techniques I learned have truly changed my daily life. Highly recommend!',
+      date: '2023-08-12T11:20:00Z'
+    },
+    {
+      id: 'rev5',
+      reviewerUsername: 'stress_free',
+      reviewerDisplayName: 'Olivia Parker',
+      reviewerImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=300&auto=format',
+      rating: 4,
+      content: 'Great guidance and very patient with beginners. Would have liked a bit more personalized feedback.',
+      date: '2023-07-28T13:10:00Z'
+    }
+  ]
+};
+
+// Default profile for testing purposes
+export const defaultProfile = mockUserProfiles.mindfulness_guru;

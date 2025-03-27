@@ -1,8 +1,6 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NostrAuthProvider } from "@/contexts/NostrAuthProvider";
 import Header from "@/components/layout/Header";
@@ -22,40 +20,36 @@ import RegisterCoach from "./pages/RegisterCoach";
 import EscrowDeposit from "./pages/escrow-deposit/EscrowDeposit";
 import Notifications from "./pages/Notifications";
 
-const queryClient = new QueryClient();
-
 const App = () => (
   <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <NostrAuthProvider>
-          <ScrollToTop />
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/explore" element={<Explore />} />
-                <Route path="/timeline" element={<Timeline />} />
-                <Route path="/quest/:id" element={<QuestPage />} />
-                <Route path="/create" element={<CreateQuest />} />
-                <Route path="/escrow-deposit" element={<EscrowDeposit />} />
-                <Route path="/my-quests" element={<MyQuest />} />
-                <Route path="/connect" element={<ConnectNostr />} />
-                <Route path="/profile/:username" element={<Profile />} />
-                <Route path="/coach-directory" element={<CoachDirectory />} />
-                <Route path="/register-coach" element={<RegisterCoach />} />
-                <Route path="/notifications" element={<Notifications />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-          <Toaster />
-          <Sonner />
-        </NostrAuthProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <TooltipProvider>
+      <NostrAuthProvider>
+        <ScrollToTop />
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/explore" element={<Explore />} />
+              <Route path="/timeline" element={<Timeline />} />
+              <Route path="/quest/:id" element={<QuestPage />} />
+              <Route path="/create" element={<CreateQuest />} />
+              <Route path="/escrow-deposit" element={<EscrowDeposit />} />
+              <Route path="/my-quests" element={<MyQuest />} />
+              <Route path="/connect" element={<ConnectNostr />} />
+              <Route path="/profile/:username" element={<Profile />} />
+              <Route path="/coach-directory" element={<CoachDirectory />} />
+              <Route path="/register-coach" element={<RegisterCoach />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+        <Toaster />
+        <Sonner />
+      </NostrAuthProvider>
+    </TooltipProvider>
   </BrowserRouter>
 );
 

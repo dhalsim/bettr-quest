@@ -1,69 +1,103 @@
-# Welcome to your Lovable project
+# Bettr Quest
 
-## Project info
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**URL**: https://lovable.dev/projects/576d8790-ecd0-4534-a3a6-2415696251f8
+A modern web application for creating and managing quests/challenges on the Nostr network. Built with React, TypeScript, and Vite.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- 🎯 Create and manage quests/challenges
+- 🌐 Nostr-enabled social features
+- 🔐 Decentralized authentication via Nostr
+- 🤝 Social interactions and quest sharing
+- 🎨 Modern UI with shadcn-ui components
+- 📱 Responsive design
+- ⚡ Fast and efficient with Vite
+- 🔒 Type-safe with TypeScript
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/576d8790-ecd0-4534-a3a6-2415696251f8) and start prompting.
+- [React](https://reactjs.org/) - UI library
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Vite](https://vitejs.dev/) - Build tool and dev server
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [shadcn-ui](https://ui.shadcn.com/) - UI components
+- [React Router](https://reactrouter.com/) - Routing
+- [io-ts](https://github.com/gcanti/io-ts) - Runtime type checking and validation
+- [Nostr](https://nostr.com/) - Decentralized social networking protocol
 
-Changes made via Lovable will be committed automatically to this repo.
+## About
 
-**Use your preferred IDE**
+Bettr Quest is a decentralized social platform built on the Nostr network that enables users to create, share, and participate in quests and challenges. The platform leverages Nostr's decentralized architecture to provide a censorship-resistant and user-controlled experience.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Nostr Integration
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- 🔑 Sign in with your Nostr key
+- 📝 Create and share quests on the Nostr network
+- 👥 Connect with other users through Nostr relays
+- 🔄 Real-time updates through Nostr events
+- 🌐 Interoperable with other Nostr applications
 
-Follow these steps:
+## Getting Started
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Prerequisites
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Node.js (v18 or higher)
+- npm (v9 or higher)
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Installation
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+1. Clone the repository:
+```bash
+git clone https://github.com/YOUR_USERNAME/bettr-quest.git
+cd bettr-quest
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. Open [http://localhost:8080](http://localhost:8080) in your browser.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Building for Production
 
-**Use GitHub Codespaces**
+To create a production build:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+npm run build
+```
 
-## What technologies are used for this project?
+The built files will be in the `dist` directory.
 
-This project is built with .
+## Development
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint
 
-## How can I deploy this project?
+## Deployment
 
-Simply open [Lovable](https://lovable.dev/projects/576d8790-ecd0-4534-a3a6-2415696251f8) and click on Share -> Publish.
+This project is configured for deployment on GitHub Pages. The deployment is handled automatically through GitHub Actions when you push to the main branch.
 
-## I want to use a custom domain - is that possible?
+Your site will be available at: `https://YOUR_USERNAME.github.io/bettr-quest/`
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [shadcn-ui](https://ui.shadcn.com/) for the beautiful UI components
+- [Vite](https://vitejs.dev/) for the amazing build tool
+- All other open-source libraries used in this project

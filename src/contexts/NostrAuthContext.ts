@@ -1,8 +1,8 @@
 import { createContext } from 'react';
 
 export interface NostrProfile {
-  name: string;
   username: string;
+  displayName: string;
   profileImage: string;
 }
 

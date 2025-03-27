@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { ArrowLeft, Save } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -23,6 +21,9 @@ import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import TagsSelector, { TagItem } from '@/components/TagsSelector';
+import * as t from 'io-ts';
+import { isRight } from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 
 // All available specialization tags with popularity scores
 const availableTags: TagItem[] = [
@@ -48,20 +49,50 @@ const availableTags: TagItem[] = [
   { name: "Reading", popularity: 30 }
 ];
 
-// Form validation schema
-const formSchema = z.object({
-  bio: z
-    .string()
-    .min(20, { message: "Bio must be at least 20 characters." })
-    .max(500, { message: "Bio cannot exceed 500 characters." }),
-  pricingOption: z.enum(["hourly", "one-time"]),
-  rateAmount: z
-    .number()
-    .min(1000, { message: "Rate must be at least 1,000 sats." })
-    .max(1000000, { message: "Rate cannot exceed 1,000,000 sats." }),
+// Form validation schema using io-ts
+const PricingOption = t.union([
+  t.literal('hourly'),
+  t.literal('one-time')
+]);
+
+const FormSchema = t.type({
+  bio: t.string.pipe(
+    t.refinement(
+      t.string,
+      (s): s is string => s.length >= 20 && s.length <= 500,
+      'Bio must be between 20 and 500 characters'
+    )
+  ),
+  pricingOption: PricingOption,
+  rateAmount: t.number.pipe(
+    t.refinement(
+      t.number,
+      (n): n is number => n >= 1000 && n <= 1000000,
+      'Rate must be between 1,000 and 1,000,000 sats'
+    )
+  ),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = t.TypeOf<typeof FormSchema>;
+
+// Custom resolver for react-hook-form using io-ts
+const ioResolver = (schema: t.Type<FormValues>) => async (values: FormValues) => {
+  const result = schema.decode(values);
+  if (isRight(result)) {
+    return { values: result.right, errors: {} };
+  }
+  
+  const errors = result.left.reduce((acc, error) => {
+    const path = error.context.map(c => c.key).filter(Boolean).join('.');
+    acc[path] = {
+      type: 'manual',
+      message: error.message || 'Invalid value'
+    };
+    return acc;
+  }, {} as Record<string, { type: string; message: string }>);
+  
+  return { values: {} as FormValues, errors };
+};
 
 const RegisterCoach = () => {
   const [specializations, setSpecializations] = useState<string[]>([]);
@@ -83,7 +114,7 @@ const RegisterCoach = () => {
 
   // Initialize form with default values
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: ioResolver(FormSchema),
     defaultValues: {
       bio: "",
       pricingOption: "hourly",
@@ -254,7 +285,7 @@ const RegisterCoach = () => {
                         />
                       </FormControl>
                       <FormDescription>
-                        Set your rate in satoshis ({form.watch("pricingOption") === "hourly" ? "per hour" : "one-time fee"}).
+                        Set your coaching rate in sats.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -262,7 +293,7 @@ const RegisterCoach = () => {
                 />
                 
                 <Button type="submit" className="w-full">
-                  <Save size={18} className="mr-2" />
+                  <Save className="mr-2 h-4 w-4" />
                   Register as Coach
                 </Button>
               </form>

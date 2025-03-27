@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import StarRating from '@/components/ui/StarRating';
+import { mockUserProfiles, mockUserActivities, mockReviews, mockQuests } from '@/mock/data';
 
 interface Review {
   id: string;
@@ -18,174 +19,18 @@ interface Review {
   date: string;
 }
 
-// Mock user data
-const userData = {
-  username: 'mindfulness_guru',
-  displayName: 'Mindfulness Guru',
-  bio: 'Meditation instructor and wellness advocate. Creating challenges to help people improve their mental health and wellbeing.',
-  joinedDate: '2023-01-15T10:30:00Z',
-  profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format',
-  followers: 248,
-  following: 73,
-  isCoach: true,
-  rating: 4.7,
-  reviewCount: 32
-};
-
-// User profiles for coaches
-const coachProfiles = {
-  'coach_alex': {
-    username: 'coach_alex',
-    displayName: 'Coach Alex',
-    bio: 'Certified fitness trainer with 7+ years of experience. Specializing in strength training and nutrition planning.',
-    joinedDate: '2022-05-10T08:20:00Z',
-    profileImage: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=300&auto=format',
-    followers: 1240,
-    following: 86,
-    isCoach: true,
-    rating: 4.9,
-    reviewCount: 124
-  },
-  'mindfulness_guru': userData
-};
-
-// Mock quests created by the user
-const userQuests = [
-  {
-    id: '1',
-    title: 'Meditate for 10 minutes',
-    description: 'Meditate for at least 10 minutes to establish a mindfulness practice.',
-    userId: 'user1',
-    username: 'mindfulness_guru',
-    createdAt: '2023-04-15T10:30:00Z',
-    dueDate: '2023-05-15T10:30:00Z',
-    category: 'Wellness',
-    status: 'pending' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  },
-  {
-    id: '2',
-    title: 'Morning Gratitude',
-    description: 'Write down three things you\'re grateful for this morning.',
-    userId: 'user1',
-    username: 'mindfulness_guru',
-    createdAt: '2023-05-01T08:45:00Z',
-    dueDate: '2023-05-02T08:45:00Z',
-    category: 'Wellness',
-    status: 'pending' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  },
-  {
-    id: '3',
-    title: 'Digital Detox Hour',
-    description: 'Take a break from all digital devices for one hour.',
-    userId: 'user1',
-    username: 'mindfulness_guru',
-    createdAt: '2023-03-10T14:20:00Z',
-    dueDate: '2023-03-10T18:20:00Z',
-    category: 'Wellness',
-    status: 'success' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1534705867302-2a41394d2a3b?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  }
-];
-
-// Mock activities by the user
-const userActivities = [
-  {
-    id: 'act1',
-    type: 'proof_review',
-    action: 'accepted',
-    username: 'zen_master',
-    challengeTitle: 'Meditate for 10 minutes',
-    challengeId: '1',
-    timestamp: '2023-04-22T15:30:00Z'
-  },
-  {
-    id: 'act2',
-    type: 'proof_review',
-    action: 'rejected',
-    username: 'wellness_beginner',
-    challengeTitle: 'Digital Detox Hour',
-    challengeId: '3',
-    timestamp: '2023-03-20T09:15:00Z'
-  },
-  {
-    id: 'act3',
-    type: 'challenge_created',
-    challengeTitle: 'Morning Gratitude',
-    challengeId: '2',
-    timestamp: '2023-05-01T08:45:00Z'
-  }
-];
-
-// Mock reviews data
-const mockReviews = {
-  'coach_alex': [
-    {
-      id: 'rev1',
-      reviewerUsername: 'fitness_enthusiast',
-      reviewerDisplayName: 'Emma Wilson',
-      reviewerImage: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=300&auto=format',
-      rating: 5,
-      content: 'Coach Alex completely transformed my approach to fitness. The personalized training plan was exactly what I needed!',
-      date: '2023-11-15T14:30:00Z'
-    },
-    {
-      id: 'rev2',
-      reviewerUsername: 'wellness_seeker',
-      reviewerDisplayName: 'Mark Johnson',
-      reviewerImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format',
-      rating: 4.5,
-      content: 'Great coach who really knows his stuff. Very responsive and supportive throughout my fitness journey.',
-      date: '2023-10-22T09:15:00Z'
-    },
-    {
-      id: 'rev3',
-      reviewerUsername: 'health_first',
-      reviewerDisplayName: 'Sarah Miller',
-      reviewerImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format',
-      rating: 5,
-      content: 'The nutrition advice alone was worth every penny. I\'ve lost 15 pounds and feel amazing!',
-      date: '2023-09-05T16:45:00Z'
-    }
-  ],
-  'mindfulness_guru': [
-    {
-      id: 'rev4',
-      reviewerUsername: 'zen_student',
-      reviewerDisplayName: 'David Chen',
-      reviewerImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&auto=format',
-      rating: 5,
-      content: 'The meditation techniques I learned have truly changed my daily life. Highly recommend!',
-      date: '2023-08-12T11:20:00Z'
-    },
-    {
-      id: 'rev5',
-      reviewerUsername: 'stress_free',
-      reviewerDisplayName: 'Olivia Parker',
-      reviewerImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=300&auto=format',
-      rating: 4,
-      content: 'Great guidance and very patient with beginners. Would have liked a bit more personalized feedback.',
-      date: '2023-07-28T13:10:00Z'
-    }
-  ]
-};
-
 const Profile = () => {
   const { username } = useParams<{ username: string }>();
   const [isFollowing, setIsFollowing] = useState(false);
-  const [profileData, setProfileData] = useState(userData);
+  const [profileData, setProfileData] = useState(mockUserProfiles.mindfulness_guru);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [activeTab, setActiveTab] = useState('quests');
   const reviewsRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // If we have a username and it exists in our coach profiles, use that data
-    if (username && coachProfiles[username as keyof typeof coachProfiles]) {
-      setProfileData(coachProfiles[username as keyof typeof coachProfiles]);
+    // If we have a username and it exists in our user profiles, use that data
+    if (username && mockUserProfiles[username as keyof typeof mockUserProfiles]) {
+      setProfileData(mockUserProfiles[username as keyof typeof mockUserProfiles]);
       
       // Set reviews if available
       if (mockReviews[username as keyof typeof mockReviews]) {
@@ -195,7 +40,7 @@ const Profile = () => {
       }
     } else {
       // Default to our main user data
-      setProfileData(userData);
+      setProfileData(mockUserProfiles.mindfulness_guru);
       setReviews(mockReviews.mindfulness_guru || []);
     }
   }, [username]);
@@ -233,6 +78,9 @@ const Profile = () => {
       reviewsRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };
+
+  // Filter quests for the current user
+  const userQuests = Object.values(mockQuests).filter(quest => quest.username === profileData.username);
   
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
@@ -341,9 +189,9 @@ const Profile = () => {
           
           <TabsContent value="activity">
             <h2 className="text-2xl font-semibold mb-6">Recent Activity</h2>
-            {userActivities.length > 0 ? (
+            {mockUserActivities.length > 0 ? (
               <div className="space-y-4">
-                {userActivities.map((activity) => (
+                {mockUserActivities.map((activity) => (
                   <div key={activity.id} className="glass rounded-xl p-6">
                     {activity.type === 'proof_review' ? (
                       <div>
