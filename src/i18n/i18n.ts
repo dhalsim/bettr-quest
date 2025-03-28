@@ -7,9 +7,9 @@ import trTranslations from './locales/tr.json';
 
 // Define available languages
 export const languages = {
-  en: { code: 'en', name: 'English', flag: '🇺🇸' },
-  es: { code: 'es', name: 'Español', flag: '🇪🇸' },
-  tr: { code: 'tr', name: 'Türkçe', flag: '🇹🇷' }
+  en: { code: 'en', name: 'English', flag: '🇺🇸', locale: 'en-US' },
+  es: { code: 'es', name: 'Español', flag: '🇪🇸', locale: 'es-ES' },
+  tr: { code: 'tr', name: 'Türkçe', flag: '🇹🇷', locale: 'tr-TR' }
 };
 
 // Get stored language or default to English

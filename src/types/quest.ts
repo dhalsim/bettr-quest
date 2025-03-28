@@ -1,3 +1,8 @@
+export interface TagItem {
+  name: string;
+  popularity?: number;
+}
+
 // Base properties that all quest types share
 export type BaseQuest = {
   title: string;
@@ -6,8 +11,8 @@ export type BaseQuest = {
   username: string;
   createdAt: string;
   dueDate: string;
-  category: string;
   imageUrl: string;
+  specializations: TagItem[];
   visibility: 'public' | 'private';
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import TagsSelector, { TagItem } from '@/components/TagsSelector';
-import { allTags } from '@/mock/data';
+import TagsSelector from '@/components/TagsSelector';
+import { mockTags } from '@/mock/data';
 
 interface TagsInputProps {
   tags: string[];
@@ -27,7 +27,7 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags, setTags }) => {
   return (
     <TagsSelector
       selectedTags={tags}
-      availableTags={allTags}
+      availableTags={mockTags}
       onTagToggle={toggleTag}
       onCustomTagAdd={addCustomTag}
       maxVisibleTags={5}

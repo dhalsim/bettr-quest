@@ -23,7 +23,7 @@ import { useNostrAuth } from '@/hooks/useNostrAuth';
 import TagsSelector, { TagItem } from '@/components/TagsSelector';
 import * as t from 'io-ts';
 import { isRight } from 'fp-ts/Either';
-import { allTags } from '@/mock/data';
+import { mockTags } from '@/mock/data';
 
 // Form validation schema using io-ts
 const PricingOption = t.union([
@@ -212,7 +212,7 @@ const RegisterCoach = () => {
                   <p className="text-sm text-muted-foreground mb-3">Add tags representing your areas of expertise.</p>
                   <TagsSelector
                     selectedTags={specializations}
-                    availableTags={allTags}
+                    availableTags={mockTags}
                     onTagToggle={toggleSpecialization}
                     onCustomTagAdd={addCustomSpecialization}
                     maxVisibleTags={5}

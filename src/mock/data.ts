@@ -1,5 +1,37 @@
-import { LockedQuest, SavedQuest } from '@/types/quest';
+import { LockedQuest, SavedQuest, TagItem } from '@/types/quest';
 import { Proof } from '@/components/ui/ProofCard';
+
+// All available tags for quests and coach specializations
+export const mockTags = new Map<string, TagItem>([
+  ["Fitness", { name: "Fitness", popularity: 100 }],
+  ["Learning", { name: "Learning", popularity: 95 }],
+  ["Productivity", { name: "Productivity", popularity: 90 }],
+  ["Wellness", { name: "Wellness", popularity: 90 }],
+  ["Meditation", { name: "Meditation", popularity: 80 }],
+  ["Reading", { name: "Reading", popularity: 75 }],
+  ["Coding", { name: "Coding", popularity: 70 }],
+  ["Technology", { name: "Technology", popularity: 70 }],
+  ["Writing", { name: "Writing", popularity: 65 }],
+  ["Finance", { name: "Finance", popularity: 60 }],
+  ["Health", { name: "Health", popularity: 55 }],
+  ["Creativity", { name: "Creativity", popularity: 50 }],
+  ["Skills", { name: "Skills", popularity: 45 }],
+  ["Personal", { name: "Personal", popularity: 40 }],
+  ["Professional", { name: "Professional", popularity: 35 }],
+  ["Social", { name: "Social", popularity: 30 }],
+  ["Nutrition", { name: "Nutrition", popularity: 85 }],
+  ["Education", { name: "Education", popularity: 65 }],
+  ["Business", { name: "Business", popularity: 60 }],
+  ["Marketing", { name: "Marketing", popularity: 55 }],
+  ["Design", { name: "Design", popularity: 50 }],
+  ["Sustainability", { name: "Sustainability", popularity: 75 }],
+  ["Music", { name: "Music", popularity: 60 }],
+  ["Art", { name: "Art", popularity: 55 }],
+  ["Travel", { name: "Travel", popularity: 40 }],
+  ["Food", { name: "Food", popularity: 35 }],
+  ["Photography", { name: "Photography", popularity: 30 }],
+  ["Gaming", { name: "Gaming", popularity: 20 }]
+]);
 
 // Mock data for quests
 export const mockQuests: { [key: string]: LockedQuest } = {
@@ -11,8 +43,8 @@ export const mockQuests: { [key: string]: LockedQuest } = {
     username: 'mindfulness_guru',
     createdAt: '2023-04-15T10:30:00Z',
     dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Wellness',
     status: 'on_review',
+    specializations: [mockTags.get("Wellness")],
     imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
     visibility: 'public',
     lockedAmount: 1000,
@@ -28,7 +60,7 @@ export const mockQuests: { [key: string]: LockedQuest } = {
     username: 'polyglot_learner',
     createdAt: '2023-04-08T14:20:00Z',
     dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Learning',
+    specializations: [mockTags.get("Learning")],
     status: 'on_review',
     imageUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600&auto=format',
     visibility: 'public',
@@ -45,7 +77,7 @@ export const mockQuests: { [key: string]: LockedQuest } = {
     username: 'runner_joe',
     createdAt: '2023-04-10T09:15:00Z',
     dueDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Fitness',
+    specializations: [mockTags.get("Fitness")],
     status: 'success',
     imageUrl: 'https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=600&auto=format',
     visibility: 'public',
@@ -62,7 +94,7 @@ export const mockQuests: { [key: string]: LockedQuest } = {
     username: 'storyteller',
     createdAt: '2023-04-12T16:45:00Z',
     dueDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Creativity',
+    specializations: [mockTags.get("Creativity")],
     status: 'failed',
     imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=600&auto=format',
     visibility: 'public',
@@ -79,7 +111,7 @@ export const mockQuests: { [key: string]: LockedQuest } = {
     username: 'code_ninja',
     createdAt: '2023-04-14T11:30:00Z',
     dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Technology',
+    specializations: [mockTags.get("Technology")],
     status: 'in_dispute',
     imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=600&auto=format',
     visibility: 'public',
@@ -101,7 +133,7 @@ export const mockSavedQuests: { [key: string]: SavedQuest } = {
     username: 'music_lover',
     createdAt: '2023-04-20T09:00:00Z',
     dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-    category: 'Music',
+    specializations: [mockTags.get("Music")],
     status: 'saved',
     imageUrl: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=600&auto=format',
     visibility: 'public',
@@ -213,38 +245,6 @@ export const mockSuggestedUsers = [
     bio: 'Coding quests for developers of all levels',
     following: true
   }
-];
-
-// All available tags for quests and coach specializations
-export const allTags = [
-  { name: "Fitness", popularity: 100 },
-  { name: "Learning", popularity: 95 },
-  { name: "Productivity", popularity: 90 },
-  { name: "Wellness", popularity: 90 },
-  { name: "Meditation", popularity: 80 },
-  { name: "Reading", popularity: 75 },
-  { name: "Coding", popularity: 70 },
-  { name: "Technology", popularity: 70 },
-  { name: "Writing", popularity: 65 },
-  { name: "Finance", popularity: 60 },
-  { name: "Health", popularity: 55 },
-  { name: "Creative", popularity: 50 },
-  { name: "Skills", popularity: 45 },
-  { name: "Personal", popularity: 40 },
-  { name: "Professional", popularity: 35 },
-  { name: "Social", popularity: 30 },
-  { name: "Nutrition", popularity: 85 },
-  { name: "Education", popularity: 65 },
-  { name: "Business", popularity: 60 },
-  { name: "Marketing", popularity: 55 },
-  { name: "Design", popularity: 50 },
-  { name: "Sustainability", popularity: 75 },
-  { name: "Music", popularity: 60 },
-  { name: "Art", popularity: 55 },
-  { name: "Travel", popularity: 40 },
-  { name: "Food", popularity: 35 },
-  { name: "Photography", popularity: 30 },
-  { name: "Gaming", popularity: 20 }
 ];
 
 // Mock user profiles data

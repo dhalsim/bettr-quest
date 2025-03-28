@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import StarRating from '@/components/ui/StarRating';
 import { mockUserProfiles, mockUserActivities, mockReviews, mockQuests } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
+import { formatDate, formatDateTime } from '@/lib/utils';
+import { languages } from '@/i18n/i18n';
 
 interface Review {
   id: string;
@@ -27,7 +29,7 @@ const Profile = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [activeTab, setActiveTab] = useState('quests');
   const reviewsRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation(null, { keyPrefix: "profile" });
+  const { t, i18n } = useTranslation(null, { keyPrefix: "profile" });
   
   useEffect(() => {
     // If we have a username and it exists in our user profiles, use that data
@@ -46,28 +48,6 @@ const Profile = () => {
       setReviews(mockReviews.mindfulness_guru || []);
     }
   }, [username]);
-  
-  // Format the date
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-  
-  // Format the time
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    }) + ' at ' + date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
   
   const toggleFollow = () => {
     setIsFollowing(!isFollowing);
@@ -133,7 +113,7 @@ const Profile = () => {
                 <div className="flex flex-wrap gap-4 items-center text-sm">
                   <div className="flex items-center gap-1.5">
                     <Calendar size={14} />
-                    {t('Joined')} {formatDate(profileData.joinedDate)}
+                    {t('Joined')} {formatDate(profileData.joinedDate, i18n.language as keyof typeof languages)}
                   </div>
                   <div className="flex items-center gap-1.5">
                     <User size={14} />
@@ -228,7 +208,7 @@ const Profile = () => {
                       </div>
                     )}
                     <p className="text-xs text-muted-foreground mt-2">
-                      {formatTime(activity.timestamp)}
+                      {formatDateTime(activity.timestamp, i18n.language as keyof typeof languages)}
                     </p>
                   </div>
                 ))}
@@ -275,7 +255,7 @@ const Profile = () => {
                           <p className="mb-2">{review.content}</p>
                           
                           <p className="text-xs text-muted-foreground">
-                            {formatTime(review.date)}
+                            {formatDateTime(review.date, i18n.language as keyof typeof languages)}
                           </p>
                         </div>
                       </div>

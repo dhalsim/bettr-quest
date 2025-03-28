@@ -3,51 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, User, Clock, UserPlus, UserCheck, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
-
-export type Quest = {
-  id: string;
-  title: string;
-  description: string;
-  userId: string;
-  username: string;
-  createdAt: string;
-  dueDate: string;
-  category: string;
-  status: 'pending' | 'on_review' | 'success' | 'failed' | 'in_dispute';
-  imageUrl?: string;
-  visibility: 'public' | 'private';
-  totalZapped?: number;
-};
+import { LockedQuest } from '@/types/quest';
+import { assertNever, formatDate, calculateDaysRemaining } from '@/lib/utils';
 
 interface QuestCardProps {
-  quest: Quest;
+  quest: LockedQuest;
 }
 
 const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation(null, { keyPrefix: "quest" });
+  const { t: tTags } = useTranslation(null, { keyPrefix: "tags" });
   
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
-  
-  const calculateDaysRemaining = () => {
-    const dueDate = new Date(quest.dueDate);
-    const today = new Date();
-    const differenceInTime = dueDate.getTime() - today.getTime();
-    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-    
-    return differenceInDays > 0 ? differenceInDays : 0;
-  };
-  
-  const daysRemaining = calculateDaysRemaining();
-  const isQuestActive = daysRemaining > 0 && 
-                      (quest.status === 'pending' || quest.status === 'on_review');
+  const daysRemaining = calculateDaysRemaining(quest.dueDate);
   
   const toggleFollow = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -55,39 +24,39 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
     setIsFollowing(!isFollowing);
   };
 
-  const handleCategoryClick = (e: React.MouseEvent) => {
+  const handleSpecializationClick = (e: React.MouseEvent, tag: string) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate(`/explore?category=${quest.category}`);
+    navigate(`/explore?specialization=${tag}`);
   };
   
   const getStatusBadgeClass = () => {
     switch (quest.status) {
-      case 'pending':
-        return 'bg-blue-500/10 text-blue-500';
       case 'on_review':
         return 'bg-yellow-500/10 text-yellow-500';
       case 'success':
         return 'bg-green-500/10 text-green-500';
       case 'failed':
         return 'bg-red-500/10 text-red-500';
+      case 'in_dispute':
+        return 'bg-gray-500/10 text-gray-500';
       default:
-        return 'bg-blue-500/10 text-blue-500';
+        return assertNever(quest.status);
     }
   };
 
   const getStatusText = () => {
     switch (quest.status) {
-      case 'pending':
-        return t('Pending');
       case 'on_review':
         return t('On Review');
       case 'success':
         return t('Success');
       case 'failed':
         return t('Failed');
+      case 'in_dispute':
+        return t('In Dispute');
       default:
-        return t('Pending');
+        return assertNever(quest.status);
     }
   };
   
@@ -106,12 +75,15 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
         
         <div className="p-6">
           <div className="flex justify-between items-start mb-3">
-            <span 
-              onClick={handleCategoryClick}
+            {quest.specializations.map((tag) => (
+              <span 
+                key={tag.name}
+                onClick={(e) => handleSpecializationClick(e, tag.name)}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
-            >
-              {quest.category}
-            </span>
+              >
+                {tTags(tag.name)}
+              </span>
+            ))}
             
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium
               ${getStatusBadgeClass()}`}

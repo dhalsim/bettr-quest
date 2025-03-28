@@ -1,8 +1,8 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, Image, Video, Mic, Trash2, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useTranslation } from 'react-i18next';
 
 interface MediaUploadProps {
   onMediaChange: (files: {
@@ -24,6 +24,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
   const [isRecording, setIsRecording] = useState(false);
   const [recordingType, setRecordingType] = useState<'audio' | 'video' | null>(null);
   const [showRecordingModal, setShowRecordingModal] = useState(false);
+  const { t } = useTranslation(null, { keyPrefix: "upload" });
   
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
@@ -174,7 +175,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
   
   return (
     <div className="mb-6">
-      <h3 className="block text-sm font-medium mb-4">Add Media (Optional)</h3>
+      <h3 className="block text-sm font-medium mb-4">{t('Add Media (Optional)')}</h3>
       
       <div className="flex flex-wrap gap-3 mb-4">
         <Button 
@@ -183,7 +184,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
           onClick={() => imageInputRef.current?.click()}
         >
           <Image size={16} className="mr-2" />
-          Image
+          {t('Image')}
         </Button>
         
         <Button 
@@ -192,7 +193,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
           onClick={() => videoInputRef.current?.click()}
         >
           <Video size={16} className="mr-2" />
-          Video
+          {t('Video')}
         </Button>
         
         <Button 
@@ -201,7 +202,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
           onClick={() => openRecordingModal('audio')}
         >
           <Mic size={16} className="mr-2" />
-          Record Audio
+          {t('Record Audio')}
         </Button>
         
         <Button 
@@ -210,7 +211,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
           onClick={() => openRecordingModal('video')}
         >
           <Camera size={16} className="mr-2" />
-          Record Video
+          {t('Record Video')}
         </Button>
         
         {(selectedImage || selectedVideo || recordedAudio || recordedVideo || imagePreviews.length > 0) && (
@@ -220,7 +221,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
             onClick={handleClearMedia}
           >
             <Trash2 size={16} className="mr-2" />
-            Clear Media
+            {t('Clear Media')}
           </Button>
         )}
       </div>
@@ -263,7 +264,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
         {/* Video Preview */}
         {selectedVideo && (
           <div className="mb-3">
-            <h4 className="text-sm font-medium mb-1">Video Selected:</h4>
+            <h4 className="text-sm font-medium mb-1">{t('Video Selected')}:</h4>
             <p className="text-sm text-muted-foreground">{selectedVideo.name}</p>
           </div>
         )}
@@ -271,10 +272,10 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
         {/* Audio Preview */}
         {recordedAudio && (
           <div className="mb-3">
-            <h4 className="text-sm font-medium mb-1">Audio Recorded:</h4>
+            <h4 className="text-sm font-medium mb-1">{t('Audio Recorded')}:</h4>
             <audio controls className="w-full">
               <source src={URL.createObjectURL(recordedAudio)} type="audio/wav" />
-              Your browser does not support the audio element.
+              {t('Your browser does not support the audio element')}
             </audio>
           </div>
         )}
@@ -282,10 +283,10 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
         {/* Recorded Video Preview */}
         {recordedVideo && (
           <div className="mb-3">
-            <h4 className="text-sm font-medium mb-1">Video Recorded:</h4>
+            <h4 className="text-sm font-medium mb-1">{t('Video Recorded')}:</h4>
             <video controls className="w-full max-h-60 rounded-md">
               <source src={URL.createObjectURL(recordedVideo)} type="video/webm" />
-              Your browser does not support the video element.
+              {t('Your browser does not support the video element')}
             </video>
           </div>
         )}
@@ -296,7 +297,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {recordingType === 'audio' ? 'Recording Audio' : 'Recording Video'}
+              {recordingType === 'audio' ? t('Recording Audio') : t('Recording Video')}
             </DialogTitle>
           </DialogHeader>
           
@@ -322,14 +323,14 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
                   variant="destructive"
                   onClick={stopRecording}
                 >
-                  Stop Recording
+                  {t('Stop Recording')}
                 </Button>
               ) : (
                 <Button 
                   variant="default"
                   onClick={() => startRecording(recordingType || 'audio')}
                 >
-                  Start Recording
+                  {t('Start Recording')}
                 </Button>
               )}
               
@@ -337,7 +338,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
                 variant="outline"
                 onClick={closeRecordingModal}
               >
-                Close
+                {t('Close')}
               </Button>
             </div>
           </div>

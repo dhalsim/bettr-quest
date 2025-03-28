@@ -23,14 +23,14 @@ const CreateQuest = () => {
   const queryParams = new URLSearchParams(location.search);
   const prefilledTitle = queryParams.get('title') || '';
   const prefilledDescription = queryParams.get('description') || '';
-  const prefilledCategory = queryParams.get('category') || '';
+  const prefilledTags = queryParams.get('tags') || '';
   const prefilledImageUrl = queryParams.get('imageUrl') || '';
   
   const [title, setTitle] = useState(prefilledTitle);
   const [description, setDescription] = useState(prefilledDescription);
   const [visibility, setVisibility] = useState('public');
   const [proofMethod, setProofMethod] = useState('');
-  const [tags, setTags] = useState<string[]>(prefilledCategory ? [prefilledCategory] : []);
+  const [tags, setTags] = useState<string[]>(prefilledTags ? prefilledTags.split(',') : []);
   const [dueDate, setDueDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [proofChallenger, setProofChallenger] = useState('anyone'); // Default to 'anyone' for public

@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { toast } from 'sonner';
 import { ProofLocationState } from '@/pages/escrow-deposit/validation';
+import { useTranslation } from 'react-i18next';
+import { languages } from '@/i18n/i18n';
+import { formatDateTime } from '@/lib/utils';
 
 export type Proof = {
   id: string;
@@ -41,20 +44,8 @@ const ProofCard: React.FC<ProofCardProps> = ({
 }) => {
   const { isLoggedIn } = useNostrAuth();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation(null, { keyPrefix: "proof" });
   
-  // Format date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    }) + ' at ' + date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
   const createLocationState = (type: 'proof-verify' | 'proof-contest'): ProofLocationState => ({
     type,
     proofTitle: proof.title,
@@ -69,7 +60,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
 
   const handleVerify = () => {
     if (!isLoggedIn) {
-      toast.error("Please connect your wallet to verify proofs");
+      toast.error(t('Please connect your wallet to verify proofs'));
       return;
     }
     
@@ -80,7 +71,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
   
   const handleContest = () => {
     if (!isLoggedIn) {
-      toast.error("Please connect your wallet to contest proofs");
+      toast.error(t('Please connect your wallet to contest proofs'));
       return;
     }
     
@@ -103,26 +94,26 @@ const ProofCard: React.FC<ProofCardProps> = ({
             </Link>
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Clock size={12} />
-              <span>{formatDate(proof.createdAt)}</span>
+              <span>{formatDateTime(proof.createdAt, i18n.language as keyof typeof languages)}</span>
             </div>
           </div>
           
           <div className="ml-auto">
             {questStatus === 'on_review' ? (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500">
-                Pending
+                {t('Pending')}
               </span>
             ) : questStatus === 'success' ? (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-500">
-                Accepted
+                {t('Accepted')}
               </span>
             ) : questStatus === 'in_dispute' ? (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500/10 text-orange-500">
-                In Dispute
+                {t('In Dispute')}
               </span>
             ) : (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-500">
-                Rejected
+                {t('Rejected')}
               </span>
             )}
           </div>
@@ -164,7 +155,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
                       onClick={handleVerify}
                     >
                       <Check size={16} className="mr-1.5" />
-                      Verify
+                      {t('Verify')}
                     </Button>
                     <Button 
                       className="bg-red-500 hover:bg-red-600 text-white" 
@@ -172,13 +163,13 @@ const ProofCard: React.FC<ProofCardProps> = ({
                       onClick={handleContest}
                     >
                       <X size={16} className="mr-1.5" />
-                      Contest
+                      {t('Contest')}
                     </Button>
                   </>
                 ) : (
                   <div className="w-full sm:w-auto">
                     <Link to="/connect" className="text-primary font-medium text-sm hover:underline">
-                      Connect to earn rewards
+                      {t('Connect to earn rewards')}
                     </Link>
                   </div>
                 )}

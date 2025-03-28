@@ -6,17 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslation } from 'react-i18next';
-
-export interface TagItem {
-  name: string;
-  popularity?: number;
-}
+import { TagItem } from '@/types/quest';
 
 interface TagsSelectorProps {
   title?: string;
   description?: string;
   selectedTags: string[];
-  availableTags: TagItem[];
+  availableTags: Map<string, TagItem>;
   onTagToggle: (tag: string) => void;
   onCustomTagAdd?: (tag: string) => void;
   maxVisibleTags?: number;
@@ -41,12 +37,13 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
   const { t } = useTranslation(null, { keyPrefix: "tags" });
   
   // Sort tags by popularity (if provided) or alphabetically
-  const sortedAvailableTags = [...availableTags].sort((a, b) => {
-    if (a.popularity !== undefined && b.popularity !== undefined) {
-      return b.popularity - a.popularity;
-    }
-    return a.name.localeCompare(b.name);
-  });
+  const sortedAvailableTags = Array.from(availableTags.values())
+    .sort((a, b) => {
+      if (a.popularity !== undefined && b.popularity !== undefined) {
+        return b.popularity - a.popularity;
+      }
+      return a.name.localeCompare(b.name);
+    });
   
   // Filter tags based on search query
   const filteredTags = sortedAvailableTags.filter(tag => 

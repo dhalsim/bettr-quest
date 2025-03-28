@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/ui/QuestCard';
 import { useSearchParams } from 'react-router-dom';
 import TagsSelector from '@/components/TagsSelector';
-import { mockQuests, allTags } from '@/mock/data';
+import { mockQuests, mockTags } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 
 // Convert mockQuests object to array for explore page
@@ -12,14 +12,22 @@ const allQuests = Object.values(mockQuests);
 
 const Explore = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const categoryParam = searchParams.get('category');
   const { t } = useTranslation(null, { keyPrefix: "explore" });
   
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTags, setSelectedTags] = useState<string[]>(
-    categoryParam && categoryParam !== 'All' ? [categoryParam] : []
-  );
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [filteredQuests, setFilteredQuests] = useState(allQuests);
+  
+  // Sync selectedTags with URL params
+  useEffect(() => {
+    const specialization = searchParams.get('specialization');
+    
+    if (specialization && specialization !== 'All') {
+      setSelectedTags([specialization]);
+    } else {
+      setSelectedTags([]);
+    }
+  }, [searchParams]);
   
   useEffect(() => {
     const filtered = allQuests.filter(quest => {
@@ -27,19 +35,13 @@ const Explore = () => {
         quest.description.toLowerCase().includes(searchQuery.toLowerCase());
       
       const matchesTags = selectedTags.length === 0 || 
-        selectedTags.includes(quest.category);
+        selectedTags.every(tag => quest.specializations.some(s => s.name === tag));
       
       return matchesQuery && matchesTags;
     });
     
     setFilteredQuests(filtered);
-    
-    if (selectedTags.length === 1) {
-      setSearchParams({ category: selectedTags[0] });
-    } else {
-      setSearchParams({});
-    }
-  }, [selectedTags, searchQuery, setSearchParams]);
+  }, [selectedTags, searchQuery]);
   
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -80,7 +82,7 @@ const Explore = () => {
             
             <TagsSelector
               selectedTags={selectedTags}
-              availableTags={allTags}
+              availableTags={mockTags}
               onTagToggle={toggleTag}
               allowCustomTags={false}
               maxVisibleTags={5}

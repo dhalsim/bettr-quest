@@ -10,9 +10,11 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ZapModal from '@/components/quest/ZapModal';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { LockedQuest, SavedQuest } from '@/types/quest';
 import { mockQuests, mockProofs } from '@/mock/data';
+import { useTranslation } from 'react-i18next';
+import { formatDate, calculateDaysRemaining } from '@/lib/utils';
+import { languages } from '@/i18n/i18n';
 
 const QuestPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +26,8 @@ const QuestPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
   const [zapModalOpen, setZapModalOpen] = useState(false);
-  const isMobile = useIsMobile();
+  const { t: tTags } = useTranslation(null, { keyPrefix: "tags" });
+  const { t, i18n } = useTranslation(null, { keyPrefix: "quest" });
   
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
@@ -52,23 +55,7 @@ const QuestPage = () => {
     return <div className="min-h-screen pt-32 pb-20 px-6">Loading quest...</div>;
   }
   
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-  
-  const calculateDaysRemaining = () => {
-    const dueDate = new Date(questData.dueDate);
-    const today = new Date();
-    const differenceInTime = dueDate.getTime() - today.getTime();
-    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-    return differenceInDays > 0 ? differenceInDays : 0;
-  };
-  
-  const daysRemaining = calculateDaysRemaining();
+  const daysRemaining = calculateDaysRemaining(questData.dueDate);
 
   const getStatusBadgeClass = () => {
     const status = questData.status;
@@ -88,15 +75,15 @@ const QuestPage = () => {
   const getStatusText = () => {
     const status = questData.status;
     if (status === 'on_review') {
-      return 'On Review';
+      return t('On Review');
     } else if (status === 'success') {
-      return 'Success';
+      return t('Success');
     } else if (status === 'failed') {
-      return 'Failed';
+      return t('Failed');
     } else if (status === 'in_dispute') {
-      return 'In Dispute';
+      return t('In Dispute');
     } else {
-      return 'Saved';
+      return t('Saved');
     }
   };
   
@@ -144,15 +131,17 @@ const QuestPage = () => {
     toast.success("Thank you for your report. Our moderators will review this quest.");
   };
   
-  const handleCategoryClick = () => {
-    navigate(`/explore?category=${questData.category}`);
+  const handleSpecializationClick = (e: React.MouseEvent, tag: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/explore?specialization=${tag}`);
   };
   
   const handleCopyQuest = () => {
     const params = new URLSearchParams({
       title: questData.title,
       description: questData.description,
-      category: questData.category,
+      tags: questData.specializations.map(s => s.name).join(','),
       imageUrl: questData.imageUrl || ''
     });
     
@@ -217,7 +206,7 @@ const QuestPage = () => {
         <div className="mb-10">
           <Link to="/explore" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-4">
             <ArrowLeft size={16} className="mr-2" />
-            Back to Explore
+            {t('Back to Explore')}
           </Link>
           
           <div className="flex flex-col lg:flex-row gap-10">
@@ -235,22 +224,24 @@ const QuestPage = () => {
                 
                 <div className="p-8">
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span 
-                      onClick={handleCategoryClick}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
-                    >
-                      <Tag size={12} />
-                      {questData.category}
-                    </span>
+                    {questData.specializations.map((specialization) => (
+                      <span 
+                        key={specialization.name}
+                        onClick={(e) => handleSpecializationClick(e, specialization.name)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+                      >
+                        <Tag size={12} />
+                        {tTags(specialization.name)}
+                      </span>
+                    ))}
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass()}`}>
                       <Check size={12} />
                       {getStatusText()}
                     </span>
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
                       <User size={12} />
-                      {questData.visibility === 'public' ? 'Public' : 'Private'} Quest
+                      {t(questData.visibility === 'public' ? 'Public Quest' : 'Private Quest')}
                     </span>
-                    
                     {totalZapped > 0 && (
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500">
                         <Zap size={12} />
@@ -293,72 +284,72 @@ const QuestPage = () => {
                   <div className="flex flex-wrap gap-6 items-center text-sm text-muted-foreground mb-6">
                     <div className="flex items-center gap-1.5">
                       <User size={14} />
-                      Created by {' '}
+                      {t('Created by')} {' '}
                       <Link to={`/profile/${questData.username}`} className="text-primary hover:underline">
                         {questData.username}
                       </Link>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Calendar size={14} />
-                      Created on {formatDate(questData.createdAt)}
+                      {t('Created on')} {formatDate(questData.createdAt, i18n.language as keyof typeof languages)}
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Clock size={14} />
                       {daysRemaining > 0 
-                        ? `${daysRemaining} days remaining` 
-                        : 'Due date passed'}
+                        ? `${daysRemaining} ${t('days remaining')}` 
+                        : t('Due date passed')}
                     </div>
                   </div>
                   
                   <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
                     <div className="flex flex-wrap justify-between items-center gap-4">
                       <div>
-                        <h3 className="text-lg font-medium mb-1">Quest Rewards</h3>
-                        <p className="text-sm text-muted-foreground">Locked amount: <span className="font-semibold text-foreground">{getLockedAmount(questData).toLocaleString() || 0} sats</span></p>
+                        <h3 className="text-lg font-medium mb-1">{t('Quest Rewards')}</h3>
+                        <p className="text-sm text-muted-foreground">{t('Locked amount')}: <span className="font-semibold text-foreground">{getLockedAmount(questData).toLocaleString() || 0} sats</span></p>
                       </div>
                       
                       <div className="flex flex-col sm:flex-row gap-3">
                         <div className="bg-green-500/10 text-green-500 px-3 py-2 rounded-md text-sm">
-                          <div className="font-medium">Verification Reward</div>
+                          <div className="font-medium">{t('Verification Reward')}</div>
                           <div className="font-bold">{verificationReward.toLocaleString()} sats</div>
                         </div>
                         <div className="bg-red-500/10 text-red-500 px-3 py-2 rounded-md text-sm">
-                          <div className="font-medium">Contest Reward</div>
+                          <div className="font-medium">{t('Contest Reward')}</div>
                           <div className="font-bold">{contestReward.toLocaleString()} sats</div>
                         </div>
                       </div>
                       
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline" size="sm">Learn how rewards work</Button>
+                          <Button variant="outline" size="sm">{t('Learn how rewards work')}</Button>
                         </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>
-                            <DialogTitle>How Quest Rewards Work</DialogTitle>
+                            <DialogTitle>{t('How Quest Rewards Work')}</DialogTitle>
                             <DialogDescription>
                               <div className="mt-4 space-y-4">
                                 <div>
                                   <h4 className="font-medium mb-1 flex items-center gap-2 text-green-500">
-                                    <CircleCheck size={16} /> Verification Reward
+                                    <CircleCheck size={16} /> {t('Verification Reward')}
                                   </h4>
                                   <p className="text-sm">
-                                    Verifying legitimate proofs earns you {verificationReward.toLocaleString()} sats. 
+                                    {t('Verifying legitimate proofs earns you')} {verificationReward.toLocaleString()} sats. 
                                     If multiple users verify, the reward is split equally.
                                   </p>
                                 </div>
                                 
                                 <div>
                                   <h4 className="font-medium mb-1 flex items-center gap-2 text-red-500">
-                                    <CircleX size={16} /> Contest Reward
+                                    <CircleX size={16} /> {t('Contest Reward')}
                                   </h4>
                                   <p className="text-sm">
-                                    Successfully contesting a fraudulent proof earns you the entire locked amount ({contestReward.toLocaleString()} sats). 
-                                    Make sure you have evidence before contesting! If multiple users contest, the amount will be split equally. 
+                                    {t('Successfully contesting a fraudulent proof earns you the entire locked amount')} ({contestReward.toLocaleString()} {t('sats')}). 
+                                    {t('Make sure you have evidence before contesting! If multiple users contest, the amount will be split equally.')}
                                   </p>
                                 </div>
                                 
                                 <div className="pt-2 border-t border-border">
-                                  <p className="text-sm font-medium">The quest creator has locked {getLockedAmount(questData).toLocaleString() || 0} sats to ensure accountability.</p>
+                                  <p className="text-sm font-medium">{t('The quest creator has locked')} {getLockedAmount(questData).toLocaleString() || 0} {t('sats to ensure accountability.')}</p>
                                 </div>
                               </div>
                             </DialogDescription>
@@ -370,8 +361,8 @@ const QuestPage = () => {
                   
                   <Tabs defaultValue="details" onValueChange={setActiveTab} className="mt-6">
                     <TabsList className="mb-6">
-                      <TabsTrigger value="details">Details</TabsTrigger>
-                      <TabsTrigger value="escrow">Escrow & Rewards</TabsTrigger>
+                      <TabsTrigger value="details">{t('Details')}</TabsTrigger>
+                      <TabsTrigger value="escrow">{t('Escrow & Rewards')}</TabsTrigger>
                     </TabsList>
                     
                     <TabsContent value="details" className="space-y-4">
@@ -382,24 +373,24 @@ const QuestPage = () => {
                     
                     <TabsContent value="escrow" className="space-y-4">
                       <div className="bg-secondary/20 p-6 rounded-lg">
-                        <h3 className="text-lg font-medium mb-4">Escrow Information</h3>
+                        <h3 className="text-lg font-medium mb-4">{t('Escrow Information')}</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
-                            <p className="text-sm text-muted-foreground mb-2">Creator Locked Amount</p>
+                            <p className="text-sm text-muted-foreground mb-2">{t('Creator Locked Amount')}</p>
                             <p className="text-xl font-semibold">{getLockedAmount(questData).toLocaleString() || 0} sats</p>
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground mb-2">Escrow Status</p>
+                            <p className="text-sm text-muted-foreground mb-2">{t('Escrow Status')}</p>
                             <p className="text-xl font-semibold capitalize">{getEscrowStatus(questData) || 'Locked'}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground mb-2">Quest Status</p>
+                            <p className="text-sm text-muted-foreground mb-2">{t('Quest Status')}</p>
                             <p className="text-xl font-semibold capitalize">{getStatusText()}</p>
                           </div>
                           {isInDispute(questData) && (
                             <div>
-                              <p className="text-sm text-muted-foreground mb-2">Dispute Status</p>
-                              <p className="text-xl font-semibold text-orange-500">Under Review</p>
+                              <p className="text-sm text-muted-foreground mb-2">{t('Dispute Status')}</p>
+                              <p className="text-xl font-semibold text-orange-500">{t('Under Review')}</p>
                             </div>
                           )}
                         </div>
@@ -407,10 +398,9 @@ const QuestPage = () => {
                         <Separator className="my-6" />
                         
                         <div>
-                          <h4 className="text-md font-medium mb-3">Reward Distribution</h4>
+                          <h4 className="text-md font-medium mb-3">{t('Reward Distribution')}</h4>
                           <p className="text-sm text-muted-foreground">
-                            If the proof is accepted, the acceptor will receive a reward from the locked amount. 
-                            Multiple acceptors will split the reward equally.
+                            {t('If the proof is accepted, the acceptor will receive a reward from the locked amount. Multiple acceptors will split the reward equally.')}
                           </p>
                         </div>
                       </div>
@@ -423,7 +413,7 @@ const QuestPage = () => {
                         variant="primary"
                         onClick={() => document.getElementById('submit-proof')?.scrollIntoView({ behavior: 'smooth' })}
                       >
-                        Submit Your Proof
+                        {t('Submit Your Proof')}
                         <ArrowDown size={16} className="ml-2" />
                       </Button>
                     )}
@@ -435,7 +425,7 @@ const QuestPage = () => {
                       className={isQuestCreator ? "" : "ml-auto"}
                     >
                       <Flag size={16} className="mr-2" />
-                      Report Quest
+                      {t('Report Quest')}
                     </Button>
                   </div>
                 </div>
@@ -445,16 +435,16 @@ const QuestPage = () => {
             {isQuestCreator && (
               <div className="lg:w-1/3" id="submit-proof">
                 <div className="glass rounded-2xl p-6 sticky top-32">
-                  <h2 className="text-xl font-semibold mb-4">Submit Your Proof</h2>
+                  <h2 className="text-xl font-semibold mb-4">{t('Submit Your Proof')}</h2>
                   <form onSubmit={handleSubmitProof}>
                     <div className="mb-4">
                       <label htmlFor="proof-description" className="block text-sm font-medium mb-1">
-                        How did you complete this quest?
+                        {t('How did you complete this quest?')}
                       </label>
                       <textarea
                         id="proof-description"
                         rows={5}
-                        placeholder="Describe how you completed your quest..."
+                        placeholder={t('Describe how you completed your quest...')}
                         className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
                         value={newProof}
                         onChange={(e) => setNewProof(e.target.value)}
@@ -473,7 +463,7 @@ const QuestPage = () => {
                       isLoading={isSubmitting}
                     >
                       <Send size={16} className="mr-2" />
-                      Submit Proof
+                      {t('Submit Proof')}
                     </Button>
                   </form>
                 </div>
@@ -484,11 +474,11 @@ const QuestPage = () => {
         
         <div className="mt-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Submitted Proofs</h2>
+            <h2 className="text-2xl font-bold">{t('Submitted Proofs')}</h2>
             {!isLoggedIn && (
               <Link to="/connect" className="text-primary font-medium hover:underline flex items-center">
                 <User size={16} className="mr-1.5" />
-                Connect to earn rewards
+                {t('Connect to earn rewards')}
               </Link>
             )}
           </div>
@@ -508,7 +498,7 @@ const QuestPage = () => {
             
             {proofs.length === 0 && (
               <div className="glass rounded-2xl p-8 text-center">
-                <p className="text-muted-foreground">No proofs have been submitted yet.</p>
+                <p className="text-muted-foreground">{t('No proofs have been submitted yet.')}</p>
               </div>
             )}
           </div>
