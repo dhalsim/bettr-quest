@@ -3,8 +3,9 @@ import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/ui/QuestCard';
 import { useSearchParams } from 'react-router-dom';
-import TagsSelector, { TagItem } from '@/components/TagsSelector';
-import { mockQuests, mockTags } from '@/mock/data';
+import TagsSelector from '@/components/TagsSelector';
+import { mockQuests, allTags } from '@/mock/data';
+import { useTranslation } from 'react-i18next';
 
 // Convert mockQuests object to array for explore page
 const allQuests = Object.values(mockQuests);
@@ -12,6 +13,7 @@ const allQuests = Object.values(mockQuests);
 const Explore = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const { t } = useTranslation(null, { keyPrefix: "explore" });
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>(
@@ -55,9 +57,9 @@ const Explore = () => {
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
-          <h1 className="text-3xl font-bold mb-2">Explore Quests</h1>
+          <h1 className="text-3xl font-bold mb-2">{t('Explore Quests')}</h1>
           <p className="text-muted-foreground">
-            Discover quests created by users and follow their journeys
+            {t('Discover quests created by users and follow their journeys')}
           </p>
         </div>
         
@@ -70,7 +72,7 @@ const Explore = () => {
               <input
                 type="text"
                 className="pl-10 px-4 py-3 w-full bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
-                placeholder="Search quests..."
+                placeholder={t('Search quests...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -78,15 +80,15 @@ const Explore = () => {
             
             <TagsSelector
               selectedTags={selectedTags}
-              availableTags={mockTags}
+              availableTags={allTags}
               onTagToggle={toggleTag}
               allowCustomTags={false}
               maxVisibleTags={5}
-              searchPlaceholder="Search by typing"
+              searchPlaceholder={t('Search by typing')}
             />
             
             <Button type="submit" className="w-full md:w-auto">
-              Search
+              {t('Search')}
             </Button>
           </form>
         </div>
@@ -99,9 +101,9 @@ const Explore = () => {
           </div>
         ) : (
           <div className="text-center py-20 glass rounded-2xl">
-            <h3 className="text-xl font-medium mb-2">No quests found</h3>
+            <h3 className="text-xl font-medium mb-2">{t('No quests found')}</h3>
             <p className="text-muted-foreground">
-              Try adjusting your search or category filters
+              {t('Try adjusting your search or category filters')}
             </p>
           </div>
         )}

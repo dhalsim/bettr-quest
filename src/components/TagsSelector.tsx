@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useTranslation } from 'react-i18next';
 
 export interface TagItem {
   name: string;
@@ -36,6 +37,8 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const { t } = useTranslation(null, { keyPrefix: "tags" });
   
   // Sort tags by popularity (if provided) or alphabetically
   const sortedAvailableTags = [...availableTags].sort((a, b) => {
@@ -47,7 +50,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
   
   // Filter tags based on search query
   const filteredTags = sortedAvailableTags.filter(tag => 
-    tag.name.toLowerCase().includes(searchQuery.toLowerCase())
+    t(tag.name).toLowerCase().includes(searchQuery.toLowerCase())
   );
   
   // Get the limited tags to display in the main view - now shows filtered tags when searching
@@ -125,7 +128,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
             key={tag} 
             className="px-3 py-1 text-sm flex items-center gap-1"
           >
-            {tag}
+            {t(tag)}
             <XCircle 
               size={14} 
               className="cursor-pointer ml-1" 
@@ -183,7 +186,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
                         }
                       }}
                     >
-                      {tag.name}
+                      {t(tag.name)}
                     </Badge>
                   ))}
                   
@@ -250,7 +253,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
               className="cursor-pointer"
               onClick={() => onTagToggle(tag.name)}
             >
-              {tag.name}
+              {t(tag.name)}
             </Badge>
           ))}
           

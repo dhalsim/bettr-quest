@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, User, Clock, UserPlus, UserCheck, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 export type Quest = {
   id: string;
@@ -25,6 +26,7 @@ interface QuestCardProps {
 const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation(null, { keyPrefix: "quest" });
   
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -77,15 +79,15 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const getStatusText = () => {
     switch (quest.status) {
       case 'pending':
-        return 'Pending';
+        return t('Pending');
       case 'on_review':
-        return 'On Review';
+        return t('On Review');
       case 'success':
-        return 'Success';
+        return t('Success');
       case 'failed':
-        return 'Failed';
+        return t('Failed');
       default:
-        return 'Pending';
+        return t('Pending');
     }
   };
   
@@ -136,7 +138,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
               onClick={toggleFollow}
             >
               {isFollowing ? <UserCheck size={16} className="mr-2" /> : <UserPlus size={16} className="mr-2" />}
-              {isFollowing ? 'Following' : 'Follow'}
+              {isFollowing ? t('Following') : t('Follow')}
             </Button>
           </div>
           
@@ -151,8 +153,8 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                 <Clock size={12} />
                 <span>
                   {daysRemaining > 0 
-                    ? `${daysRemaining} days remaining` 
-                    : 'Due date passed'}
+                    ? `${daysRemaining} ${t('days remaining')}` 
+                    : t('Due date passed')}
                 </span>
               </div>
             </div>
@@ -160,7 +162,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
             {quest.totalZapped && quest.totalZapped > 0 && (
               <div className="flex items-center gap-1.5 text-yellow-500">
                 <Zap size={12} />
-                <span>{quest.totalZapped.toLocaleString()} sats</span>
+                <span>{quest.totalZapped.toLocaleString()} {t('sats')}</span>
               </div>
             )}
           </div>

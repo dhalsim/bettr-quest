@@ -1,4 +1,4 @@
-import { Quest, LockedQuest, SavedQuest } from '@/types/quest';
+import { LockedQuest, SavedQuest } from '@/types/quest';
 import { Proof } from '@/components/ui/ProofCard';
 
 // Mock data for quests
@@ -215,22 +215,35 @@ export const mockSuggestedUsers = [
   }
 ];
 
-// Available categories/tags for quests
-export const mockTags = [
+// All available tags for quests and coach specializations
+export const allTags = [
+  { name: "Fitness", popularity: 100 },
+  { name: "Learning", popularity: 95 },
+  { name: "Productivity", popularity: 90 },
   { name: "Wellness", popularity: 90 },
-  { name: "Fitness", popularity: 85 },
-  { name: "Learning", popularity: 80 },
+  { name: "Meditation", popularity: 80 },
+  { name: "Reading", popularity: 75 },
+  { name: "Coding", popularity: 70 },
+  { name: "Technology", popularity: 70 },
+  { name: "Writing", popularity: 65 },
+  { name: "Finance", popularity: 60 },
+  { name: "Health", popularity: 55 },
+  { name: "Creative", popularity: 50 },
+  { name: "Skills", popularity: 45 },
+  { name: "Personal", popularity: 40 },
+  { name: "Professional", popularity: 35 },
+  { name: "Social", popularity: 30 },
+  { name: "Nutrition", popularity: 85 },
+  { name: "Education", popularity: 65 },
+  { name: "Business", popularity: 60 },
+  { name: "Marketing", popularity: 55 },
+  { name: "Design", popularity: 50 },
   { name: "Sustainability", popularity: 75 },
-  { name: "Productivity", popularity: 70 },
-  { name: "Technology", popularity: 65 },
   { name: "Music", popularity: 60 },
   { name: "Art", popularity: 55 },
-  { name: "Writing", popularity: 50 },
-  { name: "Finance", popularity: 45 },
   { name: "Travel", popularity: 40 },
   { name: "Food", popularity: 35 },
   { name: "Photography", popularity: 30 },
-  { name: "Reading", popularity: 25 },
   { name: "Gaming", popularity: 20 }
 ];
 
@@ -430,3 +443,45 @@ export const mockReviews = {
 
 // Default profile for testing purposes
 export const defaultProfile = mockUserProfiles.mindfulness_guru;
+
+// Quest template type
+export interface QuestTemplate {
+  id: string;
+  name: string;
+  description: string;
+  suggestedTags: string[];
+}
+
+// Quest templates data
+export const questTemplates: QuestTemplate[] = [
+  { 
+    id: 'book', 
+    name: 'Finish Economics Book Chapter 4', 
+    description: 'I want to complete Chapter 4 of my economics textbook by the end of this week. I\'ll track my progress and take notes on key concepts.',
+    suggestedTags: ['reading', 'learning', 'economics']
+  },
+  { 
+    id: 'run', 
+    name: 'Run 3 km', 
+    description: 'I\'m challenging myself to run 3 kilometers within a specific timeframe. I\'ll start slow and build up my stamina day by day.',
+    suggestedTags: ['fitness', 'running', 'health']
+  },
+  { 
+    id: 'closet', 
+    name: 'Organize My Closet', 
+    description: 'I need to declutter and organize my entire closet. I\'ll sort items into keep, donate, and discard piles. I\'ll document my progress!',
+    suggestedTags: ['organization', 'home', 'lifestyle']
+  },
+  { 
+    id: 'business', 
+    name: 'Write a business plan', 
+    description: 'I want to create a comprehensive business plan for my idea or startup. I\'ll include market analysis, financial projections, and marketing strategy.',
+    suggestedTags: ['business', 'entrepreneurship', 'planning']
+  },
+  { 
+    id: 'meditation', 
+    name: 'Daily meditation practice', 
+    description: 'I\'m building a daily meditation habit. I\'ll start with just 5 minutes per day and work my way up to longer sessions.',
+    suggestedTags: ['mindfulness', 'wellness', 'mental-health']
+  }
+];

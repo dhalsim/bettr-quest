@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/ui/QuestCard';
+import { useTranslation } from 'react-i18next';
 
 // Mock data for featured quests
 const featuredQuests = [
@@ -49,6 +50,7 @@ const featuredQuests = [
 
 const Index = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
+  const { t, i18n } = useTranslation(null, { keyPrefix: "home" });
   
   // Intersection Observer for animated entry
   useEffect(() => {
@@ -86,17 +88,17 @@ const Index = () => {
             Quest Yourself to <span className="text-primary">Become Better</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10">
-            Create personal quests, track your progress, and get community validation for your achievements.
+            {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/explore">
               <Button size="lg" rightIcon={<ArrowRight size={18} />}>
-                Explore Quests
+                {t('Explore Quests')}
               </Button>
             </Link>
             <Link to="/create">
               <Button variant="outline" size="lg" leftIcon={<PlusCircle size={18} />}>
-                Create Your Own
+                {t('Create Your Own')}
               </Button>
             </Link>
           </div>
@@ -124,13 +126,13 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-3xl font-bold mb-4">Featured Quests</h2>
+              <h2 className="text-3xl font-bold mb-4">{t('Featured Quests')}</h2>
               <p className="text-muted-foreground max-w-2xl">
-                Discover popular quests that others are taking on to improve themselves.
+                {t('Discover popular quests that others are taking on to improve themselves')}
               </p>
             </div>
             <Link to="/explore" className="hidden md:flex items-center text-primary hover:underline">
-              View all <ArrowRight size={16} className="ml-1" />
+              {t('View all')} <ArrowRight size={16} className="ml-1" />
             </Link>
           </div>
           
@@ -143,7 +145,7 @@ const Index = () => {
           <div className="mt-12 text-center md:hidden">
             <Link to="/explore">
               <Button variant="outline" rightIcon={<ArrowRight size={16} />}>
-                View All Quests
+                {t('View all')}
               </Button>
             </Link>
           </div>
@@ -154,9 +156,9 @@ const Index = () => {
       <section className="py-20 px-6 bg-secondary/30" ref={featuresRef}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">How It Works</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('How It Works')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our platform makes it easy to challenge yourself and get community validation for your achievements.
+              {t('Our platform makes it easy to challenge yourself and get community validation for your achievements')}
             </p>
           </div>
           
@@ -165,9 +167,9 @@ const Index = () => {
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
                 <Target size={24} />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Create Quest</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('Create Quest')}</h3>
               <p className="text-muted-foreground">
-                Define your personal quest with clear goals and timeframes.
+                {t('Define your personal quest with clear goals and timeframes')}
               </p>
             </div>
             
@@ -175,9 +177,9 @@ const Index = () => {
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
                 <Zap size={24} />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Take Action</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('Take Action')}</h3>
               <p className="text-muted-foreground">
-                Work on your quest consistently and track your progress.
+                {t('Work on your quest consistently and track your progress')}
               </p>
             </div>
             
@@ -185,9 +187,9 @@ const Index = () => {
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
                 <CheckCircle size={24} />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Submit Proof</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('Submit Proof')}</h3>
               <p className="text-muted-foreground">
-                When completed, share evidence of your achievement with the community.
+                {t('When completed, share evidence of your achievement with the community')}
               </p>
             </div>
             
@@ -195,9 +197,9 @@ const Index = () => {
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
                 <Award size={24} />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Get Validated</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('Get Validated')}</h3>
               <p className="text-muted-foreground">
-                Receive community validation and celebrate your accomplishment.
+                {t('Receive community validation and celebrate your accomplishment')}
               </p>
             </div>
           </div>
@@ -207,13 +209,13 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-20 px-6 text-center">
         <div className="max-w-4xl mx-auto glass rounded-3xl p-12">
-          <h2 className="text-3xl font-bold mb-6">Ready to Become Better?</h2>
+          <h2 className="text-3xl font-bold mb-6">{t('Ready to Become Better?')}</h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Start your personal growth journey today by creating your first quest or exploring what others are achieving.
+            {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
           </p>
           <Link to="/create">
             <Button size="lg" rightIcon={<ArrowRight size={18} />}>
-              Start Your First Quest
+              {t('Start Your First Quest')}
             </Button>
           </Link>
         </div>

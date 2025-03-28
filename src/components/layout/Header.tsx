@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun, Bell, BadgeCheck } from 'lucide-react';
@@ -17,6 +16,7 @@ import { useDarkMode } from '@/hooks/useDarkMode';
 import NotificationBadge from '@/components/ui/NotificationBadge';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { LanguageSelector } from '@/components/LanguageSelector';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -92,6 +92,7 @@ const Header = () => {
           ) : (
             <div className="flex items-center gap-4">
               <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+              <LanguageSelector />
               
               <Link 
                 to="/connect" 
@@ -129,6 +130,11 @@ const Header = () => {
                 onCheckedChange={toggleDarkMode}
                 aria-label="Toggle dark mode"
               />
+            </div>
+
+            <div className="flex items-center justify-between border-t border-foreground/10 pt-4">
+              <span className="text-sm text-foreground/80">Language</span>
+              <LanguageSelector variant="ghost" />
             </div>
             
             {isLoggedIn ? (
@@ -257,7 +263,10 @@ const UserMenu = ({
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={logout} className="flex items-center gap-2 cursor-pointer text-destructive">
+        <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+          <LanguageSelector variant="ghost" className="w-full justify-start" />
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={logout} className="flex items-center gap-2 cursor-pointer text-red-500">
           <LogOut size={16} />
           <span>Log Out</span>
         </DropdownMenuItem>

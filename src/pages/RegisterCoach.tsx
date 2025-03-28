@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { ArrowLeft, Save } from 'lucide-react';
@@ -23,31 +23,7 @@ import { useNostrAuth } from '@/hooks/useNostrAuth';
 import TagsSelector, { TagItem } from '@/components/TagsSelector';
 import * as t from 'io-ts';
 import { isRight } from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
-
-// All available specialization tags with popularity scores
-const availableTags: TagItem[] = [
-  { name: "Fitness", popularity: 95 },
-  { name: "Nutrition", popularity: 90 },
-  { name: "Wellness", popularity: 85 },
-  { name: "Meditation", popularity: 78 },
-  { name: "Productivity", popularity: 75 },
-  { name: "Coding", popularity: 70 },
-  { name: "Technology", popularity: 65 },
-  { name: "Education", popularity: 60 },
-  { name: "Finance", popularity: 58 },
-  { name: "Art", popularity: 55 },
-  { name: "Music", popularity: 53 },
-  { name: "Writing", popularity: 50 },
-  { name: "Language", popularity: 48 },
-  { name: "Travel", popularity: 45 },
-  { name: "Photography", popularity: 42 },
-  { name: "Cooking", popularity: 40 },
-  { name: "Business", popularity: 38 },
-  { name: "Marketing", popularity: 35 },
-  { name: "Design", popularity: 33 },
-  { name: "Reading", popularity: 30 }
-];
+import { allTags } from '@/mock/data';
 
 // Form validation schema using io-ts
 const PricingOption = t.union([
@@ -236,7 +212,7 @@ const RegisterCoach = () => {
                   <p className="text-sm text-muted-foreground mb-3">Add tags representing your areas of expertise.</p>
                   <TagsSelector
                     selectedTags={specializations}
-                    availableTags={availableTags}
+                    availableTags={allTags}
                     onTagToggle={toggleSpecialization}
                     onCustomTagAdd={addCustomSpecialization}
                     maxVisibleTags={5}

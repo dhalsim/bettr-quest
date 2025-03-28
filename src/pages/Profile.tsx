@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import StarRating from '@/components/ui/StarRating';
 import { mockUserProfiles, mockUserActivities, mockReviews, mockQuests } from '@/mock/data';
+import { useTranslation } from 'react-i18next';
 
 interface Review {
   id: string;
@@ -26,6 +27,7 @@ const Profile = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [activeTab, setActiveTab] = useState('quests');
   const reviewsRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation(null, { keyPrefix: "profile" });
   
   useEffect(() => {
     // If we have a username and it exists in our user profiles, use that data
@@ -87,7 +89,7 @@ const Profile = () => {
       <div className="max-w-7xl mx-auto">
         <Link to="/explore" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-8">
           <ArrowLeft size={16} className="mr-2" />
-          Back to Explore
+          {t('Back to Explore')}
         </Link>
         
         <div className="glass rounded-2xl overflow-hidden mb-10">
@@ -104,9 +106,9 @@ const Profile = () => {
                 <div className="flex items-center gap-3 mb-1">
                   <h1 className="text-3xl font-bold">{profileData.displayName}</h1>
                   {profileData.isCoach ? (
-                    <Badge variant="secondary" className="bg-primary/20 hover:bg-primary/30">Coach</Badge>
+                    <Badge variant="secondary" className="bg-primary/20 hover:bg-primary/30">{t('Coach')}</Badge>
                   ) : (
-                    <Badge variant="outline" className="bg-secondary/20 hover:bg-secondary/30">Challenger</Badge>
+                    <Badge variant="outline" className="bg-secondary/20 hover:bg-secondary/30">{t('Challenger')}</Badge>
                   )}
                 </div>
                 <p className="text-muted-foreground mb-2">@{profileData.username}</p>
@@ -121,7 +123,7 @@ const Profile = () => {
                       className="text-sm text-primary hover:underline cursor-pointer" 
                       onClick={handleReviewsClick}
                     >
-                      ({profileData.reviewCount} reviews)
+                      ({profileData.reviewCount} {t('reviews')})
                     </span>
                   </div>
                 )}
@@ -131,15 +133,15 @@ const Profile = () => {
                 <div className="flex flex-wrap gap-4 items-center text-sm">
                   <div className="flex items-center gap-1.5">
                     <Calendar size={14} />
-                    Joined {formatDate(profileData.joinedDate)}
+                    {t('Joined')} {formatDate(profileData.joinedDate)}
                   </div>
                   <div className="flex items-center gap-1.5">
                     <User size={14} />
-                    {profileData.followers} followers
+                    {profileData.followers} {t('followers')}
                   </div>
                   <div className="flex items-center gap-1.5">
                     <User size={14} />
-                    {profileData.following} following
+                    {profileData.following} {t('following')}
                   </div>
                 </div>
               </div>
@@ -148,7 +150,7 @@ const Profile = () => {
                 variant={isFollowing ? "outline" : "primary"}
                 onClick={toggleFollow}
               >
-                {isFollowing ? 'Following' : 'Follow'}
+                {isFollowing ? t('Following') : t('Follow')}
               </Button>
             </div>
           </div>
@@ -158,22 +160,22 @@ const Profile = () => {
           <TabsList className="glass mb-8">
             <TabsTrigger value="quests" className="flex items-center gap-2">
               <Award size={16} />
-              Quests
+              {t('Quests')}
             </TabsTrigger>
             <TabsTrigger value="activity" className="flex items-center gap-2">
               <Activity size={16} />
-              Activity
+              {t('Activity')}
             </TabsTrigger>
             {profileData.isCoach && (
               <TabsTrigger value="reviews" className="flex items-center gap-2">
                 <MessageSquare size={16} />
-                Reviews
+                {t('Reviews')}
               </TabsTrigger>
             )}
           </TabsList>
           
           <TabsContent value="quests">
-            <h2 className="text-2xl font-semibold mb-6">Quests by {profileData.username}</h2>
+            <h2 className="text-2xl font-semibold mb-6">{t('Quests by')} {profileData.username}</h2>
             {userQuests.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {userQuests.map((quest) => (
@@ -182,13 +184,13 @@ const Profile = () => {
               </div>
             ) : (
               <div className="text-center py-16 glass rounded-2xl">
-                <p className="text-muted-foreground">No quests created yet</p>
+                <p className="text-muted-foreground">{t('No quests created yet')}</p>
               </div>
             )}
           </TabsContent>
           
           <TabsContent value="activity">
-            <h2 className="text-2xl font-semibold mb-6">Recent Activity</h2>
+            <h2 className="text-2xl font-semibold mb-6">{t('Recent Activity')}</h2>
             {mockUserActivities.length > 0 ? (
               <div className="space-y-4">
                 {mockUserActivities.map((activity) => (
@@ -199,16 +201,16 @@ const Profile = () => {
                           <span className="font-medium">{profileData.username}</span>
                           {' '}
                           {activity.action === 'accepted' ? (
-                            <span className="text-green-500">accepted</span>
+                            <span className="text-green-500">{t('accepted')}</span>
                           ) : (
-                            <span className="text-red-500">rejected</span>
+                            <span className="text-red-500">{t('rejected')}</span>
                           )}
                           {' '}
-                          a proof from{' '}
+                          {t('a proof from')}{' '}
                           <Link to={`/profile/${activity.username}`} className="text-primary hover:underline">
                             @{activity.username}
                           </Link>
-                          {' '}for the quest{' '}
+                          {' '}{t('for the quest')}{' '}
                           <Link to={`/quest/${activity.challengeId}`} className="text-primary hover:underline">
                             {activity.challengeTitle}
                           </Link>
@@ -218,7 +220,7 @@ const Profile = () => {
                       <div>
                         <p>
                           <span className="font-medium">{profileData.username}</span>
-                          {' '}created a new quest:{' '}
+                          {' '}{t('created a new quest')}:{' '}
                           <Link to={`/quest/${activity.challengeId}`} className="text-primary hover:underline">
                             {activity.challengeTitle}
                           </Link>
@@ -233,7 +235,7 @@ const Profile = () => {
               </div>
             ) : (
               <div className="text-center py-16 glass rounded-2xl">
-                <p className="text-muted-foreground">No recent activity</p>
+                <p className="text-muted-foreground">{t('No recent activity')}</p>
               </div>
             )}
           </TabsContent>
@@ -241,11 +243,11 @@ const Profile = () => {
           {profileData.isCoach && (
             <TabsContent value="reviews" ref={reviewsRef}>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-semibold">Reviews</h2>
+                <h2 className="text-2xl font-semibold">{t('Reviews')}</h2>
                 <div className="flex items-center gap-2">
                   <StarRating rating={profileData.rating} size={20} />
                   <span className="font-medium">{profileData.rating.toFixed(1)}/5</span>
-                  <span className="text-muted-foreground">({profileData.reviewCount} reviews)</span>
+                  <span className="text-muted-foreground">({profileData.reviewCount} {t('reviews')})</span>
                 </div>
               </div>
               
@@ -282,7 +284,7 @@ const Profile = () => {
                 </div>
               ) : (
                 <div className="text-center py-16 glass rounded-2xl">
-                  <p className="text-muted-foreground">No reviews yet</p>
+                  <p className="text-muted-foreground">{t('No reviews yet')}</p>
                 </div>
               )}
             </TabsContent>

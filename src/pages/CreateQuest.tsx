@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import QuestTemplateSelector, { questTemplates } from '@/components/quest/QuestTemplateSelector';
+import QuestTemplateSelector from '@/components/quest/QuestTemplateSelector';
 import TagsInput from '@/components/quest/TagsInput';
 import MediaUpload from '@/components/quest/MediaUpload';
 import DateSelector from '@/components/quest/DateSelector';
@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { QuestLocationState } from './escrow-deposit/validation';
+import { questTemplates } from '@/mock/data';
 
 const CreateQuest = () => {
   const navigate = useNavigate();
