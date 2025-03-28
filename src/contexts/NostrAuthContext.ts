@@ -1,9 +1,11 @@
+
 import { createContext } from 'react';
 
 export interface NostrProfile {
   username: string;
   displayName: string;
   profileImage: string;
+  name: string; // Added name property to match existing usage
 }
 
 export interface NostrAuthContextType {
