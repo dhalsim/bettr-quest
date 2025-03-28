@@ -16,6 +16,7 @@ import { Switch } from '@/components/ui/switch';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import NotificationBadge from '@/components/ui/NotificationBadge';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,6 +26,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { getUnreadCount, hasUnread } = useNotifications();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,7 +61,7 @@ const Header = () => {
           quest
         </Link>
         
-        <div className="hidden md:flex items-center space-x-8">
+        <div className={`${isMobile ? 'hidden' : 'flex'} items-center space-x-8`}>
           <NavLinks isLoggedIn={isLoggedIn} />
           
           {isLoggedIn ? (
@@ -97,7 +99,7 @@ const Header = () => {
         </div>
 
         <button 
-          className="md:hidden text-foreground relative" 
+          className={`${isMobile ? 'block' : 'hidden'} text-foreground relative`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
