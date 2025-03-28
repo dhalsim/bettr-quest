@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun, Bell } from 'lucide-react';
@@ -206,7 +207,7 @@ const UserMenu = ({
   unreadCount: number,
   hasUnread: boolean
 }) => {
-  const initials = profile?.name ? profile.name.charAt(0).toUpperCase() : 'U';
+  const initials = profile?.displayName ? profile.displayName.charAt(0).toUpperCase() : 'U';
   const navigate = useNavigate();
   
   return (
@@ -219,7 +220,7 @@ const UserMenu = ({
           <Avatar className="h-10 w-10 border-2 border-primary hover:border-primary/80 transition-colors">
             <AvatarImage 
               src={profile?.profileImage || "https://api.dicebear.com/7.x/avataaars/svg?seed=bettrquest"} 
-              alt={profile?.name || "User"} 
+              alt={profile?.displayName || "User"} 
             />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>

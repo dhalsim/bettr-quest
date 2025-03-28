@@ -188,12 +188,12 @@ const RegisterCoach = () => {
             
             <div className="flex items-center gap-4 mb-8 p-4 bg-background/50 rounded-lg">
               <Avatar className="h-16 w-16 border-2 border-primary/20">
-                <AvatarImage src={profile.profileImage} alt={profile.name} />
-                <AvatarFallback>{profile.name.charAt(0)}</AvatarFallback>
+                <AvatarImage src={profile.profileImage} alt={profile.displayName} />
+                <AvatarFallback>{profile.displayName.charAt(0)}</AvatarFallback>
               </Avatar>
               
               <div>
-                <h2 className="text-xl font-semibold">{profile.name}</h2>
+                <h2 className="text-xl font-semibold">{profile.displayName}</h2>
                 <p className="text-muted-foreground">@{profile.username}</p>
               </div>
             </div>

@@ -29,13 +29,8 @@ export const NostrAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       localStorage.setItem('nostr_profile', JSON.stringify(newProfile));
       setProfile(newProfile);
     } else if (!profile) {
-      // Make sure defaultProfile has name property
-      const profileWithName = {
-        ...defaultProfile,
-        name: defaultProfile.displayName // Ensure name matches displayName if not already set
-      };
-      localStorage.setItem('nostr_profile', JSON.stringify(profileWithName));
-      setProfile(profileWithName);
+      localStorage.setItem('nostr_profile', JSON.stringify(defaultProfile));
+      setProfile(defaultProfile);
     }
     
     setIsLoggedIn(true);
