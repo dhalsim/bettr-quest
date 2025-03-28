@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { NostrAuthContext, NostrProfile } from '@/contexts/NostrAuthContext';
 import { defaultProfile } from '@/mock/data';
@@ -59,4 +58,4 @@ export const NostrAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       {children}
     </NostrAuthContext.Provider>
   );
-};
+}; 

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun, Bell } from 'lucide-react';
@@ -16,7 +15,6 @@ import { Switch } from '@/components/ui/switch';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import NotificationBadge from '@/components/ui/NotificationBadge';
 import { useNotifications } from '@/hooks/useNotifications';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,7 +24,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { getUnreadCount, hasUnread } = useNotifications();
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,7 +58,7 @@ const Header = () => {
           quest
         </Link>
         
-        <div className={`${isMobile ? 'hidden' : 'flex'} items-center space-x-8`}>
+        <div className="hidden md:flex items-center space-x-8">
           <NavLinks isLoggedIn={isLoggedIn} />
           
           {isLoggedIn ? (
@@ -99,7 +96,7 @@ const Header = () => {
         </div>
 
         <button 
-          className={`${isMobile ? 'block' : 'hidden'} text-foreground relative`}
+          className="md:hidden text-foreground relative" 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -209,7 +206,7 @@ const UserMenu = ({
   unreadCount: number,
   hasUnread: boolean
 }) => {
-  const initials = profile?.displayName ? profile.displayName.charAt(0).toUpperCase() : 'U';
+  const initials = profile?.name ? profile.name.charAt(0).toUpperCase() : 'U';
   const navigate = useNavigate();
   
   return (
@@ -222,7 +219,7 @@ const UserMenu = ({
           <Avatar className="h-10 w-10 border-2 border-primary hover:border-primary/80 transition-colors">
             <AvatarImage 
               src={profile?.profileImage || "https://api.dicebear.com/7.x/avataaars/svg?seed=bettrquest"} 
-              alt={profile?.displayName || "User"} 
+              alt={profile?.name || "User"} 
             />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
