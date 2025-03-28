@@ -51,14 +51,16 @@ const Header = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link 
           to="/" 
-          className="font-display text-foreground font-bold text-2xl flex items-center"
+          className="font-display text-foreground font-bold text-2xl flex flex-col items-center relative"
         >
-          <span className="text-primary">bettr</span>
-          <span className="text-primary">.</span>
-          quest
+          <div className="flex items-center">
+            <span className="text-primary">bettr</span>
+            <span className="text-primary">.</span>
+            quest
+          </div>
         </Link>
         
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden custom-header-md:flex items-center space-x-8">
           <NavLinks isLoggedIn={isLoggedIn} />
           
           {isLoggedIn ? (
@@ -96,7 +98,7 @@ const Header = () => {
         </div>
 
         <button 
-          className="md:hidden text-foreground relative" 
+          className="custom-header-md:hidden text-foreground relative" 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -109,7 +111,7 @@ const Header = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="absolute top-full left-0 right-0 glass animate-fade-in py-6 px-6 md:hidden">
+        <div className="absolute top-full left-0 right-0 glass animate-fade-in py-6 px-6 custom-header-md:hidden">
           <nav className="flex flex-col space-y-6">
             <NavLinks mobile isLoggedIn={isLoggedIn} />
             
@@ -206,7 +208,7 @@ const UserMenu = ({
   unreadCount: number,
   hasUnread: boolean
 }) => {
-  const initials = profile?.name ? profile.name.charAt(0).toUpperCase() : 'U';
+  const initials = profile?.displayName ? profile.displayName.charAt(0).toUpperCase() : 'U';
   const navigate = useNavigate();
   
   return (
@@ -219,7 +221,7 @@ const UserMenu = ({
           <Avatar className="h-10 w-10 border-2 border-primary hover:border-primary/80 transition-colors">
             <AvatarImage 
               src={profile?.profileImage || "https://api.dicebear.com/7.x/avataaars/svg?seed=bettrquest"} 
-              alt={profile?.name || "User"} 
+              alt={profile?.displayName || "User"} 
             />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
