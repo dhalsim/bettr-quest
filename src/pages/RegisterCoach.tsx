@@ -71,6 +71,13 @@ const FormSchema = t.type({
       'Rate must be between 1,000 and 1,000,000 sats'
     )
   ),
+  displayName: t.string.pipe(
+    t.refinement(
+      t.string,
+      (s): s is string => s.length >= 3,
+      'Display name must be at least 3 characters'
+    )
+  )
 });
 
 type FormValues = t.TypeOf<typeof FormSchema>;
@@ -119,6 +126,7 @@ const RegisterCoach = () => {
       bio: "",
       pricingOption: "hourly",
       rateAmount: 25000,
+      displayName: profile?.displayName || '',
     },
   });
   
@@ -287,6 +295,21 @@ const RegisterCoach = () => {
                       <FormDescription>
                         Set your coaching rate in sats.
                       </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                {/* Display Name */}
+                <FormField
+                  control={form.control}
+                  name="displayName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Display Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your display name" {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

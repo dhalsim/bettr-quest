@@ -60,10 +60,10 @@ const Header = () => {
             <span className="text-primary">bettr</span>
             <span className="text-primary">.</span>
             quest
-            <div className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-medium leading-none shadow-md">
-              <BadgeCheck size={12} className="mr-1" />
-              DEMO
-            </div>
+          </div>
+          <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-medium leading-none shadow-md">
+            <BadgeCheck size={12} className="mr-1" />
+            DEMO
           </div>
         </Link>
         
