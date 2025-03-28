@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun, Bell } from 'lucide-react';
+import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun, Bell, BadgeCheck } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -15,6 +16,7 @@ import { Switch } from '@/components/ui/switch';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import NotificationBadge from '@/components/ui/NotificationBadge';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,6 +26,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { getUnreadCount, hasUnread } = useNotifications();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,6 +60,10 @@ const Header = () => {
             <span className="text-primary">bettr</span>
             <span className="text-primary">.</span>
             quest
+            <div className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-medium leading-none shadow-md">
+              <BadgeCheck size={12} className="mr-1" />
+              DEMO
+            </div>
           </div>
         </Link>
         
