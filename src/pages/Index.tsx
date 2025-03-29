@@ -4,48 +4,13 @@ import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle } from 'lucide-
 import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/ui/QuestCard';
 import { useTranslation } from 'react-i18next';
+import { mockQuests } from '@/mock/data';
 
-// Mock data for featured quests
+// Use existing quests from mockQuests
 const featuredQuests = [
-  {
-    id: '1',
-    title: 'Meditate for 10 minutes',
-    description: 'Meditate for at least 10 minutes to establish a mindfulness practice.',
-    userId: 'user1',
-    username: 'mindfulness_guru',
-    createdAt: '2023-04-15T10:30:00Z',
-    dueDate: '2023-05-15T10:30:00Z',
-    category: 'Wellness',
-    status: 'pending' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  },
-  {
-    id: '2',
-    title: 'Read a book chapter',
-    description: 'Read one chapter of a book to expand your knowledge.',
-    userId: 'user2',
-    username: 'bookworm',
-    createdAt: '2023-03-01T08:15:00Z',
-    dueDate: '2023-03-10T08:15:00Z',
-    category: 'Learning',
-    status: 'pending' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1513001900722-370f803f498d?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  },
-  {
-    id: '3',
-    title: 'Zero Waste Day',
-    description: 'Minimize your waste production for a day by refusing, reducing, reusing, recycling, and composting.',
-    userId: 'user3',
-    username: 'eco_warrior',
-    createdAt: '2023-04-22T14:45:00Z',
-    dueDate: '2023-04-23T14:45:00Z',
-    category: 'Environment',
-    status: 'success' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format',
-    visibility: 'public' as const
-  }
+  mockQuests["1"], // Meditate for 20 minutes
+  mockQuests["2"], // Learn 5 phrases in Italian
+  mockQuests["8"]  // Zero Waste Day
 ];
 
 const Index = () => {
@@ -58,6 +23,7 @@ const Index = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            entry.target.classList.remove('opacity-0');
             entry.target.classList.add('animate-fade-in');
             observer.unobserve(entry.target);
           }
@@ -68,7 +34,7 @@ const Index = () => {
     
     const featureElements = document.querySelectorAll('.feature-item');
     featureElements.forEach((el) => {
-      el.classList.add('opacity-0');
+      el.classList.add('opacity-0', 'transition-opacity', 'duration-500');
       observer.observe(el);
     });
     

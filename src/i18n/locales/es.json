@@ -148,7 +148,16 @@
     "Travel": "Viajes",
     "Food": "Comida",
     "Photography": "Fotografía",
-    "Gaming": "Juegos"
+    "Gaming": "Juegos",
+    "Economics": "Economía",
+    "Running": "Correr",
+    "Organization": "Organización",
+    "Home": "Hogar",
+    "Lifestyle": "Estilo de Vida",
+    "Entrepreneurship": "Emprendimiento",
+    "Planning": "Planificación",
+    "Mindfulness": "Atención Plena",
+    "Mental Health": "Salud Mental"
   },
   "upload": {
     "Add Media (Optional)": "Agregar Medios (Opcional)",

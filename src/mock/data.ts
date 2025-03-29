@@ -30,11 +30,20 @@ export const mockTags = new Map<string, TagItem>([
   ["Travel", { name: "Travel", popularity: 40 }],
   ["Food", { name: "Food", popularity: 35 }],
   ["Photography", { name: "Photography", popularity: 30 }],
-  ["Gaming", { name: "Gaming", popularity: 20 }]
+  ["Gaming", { name: "Gaming", popularity: 20 }],
+  ["Economics", { name: "Economics", popularity: 45 }],
+  ["Running", { name: "Running", popularity: 70 }],
+  ["Organization", { name: "Organization", popularity: 40 }],
+  ["Home", { name: "Home", popularity: 35 }],
+  ["Lifestyle", { name: "Lifestyle", popularity: 45 }],
+  ["Entrepreneurship", { name: "Entrepreneurship", popularity: 50 }],
+  ["Planning", { name: "Planning", popularity: 40 }],
+  ["Mindfulness", { name: "Mindfulness", popularity: 75 }],
+  ["Mental Health", { name: "Mental Health", popularity: 80 }]
 ]);
 
 // Mock data for quests
-export const mockQuests: { [key: string]: LockedQuest } = {
+export const mockQuests: { [key: string]: SavedQuest | LockedQuest } = {
   "1": {
     id: '1',
     title: 'Meditate for 20 minutes tomorrow',
@@ -120,6 +129,57 @@ export const mockQuests: { [key: string]: LockedQuest } = {
     escrowStatus: 'in_process',
     inDispute: true,
     totalZapped: 3200
+  },
+  "6": {
+    id: '6',
+    title: 'Build a simple calculator app',
+    description: 'I will code a basic calculator app using JavaScript to practice my coding skills.',
+    userId: 'user1',
+    username: 'mindfulness_guru',
+    createdAt: '2023-04-01T09:00:00Z',
+    dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day from now
+    specializations: [mockTags.get("Learning")],
+    status: 'on_review',
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format',
+    visibility: 'public',
+    lockedAmount: 20000,
+    rewardAmount: 200,
+    escrowStatus: 'locked',
+    totalZapped: 300
+  },
+  "7": {
+    id: '7',
+    title: 'Write a reflection journal entry',
+    description: 'I will write a detailed journal entry reflecting on my personal growth this month.',
+    userId: 'user1',
+    username: 'mindfulness_guru',
+    createdAt: '2023-03-15T11:30:00Z',
+    dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    specializations: [mockTags.get("Creativity")],
+    status: 'success',
+    imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format',
+    visibility: 'public',
+    lockedAmount: 20000,
+    rewardAmount: 200,
+    escrowStatus: 'distributed',
+    totalZapped: 850
+  },
+  "8": {
+    id: '8',
+    title: 'Zero Waste Day',
+    description: 'Minimize your waste production for a day by refusing, reducing, reusing, recycling, and composting.',
+    userId: 'user3',
+    username: 'eco_warrior',
+    createdAt: '2023-04-22T14:45:00Z',
+    dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
+    status: 'success',
+    specializations: [mockTags.get("Sustainability")],
+    imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format',
+    visibility: 'public',
+    lockedAmount: 20000,
+    rewardAmount: 200,
+    escrowStatus: 'distributed',
+    totalZapped: 2500
   }
 };
 
@@ -250,6 +310,7 @@ export const mockSuggestedUsers = [
 // Mock user profiles data
 export const mockUserProfiles = {
   'coach_alex': {
+    pubkey: 'user2',
     username: 'coach_alex',
     displayName: 'Coach Alex',
     bio: 'Certified fitness trainer with 7+ years of experience. Specializing in strength training and nutrition planning.',
@@ -262,6 +323,7 @@ export const mockUserProfiles = {
     reviewCount: 124
   },
   'mindfulness_guru': {
+    pubkey: 'user1',
     username: 'mindfulness_guru',
     displayName: 'Mindfulness Guru',
     bio: 'Meditation instructor and wellness advocate. Creating challenges to help people improve their mental health and wellbeing.',
@@ -274,6 +336,7 @@ export const mockUserProfiles = {
     reviewCount: 32
   },
   'polyglot_learner': {
+    pubkey: 'user2',
     username: 'polyglot_learner',
     displayName: 'Polyglot Learner',
     bio: 'Language enthusiast learning multiple languages. Creating quests to track my progress and connect with other language learners.',
@@ -286,6 +349,7 @@ export const mockUserProfiles = {
     reviewCount: 0
   },
   'runner_joe': {
+    pubkey: 'user3',
     username: 'runner_joe',
     displayName: 'Runner Joe',
     bio: 'Marathon runner and fitness enthusiast. Setting challenging running goals and helping others achieve their fitness targets.',
@@ -298,6 +362,7 @@ export const mockUserProfiles = {
     reviewCount: 67
   },
   'storyteller': {
+    pubkey: 'user4',
     username: 'storyteller',
     displayName: 'Creative Storyteller',
     bio: 'Writer and storyteller crafting tales that inspire and entertain. Creating writing challenges to spark creativity.',
@@ -310,6 +375,7 @@ export const mockUserProfiles = {
     reviewCount: 0
   },
   'code_ninja': {
+    pubkey: 'user5',
     username: 'code_ninja',
     displayName: 'Code Ninja',
     bio: 'Software developer passionate about solving complex problems. Creating coding challenges to help others improve their skills.',
@@ -322,6 +388,7 @@ export const mockUserProfiles = {
     reviewCount: 89
   },
   'jane_smith': {
+    pubkey: 'user6',
     username: 'jane_smith',
     displayName: 'Jane Smith',
     bio: 'Default user profile for testing purposes.',
@@ -334,6 +401,7 @@ export const mockUserProfiles = {
     reviewCount: 0
   },
   'zen_master': {
+    pubkey: 'user7',
     username: 'zen_master',
     displayName: 'Zen Master',
     bio: 'Experienced meditation practitioner sharing wisdom and techniques.',
@@ -346,6 +414,7 @@ export const mockUserProfiles = {
     reviewCount: 0
   },
   'wellness_beginner': {
+    pubkey: 'user8',
     username: 'wellness_beginner',
     displayName: 'Wellness Beginner',
     bio: 'Starting my wellness journey and learning from the community.',
@@ -458,30 +527,30 @@ export const questTemplates: QuestTemplate[] = [
     id: 'book', 
     name: 'Finish Economics Book Chapter 4', 
     description: 'I want to complete Chapter 4 of my economics textbook by the end of this week. I\'ll track my progress and take notes on key concepts.',
-    suggestedTags: ['reading', 'learning', 'economics']
+    suggestedTags: ['Reading', 'Learning', 'Economics']
   },
   { 
     id: 'run', 
     name: 'Run 3 km', 
     description: 'I\'m challenging myself to run 3 kilometers within a specific timeframe. I\'ll start slow and build up my stamina day by day.',
-    suggestedTags: ['fitness', 'running', 'health']
+    suggestedTags: ['Fitness', 'Running', 'Health']
   },
   { 
     id: 'closet', 
     name: 'Organize My Closet', 
     description: 'I need to declutter and organize my entire closet. I\'ll sort items into keep, donate, and discard piles. I\'ll document my progress!',
-    suggestedTags: ['organization', 'home', 'lifestyle']
+    suggestedTags: ['Organization', 'Home', 'Lifestyle']
   },
   { 
     id: 'business', 
     name: 'Write a business plan', 
     description: 'I want to create a comprehensive business plan for my idea or startup. I\'ll include market analysis, financial projections, and marketing strategy.',
-    suggestedTags: ['business', 'entrepreneurship', 'planning']
+    suggestedTags: ['Business', 'Entrepreneurship', 'Planning']
   },
   { 
     id: 'meditation', 
     name: 'Daily meditation practice', 
     description: 'I\'m building a daily meditation habit. I\'ll start with just 5 minutes per day and work my way up to longer sessions.',
-    suggestedTags: ['mindfulness', 'wellness', 'mental-health']
+    suggestedTags: ['Mindfulness', 'Wellness', 'Mental Health']
   }
 ];

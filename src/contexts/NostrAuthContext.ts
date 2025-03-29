@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 
 export interface NostrProfile {
+  pubkey: string;
   username: string;
   displayName: string;
   profileImage: string;

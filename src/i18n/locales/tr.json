@@ -148,7 +148,16 @@
     "Travel": "Seyahat",
     "Food": "Yemek",
     "Photography": "Fotoğrafçılık",
-    "Gaming": "Oyun"
+    "Gaming": "Oyun",
+    "Economics": "Ekonomi",
+    "Running": "Koşu",
+    "Organization": "Organizasyon",
+    "Home": "Ev",
+    "Lifestyle": "Yaşam Tarzı",
+    "Entrepreneurship": "Girişimcilik",
+    "Planning": "Planlama",
+    "Mindfulness": "Bilinçli Farkındalık",
+    "Mental Health": "Ruh Sağlığı"
   },
   "upload": {
     "Add Media (Optional)": "Medya Ekle (İsteğe Bağlı)",

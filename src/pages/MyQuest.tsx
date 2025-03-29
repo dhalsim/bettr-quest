@@ -1,64 +1,40 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PlusCircle, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/ui/QuestCard';
+import { mockQuests } from '@/mock/data';
+import { useNostrAuth } from '@/hooks/useNostrAuth';
+import { QuestStatus } from '@/types/quest';
+import { assertNever } from '@/lib/utils';
 
-// Mock data for user quests with zap amounts and updated dates
-const userQuests = [
-  {
-    id: '1',
-    title: 'Meditate for 20 minutes tomorrow',
-    description: 'I want to begin my meditation practice by dedicating 20 minutes tomorrow to mindful meditation.',
-    userId: 'user1',
-    username: 'mindfulness_guru',
-    createdAt: '2023-04-15T10:30:00Z',
-    dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days from now
-    category: 'Wellness',
-    status: 'pending' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=600&auto=format',
-    visibility: 'public' as const,
-    totalZapped: 1500
-  },
-  {
-    id: '4',
-    title: 'Build a simple calculator app',
-    description: 'I will code a basic calculator app using JavaScript to practice my coding skills.',
-    userId: 'current-user',
-    username: 'you',
-    createdAt: '2023-04-01T09:00:00Z',
-    dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day from now
-    category: 'Learning',
-    status: 'on_review' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format',
-    visibility: 'public' as const,
-    totalZapped: 300
-  },
-  {
-    id: '5',
-    title: 'Write a reflection journal entry',
-    description: 'I will write a detailed journal entry reflecting on my personal growth this month.',
-    userId: 'current-user',
-    username: 'you',
-    createdAt: '2023-03-15T11:30:00Z',
-    dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago (expired)
-    category: 'Wellness',
-    status: 'success' as const,
-    imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format',
-    visibility: 'private' as const,
-    totalZapped: 850
-  }
-];
+type Status = 'all' | QuestStatus;
 
 const MyQuest = () => {
-  const [filter, setFilter] = useState<'all' | 'pending' | 'on_review' | 'success' | 'failed'>('all');
+  const { profile } = useNostrAuth();
+
+  const [filter, setFilter] = useState<Status>('all');
+
+  const userQuests = Object.values(mockQuests).filter(quest => quest.userId === profile?.pubkey);
   
   const filteredQuests = userQuests.filter(quest => {
     if (filter === 'all') return true;
     return quest.status === filter;
   });
   
+  const getEmptyStateMessage = (filter: Status) => {
+    switch (filter) {
+      case 'all': return "You haven't created any quests yet.";
+      case 'saved': return "You don't have any saved quests.";
+      case 'on_review': return "You don't have any quests under review.";
+      case 'success': return "You haven't completed any quests successfully yet.";
+      case 'failed': return "You don't have any failed quests.";
+      case 'in_dispute': return "You don't have any quests in dispute.";
+      default: return assertNever(filter);
+    }
+  };
+
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
@@ -75,13 +51,14 @@ const MyQuest = () => {
               <select
                 className="pl-10 pr-4 py-2 rounded-lg border border-border bg-background appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20"
                 value={filter}
-                onChange={(e) => setFilter(e.target.value as 'all' | 'pending' | 'on_review' | 'success' | 'failed')}
+                onChange={(e) => setFilter(e.target.value as Status)}
               >
                 <option value="all">All Quests</option>
-                <option value="pending">Pending</option>
+                <option value="saved">Saved</option>
                 <option value="on_review">On Review</option>
                 <option value="success">Success</option>
                 <option value="failed">Failed</option>
+                <option value="in_dispute">In Dispute</option>
               </select>
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={16} />
             </div>
@@ -105,15 +82,7 @@ const MyQuest = () => {
           <div className="text-center py-20 glass rounded-2xl">
             <h3 className="text-xl font-medium mb-2">No quests found</h3>
             <p className="text-muted-foreground mb-6">
-              {filter === 'all' 
-                ? "You haven't created any quests yet." 
-                : filter === 'pending'
-                  ? "You don't have any pending quests."
-                  : filter === 'on_review'
-                    ? "You don't have any quests under review."
-                    : filter === 'success'
-                      ? "You haven't completed any quests successfully yet."
-                      : "You don't have any failed quests."}
+              {getEmptyStateMessage(filter)}
             </p>
             <Link to="/create">
               <Button className="flex items-center gap-2">

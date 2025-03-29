@@ -3,11 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, User, Clock, UserPlus, UserCheck, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
-import { LockedQuest } from '@/types/quest';
+import { isLockedQuest, LockedQuest, SavedQuest } from '@/types/quest';
 import { assertNever, formatDate, calculateDaysRemaining } from '@/lib/utils';
 
 interface QuestCardProps {
-  quest: LockedQuest;
+  quest: SavedQuest | LockedQuest;
 }
 
 const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
@@ -31,7 +31,11 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   };
   
   const getStatusBadgeClass = () => {
-    switch (quest.status) {
+    const status = quest.status;
+
+    switch (status) {
+      case 'saved':
+        return 'bg-blue-500/10 text-blue-500';
       case 'on_review':
         return 'bg-yellow-500/10 text-yellow-500';
       case 'success':
@@ -41,12 +45,16 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
       case 'in_dispute':
         return 'bg-gray-500/10 text-gray-500';
       default:
-        return assertNever(quest.status);
+        return assertNever(status);
     }
   };
 
   const getStatusText = () => {
-    switch (quest.status) {
+    const status = quest.status;
+
+    switch (status) {
+      case 'saved':
+        return t('Saved');
       case 'on_review':
         return t('On Review');
       case 'success':
@@ -56,7 +64,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
       case 'in_dispute':
         return t('In Dispute');
       default:
-        return assertNever(quest.status);
+        return assertNever(status);
     }
   };
   
@@ -131,7 +139,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
               </div>
             </div>
             
-            {quest.totalZapped && quest.totalZapped > 0 && (
+            {isLockedQuest(quest) && quest.totalZapped && quest.totalZapped > 0 && (
               <div className="flex items-center gap-1.5 text-yellow-500">
                 <Zap size={12} />
                 <span>{quest.totalZapped.toLocaleString()} {t('sats')}</span>
