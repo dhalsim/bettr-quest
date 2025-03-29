@@ -1,6 +1,7 @@
+
 import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle, Globe, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/ui/QuestCard';
 import { useTranslation } from 'react-i18next';
@@ -58,13 +59,15 @@ const Index = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/explore">
-              <Button size="lg" rightIcon={<ArrowRight size={18} />}>
+              <Button size="lg">
                 {t('Explore Quests')}
+                <ArrowRight size={18} className="ml-2" />
               </Button>
             </Link>
             <Link to="/create">
-              <Button variant="outline" size="lg" leftIcon={<PlusCircle size={18} />}>
+              <Button variant="outline" size="lg">
                 {t('Create Your Own')}
+                <PlusCircle size={18} className="ml-2" />
               </Button>
             </Link>
           </div>
@@ -110,8 +113,9 @@ const Index = () => {
           
           <div className="mt-12 text-center md:hidden">
             <Link to="/explore">
-              <Button variant="outline" rightIcon={<ArrowRight size={16} />}>
+              <Button variant="outline">
                 {t('View all')}
+                <ArrowRight size={16} className="ml-1" />
               </Button>
             </Link>
           </div>
@@ -171,6 +175,45 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Become a Coach Section */}
+      <section className="py-20 px-6 bg-gradient-to-b from-background to-primary/10">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="lg:w-1/2">
+              <h2 className="text-3xl font-bold mb-6">{t('Become a Coach')}</h2>
+              <p className="text-xl text-muted-foreground mb-6">
+                {t('Help others achieve their goals and earn rewards')}
+              </p>
+              <p className="text-muted-foreground mb-8">
+                {t('As a coach, you can guide, verify, and support others on their quests')}
+              </p>
+              <Link to="/register-coach">
+                <Button size="lg">
+                  {t('Register as Coach')}
+                  <ArrowRight size={18} className="ml-2" />
+                </Button>
+              </Link>
+            </div>
+            <div className="lg:w-1/2 glass rounded-2xl p-8 flex justify-center items-center">
+              <div className="relative w-full max-w-md aspect-video flex items-center justify-center">
+                <div className="absolute w-24 h-24 bg-primary/10 rounded-full -top-4 -left-4 flex items-center justify-center">
+                  <Users size={32} className="text-primary" />
+                </div>
+                <div className="absolute w-16 h-16 bg-secondary/30 rounded-full bottom-8 -right-4 flex items-center justify-center">
+                  <Globe size={24} className="text-primary" />
+                </div>
+                <div className="glass rounded-xl p-6 w-full text-center">
+                  <div className="text-2xl font-bold mb-2">500+</div>
+                  <div className="text-muted-foreground">Active Coaches</div>
+                  <div className="mt-4 text-2xl font-bold mb-2">10,000+</div>
+                  <div className="text-muted-foreground">Quests Verified</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       
       {/* CTA Section */}
       <section className="py-20 px-6 text-center">
@@ -180,8 +223,9 @@ const Index = () => {
             {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
           </p>
           <Link to="/create">
-            <Button size="lg" rightIcon={<ArrowRight size={18} />}>
+            <Button size="lg">
               {t('Start Your First Quest')}
+              <ArrowRight size={18} className="ml-2" />
             </Button>
           </Link>
         </div>

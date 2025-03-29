@@ -1,3 +1,4 @@
+
 {
   "common": {
     "language": "Idioma",
@@ -56,7 +57,11 @@
     "Receive community validation and celebrate your accomplishment": "Recibe validación de la comunidad y celebra tu logro",
     "Discover popular quests that others are taking on to improve themselves": "Descubre quests populares que otros están realizando para mejorar",
     "Our platform makes it easy to challenge yourself and get community validation for your achievements": "Nuestra plataforma facilita el desafío personal y la validación comunitaria de tus logros",
-    "Start your personal growth journey today by creating your first quest or exploring what others are achieving": "Comienza tu viaje de crecimiento personal hoy creando tu primera quest o explorando lo que otros están logrando"
+    "Start your personal growth journey today by creating your first quest or exploring what others are achieving": "Comienza tu viaje de crecimiento personal hoy creando tu primera quest o explorando lo que otros están logrando",
+    "Become a Coach": "Conviértete en Coach",
+    "Help others achieve their goals and earn rewards": "Ayuda a otros a lograr sus objetivos y gana recompensas",
+    "As a coach, you can guide, verify, and support others on their quests": "Como coach, puedes guiar, verificar y apoyar a otros en sus misiones",
+    "Register as Coach": "Registrarse como Coach"
   },
   "profile": {
     "Back to Explore": "Volver a Explorar",
@@ -280,4 +285,4 @@
       }
     }
   }
-} 
+}

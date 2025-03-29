@@ -1,3 +1,4 @@
+
 {
   "common": {
     "language": "Dil",
@@ -56,7 +57,11 @@
     "Receive community validation and celebrate your accomplishment": "Topluluk doğrulaması alın ve başarınızı kutlayın",
     "Discover popular quests that others are taking on to improve themselves": "Diğerlerinin kendilerini geliştirmek için üstlendiği popüler görevleri keşfedin",
     "Our platform makes it easy to challenge yourself and get community validation for your achievements": "Platformumuz, kendinizi geliştirmenizi ve başarılarınız için topluluk doğrulaması almanızı kolaylaştırır",
-    "Start your personal growth journey today by creating your first quest or exploring what others are achieving": "İlk görevinizi oluşturarak veya başkalarının başarılarını keşfederek kişisel gelişim yolculuğunuza bugün başlayın"
+    "Start your personal growth journey today by creating your first quest or exploring what others are achieving": "İlk görevinizi oluşturarak veya başkalarının başarılarını keşfederek kişisel gelişim yolculuğunuza bugün başlayın",
+    "Become a Coach": "Koç Olun",
+    "Help others achieve their goals and earn rewards": "Başkalarının hedeflerine ulaşmasına yardımcı olun ve ödüller kazanın",
+    "As a coach, you can guide, verify, and support others on their quests": "Bir koç olarak, başkalarını görevlerinde yönlendirebilir, doğrulayabilir ve destekleyebilirsiniz",
+    "Register as Coach": "Koç Olarak Kaydol"
   },
   "profile": {
     "Back to Explore": "Keşfetmeye Dön",
@@ -280,4 +285,4 @@
       }
     }
   }
-} 
+}
