@@ -1,3 +1,4 @@
+
 import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle, Globe, Users } from 'lucide-react';
@@ -57,7 +58,7 @@ const Index = () => {
       <section className="pt-32 pb-20 px-6 bg-gradient-to-b from-background to-secondary/30">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-            Quest Yourself to <span className="text-primary">Become Better</span>
+            {t('Quest Yourself to Become Better')}
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10">
             {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
@@ -83,19 +84,19 @@ const Index = () => {
           <div className="mt-20 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="glass rounded-2xl p-6">
               <div className="text-3xl font-bold text-primary mb-2">15,000+</div>
-              <div className="text-muted-foreground">Quests Created</div>
+              <div className="text-muted-foreground">{t('Quests Created')}</div>
             </div>
             <div className="glass rounded-2xl p-6">
               <div className="text-3xl font-bold text-primary mb-2">8,500+</div>
-              <div className="text-muted-foreground">Quests Completed</div>
+              <div className="text-muted-foreground">{t('Quests Completed')}</div>
             </div>
             <div className="glass rounded-2xl p-6">
               <div className="text-3xl font-bold text-primary mb-2">25,000+</div>
-              <div className="text-muted-foreground">Users Growing</div>
+              <div className="text-muted-foreground">{t('Users Growing')}</div>
             </div>
             <div className="glass rounded-2xl p-6">
               <div className="text-3xl font-bold text-primary mb-2">500+</div>
-              <div className="text-muted-foreground">Coaches Registered</div>
+              <div className="text-muted-foreground">{t('Coaches Registered')}</div>
             </div>
           </div>
         </div>
@@ -109,6 +110,9 @@ const Index = () => {
               <h2 className="text-3xl font-bold mb-4">{t('Featured Quests')}</h2>
               <p className="text-muted-foreground max-w-2xl">
                 {t('Discover popular quests that others are taking on to improve themselves')}
+              </p>
+              <p className="text-muted-foreground max-w-2xl mt-2">
+                {t('Verify or Contest proofs of others and earn Bitcoin rewards for your participation')}
               </p>
             </div>
             <Link to="/explore" className="hidden md:flex items-center text-primary hover:underline">
@@ -180,7 +184,7 @@ const Index = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">{t('Get Validated')}</h3>
               <p className="text-muted-foreground">
-                {t('Receive community validation and celebrate your accomplishment')}
+                {t('Receive community validation and earn Bitcoin rewards for your participation')}
               </p>
             </div>
           </div>

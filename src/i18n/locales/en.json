@@ -1,4 +1,3 @@
-
 {
   "common": {
     "language": "Language",
@@ -40,6 +39,7 @@
     "invalidEmail": "Please enter a valid email address"
   },
   "home": {
+    "Quest Yourself to Become Better": "Quest Yourself to Become Better",
     "Explore Quests": "Explore Quests",
     "Create Your Own": "Create Your Own",
     "Featured Quests": "Featured Quests",
@@ -55,13 +55,19 @@
     "Work on your quest consistently and track your progress": "Work on your quest consistently and track your progress",
     "When completed, share evidence of your achievement with the community": "When completed, share evidence of your achievement with the community",
     "Receive community validation and celebrate your accomplishment": "Receive community validation and celebrate your accomplishment",
+    "Receive community validation and earn Bitcoin rewards for your participation": "Receive community validation and earn Bitcoin rewards for your participation",
+    "Verify or Contest proofs of others and earn Bitcoin rewards for your participation": "Verify or Contest proofs of others and earn Bitcoin rewards for your participation",
     "Discover popular quests that others are taking on to improve themselves": "Discover popular quests that others are taking on to improve themselves",
     "Our platform makes it easy to challenge yourself and get community validation for your achievements": "Our platform makes it easy to challenge yourself and get community validation for your achievements",
     "Start your personal growth journey today by creating your first quest or exploring what others are achieving": "Start your personal growth journey today by creating your first quest or exploring what others are achieving",
     "Become a Coach": "Become a Coach",
     "Help others achieve their goals and earn rewards": "Help others achieve their goals and earn rewards",
     "As a coach, you can guide, verify, and support others on their quests": "As a coach, you can guide, verify, and support others on their quests",
-    "Register as Coach": "Register as Coach"
+    "Register as Coach": "Register as Coach",
+    "Quests Created": "Quests Created",
+    "Quests Completed": "Quests Completed",
+    "Users Growing": "Users Growing",
+    "Coaches Registered": "Coaches Registered"
   },
   "profile": {
     "Back to Explore": "Back to Explore",
