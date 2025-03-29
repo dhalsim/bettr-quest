@@ -137,15 +137,12 @@ export const mockQuests: { [key: string]: SavedQuest | LockedQuest } = {
     userId: 'user1',
     username: 'mindfulness_guru',
     createdAt: '2023-04-01T09:00:00Z',
+    savedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day from now
     specializations: [mockTags.get("Learning")],
-    status: 'on_review',
+    status: 'saved',
     imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format',
     visibility: 'public',
-    lockedAmount: 20000,
-    rewardAmount: 200,
-    escrowStatus: 'locked',
-    totalZapped: 300
   },
   "7": {
     id: '7',

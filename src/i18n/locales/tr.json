@@ -100,7 +100,7 @@
     "Quest details copied! Customize your new quest": "Görev detayları kopyalandı! Yeni görevinizi özelleştirin",
     "You've zapped": "Zapladınız",
     "sats to": "sats",
-    "Pending": "Beklemede",
+    "Saved": "Kaydedildi",
     "On Review": "İncelemede",
     "Success": "Başarılı",
     "Failed": "Başarısız",
@@ -109,7 +109,12 @@
     "Follow": "Takip Et",
     "days remaining": "gün kaldı",
     "Due date passed": "Son tarih geçti",
-    "sats": "sats"
+    "sats": "sats",
+    "Skip for now": "Şimdilik atla",
+    "Lock sats": "Sats kilitle",
+    "Quest needs to be locked to be published": "Görevin yayınlanması için kilitlenmesi gerekiyor",
+    "Quest Saved": "Görev Kaydedildi",
+    "Your quest has been saved. You can lock sats later to publish it.": "Göreviniz kaydedildi. Daha sonra yayınlamak için sats kilitleyebilirsiniz."
   },
   "explore": {
     "Explore Quests": "Görevleri Keşfet",
@@ -189,5 +194,67 @@
     "Please connect your wallet to verify proofs": "Kanıtları doğrulamak için cüzdanınızı bağlayın",
     "Please connect your wallet to contest proofs": "Kanıtlara itiraz etmek için cüzdanınızı bağlayın",
     "at": "saat"
+  },
+  "escrow": {
+    "Lock sats to publish your quest": "Quest'inizi yayınlamak için sats kilitleyin",
+    "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements": "Quest'inizi yayınlamak için sats kilitleyin. Bu, sorumluluğu sağlar ve topluluğun başarılarınızı doğrulamasına yardımcı olur",
+    "Lock sats to verify this proof": "Bu kanıtı doğrulamak için sats kilitleyin",
+    "Lock some sats to verify this proof. You'll earn rewards if your verification is correct": "Bu kanıtı doğrulamak için sats kilitleyin. Doğrulamanız doğruysa ödüller kazanacaksınız",
+    "Lock sats to contest this proof": "Bu kanıtı itiraz etmek için sats kilitleyin",
+    "Lock some sats to contest this proof. You'll receive the full locked amount if your contest is validated": "Bu kanıtı itiraz etmek için sats kilitleyin. İtirazınız doğrulanırsa kilitlenen miktarın tamamını alacaksınız",
+    "Loading...": "Yükleniyor...",
+    "Lock Amount": "Kilitleme Miktarı",
+    "Community Reward": "Topluluk Ödülü",
+    "Platform Fees": "Platform Ücretleri",
+    "Total to Lock": "Toplam Kilitlenecek",
+    "Confirm": "Onayla",
+    "Skip for now": "Şimdilik atla",
+    "Your quest has been created and your sats have been locked": "Quest'iniz oluşturuldu ve sats'larınız kilitlendi",
+    "Your quest has been saved. You can lock sats later to publish it": "Quest'iniz kaydedildi. Daha sonra yayınlamak için sats kilitleyebilirsiniz",
+    "Your verification has been submitted and your sats have been locked": "Doğrulamanız gönderildi ve sats'larınız kilitlendi",
+    "Your contest has been submitted and your sats have been locked": "İtirazınız gönderildi ve sats'larınız kilitlendi",
+    "summary": {
+      "Summary": "Özet",
+      "Your Lock Amount": "Kilitlenen Miktarınız",
+      "Community Rewards": "Topluluk Ödülleri",
+      "Contest Reward": "İtiraz Ödülü",
+      "Verification Reward": "Doğrulama Ödülü",
+      "Platform Fees": "Platform Ücretleri",
+      "Total to Lock": "Kilitlenecek Toplam",
+      "What's at stake:": "Risk Altındakiler:",
+      "If your verification is correct: You'll receive {{amount}} sats": "Doğrulamanız doğruysa: {{amount}} sats alacaksınız",
+      "If your verification is incorrect: You'll lose your locked amount ({{amount}} sats)": "Doğrulamanız yanlışsa: Kilitlenen miktarınızı ({{amount}} sats) kaybedeceksiniz",
+      "If your contest is valid: You'll receive {{total}} sats (+{{quest}} sats from the quest)": "İtirazınız geçerliyse: {{total}} sats alacaksınız (+{{quest}} sats görevden)",
+      "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)": "İtirazınız geçersizse: Kilitlenen miktarınızı ({{amount}} sats) kaybedeceksiniz",
+      "You'll get back {{amount}} sats upon successful completion": "Başarılı tamamlama durumunda {{amount}} sats geri alacaksınız"
+    },
+    "rewards": {
+      "rewardInfo": {
+        "If your verification is correct, you'll receive your locked amount + rewards set aside by the quest creator": "Doğrulamanız doğruysa, kilitlenen miktarınızı + görev oluşturucunun ayırdığı ödülleri alacaksınız",
+        "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest": "İtirazınız geçerliyse, kilitlenen miktarınızı + görevin tüm kilitli miktarını alacaksınız"
+      },
+      "confirmButton": {
+        "Confirm Verification": "Doğrulamayı Onayla",
+        "Confirm Contest": "İtirazı Onayla",
+        "Lock {{amount}} sats": "{{amount}} sats kilitle"
+      },
+      "proofDetails": {
+        "Verifying Proof:": "Kanıt Doğrulanıyor:",
+        "For the Quest:": "Görev İçin:"
+      },
+      "questDetails": {
+        "Of the Quest:": "Görev Hakkında:"
+      },
+      "rewardsSlider": {
+        "Community Rewards": "Topluluk Ödülleri",
+        "Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion. Higher rewards attract more verifiers and faster responses.": "Tamamlama kanıtınızı doğrulayan topluluk üyeleri için kilitli miktarınızın bir yüzdesini ödül olarak ayırın. Daha yüksek ödüller daha fazla doğrulayıcı ve daha hızlı yanıtlar çeker.",
+        "Reward: {{percentage}}%": "Ödül: {{percentage}}%"
+      },
+      "lockAmount": {
+        "Lock amount": "Kilit miktarı",
+        "This amount will be locked until the proof verification is complete.": "Bu miktar, kanıt doğrulaması tamamlanana kadar kilitli kalacaktır.",
+        "This amount will be locked in escrow until you complete your quest.": "Bu miktar, görevinizi tamamlayana kadar emanette kilitli kalacaktır."
+      }
+    }
   }
 } 

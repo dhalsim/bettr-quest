@@ -100,7 +100,7 @@
     "Quest details copied! Customize your new quest": "¡Detalles del quest copiados! Personaliza tu nuevo quest",
     "You've zapped": "Has enviado",
     "sats to": "sats a",
-    "Pending": "Pendiente",
+    "Saved": "Guardado",
     "On Review": "En Revisión",
     "Success": "Éxito",
     "Failed": "Fallido",
@@ -109,7 +109,12 @@
     "Follow": "Seguir",
     "days remaining": "días restantes",
     "Due date passed": "Fecha límite pasada",
-    "sats": "sats"
+    "sats": "sats",
+    "Skip for now": "Omitir por ahora",
+    "Lock sats": "Bloquear sats",
+    "Quest needs to be locked to be published": "El quest necesita ser bloqueado para ser publicado",
+    "Quest Saved": "Quest Guardado",
+    "Your quest has been saved. You can lock sats later to publish it.": "Tu quest ha sido guardado. Puedes bloquear sats más tarde para publicarlo."
   },
   "explore": {
     "Explore Quests": "Explorar Quests",
@@ -189,5 +194,67 @@
     "Please connect your wallet to verify proofs": "Por favor, conecta tu billetera para verificar pruebas",
     "Please connect your wallet to contest proofs": "Por favor, conecta tu billetera para disputar pruebas",
     "at": "a las"
+  },
+  "escrow": {
+    "Lock sats to publish your quest": "Bloquear sats para publicar tu quest",
+    "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements": "Bloquea algunos sats para publicar tu quest. Esto asegura la responsabilidad y ayuda a la comunidad a validar tus logros",
+    "Lock sats to verify this proof": "Bloquear sats para verificar esta prueba",
+    "Lock some sats to verify this proof. You'll earn rewards if your verification is correct": "Bloquea algunos sats para verificar esta prueba. Ganarás recompensas si tu verificación es correcta",
+    "Lock sats to contest this proof": "Bloquear sats para contestar esta prueba",
+    "Lock some sats to contest this proof. You'll receive the full locked amount if your contest is validated": "Bloquea algunos sats para contestar esta prueba. Recibirás la cantidad bloqueada completa si tu contestación es validada",
+    "Loading...": "Cargando...",
+    "Lock Amount": "Cantidad a Bloquear",
+    "Community Reward": "Recompensa Comunitaria",
+    "Platform Fees": "Tarifas de Plataforma",
+    "Total to Lock": "Total a Bloquear",
+    "Confirm": "Confirmar",
+    "Skip for now": "Omitir por ahora",
+    "Your quest has been created and your sats have been locked": "Tu quest ha sido creado y tus sats han sido bloqueados",
+    "Your quest has been saved. You can lock sats later to publish it": "Tu quest ha sido guardado. Puedes bloquear sats más tarde para publicarlo",
+    "Your verification has been submitted and your sats have been locked": "Tu verificación ha sido enviada y tus sats han sido bloqueados",
+    "Your contest has been submitted and your sats have been locked": "Tu contestación ha sido enviada y tus sats han sido bloqueados",
+    "summary": {
+      "Summary": "Resumen",
+      "Your Lock Amount": "Tu Cantidad Bloqueada",
+      "Community Rewards": "Recompensas de la Comunidad",
+      "Contest Reward": "Recompensa por Impugnación",
+      "Verification Reward": "Recompensa por Verificación",
+      "Platform Fees": "Comisiones de la Plataforma",
+      "Total to Lock": "Total a Bloquear",
+      "What's at stake:": "Lo que está en juego:",
+      "If your verification is correct: You'll receive {{amount}} sats": "Si tu verificación es correcta: Recibirás {{amount}} sats",
+      "If your verification is incorrect: You'll lose your locked amount ({{amount}} sats)": "Si tu verificación es incorrecta: Perderás tu cantidad bloqueada ({{amount}} sats)",
+      "If your contest is valid: You'll receive {{total}} sats (+{{quest}} sats from the quest)": "Si tu impugnación es válida: Recibirás {{total}} sats (+{{quest}} sats de la misión)",
+      "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)": "Si tu impugnación no es válida: Perderás tu cantidad bloqueada ({{amount}} sats)",
+      "You'll get back {{amount}} sats upon successful completion": "Recuperarás {{amount}} sats al completar exitosamente"
+    },
+    "rewards": {
+      "rewardInfo": {
+        "If your verification is correct, you'll receive your locked amount + rewards set aside by the quest creator": "Si tu verificación es correcta, recibirás tu cantidad bloqueada + las recompensas reservadas por el creador del quest",
+        "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest": "Si tu impugnación es válida, recibirás tu cantidad bloqueada + la cantidad total bloqueada del quest"
+      },
+      "confirmButton": {
+        "Confirm Verification": "Confirmar Verificación",
+        "Confirm Contest": "Confirmar Impugnación",
+        "Lock {{amount}} sats": "Bloquear {{amount}} sats"
+      },
+      "proofDetails": {
+        "Verifying Proof:": "Verificando Prueba:",
+        "For the Quest:": "Para el Quest:"
+      },
+      "questDetails": {
+        "Of the Quest:": "Del Quest:"
+      },
+      "rewardsSlider": {
+        "Community Rewards": "Recompensas de la Comunidad",
+        "Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion. Higher rewards attract more verifiers and faster responses.": "Reserva un porcentaje de tu cantidad bloqueada como recompensas para los miembros de la comunidad que verifiquen tu prueba de finalización. Las recompensas más altas atraen más verificadores y respuestas más rápidas.",
+        "Reward: {{percentage}}%": "Recompensa: {{percentage}}%"
+      },
+      "lockAmount": {
+        "Lock amount": "Cantidad a Bloquear",
+        "This amount will be locked until the proof verification is complete.": "Esta cantidad estará bloqueada hasta que se complete la verificación de la prueba.",
+        "This amount will be locked in escrow until you complete your quest.": "Esta cantidad estará bloqueada en depósito hasta que completes tu quest."
+      }
+    }
   }
 } 

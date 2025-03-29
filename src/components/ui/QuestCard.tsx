@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Calendar, User, Clock, UserPlus, UserCheck, Zap } from 'lucide-react';
+import { Calendar, User, Clock, UserPlus, UserCheck, Zap, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import { isLockedQuest, LockedQuest, SavedQuest } from '@/types/quest';
 import { assertNever, formatDate, calculateDaysRemaining } from '@/lib/utils';
+import { useNostrAuth } from '@/hooks/useNostrAuth';
 
 interface QuestCardProps {
   quest: SavedQuest | LockedQuest;
@@ -15,8 +16,11 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const navigate = useNavigate();
   const { t } = useTranslation(null, { keyPrefix: "quest" });
   const { t: tTags } = useTranslation(null, { keyPrefix: "tags" });
+  const { profile } = useNostrAuth();
   
   const daysRemaining = calculateDaysRemaining(quest.dueDate);
+  const isOwnedByCurrentUser = quest.userId === profile?.pubkey;
+  const isSavedQuest = quest.status === 'saved';
   
   const toggleFollow = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -28,6 +32,25 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
     e.preventDefault();
     e.stopPropagation();
     navigate(`/explore?specialization=${tag}`);
+  };
+
+  const handleLockSats = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/escrow-deposit`, {
+      state: {
+        type: 'quest',
+        questId: quest.id,
+        questTitle: quest.title,
+        questDescription: quest.description,
+        questLockedAmount: 0,
+        questRewardAmount: 0,
+        questDueDate: quest.dueDate,
+        questCreatedAt: quest.createdAt,
+        questSpecializations: quest.specializations,
+        questVisibility: quest.visibility
+      }
+    });
   };
   
   const getStatusBadgeClass = () => {
@@ -112,14 +135,28 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
               <span>@{quest.username}</span>
             </div>
             
-            <Button
-              variant={isFollowing ? "outline" : "secondary"}
-              size="sm"
-              onClick={toggleFollow}
-            >
-              {isFollowing ? <UserCheck size={16} className="mr-2" /> : <UserPlus size={16} className="mr-2" />}
-              {isFollowing ? t('Following') : t('Follow')}
-            </Button>
+            {isOwnedByCurrentUser ? (
+              isSavedQuest ? (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleLockSats}
+                  className="flex items-center gap-2"
+                >
+                  <Lock size={16} />
+                  {t('Lock sats')}
+                </Button>
+              ) : null // Don't show any button for non-saved own quests
+            ) : (
+              <Button
+                variant={isFollowing ? "outline" : "secondary"}
+                size="sm"
+                onClick={toggleFollow}
+              >
+                {isFollowing ? <UserCheck size={16} className="mr-2" /> : <UserPlus size={16} className="mr-2" />}
+                {isFollowing ? t('Following') : t('Follow')}
+              </Button>
+            )}
           </div>
           
           <div className="mt-4 pt-4 border-t border-border flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">

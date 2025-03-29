@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX, Zap } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX, Zap, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard, { Proof } from '@/components/ui/ProofCard';
 import { toast } from 'sonner';
@@ -26,8 +26,7 @@ const QuestPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
   const [zapModalOpen, setZapModalOpen] = useState(false);
-  const { t: tTags } = useTranslation(null, { keyPrefix: "tags" });
-  const { t, i18n } = useTranslation(null, { keyPrefix: "quest" });
+  const { t, i18n } = useTranslation();
   
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
@@ -75,15 +74,15 @@ const QuestPage = () => {
   const getStatusText = () => {
     const status = questData.status;
     if (status === 'on_review') {
-      return t('On Review');
+      return t('quest.On Review');
     } else if (status === 'success') {
-      return t('Success');
+      return t('quest.Success');
     } else if (status === 'failed') {
-      return t('Failed');
+      return t('quest.Failed');
     } else if (status === 'in_dispute') {
-      return t('In Dispute');
+      return t('quest.In Dispute');
     } else {
-      return t('Saved');
+      return t('quest.Saved');
     }
   };
   
@@ -164,6 +163,7 @@ const QuestPage = () => {
   const isQuestCreator = profile?.username === questData.username;
   const isQuestActive = new Date(questData.dueDate) > new Date() && 
                       (questData.status === 'on_review');
+  const isSavedQuest = questData.status === 'saved';
   
   // Helper function to check if quest is locked
   const isLockedQuest = (quest: LockedQuest | SavedQuest): quest is LockedQuest => {
@@ -206,7 +206,7 @@ const QuestPage = () => {
         <div className="mb-10">
           <Link to="/explore" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-4">
             <ArrowLeft size={16} className="mr-2" />
-            {t('Back to Explore')}
+            {t('quest.Back to Explore')}
           </Link>
           
           <div className="flex flex-col lg:flex-row gap-10">
@@ -231,7 +231,7 @@ const QuestPage = () => {
                         className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
                       >
                         <Tag size={12} />
-                        {tTags(specialization.name)}
+                        {t(`tags.${specialization.name}`)}
                       </span>
                     ))}
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass()}`}>
@@ -242,7 +242,7 @@ const QuestPage = () => {
                       <User size={12} />
                       {t(questData.visibility === 'public' ? 'Public Quest' : 'Private Quest')}
                     </span>
-                    {totalZapped > 0 && (
+                    {!isSavedQuest && totalZapped > 0 && (
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500">
                         <Zap size={12} />
                         {totalZapped.toLocaleString()} sats
@@ -254,7 +254,7 @@ const QuestPage = () => {
                     {questData.title}
                   </h1>
                   
-                  {isLoggedIn && isQuestActive && (
+                  {isLoggedIn && isQuestActive && !isSavedQuest && (
                     <div className="flex flex-wrap gap-2 mb-4">
                       {!isQuestCreator && (
                         <Button 
@@ -284,85 +284,87 @@ const QuestPage = () => {
                   <div className="flex flex-wrap gap-6 items-center text-sm text-muted-foreground mb-6">
                     <div className="flex items-center gap-1.5">
                       <User size={14} />
-                      {t('Created by')} {' '}
+                      {t('quest.Created by')} {' '}
                       <Link to={`/profile/${questData.username}`} className="text-primary hover:underline">
                         {questData.username}
                       </Link>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Calendar size={14} />
-                      {t('Created on')} {formatDate(questData.createdAt, i18n.language as keyof typeof languages)}
+                      {t('quest.Created on')} {formatDate(questData.createdAt, i18n.language as keyof typeof languages)}
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Clock size={14} />
                       {daysRemaining > 0 
-                        ? `${daysRemaining} ${t('days remaining')}` 
-                        : t('Due date passed')}
+                        ? `${daysRemaining} ${t('quest.days remaining')}` 
+                        : t('quest.Due date passed')}
                     </div>
                   </div>
                   
-                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
-                    <div className="flex flex-wrap justify-between items-center gap-4">
-                      <div>
-                        <h3 className="text-lg font-medium mb-1">{t('Quest Rewards')}</h3>
-                        <p className="text-sm text-muted-foreground">{t('Locked amount')}: <span className="font-semibold text-foreground">{getLockedAmount(questData).toLocaleString() || 0} sats</span></p>
-                      </div>
-                      
-                      <div className="flex flex-col sm:flex-row gap-3">
-                        <div className="bg-green-500/10 text-green-500 px-3 py-2 rounded-md text-sm">
-                          <div className="font-medium">{t('Verification Reward')}</div>
-                          <div className="font-bold">{verificationReward.toLocaleString()} sats</div>
+                  {!isSavedQuest && (
+                    <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
+                      <div className="flex flex-wrap justify-between items-center gap-4">
+                        <div>
+                          <h3 className="text-lg font-medium mb-1">{t('quest.Quest Rewards')}</h3>
+                          <p className="text-sm text-muted-foreground">{t('quest.Locked amount')}: <span className="font-semibold text-foreground">{getLockedAmount(questData).toLocaleString() || 0} sats</span></p>
                         </div>
-                        <div className="bg-red-500/10 text-red-500 px-3 py-2 rounded-md text-sm">
-                          <div className="font-medium">{t('Contest Reward')}</div>
-                          <div className="font-bold">{contestReward.toLocaleString()} sats</div>
+                        
+                        <div className="flex flex-col sm:flex-row gap-3">
+                          <div className="bg-green-500/10 text-green-500 px-3 py-2 rounded-md text-sm">
+                            <div className="font-medium">{t('quest.Verification Reward')}</div>
+                            <div className="font-bold">{verificationReward.toLocaleString()} sats</div>
+                          </div>
+                          <div className="bg-red-500/10 text-red-500 px-3 py-2 rounded-md text-sm">
+                            <div className="font-medium">{t('quest.Contest Reward')}</div>
+                            <div className="font-bold">{contestReward.toLocaleString()} sats</div>
+                          </div>
                         </div>
+                        
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="sm">{t('quest.Learn how rewards work')}</Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>{t('quest.How Quest Rewards Work')}</DialogTitle>
+                              <DialogDescription>
+                                <div className="mt-4 space-y-4">
+                                  <div>
+                                    <h4 className="font-medium mb-1 flex items-center gap-2 text-green-500">
+                                      <CircleCheck size={16} /> {t('quest.Verification Reward')}
+                                    </h4>
+                                    <p className="text-sm">
+                                      {t('quest.Verifying legitimate proofs earns you')} {verificationReward.toLocaleString()} sats. 
+                                      If multiple users verify, the reward is split equally.
+                                    </p>
+                                  </div>
+                                  
+                                  <div>
+                                    <h4 className="font-medium mb-1 flex items-center gap-2 text-red-500">
+                                      <CircleX size={16} /> {t('quest.Contest Reward')}
+                                    </h4>
+                                    <p className="text-sm">
+                                      {t('quest.Successfully contesting a fraudulent proof earns you the entire locked amount')} ({contestReward.toLocaleString()} {t('quest.sats')}). 
+                                      {t('quest.Make sure you have evidence before contesting! If multiple users contest, the amount will be split equally.')}
+                                    </p>
+                                  </div>
+                                  
+                                  <div className="pt-2 border-t border-border">
+                                    <p className="text-sm font-medium">{t('quest.The quest creator has locked')} {getLockedAmount(questData).toLocaleString() || 0} {t('quest.sats to ensure accountability.')}</p>
+                                  </div>
+                                </div>
+                              </DialogDescription>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
                       </div>
-                      
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="outline" size="sm">{t('Learn how rewards work')}</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>{t('How Quest Rewards Work')}</DialogTitle>
-                            <DialogDescription>
-                              <div className="mt-4 space-y-4">
-                                <div>
-                                  <h4 className="font-medium mb-1 flex items-center gap-2 text-green-500">
-                                    <CircleCheck size={16} /> {t('Verification Reward')}
-                                  </h4>
-                                  <p className="text-sm">
-                                    {t('Verifying legitimate proofs earns you')} {verificationReward.toLocaleString()} sats. 
-                                    If multiple users verify, the reward is split equally.
-                                  </p>
-                                </div>
-                                
-                                <div>
-                                  <h4 className="font-medium mb-1 flex items-center gap-2 text-red-500">
-                                    <CircleX size={16} /> {t('Contest Reward')}
-                                  </h4>
-                                  <p className="text-sm">
-                                    {t('Successfully contesting a fraudulent proof earns you the entire locked amount')} ({contestReward.toLocaleString()} {t('sats')}). 
-                                    {t('Make sure you have evidence before contesting! If multiple users contest, the amount will be split equally.')}
-                                  </p>
-                                </div>
-                                
-                                <div className="pt-2 border-t border-border">
-                                  <p className="text-sm font-medium">{t('The quest creator has locked')} {getLockedAmount(questData).toLocaleString() || 0} {t('sats to ensure accountability.')}</p>
-                                </div>
-                              </div>
-                            </DialogDescription>
-                          </DialogHeader>
-                        </DialogContent>
-                      </Dialog>
                     </div>
-                  </div>
+                  )}
                   
                   <Tabs defaultValue="details" onValueChange={setActiveTab} className="mt-6">
                     <TabsList className="mb-6">
-                      <TabsTrigger value="details">{t('Details')}</TabsTrigger>
-                      <TabsTrigger value="escrow">{t('Escrow & Rewards')}</TabsTrigger>
+                      <TabsTrigger value="details">{t('quest.Details')}</TabsTrigger>
+                      {!isSavedQuest && <TabsTrigger value="escrow">{t('quest.Escrow & Rewards')}</TabsTrigger>}
                     </TabsList>
                     
                     <TabsContent value="details" className="space-y-4">
@@ -371,51 +373,81 @@ const QuestPage = () => {
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="escrow" className="space-y-4">
-                      <div className="bg-secondary/20 p-6 rounded-lg">
-                        <h3 className="text-lg font-medium mb-4">{t('Escrow Information')}</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <p className="text-sm text-muted-foreground mb-2">{t('Creator Locked Amount')}</p>
-                            <p className="text-xl font-semibold">{getLockedAmount(questData).toLocaleString() || 0} sats</p>
-                          </div>
-                          <div>
-                            <p className="text-sm text-muted-foreground mb-2">{t('Escrow Status')}</p>
-                            <p className="text-xl font-semibold capitalize">{getEscrowStatus(questData) || 'Locked'}</p>
-                          </div>
-                          <div>
-                            <p className="text-sm text-muted-foreground mb-2">{t('Quest Status')}</p>
-                            <p className="text-xl font-semibold capitalize">{getStatusText()}</p>
-                          </div>
-                          {isInDispute(questData) && (
+                    {!isSavedQuest && (
+                      <TabsContent value="escrow" className="space-y-4">
+                        <div className="bg-secondary/20 p-6 rounded-lg">
+                          <h3 className="text-lg font-medium mb-4">{t('quest.Escrow Information')}</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                              <p className="text-sm text-muted-foreground mb-2">{t('Dispute Status')}</p>
-                              <p className="text-xl font-semibold text-orange-500">{t('Under Review')}</p>
+                              <p className="text-sm text-muted-foreground mb-2">{t('quest.Creator Locked Amount')}</p>
+                              <p className="text-xl font-semibold">{getLockedAmount(questData).toLocaleString() || 0} sats</p>
                             </div>
-                          )}
+                            <div>
+                              <p className="text-sm text-muted-foreground mb-2">{t('quest.Escrow Status')}</p>
+                              <p className="text-xl font-semibold capitalize">{getEscrowStatus(questData) || 'Locked'}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground mb-2">{t('quest.Quest Status')}</p>
+                              <p className="text-xl font-semibold capitalize">{getStatusText()}</p>
+                            </div>
+                            {isInDispute(questData) && (
+                              <div>
+                                <p className="text-sm text-muted-foreground mb-2">{t('quest.Dispute Status')}</p>
+                                <p className="text-xl font-semibold text-orange-500">{t('quest.Under Review')}</p>
+                              </div>
+                            )}
+                          </div>
+                          
+                          <Separator className="my-6" />
+                          
+                          <div>
+                            <h4 className="text-md font-medium mb-3">{t('quest.Reward Distribution')}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {t('quest.If the proof is accepted, the acceptor will receive a reward from the locked amount. Multiple acceptors will split the reward equally.')}
+                            </p>
+                          </div>
                         </div>
-                        
-                        <Separator className="my-6" />
-                        
-                        <div>
-                          <h4 className="text-md font-medium mb-3">{t('Reward Distribution')}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {t('If the proof is accepted, the acceptor will receive a reward from the locked amount. Multiple acceptors will split the reward equally.')}
-                          </p>
-                        </div>
-                      </div>
-                    </TabsContent>
+                      </TabsContent>
+                    )}
                   </Tabs>
                   
                   <div className="mt-8 flex items-center justify-between">
                     {isQuestCreator && (
-                      <Button 
-                        variant="primary"
-                        onClick={() => document.getElementById('submit-proof')?.scrollIntoView({ behavior: 'smooth' })}
-                      >
-                        {t('Submit Your Proof')}
-                        <ArrowDown size={16} className="ml-2" />
-                      </Button>
+                      isSavedQuest ? (
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                          <Button 
+                            variant="primary"
+                            onClick={() => navigate(`/escrow-deposit`, {
+                              state: {
+                                type: 'quest',
+                                questId: questData.id,
+                                questTitle: questData.title,
+                                questDescription: questData.description,
+                                questLockedAmount: 0,
+                                questRewardAmount: 0,
+                                questDueDate: questData.dueDate,
+                                questCreatedAt: questData.createdAt,
+                                questSpecializations: questData.specializations,
+                                questVisibility: questData.visibility
+                              }
+                            })}
+                          >
+                            <Lock size={16} className="mr-2" />
+                            {t('quest.Lock sats')}
+                          </Button>
+                          <p className="text-sm text-muted-foreground max-w-md">
+                            {t('escrow.Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements')}
+                          </p>
+                        </div>
+                      ) : (
+                        <Button 
+                          variant="primary"
+                          onClick={() => document.getElementById('submit-proof')?.scrollIntoView({ behavior: 'smooth' })}
+                        >
+                          {t('quest.Submit Your Proof')}
+                          <ArrowDown size={16} className="ml-2" />
+                        </Button>
+                      )
                     )}
                     
                     <Button 
@@ -425,26 +457,26 @@ const QuestPage = () => {
                       className={isQuestCreator ? "" : "ml-auto"}
                     >
                       <Flag size={16} className="mr-2" />
-                      {t('Report Quest')}
+                      {t('quest.Report Quest')}
                     </Button>
                   </div>
                 </div>
               </div>
             </div>
             
-            {isQuestCreator && (
+            {isQuestCreator && !isSavedQuest && (
               <div className="lg:w-1/3" id="submit-proof">
                 <div className="glass rounded-2xl p-6 sticky top-32">
-                  <h2 className="text-xl font-semibold mb-4">{t('Submit Your Proof')}</h2>
+                  <h2 className="text-xl font-semibold mb-4">{t('quest.Submit Your Proof')}</h2>
                   <form onSubmit={handleSubmitProof}>
                     <div className="mb-4">
                       <label htmlFor="proof-description" className="block text-sm font-medium mb-1">
-                        {t('How did you complete this quest?')}
+                        {t('quest.How did you complete this quest?')}
                       </label>
                       <textarea
                         id="proof-description"
                         rows={5}
-                        placeholder={t('Describe how you completed your quest...')}
+                        placeholder={t('quest.Describe how you completed your quest...')}
                         className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
                         value={newProof}
                         onChange={(e) => setNewProof(e.target.value)}
@@ -463,7 +495,7 @@ const QuestPage = () => {
                       isLoading={isSubmitting}
                     >
                       <Send size={16} className="mr-2" />
-                      {t('Submit Proof')}
+                      {t('quest.Submit Proof')}
                     </Button>
                   </form>
                 </div>
@@ -472,40 +504,42 @@ const QuestPage = () => {
           </div>
         </div>
         
-        <div className="mt-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">{t('Submitted Proofs')}</h2>
-            {!isLoggedIn && (
-              <Link to="/connect" className="text-primary font-medium hover:underline flex items-center">
-                <User size={16} className="mr-1.5" />
-                {t('Connect to earn rewards')}
-              </Link>
-            )}
-          </div>
-          
-          <div className="grid gap-6">
-            {proofs.map((proof) => (
-              <ProofCard
-                key={proof.id}
-                proof={proof}
-                questTitle={questData.title}
-                questDescription={questData.description}
-                questLockedAmount={getLockedAmount(questData)}
-                questRewardAmount={getQuestRewardAmount(questData)}
-                questStatus={questData.status}
-              />
-            ))}
+        {!isSavedQuest && (
+          <div className="mt-16">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">{t('quest.Submitted Proofs')}</h2>
+              {!isLoggedIn && (
+                <Link to="/connect" className="text-primary font-medium hover:underline flex items-center">
+                  <User size={16} className="mr-1.5" />
+                  {t('quest.Connect to earn rewards')}
+                </Link>
+              )}
+            </div>
             
-            {proofs.length === 0 && (
-              <div className="glass rounded-2xl p-8 text-center">
-                <p className="text-muted-foreground">{t('No proofs have been submitted yet.')}</p>
-              </div>
-            )}
+            <div className="grid gap-6">
+              {proofs.map((proof) => (
+                <ProofCard
+                  key={proof.id}
+                  proof={proof}
+                  questTitle={questData.title}
+                  questDescription={questData.description}
+                  questLockedAmount={getLockedAmount(questData)}
+                  questRewardAmount={getQuestRewardAmount(questData)}
+                  questStatus={questData.status}
+                />
+              ))}
+              
+              {proofs.length === 0 && (
+                <div className="glass rounded-2xl p-8 text-center">
+                  <p className="text-muted-foreground">{t('quest.No proofs have been submitted yet')}</p>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       
-      {isLoggedIn && (
+      {isLoggedIn && !isSavedQuest && (
         <ZapModal
           open={zapModalOpen}
           onOpenChange={setZapModalOpen}

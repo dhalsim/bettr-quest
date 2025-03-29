@@ -1,5 +1,6 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ProofDetailsCardProps {
   title: string;
@@ -18,10 +19,12 @@ const ProofDetailsCard: React.FC<ProofDetailsCardProps> = ({
   questDescription,
   questLink
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-secondary/10 rounded-lg p-6 border border-border/50 mb-8">
       <div className="mb-6">
-        <div className="text-sm text-muted-foreground mb-2">Verifying Proof:</div>
+        <div className="text-sm text-muted-foreground mb-2">{t('escrow.rewards.proofDetails.Verifying Proof:')}</div>
         <div className="flex items-center gap-3">
           <a 
             href={proofLink}
@@ -39,7 +42,7 @@ const ProofDetailsCard: React.FC<ProofDetailsCardProps> = ({
       {/* Quest Section - Nested within proof context */}
       <div className="mt-6 pt-6 border-t border-border/30">
         <div className="bg-background/50 rounded-lg p-4">
-          <div className="text-sm text-muted-foreground mb-2">For the Quest:</div>
+          <div className="text-sm text-muted-foreground mb-2">{t('escrow.rewards.proofDetails.For the Quest:')}</div>
           <div className="flex items-center gap-3">
             <a 
               href={questLink}

@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { Check, LockIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 interface ConfirmButtonProps {
   type: 'quest' | 'proof-verify' | 'proof-contest';
@@ -14,20 +14,20 @@ const ConfirmButton = ({
   totalAmount, 
   onConfirm 
 }: ConfirmButtonProps) => {
+  const { t } = useTranslation();
   let text = '';
   let icon = <LockIcon size={16} />;
   
   if (type === 'proof-verify') {
-    text = 'Confirm Verification';
+    text = t('escrow.rewards.confirmButton.Confirm Verification');
     icon = <Check size={16} />;
   } else if (type === 'proof-contest') {
-    text = 'Confirm Contest';
+    text = t('escrow.rewards.confirmButton.Confirm Contest');
     icon = <X size={16} />;
   } else if (type === 'quest') {
-    text = `Lock ${totalAmount.toLocaleString()} sats`;
+    text = t('escrow.rewards.confirmButton.Lock {{amount}} sats', { amount: totalAmount.toLocaleString() });
     icon = <LockIcon size={16} />;
   }
-  
   
   return (
     <Button

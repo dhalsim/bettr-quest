@@ -100,7 +100,7 @@
     "Quest details copied! Customize your new quest": "Quest details copied! Customize your new quest",
     "You've zapped": "You've zapped",
     "sats to": "sats to",
-    "Pending": "Pending",
+    "Saved": "Saved",
     "On Review": "On Review",
     "Success": "Success",
     "Failed": "Failed",
@@ -109,7 +109,12 @@
     "Follow": "Follow",
     "days remaining": "days remaining",
     "Due date passed": "Due date passed",
-    "sats": "sats"
+    "sats": "sats",
+    "Skip for now": "Skip for now",
+    "Lock sats": "Lock sats",
+    "Quest needs to be locked to be published": "Quest needs to be locked to be published",
+    "Quest Saved": "Quest Saved",
+    "Your quest has been saved. You can lock sats later to publish it.": "Your quest has been saved. You can lock sats later to publish it."
   },
   "explore": {
     "Explore Quests": "Explore Quests",
@@ -189,5 +194,67 @@
     "Please connect your wallet to verify proofs": "Please connect your wallet to verify proofs",
     "Please connect your wallet to contest proofs": "Please connect your wallet to contest proofs",
     "at": "at"
+  },
+  "escrow": {
+    "Lock sats to publish your quest": "Lock sats to publish your quest",
+    "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements": "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements",
+    "Lock sats to verify this proof": "Lock sats to verify this proof",
+    "Lock some sats to verify this proof. You'll earn rewards if your verification is correct": "Lock some sats to verify this proof. You'll earn rewards if your verification is correct",
+    "Lock sats to contest this proof": "Lock sats to contest this proof",
+    "Lock some sats to contest this proof. You'll receive the full locked amount if your contest is validated": "Lock some sats to contest this proof. You'll receive the full locked amount if your contest is validated",
+    "Loading...": "Loading...",
+    "Lock Amount": "Lock Amount",
+    "Community Reward": "Community Reward",
+    "Platform Fees": "Platform Fees",
+    "Total to Lock": "Total to Lock",
+    "Confirm": "Confirm",
+    "Skip for now": "Skip for now",
+    "Your quest has been created and your sats have been locked": "Your quest has been created and your sats have been locked",
+    "Your quest has been saved. You can lock sats later to publish it": "Your quest has been saved. You can lock sats later to publish it",
+    "Your verification has been submitted and your sats have been locked": "Your verification has been submitted and your sats have been locked",
+    "Your contest has been submitted and your sats have been locked": "Your contest has been submitted and your sats have been locked",
+    "summary": {
+      "Summary": "Summary",
+      "Your Lock Amount": "Your Lock Amount",
+      "Community Rewards": "Community Rewards",
+      "Contest Reward": "Contest Reward",
+      "Verification Reward": "Verification Reward",
+      "Platform Fees": "Platform Fees",
+      "Total to Lock": "Total to Lock",
+      "What's at stake:": "What's at stake:",
+      "If your verification is correct: You'll receive {{amount}} sats": "If your verification is correct: You'll receive {{amount}} sats",
+      "If your verification is incorrect: You'll lose your locked amount ({{amount}} sats)": "If your verification is incorrect: You'll lose your locked amount ({{amount}} sats)",
+      "If your contest is valid: You'll receive {{total}} sats (+{{quest}} sats from the quest)": "If your contest is valid: You'll receive {{total}} sats (+{{quest}} sats from the quest)",
+      "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)": "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)",
+      "You'll get back {{amount}} sats upon successful completion": "You'll get back {{amount}} sats upon successful completion"
+    },
+    "rewards": {
+      "rewardInfo": {
+        "If your verification is correct, you'll receive your locked amount + rewards set aside by the quest creator": "If your verification is correct, you'll receive your locked amount + rewards set aside by the quest creator",
+        "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest": "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest"
+      },
+      "confirmButton": {
+        "Confirm Verification": "Confirm Verification",
+        "Confirm Contest": "Confirm Contest",
+        "Lock {{amount}} sats": "Lock {{amount}} sats"
+      },
+      "proofDetails": {
+        "Verifying Proof:": "Verifying Proof:",
+        "For the Quest:": "For the Quest:"
+      },
+      "questDetails": {
+        "Of the Quest:": "Of the Quest:"
+      },
+      "rewardsSlider": {
+        "Community Rewards": "Community Rewards",
+        "Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion. Higher rewards attract more verifiers and faster responses.": "Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion. Higher rewards attract more verifiers and faster responses.",
+        "Reward: {{percentage}}%": "Reward: {{percentage}}%"
+      },
+      "lockAmount": {
+        "Lock amount": "Lock amount",
+        "This amount will be locked until the proof verification is complete.": "This amount will be locked until the proof verification is complete.",
+        "This amount will be locked in escrow until you complete your quest.": "This amount will be locked in escrow until you complete your quest."
+      }
+    }
   }
 } 

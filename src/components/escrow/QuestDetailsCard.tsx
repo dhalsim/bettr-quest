@@ -1,5 +1,6 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface QuestDetailsCardProps {
   title: string;
@@ -12,9 +13,11 @@ const QuestDetailsCard: React.FC<QuestDetailsCardProps> = ({
   description,
   questLink
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-secondary/10 rounded-lg p-4 border border-border/50 mb-8">
-      <div className="text-sm text-muted-foreground mb-2">Of the Quest:</div>
+      <div className="text-sm text-muted-foreground mb-2">{t('escrow.rewards.questDetails.Of the Quest:')}</div>
       <div className="flex items-center gap-3">
         <a 
           href={questLink}
