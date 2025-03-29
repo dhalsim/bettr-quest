@@ -179,8 +179,8 @@ const Index = () => {
       {/* Become a Coach Section */}
       <section className="py-20 px-6 bg-gradient-to-b from-background to-primary/10">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <div className="lg:w-1/2">
+          <div className="flex flex-col items-center gap-12">
+            <div className="w-full lg:w-1/2 text-center lg:text-left">
               <h2 className="text-3xl font-bold mb-6">{t('Become a Coach')}</h2>
               <p className="text-xl text-muted-foreground mb-6">
                 {t('Help others achieve their goals and earn rewards')}
@@ -188,14 +188,16 @@ const Index = () => {
               <p className="text-muted-foreground mb-8">
                 {t('As a coach, you can guide, verify, and support others on their quests')}
               </p>
-              <Link to="/register-coach">
-                <Button size="lg">
-                  {t('Register as Coach')}
-                  <ArrowRight size={18} className="ml-2" />
-                </Button>
-              </Link>
+              <div className="flex justify-center lg:justify-start">
+                <Link to="/register-coach">
+                  <Button size="lg">
+                    {t('Register as Coach')}
+                    <ArrowRight size={18} className="ml-2" />
+                  </Button>
+                </Link>
+              </div>
             </div>
-            <div className="lg:w-1/2 glass rounded-2xl p-8 flex justify-center items-center">
+            <div className="w-full lg:w-1/2 glass rounded-2xl p-8 flex justify-center items-center">
               <div className="relative w-full max-w-md aspect-video flex items-center justify-center">
                 <div className="absolute w-24 h-24 bg-primary/10 rounded-full -top-4 -left-4 flex items-center justify-center">
                   <Users size={32} className="text-primary" />
