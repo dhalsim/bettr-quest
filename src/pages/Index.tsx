@@ -1,4 +1,3 @@
-
 import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle, Globe, Users } from 'lucide-react';
@@ -81,7 +80,7 @@ const Index = () => {
           </div>
           
           {/* Stats */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="mt-20 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="glass rounded-2xl p-6">
               <div className="text-3xl font-bold text-primary mb-2">15,000+</div>
               <div className="text-muted-foreground">Quests Created</div>
@@ -93,6 +92,10 @@ const Index = () => {
             <div className="glass rounded-2xl p-6">
               <div className="text-3xl font-bold text-primary mb-2">25,000+</div>
               <div className="text-muted-foreground">Users Growing</div>
+            </div>
+            <div className="glass rounded-2xl p-6">
+              <div className="text-3xl font-bold text-primary mb-2">500+</div>
+              <div className="text-muted-foreground">Coaches Registered</div>
             </div>
           </div>
         </div>
