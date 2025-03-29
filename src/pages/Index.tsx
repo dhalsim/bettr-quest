@@ -16,7 +16,13 @@ const featuredQuests = [
 
 const Index = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
+  const coachSectionRef = useRef<HTMLDivElement>(null);
   const { t, i18n } = useTranslation(null, { keyPrefix: "home" });
+  
+  // Scroll to coach section functionality
+  const scrollToCoachSection = () => {
+    coachSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
   
   // Intersection Observer for animated entry
   useEffect(() => {
@@ -59,17 +65,19 @@ const Index = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/explore">
-              <Button size="lg">
+              <Button size="lg" rightIcon={<ArrowRight size={18} />}>
                 {t('Explore Quests')}
-                <ArrowRight size={18} className="ml-2" />
               </Button>
             </Link>
             <Link to="/create">
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" rightIcon={<PlusCircle size={18} />}>
                 {t('Create Your Own')}
-                <PlusCircle size={18} className="ml-2" />
               </Button>
             </Link>
+            <Button variant="secondary" size="lg" onClick={scrollToCoachSection}>
+              {t('Become a Coach')}
+              <ArrowRight size={18} className="ml-2" />
+            </Button>
           </div>
           
           {/* Stats */}
@@ -176,8 +184,30 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Become a Coach Section */}
-      <section className="py-20 px-6 bg-gradient-to-b from-background to-primary/10">
+      {/* CTA Section */}
+      <section className="py-20 px-6 text-center">
+        <div className="max-w-4xl mx-auto glass rounded-3xl p-12">
+          <h2 className="text-3xl font-bold mb-6">{t('Ready to Become Better?')}</h2>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/create">
+              <Button size="lg">
+                {t('Start Your First Quest')}
+                <ArrowRight size={18} className="ml-2" />
+              </Button>
+            </Link>
+            <Button variant="outline" size="lg" onClick={scrollToCoachSection}>
+              {t('Become a Coach')}
+              <ArrowRight size={18} className="ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
+      
+      {/* Become a Coach Section - Moved below CTA */}
+      <section ref={coachSectionRef} className="py-20 px-6 bg-gradient-to-b from-background to-primary/10">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center gap-12">
             <div className="w-full lg:w-1/2 text-center lg:text-left">
@@ -214,22 +244,6 @@ const Index = () => {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="py-20 px-6 text-center">
-        <div className="max-w-4xl mx-auto glass rounded-3xl p-12">
-          <h2 className="text-3xl font-bold mb-6">{t('Ready to Become Better?')}</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
-          </p>
-          <Link to="/create">
-            <Button size="lg">
-              {t('Start Your First Quest')}
-              <ArrowRight size={18} className="ml-2" />
-            </Button>
-          </Link>
         </div>
       </section>
     </div>
