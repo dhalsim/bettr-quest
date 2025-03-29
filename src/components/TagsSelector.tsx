@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, XCircle, Plus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +8,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslation } from 'react-i18next';
 import { TagItem } from '@/types/quest';
+
+export { type TagItem };
 
 interface TagsSelectorProps {
   title?: string;

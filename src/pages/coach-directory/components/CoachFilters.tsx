@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { allSpecializations, formatSats, pricingOptions } from '../utils';
 import { Coach } from '..';
-import TagsSelector, { TagItem } from '@/components/TagsSelector';
+import TagsSelector from '@/components/TagsSelector';
+import { TagItem } from '@/types/quest';
 
 interface CoachFiltersProps {
   searchQuery: string;
@@ -40,7 +41,7 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
   mockCoaches
 }) => {
   // Calculate popularity based on how many coaches have each specialization
-  const specializationTags: TagItem[] = useMemo(() => {
+  const specializationTags = useMemo(() => {
     const specializationCounts = new Map<string, number>();
     
     mockCoaches.forEach(coach => {
@@ -55,6 +56,15 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
       popularity: specializationCounts.get(spec) || 0
     }));
   }, [mockCoaches]);
+
+  // Convert specializationTags array to a Map for TagsSelector
+  const specializationTagsMap = useMemo(() => {
+    const map = new Map<string, TagItem>();
+    specializationTags.forEach(tag => {
+      map.set(tag.name, tag);
+    });
+    return map;
+  }, [specializationTags]);
 
   return (
     <div className="glass rounded-xl p-6 h-fit lg:sticky lg:top-32 border-2 border-gray-300">
@@ -97,7 +107,7 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
         <TagsSelector
           title="Specializations"
           selectedTags={selectedSpecializations}
-          availableTags={specializationTags}
+          availableTags={specializationTagsMap}
           onTagToggle={toggleSpecialization}
           allowCustomTags={false}
           maxVisibleTags={5}
