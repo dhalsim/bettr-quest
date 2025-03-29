@@ -5,6 +5,29 @@
     "settings": "Ayarlar",
     "logout": "Çıkış Yap"
   },
+  "header": {
+    "New Quest": "Yeni Görev",
+    "Connect with Nostr": "Nostr ile Bağlan",
+    "Explore": "Keşfet",
+    "Timeline": "Zaman Çizelgesi",
+    "Coach Directory": "Koç Dizini",
+    "Register as Coach": "Koç Olarak Kaydol",
+    "My Quests": "Görevlerim",
+    "Notifications": "Bildirimler",
+    "Profile": "Profil",
+    "Log Out": "Çıkış Yap",
+    "Dark Mode": "Karanlık Mod"
+  },
+  "timeline": {
+    "Your Timeline": "Zaman Çizelgeniz",
+    "Quests from people you follow": "Takip ettiğiniz kişilerin görevleri",
+    "Your timeline is empty": "Zaman çizelgeniz boş",
+    "Start following people to see their quests here": "Görevlerini görmek için buradan kişileri takip etmeye başlayın",
+    "Explore Quests": "Görevleri Keşfet",
+    "Suggested Follows": "Önerilen Takipçiler",
+    "Following": "Takip Ediliyor",
+    "Follow": "Takip Et"
+  },
   "auth": {
     "login": "Giriş Yap",
     "signup": "Kayıt Ol",

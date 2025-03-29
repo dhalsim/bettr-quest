@@ -4,13 +4,15 @@ import { UserPlus, UserCheck } from 'lucide-react';
 import QuestCard from '@/components/ui/QuestCard';
 import { Button } from '@/components/ui/button';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
-import { Quest } from '@/components/ui/QuestCard';
+import { isLockedQuest, LockedQuest } from '@/types/quest';
 import { mockQuests, mockSuggestedUsers } from '@/mock/data';
+import { useTranslation } from 'react-i18next';
 
 // Convert mockQuests object to array for timeline
-const timelineQuests: Quest[] = Object.values(mockQuests);
+const timelineQuests: LockedQuest[] = Object.values(mockQuests).filter(isLockedQuest);
 
 const Timeline = () => {
+  const { t } = useTranslation();
   const [users, setUsers] = useState(mockSuggestedUsers);
   const { isLoggedIn } = useNostrAuth();
   const navigate = useNavigate();
@@ -35,9 +37,9 @@ const Timeline = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main timeline content */}
           <div className="lg:w-2/3">
-            <h1 className="text-3xl font-bold mb-2">Your Timeline</h1>
+            <h1 className="text-3xl font-bold mb-2">{t('timeline.Your Timeline')}</h1>
             <p className="text-muted-foreground mb-10">
-              Quests from people you follow
+              {t('timeline.Quests from people you follow')}
             </p>
             
             {timelineQuests.length > 0 ? (
@@ -50,13 +52,13 @@ const Timeline = () => {
               </div>
             ) : (
               <div className="text-center py-20 glass rounded-2xl">
-                <h3 className="text-xl font-medium mb-2">Your timeline is empty</h3>
+                <h3 className="text-xl font-medium mb-2">{t('timeline.Your timeline is empty')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Start following people to see their quests here
+                  {t('timeline.Start following people to see their quests here')}
                 </p>
                 <Link to="/explore">
                   <Button>
-                    Explore Quests
+                    {t('timeline.Explore Quests')}
                   </Button>
                 </Link>
               </div>
@@ -66,7 +68,7 @@ const Timeline = () => {
           {/* Sidebar with suggested follows */}
           <div className="lg:w-1/3">
             <div className="glass rounded-2xl p-6 sticky top-32">
-              <h2 className="text-xl font-semibold mb-4">Suggested Follows</h2>
+              <h2 className="text-xl font-semibold mb-4">{t('timeline.Suggested Follows')}</h2>
               <div className="space-y-4">
                 {users.map(user => (
                   <div key={user.id} className="flex items-center justify-between p-3 bg-background/50 rounded-lg">
@@ -81,7 +83,7 @@ const Timeline = () => {
                       className="flex items-center gap-1"
                     >
                       {user.following ? <UserCheck size={16} /> : <UserPlus size={16} />}
-                      <span>{user.following ? 'Following' : 'Follow'}</span>
+                      <span>{user.following ? t('timeline.Following') : t('timeline.Follow')}</span>
                     </Button>
                   </div>
                 ))}

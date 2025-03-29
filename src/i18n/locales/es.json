@@ -3,7 +3,30 @@
     "language": "Idioma",
     "profile": "Perfil",
     "settings": "Configuración",
-    "logout": "Cerrar Sesión"
+    "logout": "Cerrar sesión"
+  },
+  "header": {
+    "New Quest": "Nueva Misión",
+    "Connect with Nostr": "Conectar con Nostr",
+    "Explore": "Explorar",
+    "Timeline": "Línea de tiempo",
+    "Coach Directory": "Directorio de Coaches",
+    "Register as Coach": "Registrarse como Coach",
+    "My Quests": "Mis Misiones",
+    "Notifications": "Notificaciones",
+    "Profile": "Perfil",
+    "Log Out": "Cerrar Sesión",
+    "Dark Mode": "Modo Oscuro"
+  },
+  "timeline": {
+    "Your Timeline": "Tu Línea de Tiempo",
+    "Quests from people you follow": "Misiones de personas que sigues",
+    "Your timeline is empty": "Tu línea de tiempo está vacía",
+    "Start following people to see their quests here": "Empieza a seguir personas para ver sus misiones aquí",
+    "Explore Quests": "Explorar Misiones",
+    "Suggested Follows": "Sugerencias para Seguir",
+    "Following": "Siguiendo",
+    "Follow": "Seguir"
   },
   "auth": {
     "login": "Iniciar Sesión",

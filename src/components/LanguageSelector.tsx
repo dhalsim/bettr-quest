@@ -12,17 +12,27 @@ import { Button } from './ui/button';
 interface LanguageSelectorProps {
   variant?: 'default' | 'ghost' | 'outline';
   className?: string;
+  closeParent?: () => void;
 }
 
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   variant = 'default',
   className = '',
+  closeParent,
 }) => {
   const { i18n } = useTranslation();
   const currentLanguage = languages[i18n.language as keyof typeof languages];
 
   const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+    // First close the parent dropdown if provided
+    if (closeParent) {
+      closeParent();
+    }
+    
+    // Then change the language after a small delay
+    setTimeout(() => {
+      i18n.changeLanguage(lng);
+    }, 100);
   };
 
   return (
@@ -36,7 +46,11 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         {Object.values(languages).map((lang) => (
           <DropdownMenuItem
             key={lang.code}
-            onClick={() => changeLanguage(lang.code)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              changeLanguage(lang.code);
+            }}
             className="cursor-pointer"
           >
             {lang.flag} {lang.name}

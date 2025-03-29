@@ -17,8 +17,11 @@ import NotificationBadge from '@/components/ui/NotificationBadge';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { LanguageSelector } from '@/components/LanguageSelector';
+import { useTranslation } from 'react-i18next';
+import React from 'react';
 
 const Header = () => {
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -79,7 +82,7 @@ const Header = () => {
                 className="btn-primary flex items-center gap-2"
               >
                 <PlusCircle size={18} />
-                <span>New Quest</span>
+                <span>{t('header.New Quest')}</span>
               </Link>
               
               <UserMenu 
@@ -99,7 +102,7 @@ const Header = () => {
                 className="btn-primary flex items-center gap-2"
               >
                 <UserCircle size={18} />
-                <span>Connect with Nostr</span>
+                <span>{t('header.Connect with Nostr')}</span>
               </Link>
             </div>
           )}
@@ -124,7 +127,7 @@ const Header = () => {
             <NavLinks mobile isLoggedIn={isLoggedIn} />
             
             <div className="flex items-center justify-between border-t border-foreground/10 pt-4">
-              <span className="text-sm text-foreground/80">Dark Mode</span>
+              <span className="text-sm text-foreground/80">{t('header.Dark Mode')}</span>
               <Switch 
                 checked={isDarkMode}
                 onCheckedChange={toggleDarkMode}
@@ -144,21 +147,21 @@ const Header = () => {
                   className="btn-primary flex items-center justify-center gap-2"
                 >
                   <PlusCircle size={18} />
-                  <span>New Quest</span>
+                  <span>{t('header.New Quest')}</span>
                 </Link>
                 <Link
                   to="/my-quests"
                   className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
                 >
                   <User size={18} />
-                  <span>My Quests</span>
+                  <span>{t('header.My Quests')}</span>
                 </Link>
                 <Link
                   to="/notifications"
                   className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2 relative"
                 >
                   <Bell size={18} />
-                  <span>Notifications</span>
+                  <span>{t('header.Notifications')}</span>
                   {getUnreadCount() > 0 && (
                     <NotificationBadge count={getUnreadCount()} className="static ml-2 -mt-0" />
                   )}
@@ -168,14 +171,14 @@ const Header = () => {
                   className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
                 >
                   <Settings size={18} />
-                  <span>Profile</span>
+                  <span>{t('header.Profile')}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
                 >
                   <LogOut size={18} />
-                  <span>Log Out</span>
+                  <span>{t('header.Log Out')}</span>
                 </button>
               </>
             ) : (
@@ -184,7 +187,7 @@ const Header = () => {
                 className="btn-primary flex items-center justify-center gap-2"
               >
                 <UserCircle size={18} />
-                <span>Connect with Nostr</span>
+                <span>{t('header.Connect with Nostr')}</span>
               </Link>
             )}
           </nav>
@@ -221,11 +224,13 @@ const UserMenu = ({
   unreadCount: number,
   hasUnread: boolean
 }) => {
+  const { t } = useTranslation();
   const initials = profile?.displayName ? profile.displayName.charAt(0).toUpperCase() : 'U';
   const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
   
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <button className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 relative">
           {hasUnread && (
@@ -244,12 +249,12 @@ const UserMenu = ({
         <DropdownMenuItem asChild>
           <Link to="/my-quests" className="flex items-center gap-2 cursor-pointer">
             <User size={16} />
-            <span>My Quests</span>
+            <span>{t('header.My Quests')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => navigate("/notifications")} className="flex items-center gap-2 cursor-pointer relative">
           <Bell size={16} />
-          <span>Notifications</span>
+          <span>{t('header.Notifications')}</span>
           {unreadCount > 0 && (
             <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-5 text-center">
               {unreadCount}
@@ -259,16 +264,16 @@ const UserMenu = ({
         <DropdownMenuItem asChild>
           <Link to={`/profile/${profile?.username || 'user'}`} className="flex items-center gap-2 cursor-pointer">
             <Settings size={16} />
-            <span>Profile</span>
+            <span>{t('header.Profile')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-          <LanguageSelector variant="ghost" className="w-full justify-start" />
+          <LanguageSelector variant="ghost" className="w-full justify-start" closeParent={() => setOpen(false)} />
         </DropdownMenuItem>
         <DropdownMenuItem onClick={logout} className="flex items-center gap-2 cursor-pointer text-red-500">
           <LogOut size={16} />
-          <span>Log Out</span>
+          <span>{t('header.Log Out')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -277,13 +282,14 @@ const UserMenu = ({
 
 const NavLinks = ({ mobile = false, isLoggedIn = false }: { mobile?: boolean, isLoggedIn?: boolean }) => {
   const location = useLocation();
+  const { t } = useTranslation();
   const isActive = (path: string) => location.pathname === path;
   
   const links = [
-    { to: "/explore", label: "Explore" },
-    ...(isLoggedIn ? [{ to: "/timeline", label: "Timeline" }] : []),
-    { to: "/coach-directory", label: "Coach Directory" },
-    ...(isLoggedIn ? [{ to: "/register-coach", label: "Register as Coach" }] : []),
+    { to: "/explore", label: t('header.Explore') },
+    ...(isLoggedIn ? [{ to: "/timeline", label: t('header.Timeline') }] : []),
+    { to: "/coach-directory", label: t('header.Coach Directory') },
+    ...(isLoggedIn ? [{ to: "/register-coach", label: t('header.Register as Coach') }] : []),
   ];
 
   return (

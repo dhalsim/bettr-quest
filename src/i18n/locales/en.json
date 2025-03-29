@@ -5,6 +5,29 @@
     "settings": "Settings",
     "logout": "Logout"
   },
+  "header": {
+    "New Quest": "New Quest",
+    "Connect with Nostr": "Connect with Nostr",
+    "Explore": "Explore",
+    "Timeline": "Timeline",
+    "Coach Directory": "Coach Directory",
+    "Register as Coach": "Register as Coach",
+    "My Quests": "My Quests",
+    "Notifications": "Notifications",
+    "Profile": "Profile",
+    "Log Out": "Log Out",
+    "Dark Mode": "Dark Mode"
+  },
+  "timeline": {
+    "Your Timeline": "Your Timeline",
+    "Quests from people you follow": "Quests from people you follow",
+    "Your timeline is empty": "Your timeline is empty",
+    "Start following people to see their quests here": "Start following people to see their quests here",
+    "Explore Quests": "Explore Quests",
+    "Suggested Follows": "Suggested Follows",
+    "Following": "Following",
+    "Follow": "Follow"
+  },
   "auth": {
     "login": "Login",
     "signup": "Sign Up",
