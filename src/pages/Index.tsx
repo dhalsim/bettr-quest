@@ -1,4 +1,3 @@
-
 import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle, Globe, Users } from 'lucide-react';
@@ -17,7 +16,7 @@ const featuredQuests = [
 const Index = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
   const coachSectionRef = useRef<HTMLDivElement>(null);
-  const { t, i18n } = useTranslation(null, { keyPrefix: "home" });
+  const { t } = useTranslation(null, { keyPrefix: "home" });
   
   // Scroll to coach section functionality
   const scrollToCoachSection = () => {
@@ -58,7 +57,8 @@ const Index = () => {
       <section className="pt-32 pb-20 px-6 bg-gradient-to-b from-background to-secondary/30">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-            {t('Quest Yourself to Become Better')}
+            {t('Quest Yourself to')}{' '}
+            <span className="text-primary">{t('Become Better')}</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10">
             {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
@@ -154,7 +154,7 @@ const Index = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">{t('Create Quest')}</h3>
               <p className="text-muted-foreground">
-                {t('Define your personal quest with clear goals and timeframes')}
+                {t('Define your personal quest with clear goals, choose between public or private validation')}
               </p>
             </div>
             
@@ -234,19 +234,42 @@ const Index = () => {
                 </Link>
               </div>
             </div>
-            <div className="w-full lg:w-1/2 glass rounded-2xl p-8 flex justify-center items-center">
-              <div className="relative w-full max-w-md aspect-video flex items-center justify-center">
-                <div className="absolute w-24 h-24 bg-primary/10 rounded-full -top-4 -left-4 flex items-center justify-center">
-                  <Users size={32} className="text-primary" />
+            <div className="w-full lg:w-1/2 glass rounded-2xl p-8">
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-primary font-semibold">1</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">{t('Review & Guide')}</h3>
+                    <p className="text-muted-foreground text-sm">
+                      {t('Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.')}
+                    </p>
+                  </div>
                 </div>
-                <div className="absolute w-16 h-16 bg-secondary/30 rounded-full bottom-8 -right-4 flex items-center justify-center">
-                  <Globe size={24} className="text-primary" />
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-primary font-semibold">2</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">{t('Verify Achievements')}</h3>
+                    <p className="text-muted-foreground text-sm">
+                      {t('Validate proof submissions and ensure users meet their quest requirements. Provide detailed feedback for private quests.')}
+                    </p>
+                  </div>
                 </div>
-                <div className="glass rounded-xl p-6 w-full text-center">
-                  <div className="text-2xl font-bold mb-2">500+</div>
-                  <div className="text-muted-foreground">Active Coaches</div>
-                  <div className="mt-4 text-2xl font-bold mb-2">10,000+</div>
-                  <div className="text-muted-foreground">Quests Verified</div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-primary font-semibold">3</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">{t('Earn Rewards')}</h3>
+                    <p className="text-muted-foreground text-sm">
+                      {t('Get compensated in Bitcoin for your expertise. Earn higher rewards for private coaching sessions and detailed guidance.')}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -51,7 +51,7 @@
     "Take Action": "Take Action",
     "Submit Proof": "Submit Proof",
     "Get Validated": "Get Validated",
-    "Define your personal quest with clear goals and timeframes": "Define your personal quest with clear goals and timeframes",
+    "Define your personal quest with clear goals, choose between public or private validation": "Define your personal quest with clear goals, choose between public or private validation",
     "Work on your quest consistently and track your progress": "Work on your quest consistently and track your progress",
     "When completed, share evidence of your achievement with the community": "When completed, share evidence of your achievement with the community",
     "Receive community validation and celebrate your accomplishment": "Receive community validation and celebrate your accomplishment",
@@ -67,7 +67,15 @@
     "Quests Created": "Quests Created",
     "Quests Completed": "Quests Completed",
     "Users Growing": "Users Growing",
-    "Coaches Registered": "Coaches Registered"
+    "Coaches Registered": "Coaches Registered",
+    "Review & Guide": "Review & Guide",
+    "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.": "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.",
+    "Verify Achievements": "Verify Achievements",
+    "Validate proof submissions and ensure users meet their quest requirements. Provide detailed feedback for private quests.": "Validate proof submissions and ensure users meet their quest requirements. Provide detailed feedback for private quests.",
+    "Earn Rewards": "Earn Rewards",
+    "Get compensated in Bitcoin for your expertise. Earn higher rewards for private coaching sessions and detailed guidance.": "Get compensated in Bitcoin for your expertise. Earn higher rewards for private coaching sessions and detailed guidance.",
+    "Quest Yourself to": "Quest Yourself to",
+    "Become Better": "Become Better"
   },
   "profile": {
     "Back to Explore": "Back to Explore",
@@ -93,7 +101,6 @@
   },
   "quest": {
     "Back to Explore": "Back to Explore",
-    "Loading quest...": "Loading quest...",
     "Public Quest": "Public Quest",
     "Private Quest": "Private Quest",
     "Created by": "Created by",
@@ -148,7 +155,8 @@
     "Lock sats": "Lock sats",
     "Quest needs to be locked to be published": "Quest needs to be locked to be published",
     "Quest Saved": "Quest Saved",
-    "Your quest has been saved. You can lock sats later to publish it.": "Your quest has been saved. You can lock sats later to publish it."
+    "Your quest has been saved. You can lock sats later to publish it.": "Your quest has been saved. You can lock sats later to publish it.",
+    "{{amount}} sats are donated and will be rewarded to the quest owner upon successful completion": "{{amount}} sats are donated and will be rewarded to the quest owner upon successful completion"
   },
   "explore": {
     "Explore Quests": "Explore Quests",
@@ -290,5 +298,37 @@
         "This amount will be locked in escrow until you complete your quest.": "This amount will be locked in escrow until you complete your quest."
       }
     }
+  },
+  "footer": {
+    "Quest yourself to be better, one quest at a time. Create, share, and complete personal quests with a community that supports your growth.": "Quest yourself to be better, one quest at a time. Create, share, and complete personal quests with a community that supports your growth.",
+    "Navigation": "Navigation",
+    "Home": "Home",
+    "Explore": "Explore",
+    "My Quests": "My Quests",
+    "Create Quest": "Create Quest",
+    "Timeline": "Timeline",
+    "Coach Directory": "Coach Directory",
+    "Register as Coach": "Register as Coach",
+    "© {{year}} bettr.quest. All rights reserved.": "© {{year}} bettr.quest. All rights reserved.",
+    "Free Open Source Software": "Free Open Source Software"
+  },
+  "quest-card": {
+    "Saved": "Saved",
+    "On Review": "On Review",
+    "Success": "Success",
+    "Failed": "Failed",
+    "In Dispute": "In Dispute",
+    "Following": "Following",
+    "Follow": "Follow",
+    "days remaining": "days remaining",
+    "Due date passed": "Due date passed",
+    "sats": "sats",
+    "Lock sats": "Lock sats",
+    "View proof": "View proof",
+    "Back to quest": "Back to quest",
+    "Locked amount": "Locked amount",
+    "Reward amount": "Reward amount",
+    "Verify": "Verify",
+    "Contest": "Contest"
   }
 }
