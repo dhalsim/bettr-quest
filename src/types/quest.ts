@@ -1,3 +1,5 @@
+import { NostrProfile } from "@/contexts/NostrAuthContext";
+
 export interface TagItem {
   name: string;
   popularity?: number;

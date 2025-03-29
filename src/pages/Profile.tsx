@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, User, Calendar, Activity, Award, MessageSquare, Star } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import QuestCard from '@/components/ui/QuestCard';
+import QuestCard from '@/components/quest-card/QuestCard';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import StarRating from '@/components/ui/StarRating';
-import { mockUserProfiles, mockUserActivities, mockReviews, mockQuests } from '@/mock/data';
+import { mockUserProfiles, mockUserActivities, mockReviews, mockQuests, mockProofs } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 import { formatDate, formatDateTime } from '@/lib/utils';
 import { languages } from '@/i18n/i18n';
+import { isLockedQuest } from '@/types/quest';
+import { useNostrAuth } from '@/hooks/useNostrAuth';
 
 interface Review {
   id: string;
@@ -24,12 +26,14 @@ interface Review {
 
 const Profile = () => {
   const { username } = useParams<{ username: string }>();
+  const navigate = useNavigate();
   const [isFollowing, setIsFollowing] = useState(false);
   const [profileData, setProfileData] = useState(mockUserProfiles.mindfulness_guru);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [activeTab, setActiveTab] = useState('quests');
   const reviewsRef = useRef<HTMLDivElement>(null);
   const { t, i18n } = useTranslation(null, { keyPrefix: "profile" });
+  const { profile } = useNostrAuth();
   
   useEffect(() => {
     // If we have a username and it exists in our user profiles, use that data
@@ -49,8 +53,22 @@ const Profile = () => {
     }
   }, [username]);
   
-  const toggleFollow = () => {
+  const handleSpecializationClick = (e: React.MouseEvent, specialization: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/explore?specialization=${specialization}`);
+  };
+
+  const handleFollowToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsFollowing(!isFollowing);
+  };
+
+  const handleLockSats = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // TODO: Implement lock sats functionality
   };
 
   const handleReviewsClick = () => {
@@ -128,7 +146,7 @@ const Profile = () => {
               
               <Button
                 variant={isFollowing ? "outline" : "primary"}
-                onClick={toggleFollow}
+                onClick={handleFollowToggle}
               >
                 {isFollowing ? t('Following') : t('Follow')}
               </Button>
@@ -159,7 +177,16 @@ const Profile = () => {
             {userQuests.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {userQuests.map((quest) => (
-                  <QuestCard key={quest.id} quest={quest} />
+                  <QuestCard 
+                    key={quest.id} 
+                    quest={quest}
+                    proof={isLockedQuest(quest) ? mockProofs[quest.id]?.[0] : undefined}
+                    isOwnedByCurrentUser={quest.userId === profile?.pubkey}
+                    isFollowing={isFollowing}
+                    onSpecializationClick={handleSpecializationClick}
+                    onFollowToggle={handleFollowToggle}
+                    onLockSats={handleLockSats}
+                  />
                 ))}
               </div>
             ) : (

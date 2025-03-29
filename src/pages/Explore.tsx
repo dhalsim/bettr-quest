@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import QuestCard from '@/components/ui/QuestCard';
-import { useSearchParams } from 'react-router-dom';
+import QuestCard from '@/components/quest-card/QuestCard';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import TagsSelector from '@/components/TagsSelector';
-import { mockQuests, mockTags } from '@/mock/data';
+import { mockQuests, mockTags, mockProofs } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
-
-// Convert mockQuests object to array for explore page
-const allQuests = Object.values(mockQuests);
+import { isLockedQuest, LockedQuest } from '@/types/quest';
+import { useNostrAuth } from '@/hooks/useNostrAuth';
 
 const Explore = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { t } = useTranslation(null, { keyPrefix: "explore" });
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [filteredQuests, setFilteredQuests] = useState(allQuests);
+  const { profile } = useNostrAuth();
+  
+  // Convert mockQuests object to array for explore page
+  const exploreQuests = Object.values(mockQuests)
+    .filter((quest): quest is LockedQuest => { 
+      return isLockedQuest(quest) && quest.userId !== profile?.pubkey;
+    });
+
+  const [filteredQuests, setFilteredQuests] = useState(exploreQuests);
   
   // Sync selectedTags with URL params
   useEffect(() => {
@@ -30,7 +38,7 @@ const Explore = () => {
   }, [searchParams]);
   
   useEffect(() => {
-    const filtered = allQuests.filter(quest => {
+    const filtered = exploreQuests.filter(quest => {
       const matchesQuery = quest.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         quest.description.toLowerCase().includes(searchQuery.toLowerCase());
       
@@ -53,6 +61,24 @@ const Explore = () => {
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+  };
+
+  const handleSpecializationClick = (e: React.MouseEvent, specialization: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/explore?specialization=${specialization}`);
+  };
+
+  const handleFollowToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // TODO: Implement follow toggle functionality
+  };
+
+  const handleLockSats = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // TODO: Implement lock sats functionality
   };
   
   return (
@@ -98,7 +124,16 @@ const Explore = () => {
         {filteredQuests.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredQuests.map((quest) => (
-              <QuestCard key={quest.id} quest={quest} />
+              <QuestCard 
+                key={quest.id} 
+                quest={quest}
+                proof={isLockedQuest(quest) ? mockProofs[quest.id]?.[0] : undefined}
+                isOwnedByCurrentUser={quest.userId === profile?.pubkey}
+                isFollowing={false}
+                onSpecializationClick={handleSpecializationClick}
+                onFollowToggle={handleFollowToggle}
+                onLockSats={handleLockSats}
+              />
             ))}
           </div>
         ) : (

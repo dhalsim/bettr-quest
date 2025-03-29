@@ -1,10 +1,12 @@
 import { useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle, Globe, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import QuestCard from '@/components/ui/QuestCard';
+import QuestCard from '@/components/quest-card/QuestCard';
 import { useTranslation } from 'react-i18next';
-import { mockQuests } from '@/mock/data';
+import { mockQuests, mockProofs } from '@/mock/data';
+import { isLockedQuest } from '@/types/quest';
+import { useNostrAuth } from '@/hooks/useNostrAuth';
 
 // Use existing quests from mockQuests
 const featuredQuests = [
@@ -17,6 +19,8 @@ const Index = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
   const coachSectionRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation(null, { keyPrefix: "home" });
+  const navigate = useNavigate();
+  const { profile } = useNostrAuth();
   
   // Scroll to coach section functionality
   const scrollToCoachSection = () => {
@@ -50,6 +54,24 @@ const Index = () => {
       });
     };
   }, []);
+
+  const handleSpecializationClick = (e: React.MouseEvent, specialization: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/explore?specialization=${specialization}`);
+  };
+
+  const handleFollowToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // TODO: Implement follow toggle functionality
+  };
+
+  const handleLockSats = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // TODO: Implement lock sats functionality
+  };
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -122,7 +144,16 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredQuests.map((quest) => (
-              <QuestCard key={quest.id} quest={quest} />
+              <QuestCard 
+                key={quest.id} 
+                quest={quest}
+                proof={isLockedQuest(quest) ? mockProofs[quest.id]?.[0] : undefined}
+                isOwnedByCurrentUser={quest.userId === profile?.pubkey}
+                isFollowing={false}
+                onSpecializationClick={handleSpecializationClick}
+                onFollowToggle={handleFollowToggle}
+                onLockSats={handleLockSats}
+              />
             ))}
           </div>
           

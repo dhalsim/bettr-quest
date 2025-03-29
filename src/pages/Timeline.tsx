@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus, UserCheck } from 'lucide-react';
-import QuestCard from '@/components/ui/QuestCard';
+import QuestCard from '@/components/quest-card/QuestCard';
 import { Button } from '@/components/ui/button';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { isLockedQuest, LockedQuest } from '@/types/quest';
-import { mockQuests, mockSuggestedUsers } from '@/mock/data';
+import { mockQuests, mockSuggestedUsers, mockProofs } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
-
-// Convert mockQuests object to array for timeline
-const timelineQuests: LockedQuest[] = Object.values(mockQuests).filter(isLockedQuest);
 
 const Timeline = () => {
   const { t } = useTranslation();
   const [users, setUsers] = useState(mockSuggestedUsers);
-  const { isLoggedIn } = useNostrAuth();
+  const { isLoggedIn, profile } = useNostrAuth();
   const navigate = useNavigate();
-
+  
+  // Convert mockQuests object to array for timeline
+  const timelineQuests = Object.values(mockQuests)
+    .filter((quest): quest is LockedQuest => { 
+      return isLockedQuest(quest) && quest.userId !== profile?.pubkey;
+    });
+  
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/connect');
@@ -29,6 +32,24 @@ const Timeline = () => {
         ? { ...user, following: !user.following } 
         : user
     ));
+  };
+
+  const handleSpecializationClick = (e: React.MouseEvent, specialization: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/explore?specialization=${specialization}`);
+  };
+
+  const handleFollowToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // TODO: Implement follow toggle functionality
+  };
+
+  const handleLockSats = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // TODO: Implement lock sats functionality
   };
   
   return (
@@ -45,9 +66,16 @@ const Timeline = () => {
             {timelineQuests.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {timelineQuests.map((quest) => (
-                  <Link key={quest.id} to={`/quest/${quest.id}`}>
-                    <QuestCard quest={quest} />
-                  </Link>
+                  <QuestCard 
+                    key={quest.id} 
+                    quest={quest}
+                    proof={isLockedQuest(quest) ? mockProofs[quest.id]?.[0] : undefined}
+                    isOwnedByCurrentUser={quest.userId === profile?.pubkey}
+                    isFollowing={false}
+                    onSpecializationClick={handleSpecializationClick}
+                    onFollowToggle={handleFollowToggle}
+                    onLockSats={handleLockSats}
+                  />
                 ))}
               </div>
             ) : (

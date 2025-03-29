@@ -34,34 +34,37 @@ const QuestCard: React.FC<QuestCardProps> = ({
           isExpanded ? '-translate-x-full' : 'translate-x-0'
         }`}
       >
-        <div className="bg-card/50 backdrop-blur-sm rounded-xl border p-6 overflow-y-auto">
-          <QuestCardHeader
-            quest={quest}
-            onSpecializationClick={onSpecializationClick}
-          />
-          
-          <QuestCardContent
-            quest={quest}
-            isOwnedByCurrentUser={isOwnedByCurrentUser}
-            isFollowing={isFollowing}
-            onFollowToggle={onFollowToggle}
-            onLockSats={onLockSats}
-          />
-          
-          <QuestCardFooter
-            quest={quest}
-            onViewProof={() => setIsExpanded(true)}
-          />
+        <div className="bg-card/50 backdrop-blur-sm rounded-xl border overflow-hidden">
+          <div className="overflow-hidden">
+            <QuestCardHeader
+              quest={quest}
+              onSpecializationClick={onSpecializationClick}
+            />
+          </div>
+          <div className="pt-3 px-6 pb-6">
+            <QuestCardContent
+              quest={quest}
+              isOwnedByCurrentUser={isOwnedByCurrentUser}
+              isFollowing={isFollowing}
+              onFollowToggle={onFollowToggle}
+              onLockSats={onLockSats}
+            />
+            
+            <QuestCardFooter
+              quest={quest}
+              onViewProof={() => setIsExpanded(true)}
+            />
+          </div>
         </div>
       </div>
 
       {proof && isLockedQuest(quest) && (
         <div
-          className={`absolute top-0 left-0 w-full transition-transform duration-300 ease-in-out ${
+          className={`absolute inset-0 transition-transform duration-300 ease-in-out ${
             isExpanded ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="bg-card/50 backdrop-blur-sm rounded-xl border overflow-y-auto">
+          <div className="bg-card/50 backdrop-blur-sm rounded-xl border h-full overflow-y-auto">
             <QuestCardProof
               quest={quest}
               proof={proof}

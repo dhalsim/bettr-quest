@@ -1,18 +1,18 @@
-
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircle, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import QuestCard from '@/components/ui/QuestCard';
-import { mockQuests } from '@/mock/data';
+import QuestCard from '@/components/quest-card/QuestCard';
+import { mockQuests, mockProofs } from '@/mock/data';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
-import { QuestStatus } from '@/types/quest';
+import { QuestStatus, isLockedQuest } from '@/types/quest';
 import { assertNever } from '@/lib/utils';
 
 type Status = 'all' | QuestStatus;
 
 const MyQuest = () => {
   const { profile } = useNostrAuth();
+  const navigate = useNavigate();
 
   const [filter, setFilter] = useState<Status>('all');
 
@@ -33,6 +33,24 @@ const MyQuest = () => {
       case 'in_dispute': return "You don't have any quests in dispute.";
       default: return assertNever(filter);
     }
+  };
+
+  const handleSpecializationClick = (e: React.MouseEvent, specialization: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/explore?specialization=${specialization}`);
+  };
+
+  const handleFollowToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // TODO: Implement follow toggle functionality
+  };
+
+  const handleLockSats = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // TODO: Implement lock sats functionality
   };
 
   return (
@@ -75,7 +93,16 @@ const MyQuest = () => {
         {filteredQuests.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredQuests.map((quest) => (
-              <QuestCard key={quest.id} quest={quest} />
+              <QuestCard 
+                key={quest.id} 
+                quest={quest}
+                proof={isLockedQuest(quest) ? mockProofs[quest.id]?.[0] : undefined}
+                isOwnedByCurrentUser={quest.userId === profile?.pubkey}
+                isFollowing={false}
+                onSpecializationClick={handleSpecializationClick}
+                onFollowToggle={handleFollowToggle}
+                onLockSats={handleLockSats}
+              />
             ))}
           </div>
         ) : (

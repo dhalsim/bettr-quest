@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from 'lucide-react';
+import { User, Lock, UserPlus, UserCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { SavedQuest, LockedQuest } from '@/types/quest';
 import { Button } from '@/components/ui/button';
@@ -43,6 +43,7 @@ const QuestCardContent: React.FC<QuestCardContentProps> = ({
               onClick={onLockSats}
               className="flex items-center gap-2"
             >
+              <Lock size={16} />
               {t('Lock sats')}
             </Button>
           )
@@ -51,7 +52,9 @@ const QuestCardContent: React.FC<QuestCardContentProps> = ({
             variant={isFollowing ? "outline" : "secondary"}
             size="sm"
             onClick={onFollowToggle}
+            className="flex items-center gap-2"
           >
+            {isFollowing ? <UserCheck size={16} /> : <UserPlus size={16} />}
             {isFollowing ? t('Following') : t('Follow')}
           </Button>
         )}
