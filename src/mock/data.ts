@@ -1,5 +1,5 @@
 import { LockedQuest, SavedQuest, TagItem } from '@/types/quest';
-import { Proof } from '@/components/ui/ProofCard';
+import { Proof } from '@/types/proof';
 
 // All available tags for quests and coach specializations
 export const mockTags = new Map<string, TagItem>([

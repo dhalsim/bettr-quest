@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ThumbsUp, ThumbsDown, Clock, Check, X } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { toast } from 'sonner';
@@ -9,21 +9,7 @@ import { ProofLocationState } from '@/pages/escrow-deposit/validation';
 import { useTranslation } from 'react-i18next';
 import { languages } from '@/i18n/i18n';
 import { formatDateTime } from '@/lib/utils';
-
-export type Proof = {
-  id: string;
-  challengeId: string;
-  userId: string;
-  username: string;
-  title: string;
-  createdAt: string;
-  description: string;
-  imageUrl?: string;
-  votes: {
-    accept: number;
-    reject: number;
-  };
-};
+import { Proof } from '@/types/proof';
 
 interface ProofCardProps {
   proof: Proof;
