@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
@@ -22,7 +21,6 @@ import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import TagsSelector from '@/components/TagsSelector';
-import { TagItem } from '@/types/quest';
 import * as t from 'io-ts';
 import { isRight } from 'fp-ts/Either';
 import { mockTags } from '@/mock/data';
