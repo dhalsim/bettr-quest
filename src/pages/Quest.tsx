@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX, Zap, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ProofCard, { Proof } from '@/components/ui/ProofCard';
+import ProofCard from '@/components/ui/ProofCard';
+import { Proof } from '@/types/proof';
 import { toast } from 'sonner';
 import MediaUpload from '@/components/quest/MediaUpload';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
