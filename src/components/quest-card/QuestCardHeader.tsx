@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { SavedQuest, LockedQuest } from '@/types/quest';
 import { Badge } from '@/components/ui/badge';
 
@@ -51,13 +53,13 @@ const QuestCardHeader: React.FC<QuestCardHeaderProps> = ({
   return (
     <>
       {quest.imageUrl && (
-        <div className="h-52 w-full overflow-hidden">
+        <Link to={`/quest/${quest.id}`} className="block h-52 w-full overflow-hidden">
           <img 
             src={quest.imageUrl} 
             alt={quest.title} 
-            className="w-full h-full object-cover" 
+            className="w-full h-full object-cover transition-transform hover:scale-105 duration-300" 
           />
-        </div>
+        </Link>
       )}
       <div className="px-6 mt-6">
         <div className="flex justify-between items-start">
@@ -81,4 +83,4 @@ const QuestCardHeader: React.FC<QuestCardHeaderProps> = ({
   );
 };
 
-export default QuestCardHeader; 
+export default QuestCardHeader;

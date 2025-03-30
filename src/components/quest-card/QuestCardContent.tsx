@@ -1,6 +1,8 @@
+
 import React from 'react';
 import { User, Lock, UserPlus, UserCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { SavedQuest, LockedQuest } from '@/types/quest';
 import { Button } from '@/components/ui/button';
 
@@ -23,11 +25,13 @@ const QuestCardContent: React.FC<QuestCardContentProps> = ({
 
   return (
     <>
-      <h3 className="text-xl font-semibold mb-3">{quest.title}</h3>
-      
-      <p className="text-muted-foreground text-sm mb-5 line-clamp-2">
-        {quest.description}
-      </p>
+      <Link to={`/quest/${quest.id}`} className="block">
+        <h3 className="text-xl font-semibold mb-3 hover:text-primary transition-colors">{quest.title}</h3>
+        
+        <p className="text-muted-foreground text-sm mb-5 line-clamp-2 hover:text-muted-foreground/80 transition-colors">
+          {quest.description}
+        </p>
+      </Link>
       
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
@@ -63,4 +67,4 @@ const QuestCardContent: React.FC<QuestCardContentProps> = ({
   );
 };
 
-export default QuestCardContent; 
+export default QuestCardContent;
