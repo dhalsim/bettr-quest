@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { User, Lock, UserPlus, UserCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -35,8 +34,10 @@ const QuestCardContent: React.FC<QuestCardContentProps> = ({
       
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-          <User size={14} />
-          <span>@{quest.username}</span>
+          <Link to={`/profile/${quest.username}`} className="flex items-center gap-1.5 hover:text-primary transition-colors">
+            <User size={14} />
+            <span>@{quest.username}</span>
+          </Link>
         </div>
         
         {isOwnedByCurrentUser ? (

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX, Zap, Lock } from 'lucide-react';
@@ -242,10 +241,17 @@ const QuestPage = () => {
                     </span>
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
                       <User size={12} />
-                      {t(questData.visibility === 'public' ? 'Public Quest' : 'Private Quest')}
+                      {t(questData.visibility === 'public' ? 'quest.Public Quest' : 'quest.Private Quest')}
                     </span>
                     {!isSavedQuest && totalZapped > 0 && (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500">
+                      <span 
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500 cursor-pointer hover:bg-yellow-500/20 transition-colors"
+                        onClick={() => {
+                          setActiveTab('donations');
+                          // Scroll to the donations tab content
+                          document.getElementById('donations-tab')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
                         <Zap size={12} />
                         {totalZapped.toLocaleString()} sats
                       </span>
@@ -336,8 +342,7 @@ const QuestPage = () => {
                                       <CircleCheck size={16} /> {t('quest.Verification Reward')}
                                     </h4>
                                     <p className="text-sm">
-                                      {t('quest.Verifying legitimate proofs earns you')} {verificationReward.toLocaleString()} sats. 
-                                      If multiple users verify, the reward is split equally.
+                                      {t('quest.Verifying legitimate proofs earns you {{amount}} sats', { amount: verificationReward.toLocaleString() })}
                                     </p>
                                   </div>
                                   
@@ -346,13 +351,12 @@ const QuestPage = () => {
                                       <CircleX size={16} /> {t('quest.Contest Reward')}
                                     </h4>
                                     <p className="text-sm">
-                                      {t('quest.Successfully contesting a fraudulent proof earns you the entire locked amount')} ({contestReward.toLocaleString()} {t('quest.sats')}). 
-                                      {t('quest.Make sure you have evidence before contesting! If multiple users contest, the amount will be split equally.')}
+                                      {t('quest.Successfully contesting a fraudulent proof earns you the entire locked amount {{amount}} sats', { amount: contestReward.toLocaleString() })}
                                     </p>
                                   </div>
                                   
                                   <div className="pt-2 border-t border-border">
-                                    <p className="text-sm font-medium">{t('quest.The quest creator has locked')} {getLockedAmount(questData).toLocaleString() || 0} {t('quest.sats to ensure accountability.')}</p>
+                                    <p className="text-sm font-medium">{t('quest.The quest creator has locked {{amount}} sats to ensure accountability.', { amount: getLockedAmount(questData).toLocaleString() || 0 })}</p>
                                   </div>
                                 </div>
                               </DialogDescription>
@@ -367,6 +371,7 @@ const QuestPage = () => {
                     <TabsList className="mb-6">
                       <TabsTrigger value="details">{t('quest.Details')}</TabsTrigger>
                       {!isSavedQuest && <TabsTrigger value="escrow">{t('quest.Escrow & Rewards')}</TabsTrigger>}
+                      {!isSavedQuest && totalZapped > 0 && <TabsTrigger value="donations">{t('quest.Donations')}</TabsTrigger>}
                     </TabsList>
                     
                     <TabsContent value="details" className="space-y-4">
@@ -405,8 +410,30 @@ const QuestPage = () => {
                           <div>
                             <h4 className="text-md font-medium mb-3">{t('quest.Reward Distribution')}</h4>
                             <p className="text-sm text-muted-foreground">
-                              {t('quest.If the proof is accepted, the acceptor will receive a reward from the locked amount. Multiple acceptors will split the reward equally.')}
+                              {t('quest.If the proof is accepted, the acceptor will receive a reward from the locked amount. Multiple acceptors will split the reward equally')}
                             </p>
+                          </div>
+                        </div>
+                      </TabsContent>
+                    )}
+                    
+                    {!isSavedQuest && totalZapped > 0 && (
+                      <TabsContent value="donations" className="space-y-4" id="donations-tab">
+                        <div className="bg-secondary/20 p-6 rounded-lg">
+                          <h3 className="text-lg font-medium mb-4">{t('quest.Donation Information')}</h3>
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Zap size={20} className="text-yellow-500" />
+                                <span className="text-lg font-semibold">{totalZapped.toLocaleString()} sats</span>
+                              </div>
+                              <span className="text-sm text-muted-foreground">{t('quest.Total Donated')}</span>
+                            </div>
+                            <div className="bg-yellow-500/10 p-4 rounded-lg">
+                              <p className="text-sm text-yellow-500">
+                                {t('quest.This amount will be awarded to the quest owner when the quest is successfully completed.')}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </TabsContent>
@@ -520,15 +547,16 @@ const QuestPage = () => {
             
             <div className="grid gap-6">
               {proofs.map((proof) => (
-                <ProofCard
-                  key={proof.id}
-                  proof={proof}
-                  questTitle={questData.title}
-                  questDescription={questData.description}
-                  questLockedAmount={getLockedAmount(questData)}
-                  questRewardAmount={getQuestRewardAmount(questData)}
-                  questStatus={questData.status}
-                />
+                <div key={proof.id} id={`proof-${proof.id}`}>
+                  <ProofCard
+                    proof={proof}
+                    questTitle={questData.title}
+                    questDescription={questData.description}
+                    questLockedAmount={getLockedAmount(questData)}
+                    questRewardAmount={getQuestRewardAmount(questData)}
+                    questStatus={questData.status}
+                  />
+                </div>
               ))}
               
               {proofs.length === 0 && (

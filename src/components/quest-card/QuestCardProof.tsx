@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Check, X, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { LockedQuest } from '@/types/quest';
 import { Proof } from '@/types/proof';
 import { Button } from '@/components/ui/button';
@@ -70,12 +70,14 @@ const QuestCardProof: React.FC<QuestCardProofProps> = ({
 
       <div className="space-y-6">
         <div>
-          <h3 className="text-xl font-semibold mb-2">{proof.title}</h3>
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-4">
-            <Clock size={14} />
-            <span>{formatDateTime(proof.createdAt, i18n.language as keyof typeof languages)}</span>
-          </div>
-          <p className="text-muted-foreground">{proof.description}</p>
+          <Link to={`/quest/${quest.id}#proof-${proof.id}`} className="block">
+            <h3 className="text-xl font-semibold mb-2 hover:text-primary transition-colors">{proof.title}</h3>
+            <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-4">
+              <Clock size={14} />
+              <span>{formatDateTime(proof.createdAt, i18n.language as keyof typeof languages)}</span>
+            </div>
+            <p className="text-muted-foreground hover:text-muted-foreground/80 transition-colors">{proof.description}</p>
+          </Link>
         </div>
 
         {proof.imageUrl && (
