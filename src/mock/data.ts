@@ -1,4 +1,4 @@
-import { LockedQuest, SavedQuest, TagItem } from '@/types/quest';
+import { LockedQuest, DraftQuest, TagItem } from '@/types/quest';
 import { Proof } from '@/types/proof';
 
 // All available tags for quests and coach specializations
@@ -43,7 +43,7 @@ export const mockTags = new Map<string, TagItem>([
 ]);
 
 // Mock data for quests
-export const mockQuests: { [key: string]: SavedQuest | LockedQuest } = {
+export const mockQuests: { [key: string]: DraftQuest | LockedQuest } = {
   "1": {
     id: '1',
     title: 'Meditate for 20 minutes tomorrow',
@@ -181,7 +181,7 @@ export const mockQuests: { [key: string]: SavedQuest | LockedQuest } = {
 };
 
 // Mock data for saved quests (not locked yet)
-export const mockSavedQuests: { [key: string]: SavedQuest } = {
+export const mockSavedQuests: { [key: string]: DraftQuest } = {
   "6": {
     id: '6',
     title: 'Learn to play guitar',

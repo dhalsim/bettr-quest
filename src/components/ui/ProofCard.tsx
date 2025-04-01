@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { languages } from '@/i18n/i18n';
 import { formatDateTime } from '@/lib/utils';
 import { Proof } from '@/types/proof';
+import { QuestStatus } from '@/types/quest';
 
 interface ProofCardProps {
   proof: Proof;
@@ -17,7 +18,7 @@ interface ProofCardProps {
   questDescription: string;
   questLockedAmount: number;
   questRewardAmount: number;
-  questStatus: 'on_review' | 'success' | 'failed' | 'in_dispute' | 'saved';
+  questStatus: QuestStatus;
 }
 
 const ProofCard: React.FC<ProofCardProps> = ({ 

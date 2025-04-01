@@ -1,5 +1,3 @@
-import { NostrProfile } from "@/contexts/NostrAuthContext";
-
 export interface TagItem {
   name: string;
   popularity?: number;
@@ -19,15 +17,15 @@ export type BaseQuest = {
 };
 
 // Properties for a quest that has been saved but not locked
-export type SavedQuest = BaseQuest & {
+export type DraftQuest = BaseQuest & {
   id: string;
-  status: 'saved';
+  status: 'draft';
   savedAt: string;
 };
 
 export type LockedQuestStatus = 'on_review' | 'success' | 'failed' | 'in_dispute';
 
-export type QuestStatus = LockedQuestStatus | 'saved';
+export type QuestStatus = LockedQuestStatus | 'draft';
 
 // Properties for a quest that has been locked with escrow
 export type LockedQuest = BaseQuest & {
@@ -40,7 +38,7 @@ export type LockedQuest = BaseQuest & {
   inDispute?: boolean;
 };
 
-export function isLockedQuest(quest: SavedQuest | LockedQuest): quest is LockedQuest {
+export function isLockedQuest(quest: DraftQuest | LockedQuest): quest is LockedQuest {
   return 'lockedAmount' in quest;
 }
 
@@ -55,4 +53,4 @@ export type QuestData = BaseQuest & {
 };
 
 // Union type for all quest types
-export type Quest = SavedQuest | LockedQuest | QuestData; 
+export type Quest = DraftQuest | LockedQuest | QuestData; 

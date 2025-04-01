@@ -1,12 +1,12 @@
 import React from 'react';
 import { Calendar, Clock, Lock, CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { SavedQuest, LockedQuest, isLockedQuest } from '@/types/quest';
+import { DraftQuest, LockedQuest, isLockedQuest } from '@/types/quest';
 import { Button } from '@/components/ui/button';
 import { formatDate, calculateDaysRemaining } from '@/lib/utils';
 
 interface QuestCardFooterProps {
-  quest: SavedQuest | LockedQuest;
+  quest: DraftQuest | LockedQuest;
   onViewProof: () => void;
 }
 

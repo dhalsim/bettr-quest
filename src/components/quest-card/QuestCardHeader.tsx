@@ -1,12 +1,11 @@
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { SavedQuest, LockedQuest } from '@/types/quest';
-import { Badge } from '@/components/ui/badge';
+import { DraftQuest, LockedQuest, QuestStatus } from '@/types/quest';
+import { assertNever } from '@/lib/utils';
 
 interface QuestCardHeaderProps {
-  quest: SavedQuest | LockedQuest;
+  quest: DraftQuest | LockedQuest;
   onSpecializationClick: (e: React.MouseEvent, specialization: string) => void;
 }
 
@@ -16,9 +15,9 @@ const QuestCardHeader: React.FC<QuestCardHeaderProps> = ({
 }) => {
   const { t } = useTranslation(null, { keyPrefix: "quest-card" });
 
-  const getStatusBadgeClass = (status: string) => {
+  const getStatusBadgeClass = (status: QuestStatus) => {
     switch (status) {
-      case 'saved':
+      case 'draft':
         return 'bg-blue-500/10 text-blue-500';
       case 'on_review':
         return 'bg-yellow-500/10 text-yellow-500';
@@ -29,14 +28,14 @@ const QuestCardHeader: React.FC<QuestCardHeaderProps> = ({
       case 'in_dispute':
         return 'bg-gray-500/10 text-gray-500';
       default:
-        return 'bg-gray-500/10 text-gray-500';
+        return assertNever(status);
     }
   };
 
-  const getStatusText = (status: string) => {
+  const getStatusText = (status: QuestStatus) => {
     switch (status) {
-      case 'saved':
-        return t('Saved');
+      case 'draft':
+        return t('Draft');
       case 'on_review':
         return t('On Review');
       case 'success':
@@ -46,7 +45,7 @@ const QuestCardHeader: React.FC<QuestCardHeaderProps> = ({
       case 'in_dispute':
         return t('In Dispute');
       default:
-        return status;
+        return assertNever(status);
     }
   };
 

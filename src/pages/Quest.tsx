@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ZapModal from '@/components/quest/ZapModal';
-import { LockedQuest, SavedQuest } from '@/types/quest';
+import { LockedQuest, DraftQuest } from '@/types/quest';
 import { mockQuests, mockProofs } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 import { formatDate, calculateDaysRemaining } from '@/lib/utils';
@@ -22,7 +22,7 @@ const QuestPage = () => {
   const navigate = useNavigate();
   const { profile, isLoggedIn } = useNostrAuth();
   const [proofs, setProofs] = useState<Proof[]>([]);
-  const [questData, setQuestData] = useState<LockedQuest | SavedQuest | null>(null);
+  const [questData, setQuestData] = useState<LockedQuest | DraftQuest | null>(null);
   const [newProof, setNewProof] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
@@ -164,35 +164,35 @@ const QuestPage = () => {
   const isQuestCreator = profile?.username === questData.username;
   const isQuestActive = new Date(questData.dueDate) > new Date() && 
                       (questData.status === 'on_review');
-  const isSavedQuest = questData.status === 'saved';
+  const isDraftQuest = questData.status === 'draft';
   
   // Helper function to check if quest is locked
-  const isLockedQuest = (quest: LockedQuest | SavedQuest): quest is LockedQuest => {
+  const isLockedQuest = (quest: LockedQuest | DraftQuest): quest is LockedQuest => {
     return 'lockedAmount' in quest && 'rewardAmount' in quest && 'escrowStatus' in quest;
   };
 
   // Helper function to get quest reward amount
-  const getQuestRewardAmount = (quest: LockedQuest | SavedQuest): number => {
+  const getQuestRewardAmount = (quest: LockedQuest | DraftQuest): number => {
     return isLockedQuest(quest) ? quest.rewardAmount : 0;
   };
 
   // Helper function to get locked amount
-  const getLockedAmount = (quest: LockedQuest | SavedQuest): number => {
+  const getLockedAmount = (quest: LockedQuest | DraftQuest): number => {
     return isLockedQuest(quest) ? quest.lockedAmount : 0;
   };
 
   // Helper function to get escrow status
-  const getEscrowStatus = (quest: LockedQuest | SavedQuest): 'locked' | 'distributed' | 'in_process' | undefined => {
+  const getEscrowStatus = (quest: LockedQuest | DraftQuest): 'locked' | 'distributed' | 'in_process' | undefined => {
     return isLockedQuest(quest) ? quest.escrowStatus : undefined;
   };
 
   // Helper function to check if quest is in dispute
-  const isInDispute = (quest: LockedQuest | SavedQuest): boolean => {
+  const isInDispute = (quest: LockedQuest | DraftQuest): boolean => {
     return isLockedQuest(quest) ? quest.inDispute || false : false;
   };
 
   // Helper function to get total zapped amount
-  const getTotalZapped = (quest: LockedQuest | SavedQuest): number => {
+  const getTotalZapped = (quest: LockedQuest | DraftQuest): number => {
     return isLockedQuest(quest) ? quest.totalZapped : 0;
   };
 
@@ -243,7 +243,7 @@ const QuestPage = () => {
                       <User size={12} />
                       {t(questData.visibility === 'public' ? 'quest.Public Quest' : 'quest.Private Quest')}
                     </span>
-                    {!isSavedQuest && totalZapped > 0 && (
+                    {!isDraftQuest && totalZapped > 0 && (
                       <span 
                         className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500 cursor-pointer hover:bg-yellow-500/20 transition-colors"
                         onClick={() => {
@@ -262,7 +262,7 @@ const QuestPage = () => {
                     {questData.title}
                   </h1>
                   
-                  {isLoggedIn && isQuestActive && !isSavedQuest && (
+                  {isLoggedIn && isQuestActive && !isDraftQuest && (
                     <div className="flex flex-wrap gap-2 mb-4">
                       {!isQuestCreator && (
                         <Button 
@@ -309,7 +309,7 @@ const QuestPage = () => {
                     </div>
                   </div>
                   
-                  {!isSavedQuest && (
+                  {!isDraftQuest && (
                     <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
                       <div className="flex flex-wrap justify-between items-center gap-4">
                         <div>
@@ -370,8 +370,8 @@ const QuestPage = () => {
                   <Tabs defaultValue="details" onValueChange={setActiveTab} className="mt-6">
                     <TabsList className="mb-6">
                       <TabsTrigger value="details">{t('quest.Details')}</TabsTrigger>
-                      {!isSavedQuest && <TabsTrigger value="escrow">{t('quest.Escrow & Rewards')}</TabsTrigger>}
-                      {!isSavedQuest && totalZapped > 0 && <TabsTrigger value="donations">{t('quest.Donations')}</TabsTrigger>}
+                      {!isDraftQuest && <TabsTrigger value="escrow">{t('quest.Escrow & Rewards')}</TabsTrigger>}
+                      {!isDraftQuest && totalZapped > 0 && <TabsTrigger value="donations">{t('quest.Donations')}</TabsTrigger>}
                     </TabsList>
                     
                     <TabsContent value="details" className="space-y-4">
@@ -380,7 +380,7 @@ const QuestPage = () => {
                       </div>
                     </TabsContent>
                     
-                    {!isSavedQuest && (
+                    {!isDraftQuest && (
                       <TabsContent value="escrow" className="space-y-4">
                         <div className="bg-secondary/20 p-6 rounded-lg">
                           <h3 className="text-lg font-medium mb-4">{t('quest.Escrow Information')}</h3>
@@ -417,7 +417,7 @@ const QuestPage = () => {
                       </TabsContent>
                     )}
                     
-                    {!isSavedQuest && totalZapped > 0 && (
+                    {!isDraftQuest && totalZapped > 0 && (
                       <TabsContent value="donations" className="space-y-4" id="donations-tab">
                         <div className="bg-secondary/20 p-6 rounded-lg">
                           <h3 className="text-lg font-medium mb-4">{t('quest.Donation Information')}</h3>
@@ -442,7 +442,7 @@ const QuestPage = () => {
                   
                   <div className="mt-8 flex items-center justify-between">
                     {isQuestCreator && (
-                      isSavedQuest ? (
+                      isDraftQuest ? (
                         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                           <Button 
                             variant="primary"
@@ -493,7 +493,7 @@ const QuestPage = () => {
               </div>
             </div>
             
-            {isQuestCreator && !isSavedQuest && (
+            {isQuestCreator && !isDraftQuest && (
               <div className="lg:w-1/3" id="submit-proof">
                 <div className="glass rounded-2xl p-6 sticky top-32">
                   <h2 className="text-xl font-semibold mb-4">{t('quest.Submit Your Proof')}</h2>
@@ -533,7 +533,7 @@ const QuestPage = () => {
           </div>
         </div>
         
-        {!isSavedQuest && (
+        {!isDraftQuest && (
           <div className="mt-16">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">{t('quest.Submitted Proofs')}</h2>
@@ -569,7 +569,7 @@ const QuestPage = () => {
         )}
       </div>
       
-      {isLoggedIn && !isSavedQuest && (
+      {isLoggedIn && !isDraftQuest && (
         <ZapModal
           open={zapModalOpen}
           onOpenChange={setZapModalOpen}

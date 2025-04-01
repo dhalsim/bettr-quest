@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SavedQuest, LockedQuest, isLockedQuest } from '@/types/quest';
+import { DraftQuest, LockedQuest, isLockedQuest } from '@/types/quest';
 import { Proof } from '@/types/proof';
 import QuestCardHeader from './QuestCardHeader';
 import QuestCardContent from './QuestCardContent';
@@ -7,7 +7,7 @@ import QuestCardFooter from './QuestCardFooter';
 import QuestCardProof from './QuestCardProof';
 
 interface QuestCardProps {
-  quest: SavedQuest | LockedQuest;
+  quest: DraftQuest | LockedQuest;
   proof?: Proof;
   isOwnedByCurrentUser: boolean;
   isFollowing: boolean;

@@ -2,11 +2,11 @@ import React from 'react';
 import { User, Lock, UserPlus, UserCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { SavedQuest, LockedQuest } from '@/types/quest';
+import { DraftQuest, LockedQuest } from '@/types/quest';
 import { Button } from '@/components/ui/button';
 
 interface QuestCardContentProps {
-  quest: SavedQuest | LockedQuest;
+  quest: DraftQuest | LockedQuest;
   isOwnedByCurrentUser: boolean;
   isFollowing: boolean;
   onFollowToggle: (e: React.MouseEvent) => void;
@@ -41,7 +41,7 @@ const QuestCardContent: React.FC<QuestCardContentProps> = ({
         </div>
         
         {isOwnedByCurrentUser ? (
-          quest.status === 'saved' && (
+          quest.status === 'draft' && (
             <Button
               variant="secondary"
               size="sm"
