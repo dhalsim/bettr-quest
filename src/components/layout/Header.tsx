@@ -32,12 +32,31 @@ const Header = () => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    let isScrolling = false;
+  
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      if (!isScrolling) {
+        isScrolling = true;
+        setIsScrolled(true);
+      }
+  
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        isScrolling = false;
+        setIsScrolled(false);
+      }, 150);
     };
     
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("wheel", handleScroll);
+    window.addEventListener("touchmove", handleScroll);
+    
+    return () => {
+      window.removeEventListener('wheel', handleScroll);
+      window.removeEventListener('touchmove', handleScroll);
+      
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {
@@ -50,79 +69,79 @@ const Header = () => {
   };
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 px-6 transition-all duration-300 
-      ${isScrolled ? 'py-3 glass' : 'py-5 bg-transparent'}`}
-    >
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link 
-          to="/" 
-          className="font-display text-foreground font-bold text-2xl flex flex-col items-center relative"
-        >
-          <div className="flex items-center">
-            <span className="text-primary">bettr</span>
-            <span className="text-primary">.</span>
-            quest
-          </div>
-          <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-medium leading-none shadow-md">
-            <BadgeCheck size={12} className="mr-1" />
-            DEMO
-          </div>
-        </Link>
-        
-        <div className="hidden custom-header-md:flex items-center space-x-8">
-          <NavLinks isLoggedIn={isLoggedIn} />
+    <div className={`fixed top-0 left-0 right-0 z-50 transition-all duration-100 
+      ${isScrolled ? 'py-5 invisible' : 'py-3 glass'}`}>
+      <header className="px-6">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <Link 
+            to="/" 
+            className="font-display text-foreground font-bold text-2xl flex flex-col items-center relative"
+          >
+            <div className="flex items-center">
+              <span className="text-primary">bettr</span>
+              <span className="text-primary">.</span>
+              quest
+            </div>
+            <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-medium leading-none shadow-md">
+              <BadgeCheck size={12} className="mr-1" />
+              DEMO
+            </div>
+          </Link>
           
-          {isLoggedIn ? (
-            <div className="flex items-center gap-4">
-              <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-              
-              <Link 
-                to="/create" 
-                className="btn-primary flex items-center gap-2"
-              >
-                <PlusCircle size={18} />
-                <span>{t('header.New Quest')}</span>
-              </Link>
-              
-              <UserMenu 
-                logout={handleLogout} 
-                profile={profile} 
-                unreadCount={getUnreadCount()}
-                hasUnread={hasUnread} 
-              />
-            </div>
-          ) : (
-            <div className="flex items-center gap-4">
-              <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-              <LanguageSelector />
-              
-              <Link 
-                to="/connect" 
-                className="btn-primary flex items-center gap-2"
-              >
-                <UserCircle size={18} />
-                <span>{t('header.Connect with Nostr')}</span>
-              </Link>
-            </div>
-          )}
-        </div>
+          <div className="hidden custom-header-md:flex items-center space-x-8">
+            <NavLinks isLoggedIn={isLoggedIn} />
+            
+            {isLoggedIn ? (
+              <div className="flex items-center gap-4">
+                <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+                
+                <Link 
+                  to="/create" 
+                  className="btn-primary flex items-center gap-2"
+                >
+                  <PlusCircle size={18} />
+                  <span>{t('header.New Quest')}</span>
+                </Link>
+                
+                <UserMenu 
+                  logout={handleLogout} 
+                  profile={profile} 
+                  unreadCount={getUnreadCount()}
+                  hasUnread={hasUnread} 
+                />
+              </div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+                <LanguageSelector />
+                
+                <Link 
+                  to="/connect" 
+                  className="btn-primary flex items-center gap-2"
+                >
+                  <UserCircle size={18} />
+                  <span>{t('header.Connect with Nostr')}</span>
+                </Link>
+              </div>
+            )}
+          </div>
 
-        <button 
-          className="custom-header-md:hidden text-foreground relative" 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isLoggedIn && hasUnread && (
-            <NotificationBadge showDot className="z-10" />
-          )}
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
+          <button 
+            className="custom-header-md:hidden text-foreground relative" 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isLoggedIn && hasUnread && (
+              <NotificationBadge showDot className="z-10" />
+            )}
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </header>
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="absolute top-full left-0 right-0 glass animate-fade-in py-6 px-6 custom-header-md:hidden">
+        <div className="px-6 py-6 custom-header-md:hidden">
           <nav className="flex flex-col space-y-6">
             <NavLinks mobile isLoggedIn={isLoggedIn} />
             
@@ -193,7 +212,7 @@ const Header = () => {
           </nav>
         </div>
       )}
-    </header>
+    </div>
   );
 };
 
