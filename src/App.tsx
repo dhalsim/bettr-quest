@@ -21,6 +21,7 @@ import CoachDirectory from "./pages/coach-directory";
 import RegisterCoach from "./pages/RegisterCoach";
 import EscrowDeposit from "./pages/escrow-deposit/EscrowDeposit";
 import Notifications from "./pages/Notifications";
+import Premium from "./pages/Premium";
 
 const App = () => (
   <I18nextProvider i18n={i18n}>
@@ -44,6 +45,7 @@ const App = () => (
                 <Route path="/coach-directory" element={<CoachDirectory />} />
                 <Route path="/register-coach" element={<RegisterCoach />} />
                 <Route path="/notifications" element={<Notifications />} />
+                <Route path="/premium" element={<Premium />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

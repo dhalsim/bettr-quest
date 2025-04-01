@@ -16,7 +16,8 @@
     "Notifications": "Bildirimler",
     "Profile": "Profil",
     "Log Out": "Çıkış Yap",
-    "Dark Mode": "Karanlık Mod"
+    "Dark Mode": "Karanlık Mod",
+    "Get Premium": "Premium Satın Al"
   },
   "timeline": {
     "Your Timeline": "Zaman Çizelgeniz",
@@ -69,7 +70,20 @@
     "Earn Rewards": "Ödüller Kazan",
     "Get compensated in Bitcoin for your expertise. Earn higher rewards for private coaching sessions and detailed guidance.": "Uzmanlığın için Bitcoin ile ödeme al. Özel koçluk oturumları ve detaylı rehberlik için daha yüksek ödüller kazan.",
     "Quest Yourself to": "Kendini Görevlendir",
-    "Become Better": "Daha İyi Ol"
+    "Become Better": "Daha İyi Ol",
+    "Bettr.Quest Premium": "Bettr.Quest Premium",
+    "Unlock exclusive benefits and save on fees with our premium subscription": "Premium aboneliğimizle özel avantajların kilidini açın ve ücretlerden tasarruf edin",
+    "Premium Benefits": "Premium Avantajlar",
+    "Only 10,000 sats per month": "Aylık sadece 10,000 sats",
+    "Zero Platform Fees": "Sıfır Platform Ücreti",
+    "No fees for quest creation, AI services, or private coaching": "Görev oluşturma, yapay zeka hizmetleri veya özel koçluk için ücret yok",
+    "Exclusive Events": "Özel Etkinlikler",
+    "Access to special bettr.quest events and contests": "Özel bettr.quest etkinliklerine ve yarışmalarına erişim",
+    "Prize Opportunities": "Ödül Fırsatları",
+    "Chance to win exclusive prizes in premium contests": "Premium yarışmalarda özel ödüller kazanma şansı",
+    "sats per month": "aylık sats",
+    "Upgrade to Premium": "Premium'a Yükselt",
+    "View Premium Benefits": "Premium Avantajlarını Görüntüle"
   },
   "profile": {
     "Back to Explore": "Keşfetmeye Dön",
@@ -236,54 +250,62 @@
     "at": "saat"
   },
   "escrow": {
-    "Lock sats to publish your quest": "Quest'inizi yayınlamak için sats kilitleyin",
-    "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements": "Quest'inizi yayınlamak için sats kilitleyin. Bu, sorumluluğu sağlar ve topluluğun başarılarınızı doğrulamasına yardımcı olur",
+    "Loading": "Yükleniyor",
+    "Lock sats to publish your quest": "Görevinizi yayınlamak için sats kilitleyin",
     "Lock sats to verify this proof": "Bu kanıtı doğrulamak için sats kilitleyin",
-    "Lock some sats to verify this proof. You'll earn rewards if your verification is correct": "Bu kanıtı doğrulamak için sats kilitleyin. Doğrulamanız doğruysa ödüller kazanacaksınız",
     "Lock sats to contest this proof": "Bu kanıta itiraz etmek için sats kilitleyin",
-    "Lock some sats to contest this proof. You'll receive the full locked amount if your contest is validated": "Bu kanıta itiraz etmek için sats kilitleyin. İtirazınız doğrulanırsa kilitlenen miktarın tamamını alacaksınız",
+    "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements": "Görevinizi yayınlamak için sats kilitleyin. Bu, sorumluluğu sağlar ve topluluğun başarılarınızı doğrulamasına yardımcı olur",
+    "Lock some sats to verify this proof. You'll earn rewards if your verification is correct": "Bu kanıtı doğrulamak için sats kilitleyin. Doğrulamanız doğruysa ödül kazanacaksınız",
+    "Lock some sats to contest this proof. You'll receive the full locked amount if your contest is validated": "Bu kanıta itiraz etmek için sats kilitleyin. İtirazınız geçerliyse tüm kilitli miktarı alacaksınız",
     "Loading...": "Yükleniyor...",
-    "Lock Amount": "Kilitleme Miktarı",
+    "Lock Amount": "Kilitlenecek Miktar",
     "Community Reward": "Topluluk Ödülü",
     "Platform Fees": "Platform Ücretleri",
     "Total to Lock": "Toplam Kilitlenecek",
     "Confirm": "Onayla",
     "Skip for now": "Şimdilik atla",
-    "Your quest has been created and your sats have been locked": "Quest'iniz oluşturuldu ve sats'larınız kilitlendi",
-    "Your quest has been saved. You can lock sats later to publish it": "Quest'iniz kaydedildi. Daha sonra yayınlamak için sats kilitleyebilirsiniz",
+    "Your quest has been created and your sats have been locked": "Göreviniz oluşturuldu ve sats'larınız kilitlendi",
+    "Your quest has been saved. You can lock sats later to publish it": "Göreviniz kaydedildi. Daha sonra yayınlamak için sats kilitleyebilirsiniz",
     "Your verification has been submitted and your sats have been locked": "Doğrulamanız gönderildi ve sats'larınız kilitlendi",
     "Your contest has been submitted and your sats have been locked": "İtirazınız gönderildi ve sats'larınız kilitlendi",
+    "Verification Submitted": "Doğrulama Gönderildi",
+    "Verification Submitted Description": "Doğrulamanız gönderildi ve sats'larınız kilitlendi",
+    "Contest Submitted": "İtiraz Gönderildi",
+    "Contest Submitted Description": "İtirazınız gönderildi ve sats'larınız kilitlendi",
+    "Quest Created": "Görev Oluşturuldu",
+    "Quest Created Description": "Göreviniz oluşturuldu ve sats'larınız kilitlendi",
+    "Quest Saved": "Görev Kaydedildi",
     "summary": {
       "Summary": "Özet",
-      "Your Lock Amount": "Kilitlenen Miktarınız",
+      "Your Lock Amount": "Kilitlenecek Miktarınız",
       "Community Rewards": "Topluluk Ödülleri",
       "Contest Reward": "İtiraz Ödülü",
       "Verification Reward": "Doğrulama Ödülü",
       "Platform Fees": "Platform Ücretleri",
-      "Total to Lock": "Kilitlenecek Toplam",
-      "What's at stake:": "Risk Altındakiler:",
+      "Total to Lock": "Toplam Kilitlenecek",
+      "What's at stake:": "Risk Altında Olan:",
       "If your verification is correct: You'll receive {{amount}} sats": "Doğrulamanız doğruysa: {{amount}} sats alacaksınız",
-      "If your verification is incorrect: You'll lose your locked amount ({{amount}} sats)": "Doğrulamanız yanlışsa: Kilitlenen miktarınızı ({{amount}} sats) kaybedeceksiniz",
+      "If your verification is incorrect: You'll lose your locked amount ({{amount}} sats)": "Doğrulamanız yanlışsa: Kilitli miktarınızı ({{amount}} sats) kaybedeceksiniz",
       "If your contest is valid: You'll receive {{total}} sats (+{{quest}} sats from the quest)": "İtirazınız geçerliyse: {{total}} sats alacaksınız (+{{quest}} sats görevden)",
-      "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)": "İtirazınız geçersizse: Kilitlenen miktarınızı ({{amount}} sats) kaybedeceksiniz",
+      "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)": "İtirazınız geçersizse: Kilitli miktarınızı ({{amount}} sats) kaybedeceksiniz",
       "You'll get back {{amount}} sats upon successful completion": "Başarılı tamamlama durumunda {{amount}} sats geri alacaksınız"
     },
     "rewards": {
       "rewardInfo": {
-        "If your verification is correct, you'll receive your locked amount + rewards set aside by the quest creator": "Doğrulamanız doğruysa, kilitlenen miktarınızı + görev oluşturucunun ayırdığı ödülleri alacaksınız",
-        "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest": "İtirazınız geçerliyse, kilitlenen miktarınızı + görevin tüm kilitli miktarını alacaksınız"
+        "If your verification is correct, you'll receive your locked amount + rewards set aside by the quest creator": "Doğrulamanız doğruysa, kilitli miktarınızı + görev oluşturucunun ayırdığı ödülleri alacaksınız",
+        "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest": "İtirazınız geçerliyse, kilitli miktarınızı + görevin tüm kilitli miktarını alacaksınız"
       },
       "confirmButton": {
         "Confirm Verification": "Doğrulamayı Onayla",
         "Confirm Contest": "İtirazı Onayla",
-        "Lock {{amount}} sats": "{{amount}} sats kilitle"
+        "Lock {{amount}} sats": "{{amount}} sats Kilitle"
       },
       "proofDetails": {
         "Verifying Proof:": "Kanıt Doğrulanıyor:",
         "For the Quest:": "Görev İçin:"
       },
       "questDetails": {
-        "Of the Quest:": "Görev Hakkında:"
+        "Of the Quest:": "Görevin:"
       },
       "rewardsSlider": {
         "Community Rewards": "Topluluk Ödülleri",
@@ -291,9 +313,9 @@
         "Reward: {{percentage}}%": "Ödül: {{percentage}}%"
       },
       "lockAmount": {
-        "Lock amount": "Kilit miktarı",
-        "This amount will be locked until the proof verification is complete.": "Bu miktar, kanıt doğrulaması tamamlanana kadar kilitli kalacaktır.",
-        "This amount will be locked in escrow until you complete your quest.": "Bu miktar, görevinizi tamamlayana kadar emanette kilitli kalacaktır."
+        "Lock amount": "Kilitlenecek Miktar",
+        "This amount will be locked until the proof verification is complete.": "Bu miktar kanıt doğrulaması tamamlanana kadar kilitli kalacak.",
+        "This amount will be locked in escrow until you complete your quest.": "Bu miktar göreviniz tamamlanana kadar emanette kilitli kalacak."
       }
     }
   },
@@ -308,7 +330,8 @@
     "Coach Directory": "Koç Dizini",
     "Register as Coach": "Koç Olarak Kaydol",
     "© {{year}} bettr.quest. All rights reserved.": "© {{year}} bettr.quest. Tüm hakları saklıdır.",
-    "Free Open Source Software": "Özgür Açık Kaynak Yazılım"
+    "Free Open Source Software": "Özgür Açık Kaynak Yazılım",
+    "Get Premium": "Premium Satın Al"
   },
   "quest-card": {
     "Saved": "Kaydedildi",
@@ -328,5 +351,37 @@
     "Reward amount": "Ödül Miktarı",
     "Verify": "Doğrula",
     "Contest": "İtiraz Et"
+  },
+  "premium": {
+    "Unlock exclusive benefits and save on fees with our premium access": "Premium erişimimizle özel avantajların kilidini açın ve ücretlerden tasarruf edin",
+    "Premium Benefits": "Premium Avantajlar",
+    "One-time payment of 10,000 sats for 30 days of access": "30 günlük erişim için tek seferlik 10,000 sats ödeme",
+    "Zero Platform Fees": "Sıfır Platform Ücreti",
+    "No fees for quest creation, AI services, or private coaching": "Görev oluşturma, AI hizmetleri veya özel koçluk için ücret yok",
+    "Exclusive Events": "Özel Etkinlikler",
+    "Access to special bettr.quest events and contests": "bettr.quest özel etkinliklerine ve yarışmalarına erişim",
+    "Prize Opportunities": "Ödül Fırsatları",
+    "Chance to win exclusive prizes in premium contests": "Premium yarışmalarda özel ödüller kazanma şansı",
+    "Get faster responses and dedicated support for your queries": "Sorgularınız için daha hızlı yanıtlar ve özel destek alın",
+    "Early Access": "Erken Erişim",
+    "Be the first to try new features and improvements": "Yeni özellikleri ve iyileştirmeleri ilk siz deneyin",
+    "Exclusive Badges": "Özel Rozetler",
+    "Show off your premium status with special profile badges": "Premium durumunuzu özel profil rozetleriyle sergileyin",
+    "sats for 30 days": "30 günlük sats",
+    "Get Premium Access": "Premium Erişim Al",
+    "Access valid for 30 days from purchase": "Erişim satın alma tarihinden itibaren 30 gün geçerlidir",
+    "Frequently Asked Questions": "Sıkça Sorulan Sorular",
+    "How long does premium access last?": "Premium erişim ne kadar sürer?",
+    "Premium access is valid for 30 days from the date of purchase. You can purchase again anytime to extend your access.": "Premium erişim satın alma tarihinden itibaren 30 gün geçerlidir. Erişiminizi uzatmak için istediğiniz zaman tekrar satın alabilirsiniz.",
+    "Can I purchase premium access again?": "Premium erişimi tekrar satın alabilir miyim?",
+    "Yes, you can purchase premium access at any time. Each purchase gives you 30 days of access from the date of purchase.": "Evet, premium erişimi istediğiniz zaman satın alabilirsiniz. Her satın alma size satın alma tarihinden itibaren 30 günlük erişim sağlar.",
+    "What payment methods are accepted?": "Hangi ödeme yöntemleri kabul ediliyor?",
+    "We accept Bitcoin payments through the Lightning Network. All payments are processed securely.": "Lightning Network üzerinden Bitcoin ödemelerini kabul ediyoruz. Tüm ödemeler güvenli bir şekilde işlenir.",
+    "Is the payment refundable?": "Ödeme iade edilebilir mi?",
+    "Yes, we offer a 30-day money-back guarantee if you're not satisfied with your premium access.": "Evet, premium erişiminizden memnun değilseniz 30 günlük para iade garantisi sunuyoruz.",
+    "Ready to Get Premium?": "Premium Almaya Hazır mısınız?",
+    "Join thousands of users who are already enjoying the benefits of bettr.quest Premium": "bettr.quest Premium'ın avantajlarından yararlanan binlerce kullanıcıya katılın",
+    "Get Premium Now": "Şimdi Premium Al",
+    "Back to Home": "Ana Sayfaya Dön"
   }
 }

@@ -34,6 +34,11 @@ const Footer = () => {
                 <FooterLink to="/my-quests">{t('My Quests')}</FooterLink>
                 <FooterLink to="/create">{t('Create Quest')}</FooterLink>
                 <FooterLink to="/timeline">{t('Timeline')}</FooterLink>
+                <FooterLink to="/premium">
+                  <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                    {t('Get Premium')}
+                  </span>
+                </FooterLink>
               </nav>
             </div>
           </div>

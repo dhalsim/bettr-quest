@@ -309,6 +309,14 @@ const NavLinks = ({ mobile = false, isLoggedIn = false }: { mobile?: boolean, is
     ...(isLoggedIn ? [{ to: "/timeline", label: t('header.Timeline') }] : []),
     { to: "/coach-directory", label: t('header.Coach Directory') },
     ...(isLoggedIn ? [{ to: "/register-coach", label: t('header.Register as Coach') }] : []),
+    { 
+      to: "/premium", 
+      label: (
+        <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+          {t('header.Get Premium')}
+        </span>
+      )
+    },
   ];
 
   return (

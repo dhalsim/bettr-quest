@@ -18,6 +18,7 @@ const featuredQuests = [
 const Index = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
   const coachSectionRef = useRef<HTMLDivElement>(null);
+  const premiumSectionRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation(null, { keyPrefix: "home" });
   const navigate = useNavigate();
   const { profile } = useNostrAuth();
@@ -25,6 +26,11 @@ const Index = () => {
   // Scroll to coach section functionality
   const scrollToCoachSection = () => {
     coachSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Scroll to premium section functionality
+  const scrollToPremiumSection = () => {
+    premiumSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
   
   // Intersection Observer for animated entry
@@ -87,19 +93,28 @@ const Index = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/explore">
-              <Button size="lg" rightIcon={<ArrowRight size={18} />}>
+              <Button size="lg" variant="primary" rightIcon={<ArrowRight size={18} />} className="hover:bg-primary/90 transition-colors">
                 {t('Explore Quests')}
               </Button>
             </Link>
             <Link to="/create">
-              <Button variant="outline" size="lg" rightIcon={<PlusCircle size={18} />}>
+              <Button size="lg" variant="outline" rightIcon={<PlusCircle size={18} />} className="hover:bg-primary hover:text-primary-foreground transition-colors">
                 {t('Create Your Own')}
               </Button>
             </Link>
-            <Button variant="secondary" size="lg" onClick={scrollToCoachSection}>
-              {t('Become a Coach')}
-              <ArrowRight size={18} className="ml-2" />
-            </Button>
+            <Link to="#" onClick={scrollToCoachSection}>
+              <Button size="lg" variant="outline" rightIcon={<ArrowRight size={18} />} className="hover:bg-primary hover:text-primary-foreground transition-colors">
+                {t('Become a Coach')}
+              </Button>
+            </Link>
+            <Link to="#" onClick={scrollToPremiumSection}>
+              <Button size="lg" variant="outline" className="hover:bg-gradient-to-r from-pink-500 via-purple-500 to-primary group">
+                <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent group-hover:text-black transition-colors">
+                  {t('View Premium Benefits')}
+                </span>
+                <ArrowRight size={18} className="ml-2 group-hover:text-black transition-colors" />
+              </Button>
+            </Link>
           </div>
           
           {/* Stats */}
@@ -222,29 +237,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-6 text-center">
-        <div className="max-w-4xl mx-auto glass rounded-3xl p-12">
-          <h2 className="text-3xl font-bold mb-6">{t('Ready to Become Better?')}</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/create">
-              <Button size="lg">
-                {t('Start Your First Quest')}
-                <ArrowRight size={18} className="ml-2" />
-              </Button>
-            </Link>
-            <Button variant="outline" size="lg" onClick={scrollToCoachSection}>
-              {t('Become a Coach')}
-              <ArrowRight size={18} className="ml-2" />
-            </Button>
-          </div>
-        </div>
-      </section>
-      
-      {/* Become a Coach Section - Moved below CTA */}
+      {/* Become a Coach Section */}
       <section ref={coachSectionRef} className="py-20 px-6 bg-gradient-to-b from-background to-primary/10">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center gap-12">
@@ -256,13 +249,17 @@ const Index = () => {
               <p className="text-muted-foreground mb-8">
                 {t('As a coach, you can guide, verify, and support others on their quests')}
               </p>
-              <div className="flex justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link to="/register-coach">
                   <Button size="lg">
                     {t('Register as Coach')}
                     <ArrowRight size={18} className="ml-2" />
                   </Button>
                 </Link>
+                <Button variant="outline" size="lg" onClick={scrollToPremiumSection}>
+                  {t('View Premium Benefits')}
+                  <ArrowRight size={18} className="ml-2" />
+                </Button>
               </div>
             </div>
             <div className="w-full lg:w-1/2 glass rounded-2xl p-8">
@@ -304,6 +301,100 @@ const Index = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Premium Subscription Section */}
+      <section ref={premiumSectionRef} className="py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">
+              bettr<span className="text-primary">.quest</span>{' '}
+              <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                Premium
+              </span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              {t('Unlock exclusive benefits and save on fees with our premium subscription')}
+            </p>
+          </div>
+          
+          <div className="glass rounded-3xl p-8 md:p-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Award size={24} className="text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">{t('Premium Benefits')}</h3>
+                    <p className="text-muted-foreground">{t('Only 10,000 sats per month')}</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="text-primary mt-1" size={20} />
+                    <div>
+                      <h4 className="font-semibold">{t('Zero Platform Fees')}</h4>
+                      <p className="text-muted-foreground text-sm">{t('No fees for quest creation, AI services, or private coaching')}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="text-primary mt-1" size={20} />
+                    <div>
+                      <h4 className="font-semibold">{t('Exclusive Events')}</h4>
+                      <p className="text-muted-foreground text-sm">{t('Access to special bettr.quest events and contests')}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="text-primary mt-1" size={20} />
+                    <div>
+                      <h4 className="font-semibold">{t('Prize Opportunities')}</h4>
+                      <p className="text-muted-foreground text-sm">{t('Chance to win exclusive prizes in premium contests')}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex flex-col items-center justify-center">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-primary mb-2">10,000</div>
+                  <div className="text-muted-foreground mb-6">{t('sats per month')}</div>
+                  <Link to="/premium">
+                    <Button size="lg" className="w-full max-w-xs">
+                      {t('Upgrade to Premium')}
+                      <ArrowRight size={18} className="ml-2" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-6 text-center">
+        <div className="max-w-4xl mx-auto glass rounded-3xl p-12">
+          <h2 className="text-3xl font-bold mb-6">{t('Ready to Become Better?')}</h2>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/create">
+              <Button size="lg">
+                {t('Start Your First Quest')}
+                <ArrowRight size={18} className="ml-2" />
+              </Button>
+            </Link>
+            <Button variant="outline" size="lg" onClick={scrollToCoachSection}>
+              {t('Become a Coach')}
+              <ArrowRight size={18} className="ml-2" />
+            </Button>
           </div>
         </div>
       </section>

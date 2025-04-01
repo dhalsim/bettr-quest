@@ -16,7 +16,8 @@
     "Notifications": "Notifications",
     "Profile": "Profile",
     "Log Out": "Log Out",
-    "Dark Mode": "Dark Mode"
+    "Dark Mode": "Dark Mode",
+    "Get Premium": "Get Premium"
   },
   "timeline": {
     "Your Timeline": "Your Timeline",
@@ -75,7 +76,20 @@
     "Earn Rewards": "Earn Rewards",
     "Get compensated in Bitcoin for your expertise. Earn higher rewards for private coaching sessions and detailed guidance.": "Get compensated in Bitcoin for your expertise. Earn higher rewards for private coaching sessions and detailed guidance.",
     "Quest Yourself to": "Quest Yourself to",
-    "Become Better": "Become Better"
+    "Become Better": "Become Better",
+    "Bettr.Quest Premium": "Bettr.Quest Premium",
+    "Unlock exclusive benefits and save on fees with our premium subscription": "Unlock exclusive benefits and save on fees with our premium subscription",
+    "Premium Benefits": "Premium Benefits",
+    "Only 10,000 sats per month": "Only 10,000 sats per month",
+    "Zero Platform Fees": "Zero Platform Fees",
+    "No fees for quest creation, AI services, or private coaching": "No fees for quest creation, AI services, or private coaching",
+    "Exclusive Events": "Exclusive Events",
+    "Access to special bettr.quest events and contests": "Access to special bettr.quest events and contests",
+    "Prize Opportunities": "Prize Opportunities",
+    "Chance to win exclusive prizes in premium contests": "Chance to win exclusive prizes in premium contests",
+    "sats per month": "sats per month",
+    "Upgrade to Premium": "Upgrade to Premium",
+    "View Premium Benefits": "View Premium Benefits"
   },
   "profile": {
     "Back to Explore": "Back to Explore",
@@ -242,11 +256,12 @@
     "at": "at"
   },
   "escrow": {
+    "Loading": "Loading",
     "Lock sats to publish your quest": "Lock sats to publish your quest",
-    "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements": "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements",
     "Lock sats to verify this proof": "Lock sats to verify this proof",
-    "Lock some sats to verify this proof. You'll earn rewards if your verification is correct": "Lock some sats to verify this proof. You'll earn rewards if your verification is correct",
     "Lock sats to contest this proof": "Lock sats to contest this proof",
+    "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements": "Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements",
+    "Lock some sats to verify this proof. You'll earn rewards if your verification is correct": "Lock some sats to verify this proof. You'll earn rewards if your verification is correct",
     "Lock some sats to contest this proof. You'll receive the full locked amount if your contest is validated": "Lock some sats to contest this proof. You'll receive the full locked amount if your contest is validated",
     "Loading...": "Loading...",
     "Lock Amount": "Lock Amount",
@@ -259,6 +274,13 @@
     "Your quest has been saved. You can lock sats later to publish it": "Your quest has been saved. You can lock sats later to publish it",
     "Your verification has been submitted and your sats have been locked": "Your verification has been submitted and your sats have been locked",
     "Your contest has been submitted and your sats have been locked": "Your contest has been submitted and your sats have been locked",
+    "Verification Submitted": "Verification Submitted",
+    "Verification Submitted Description": "Your verification has been submitted and your sats have been locked",
+    "Contest Submitted": "Contest Submitted",
+    "Contest Submitted Description": "Your contest has been submitted and your sats have been locked",
+    "Quest Created": "Quest Created",
+    "Quest Created Description": "Your quest has been created and your sats have been locked",
+    "Quest Saved": "Quest Saved",
     "summary": {
       "Summary": "Summary",
       "Your Lock Amount": "Your Lock Amount",
@@ -314,7 +336,8 @@
     "Coach Directory": "Coach Directory",
     "Register as Coach": "Register as Coach",
     "© {{year}} bettr.quest. All rights reserved.": "© {{year}} bettr.quest. All rights reserved.",
-    "Free Open Source Software": "Free Open Source Software"
+    "Free Open Source Software": "Free Open Source Software",
+    "Get Premium": "Get Premium"
   },
   "quest-card": {
     "Saved": "Saved",
@@ -334,5 +357,37 @@
     "Reward amount": "Reward amount",
     "Verify": "Verify",
     "Contest": "Contest"
+  },
+  "premium": {
+    "Unlock exclusive benefits and save on fees with our premium access": "Unlock exclusive benefits and save on fees with our premium access",
+    "Premium Benefits": "Premium Benefits",
+    "One-time payment of 10,000 sats for 30 days of access": "One-time payment of 10,000 sats for 30 days of access",
+    "Zero Platform Fees": "Zero Platform Fees",
+    "No fees for quest creation, AI services, or private coaching": "No fees for quest creation, AI services, or private coaching",
+    "Exclusive Events": "Exclusive Events",
+    "Access to special bettr.quest events and contests": "Access to special bettr.quest events and contests",
+    "Prize Opportunities": "Prize Opportunities",
+    "Chance to win exclusive prizes in premium contests": "Chance to win exclusive prizes in premium contests",
+    "Get faster responses and dedicated support for your queries": "Get faster responses and dedicated support for your queries",
+    "Early Access": "Early Access",
+    "Be the first to try new features and improvements": "Be the first to try new features and improvements",
+    "Exclusive Badges": "Exclusive Badges",
+    "Show off your premium status with special profile badges": "Show off your premium status with special profile badges",
+    "sats for 30 days": "sats for 30 days",
+    "Get Premium Access": "Get Premium Access",
+    "Access valid for 30 days from purchase": "Access valid for 30 days from purchase",
+    "Frequently Asked Questions": "Frequently Asked Questions",
+    "How long does premium access last?": "How long does premium access last?",
+    "Premium access is valid for 30 days from the date of purchase. You can purchase again anytime to extend your access.": "Premium access is valid for 30 days from the date of purchase. You can purchase again anytime to extend your access.",
+    "Can I purchase premium access again?": "Can I purchase premium access again?",
+    "Yes, you can purchase premium access at any time. Each purchase gives you 30 days of access from the date of purchase.": "Yes, you can purchase premium access at any time. Each purchase gives you 30 days of access from the date of purchase.",
+    "What payment methods are accepted?": "What payment methods are accepted?",
+    "We accept Bitcoin payments through the Lightning Network. All payments are processed securely.": "We accept Bitcoin payments through the Lightning Network. All payments are processed securely.",
+    "Is the payment refundable?": "Is the payment refundable?",
+    "Yes, we offer a 30-day money-back guarantee if you're not satisfied with your premium access.": "Yes, we offer a 30-day money-back guarantee if you're not satisfied with your premium access.",
+    "Ready to Get Premium?": "Ready to Get Premium?",
+    "Join thousands of users who are already enjoying the benefits of bettr.quest Premium": "Join thousands of users who are already enjoying the benefits of bettr.quest Premium",
+    "Get Premium Now": "Get Premium Now",
+    "Back to Home": "Back to Home"
   }
 }
