@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Search, XCircle, Plus } from 'lucide-react';
+import { Search, XCircle, Plus, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -21,6 +20,9 @@ interface TagsSelectorProps {
   maxVisibleTags?: number;
   allowCustomTags?: boolean;
   searchPlaceholder?: string;
+  totalItems?: number;
+  filteredItems?: number;
+  onReset?: () => void;
 }
 
 const TagsSelector: React.FC<TagsSelectorProps> = ({
@@ -32,12 +34,19 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
   onCustomTagAdd,
   maxVisibleTags = 5,
   allowCustomTags = true,
-  searchPlaceholder = "Search or add custom tags..."
+  searchPlaceholder,
+  totalItems,
+  filteredItems,
+  onReset
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const { t } = useTranslation(null, { keyPrefix: "tags" });
+
+  if (!searchPlaceholder) {
+    searchPlaceholder = t('Search or add custom tags...');
+  }
   
   // Sort tags by popularity (if provided) or alphabetically
   const sortedAvailableTags = Array.from(availableTags.values())
@@ -121,41 +130,55 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
         </div>
       )}
       
-      {/* Selected tags */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        {selectedTags.map(tag => (
-          <Badge 
-            key={tag} 
-            className="px-3 py-1 text-sm flex items-center gap-1"
+      {/* Selected tags and reset button */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-wrap gap-2">
+          {selectedTags.map(tag => (
+            <Badge 
+              key={tag} 
+              className="px-3 py-1 text-sm flex items-center gap-1"
+            >
+              {t(tag)}
+              <XCircle 
+                size={14} 
+                className="cursor-pointer ml-1" 
+                onClick={() => onTagToggle(tag)}
+              />
+            </Badge>
+          ))}
+        </div>
+        
+        {onReset && selectedTags.length > 0 && (
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={onReset}
+            className="text-xs flex items-center gap-1"
           >
-            {t(tag)}
-            <XCircle 
-              size={14} 
-              className="cursor-pointer ml-1" 
-              onClick={() => onTagToggle(tag)}
-            />
-          </Badge>
-        ))}
+            <RefreshCw size={14} />
+            {t('Reset Filter')}
+          </Button>
+        )}
       </div>
       
       {/* Quick-select tags with search */}
       <div>
         <div className="flex justify-between mb-2">
-          <p className="text-sm font-medium">Tags:</p>
+          <p className="text-sm font-medium">{t('Tags')}:</p>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="link" size="sm" className="h-auto p-0">
-                View all
+                {t('View all')}
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>All Available Tags</DialogTitle>
+                <DialogTitle>{t('All Available Tags')}</DialogTitle>
               </DialogHeader>
               <div className="relative mb-4">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
-                  placeholder="Search tags..."
+                  placeholder={t('Search tags...')}
                   className="pl-9"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -192,7 +215,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
                   
                   {filteredTags.length === 0 && showAddCustomTag && (
                     <p className="text-sm text-muted-foreground py-4 w-full text-center">
-                      No matching tags found
+                      {t('No matching tags found')}
                     </p>
                   )}
                 </div>
@@ -237,7 +260,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Add a custom tag</p>
+                    <p>{t('Add a custom tag')}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -258,7 +281,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
           ))}
           
           {visibleTags.length === 0 && (
-            <p className="text-sm text-muted-foreground">No matching tags found</p>
+            <p className="text-sm text-muted-foreground">{t('No matching tags found')}</p>
           )}
         </div>
       </div>

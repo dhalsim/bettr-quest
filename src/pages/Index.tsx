@@ -97,7 +97,7 @@ const Index = () => {
                 {t('Explore Quests')}
               </Button>
             </Link>
-            <Link to="/create">
+            <Link to="/create-quest">
               <Button size="lg" variant="outline" rightIcon={<PlusCircle size={18} />} className="hover:bg-primary hover:text-primary-foreground transition-colors">
                 {t('Create Your Own')}
               </Button>
@@ -385,7 +385,7 @@ const Index = () => {
             {t('Start your personal growth journey today by creating your first quest or exploring what others are achieving')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/create">
+            <Link to="/create-quest">
               <Button size="lg">
                 {t('Start Your First Quest')}
                 <ArrowRight size={18} className="ml-2" />

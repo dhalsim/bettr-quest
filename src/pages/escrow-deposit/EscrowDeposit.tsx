@@ -2,16 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
-import QuestDetailsCard from '@/components/escrow/QuestDetailsCard';
-import ProofDetailsCard from '@/components/escrow/ProofDetailsCard';
-import RewardInfo from '@/components/escrow/RewardInfo';
-import LockAmountSection from '@/components/escrow/LockAmountSection';
-import RewardsSlider from '@/components/escrow/RewardsSlider';
-import SummarySection from '@/components/escrow/SummarySection';
-import ConfirmButton from '@/components/escrow/ConfirmButton';
+import QuestEscrow from '@/components/quest/QuestEscrow';
 import { decodeLocationState, type LocationState } from './validation';
 import { validateLocationState } from '@/lib/validation-utils';
-import { Button } from '@/components/ui/button';
 
 const EscrowDeposit = () => {
   const location = useLocation();
@@ -19,7 +12,6 @@ const EscrowDeposit = () => {
   const { toast } = useToast();
   const { t } = useTranslation();
   const [state, setState] = useState<LocationState | null>(null);
-  const [rewardPercentage, setRewardPercentage] = useState(5);
   
   useEffect(() => {
     if (location.state) {
@@ -48,23 +40,6 @@ const EscrowDeposit = () => {
       </div>
     );
   }
-  
-  const isProofVerification = state.type === 'proof-verify' || state.type === 'proof-contest';
-  
-  // For proof verification/contest, user locks 10k sats
-  // For quest creation, user locks 20k sats
-  const userLockAmount = isProofVerification ? 10000 : 20000;
-  const platformFees = 1000;
-  
-  const calculateCommunityReward = () => {
-    return Math.floor(userLockAmount * (rewardPercentage / 100));
-  };
-  
-  const calculateTotalToLock = () => {
-    return isProofVerification 
-      ? userLockAmount + platformFees 
-      : userLockAmount + calculateCommunityReward() + platformFees;
-  };
   
   const getQuestLink = () => {
     return `/quest/${state.questId}`;
@@ -131,74 +106,21 @@ const EscrowDeposit = () => {
           </p>
         </div>
 
-        {isProofVerification && (
-          <RewardInfo type={state.type} />
-        )}
-
-        <div className="glass rounded-2xl p-8 border border-border/50">
-          {isProofVerification && (
-            <ProofDetailsCard 
-              title={state.proofTitle} 
-              description={state.proofDescription}
-              proofLink={`/quest/${state.questId}/proof/${state.proofId}`}
-              questTitle={state.questTitle}
-              questDescription={state.questDescription}
-              questLink={getQuestLink()}
-            />
-          )}
-          
-          {!isProofVerification && (
-            <QuestDetailsCard 
-              title={state.questTitle}
-              description={state.questDescription}
-              questLink={getQuestLink()}
-            />
-          )}
-          
-          <div className="space-y-8">
-            <LockAmountSection 
-              amount={userLockAmount} 
-              isProofVerification={isProofVerification} 
-            />
-            
-            {!isProofVerification && (
-              <RewardsSlider 
-                percentage={rewardPercentage}
-                onPercentageChange={setRewardPercentage}
-                rewardAmount={calculateCommunityReward()}
-              />
-            )}
-            
-            <SummarySection 
-              userLockAmount={userLockAmount}
-              communityReward={calculateCommunityReward()}
-              platformFees={platformFees}
-              totalToLock={calculateTotalToLock()}
-              isProofVerification={isProofVerification}
-              verificationType={state.type === 'proof-verify' ? 'verify' : 'contest'}
-              questRewardAmount={state.questRewardAmount}
-              questLockedAmount={state.questLockedAmount}
-            />
-            
-            <div className="flex flex-col gap-4">
-              <ConfirmButton 
-                type={state.type}
-                totalAmount={calculateTotalToLock()}
-                onConfirm={handleConfirmDeposit}
-              />
-              
-              {!isProofVerification && (
-                <Button
-                  variant="outline"
-                  onClick={handleSkipForNow}
-                  className="w-full"
-                >
-                  {t('escrow.Skip for now')}
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
+        <QuestEscrow
+          type={state.type}
+          questTitle={state.questTitle}
+          questDescription={state.questDescription}
+          questId={state.questId}
+          questRewardAmount={state.questRewardAmount}
+          questLockedAmount={state.questLockedAmount}
+          {...(state.type !== 'quest' ? {
+            proofTitle: state.proofTitle,
+            proofDescription: state.proofDescription,
+            proofId: state.proofId
+          } : {})}
+          onConfirm={handleConfirmDeposit}
+          onSkip={state.type === 'quest' ? handleSkipForNow : undefined}
+        />
       </div>
     </div>
   );

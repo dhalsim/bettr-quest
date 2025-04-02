@@ -2,7 +2,6 @@
 import React from 'react';
 import TagsSelector from '@/components/TagsSelector';
 import { mockTags } from '@/mock/data';
-import { TagItem } from '@/types/quest';
 
 interface TagsInputProps {
   tags: string[];

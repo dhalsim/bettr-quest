@@ -3,7 +3,10 @@
     "language": "Dil",
     "profile": "Profil",
     "settings": "Ayarlar",
-    "logout": "Çıkış Yap"
+    "logout": "Çıkış Yap",
+    "Back": "Geri",
+    "Next": "İleri",
+    "Quest Platform": "Görev Platformu"
   },
   "header": {
     "New Quest": "Yeni Görev",
@@ -43,7 +46,6 @@
     "Explore Quests": "Görevleri Keşfet",
     "Create Your Own": "Kendi Görevinizi Oluşturun",
     "Featured Quests": "Öne Çıkan Görevler",
-    "View all": "Tümünü gör",
     "How It Works": "Nasıl Çalışır",
     "Ready to Become Better?": "Daha İyi Olmaya Hazır mısın?",
     "Start Your First Quest": "İlk Görevinize Başlayın",
@@ -168,13 +170,40 @@
     "Donations": "Bağışlar",
     "Donation Information": "Bağış Bilgileri",
     "Total Donated": "Toplam Bağış",
-    "This amount will be awarded to the quest owner when the quest is successfully completed.": "Bu miktar, görev başarıyla tamamlandığında görev sahibine ödenecektir."
+    "This amount will be awarded to the quest owner when the quest is successfully completed.": "Bu miktar, görev başarıyla tamamlandığında görev sahibine ödenecektir.",
+    "Create Quest": "Görev Oluştur",
+    "Basic information": "Temel bilgiler",
+    "Choose who can verify": "Kim doğrulayabilir seçin",
+    "Set rewards and fees": "Ödülleri ve ücretleri ayarlayın",
+    "Choose Quest Visibility": "Görev Gizliliğini Seçin",
+    "Select whether your quest will be public or private": "Görevinizin herkese açık veya özel olup olmayacağını seçin",
+    "Anyone can view and verify your quest": "Herkes görevinizi görüntüleyebilir ve doğrulayabilir",
+    "Only you and selected verifiers can view your quest": "Sadece siz ve seçilen doğrulayıcılar görevinizi görüntüleyebilir",
+    "Anyone can verify": "Herkes doğrulayabilir",
+    "Find a coach (optional)": "Koç bul (isteğe bağlı)",
+    "Choose a coach": "Koç seç",
+    "Use AI verification": "AI doğrulama kullan",
+    "Who can verify your proof?": "Kim kanıtınızı doğrulayabilir?",
+    "Please select quest visibility": "Lütfen görev gizliliğini seçin",
+    "Please select who can verify your proof": "Lütfen kanıtınızı kimin doğrulayabileceğini seçin",
+    "Lock Escrow": "Escrow Kilitle",
+    "Review and confirm your escrow details": "Escrow detaylarınızı gözden geçirin ve onaylayın",
+    "Escrow Summary": "Escrow Özeti",
+    "Review the amounts before locking": "Kilitlemeden önce tutarları gözden geçirin",
+    "Lock Amount": "Kilit Tutarı",
+    "Platform Fees": "Platform Ücretleri",
+    "Total to Lock": "Kilitlenecek Toplam",
+    "Lock & Publish": "Kilitle ve Yayınla",
+    "Creating Quest...": "Görev Oluşturuluyor...",
+    "Back": "Geri",
+    "Next": "İleri",
+    "Coach Fee": "Koç Ücreti",
+    "AI Verification Fee": "AI Doğrulama Ücreti"
   },
   "explore": {
     "Explore Quests": "Görevleri Keşfet",
     "Discover quests created by users and follow their journeys": "Kullanıcıların oluşturduğu görevleri keşfedin ve yolculuklarını takip edin",
-    "Search quests...": "Görev ara...",
-    "Search by typing": "Yazarak ara",
+    "Search quests...": "Görevleri ara...",
     "Search": "Ara",
     "No quests found": "Görev bulunamadı",
     "Try adjusting your search or category filters": "Arama veya kategori filtrelerinizi ayarlamayı deneyin"
@@ -216,7 +245,22 @@
     "Entrepreneurship": "Girişimcilik",
     "Planning": "Planlama",
     "Mindfulness": "Bilinçli Farkındalık",
-    "Mental Health": "Ruh Sağlığı"
+    "Mental Health": "Ruh Sağlığı",
+
+    "Tags": "Etiketler",
+    "View all": "Tümünü gör",
+    "title": "Etiketler",
+    "description": "Görevinizi bulmalarına yardımcı olmak için etiketler ekleyin",
+    "placeholder": "Bir etiket yazın ve enter'a basın",
+    "popular": "Popüler etiketler",
+    "selected": "Seçili etiketler",
+    "no-tags": "Etiket bulunamadı",
+    "Reset Filters": "Filtreleri Sıfırla",
+    "Reset Filter": "Filtreyi Sıfırla",
+    "Show Filters": "Filtreleri Göster",
+    "Hide Filters": "Filtreleri Gizle",
+    "All Available Tags": "Tüm Kullanılabilir Etiketler",
+    "Search tags...": "Etiketleri Ara..."
   },
   "upload": {
     "Add Media (Optional)": "Medya Ekle (İsteğe Bağlı)",
@@ -383,5 +427,118 @@
     "Join thousands of users who are already enjoying the benefits of bettr.quest Premium": "bettr.quest Premium'ın avantajlarından yararlanan binlerce kullanıcıya katılın",
     "Get Premium Now": "Şimdi Premium Al",
     "Back to Home": "Ana Sayfaya Dön"
+  },
+  "create-quest": {
+    "title": "Görev Oluştur",
+    "copy-title": "Görev Kopyası Oluşturuluyor",
+    "new-title": "Kendim için Görev Oluşturuyorum",
+    "back-to-explore": "Keşfet'e Dön",
+    "new-quest": "Yeni Görev",
+    "steps": {
+      "basic": {
+        "title": "Temel bilgiler",
+        "description": "Görev detaylarını girin"
+      },
+      "visibility": {
+        "title": "Gizlilik",
+        "description": "Kim doğrulayabilir seçin"
+      },
+      "escrow": {
+        "title": "Escrow Kilitle",
+        "description": "Ödülleri ve ücretleri ayarlayın"
+      }
+    },
+    "form": {
+      "title": "Görev Başlığı",
+      "title-placeholder": "Görevinize bir başlık verin",
+      "description": "Görev Açıklaması",
+      "description-placeholder": "Görevinizi detaylı bir şekilde açıklayın. Ne başarmak istiyorsunuz?",
+      "due-date": "Son Tarih",
+      "due-date-placeholder": "Son tarih seçin",
+      "validation": {
+        "due-date": "Lütfen göreviniz için bir son tarih belirleyin"
+      }
+    },
+    "visibility": {
+      "title": "Görev Gizliliğini Seçin",
+      "description": "Görevinizin herkese açık veya özel olup olmayacağını seçin",
+      "public": {
+        "title": "Herkese Açık",
+        "description": "Herkes görevinizi görüntüleyebilir ve doğrulayabilir"
+      },
+      "private": {
+        "title": "Özel",
+        "description": "Sadece siz ve seçilen doğrulayıcılar görevinizi görüntüleyebilir"
+      },
+      "verification": {
+        "title": "Kim kanıtınızı doğrulayabilir?",
+        "anyone": "Herkes doğrulayabilir",
+        "coach": {
+          "title": "Koç bul",
+          "select": "Koç seç"
+        },
+        "ai": "AI doğrulama kullan"
+      },
+      "validation": {
+        "visibility": "Lütfen görev gizliliğini seçin",
+        "verifier": "Lütfen kanıtınızı kimin doğrulayabileceğini seçin"
+      }
+    },
+    "escrow": {
+      "title": "Escrow Kilitle",
+      "description": "Escrow detaylarınızı gözden geçirin ve onaylayın",
+      "summary": {
+        "title": "Escrow Özeti",
+        "description": "Kilitlemeden önce tutarları gözden geçirin",
+        "lock-amount": "Kilit Tutarı",
+        "platform-fees": "Platform Ücretleri",
+        "coach-fee": "Koç Ücreti",
+        "ai-fee": "AI Doğrulama Ücreti",
+        "total": "Kilitlenecek Toplam",
+        "button": "Kilitle ve Yayınla"
+      },
+      "creating": "Görev Oluşturuluyor..."
+    },
+    "navigation": {
+      "back": "Geri",
+      "next": "İleri"
+    }
+  },
+  "coach-directory": {
+    "Title": "Koç Dizini",
+    "Description": "Bir koç seçin ve görevinizi doğrulayın",
+    "Register as Coach": "Koç Olarak Kaydol",
+    "search-placeholder": "Koç ara...",
+    "reviews": "yorumlar",
+    "followers": "takipçiler",
+    "hour": "saat",
+    "showing": "Gösteriliyor",
+    "of": "/",
+    "coaches": "koç",
+    "filters": {
+      "Showing {{count}} of {{total}} coaches": "{{count}} / {{total}} koç",
+      "Search placeholder": "Koç ara...",
+      "Title": "Filtreler",
+      "Reset": "Sıfırla",
+      "Show": "Göster",
+      "Hide": "Gizle",
+      "Specializations": "Özellikler",
+      "Search by typing": "Yazıyla Ara",
+      "Search by selecting": "Seçerek Ara",
+      "Pricing option": "Fiyat Seçeneği",
+      "Rate range": "Fiyat Aralığı"
+    }
+  },
+  "toast": {
+    "quest-title-required": "Lütfen bir görev başlığı girin",
+    "quest-description-required": "Lütfen bir görev açıklaması girin",
+    "quest-due-date-required": "Lütfen bir son tarih seçin",
+    "quest-visibility-required": "Lütfen bir görünürlük seçeneği seçin",
+    "wallet-connection-required": "Devam etmek için lütfen cüzdanınızı bağlayın",
+    "quest-creation-success": "Görev başarıyla oluşturuldu!",
+    "quest-creation-error": "Görev oluşturulamadı. Lütfen tekrar deneyin.",
+    "coach-selection-success": "Koç başarıyla seçildi!",
+    "coach-selection-error": "Koç seçilemedi. Lütfen tekrar deneyin.",
+    "Your quest is created as a draft.": "Görev taslak olarak kaydedildi."
   }
 }

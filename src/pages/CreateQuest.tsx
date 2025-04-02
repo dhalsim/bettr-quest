@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { ArrowLeft, Loader2, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Input } from "@/components/ui/input";
@@ -9,15 +9,19 @@ import QuestTemplateSelector from '@/components/quest/QuestTemplateSelector';
 import TagsInput from '@/components/quest/TagsInput';
 import MediaUpload from '@/components/quest/MediaUpload';
 import DateSelector from '@/components/quest/DateSelector';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import QuestCreationSteps from '@/components/quest/QuestCreationSteps';
+import VisibilitySelector from '@/components/quest/VisibilitySelector';
+import QuestEscrow from '@/components/quest/QuestEscrow';
 import { QuestLocationState } from './escrow-deposit/validation';
-import { questTemplates } from '@/mock/data';
+import { mockQuests, questTemplates } from '@/mock/data';
+import { useTranslation } from 'react-i18next';
+import CoachDirectory from '@/components/quest/CoachDirectory';
+import { mockCoaches } from '@/mock/data';
 
 const CreateQuest = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   
   // Parse query parameters for prefilled data
   const queryParams = new URLSearchParams(location.search);
@@ -26,17 +30,16 @@ const CreateQuest = () => {
   const prefilledTags = queryParams.get('tags') || '';
   const prefilledImageUrl = queryParams.get('imageUrl') || '';
   
+  // Form states
   const [title, setTitle] = useState(prefilledTitle);
   const [description, setDescription] = useState(prefilledDescription);
-  const [visibility, setVisibility] = useState('public');
-  const [proofMethod, setProofMethod] = useState('');
+  const [visibility, setVisibility] = useState('');
+  const [proofChallenger, setProofChallenger] = useState('');
   const [tags, setTags] = useState<string[]>(prefilledTags ? prefilledTags.split(',') : []);
   const [dueDate, setDueDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [proofChallenger, setProofChallenger] = useState('anyone'); // Default to 'anyone' for public
-  const [validationError, setValidationError] = useState<string | null>(null);
   
-  // Media states (will be updated by MediaUpload component)
+  // Media states
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
     video: File | null,
@@ -48,64 +51,53 @@ const CreateQuest = () => {
     audio: null,
     recordedVideo: null
   });
+
+  // Escrow states
+  const [lockAmount, setLockAmount] = useState(0);
+  const [platformFee] = useState(1000); // Example fee
+  const [isPremium] = useState(false); // This should come from user context
   
-  // Update page title to reflect creating new or copied quest
+  // Step navigation
+  const [currentStep, setCurrentStep] = useState(1);
+  const steps = [
+    {
+      title: t('create-quest.steps.basic.title'),
+      description: t('create-quest.steps.basic.description'),
+      isCompleted: currentStep > 1,
+      isActive: currentStep === 1
+    },
+    {
+      title: t('create-quest.steps.visibility.title'),
+      description: t('create-quest.steps.visibility.description'),
+      isCompleted: currentStep > 2,
+      isActive: currentStep === 2
+    },
+    {
+      title: t('create-quest.steps.escrow.title'),
+      description: t('create-quest.steps.escrow.description'),
+      isCompleted: currentStep > 3,
+      isActive: currentStep === 3
+    }
+  ];
+  
+  // Scroll to top when step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep]);
+  
+  // Update page title
   useEffect(() => {
     if (prefilledTitle) {
-      document.title = `New Quest (Copied) | Quest Platform`;
+      document.title = `${t('create-quest.Creating a Copy of Quest')}`;
     } else {
-      document.title = `Create New Quest | Quest Platform`;
+      document.title = `${t('create-quest.Creating a Quest for myself')}`;
     }
-    
-    return () => {
-      document.title = 'Quest Platform';
-    };
-  }, [prefilledTitle]);
-  
-  // Update proof challenger when visibility changes
-  useEffect(() => {
-    if (visibility === 'public') {
-      setProofChallenger('anyone');
-      setValidationError(null);
-    } else {
-      setProofChallenger('no-one');
-      setValidationError(null);
-    }
-  }, [visibility]);
-  
-  // Handle proof challenger change
-  const handleProofChallengerChange = (value: string) => {
-    // Validate selection based on visibility
-    if (visibility === 'public' && (value === 'no-one' || value === 'ai')) {
-      setValidationError("This option is only available for private quests");
-      // Reset to default for public after a short delay
-      setTimeout(() => {
-        setProofChallenger('anyone');
-        setValidationError(null);
-      }, 3000);
-      return;
-    }
-    
-    if (visibility === 'private' && value === 'anyone') {
-      setValidationError("This option is only available for public quests");
-      // Reset to default for private after a short delay
-      setTimeout(() => {
-        setProofChallenger('no-one');
-        setValidationError(null);
-      }, 3000);
-      return;
-    }
-    
-    // Valid selection
-    setProofChallenger(value);
-    setValidationError(null);
-  };
+  }, [prefilledTitle, t]);
   
   // Apply template
   const applyTemplate = (templateId: string) => {
     const template = questTemplates.find(t => t.id === templateId);
     if (template) {
-      // Adjust template names to be more quest-like (one-time achievements)
       let adjustedName = template.name;
       if (adjustedName.includes('30 Days')) {
         adjustedName = adjustedName.replace('30 Days', 'Today');
@@ -117,45 +109,82 @@ const CreateQuest = () => {
     }
   };
   
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Form validation
-    if (!title.trim()) {
-      toast.error("Please enter a quest title");
-      return;
+  // Handle step navigation
+  const handleNext = (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
     }
-    
-    if (!description.trim()) {
-      toast.error("Please enter a quest description");
-      return;
-    }
-    
-    if (!dueDate) {
-      toast.error("Please set a due date for your quest");
-      return;
-    }
-    
-    setIsSubmitting(true);
 
-    const createLocationState = (type: 'quest'): QuestLocationState => ({
-      type,
-      questTitle: title,
-      questDescription: description,
-      questId: 'random-id',
-      questRewardAmount: 0, // This will be set by the user in the escrow deposit page
-      questLockedAmount: 0  // This will be set by the user in the escrow deposit page
-    });
+    if (currentStep === 1) {
+      if (!title.trim()) {
+        toast.error(t('create-quest.toast.Please enter a quest title'));
+        return;
+      }
+      if (!description.trim()) {
+        toast.error(t('create-quest.toast.Please enter a quest description'));
+        return;
+      }
+      if (!dueDate) {
+        toast.error(t('create-quest.toast.Please enter a quest due date'));
+        return;
+      }
+
+      toast.success(t('create-quest.toast.Your quest is saved as a draft.'));
+    } else if (currentStep === 2) {
+      if (!visibility) {
+        toast.error(t('create-quest.toast.Please select quest visibility'));
+        return;
+      }
+      if (!proofChallenger) {
+        toast.error(t('create-quest.toast.Please select who can verify your proof'));
+        return;
+      }
+      if (proofChallenger === 'coach' && !selectedCoachId) {
+        toast.error(t('create-quest.toast.Please select a coach'));
+        return;
+      }
+    }
     
-    // Navigate to escrow deposit page with quest details
+    setCurrentStep(prev => Math.min(prev + 1, 3));
+  };
+
+  const handleBack = () => {
+    setCurrentStep(prev => Math.max(prev - 1, 1));
+  };
+
+  // Handle form submission
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Quest created! Please set up the escrow deposit.");
-      navigate('/escrow-deposit', {
-        state: createLocationState('quest')
-      });
-    }, 1500);
+      toast.success(t('create-quest.toast.Quest created! Please set up the escrow deposit.'));
+
+      // TODO: Add quest ID
+      const questIndex = Math.floor(Math.random() * Object.keys(mockQuests).length);
+      const questId = Object.keys(mockQuests)[questIndex];
+      
+      navigate(`/quest/${questId}`);
+    }, 200);
+  };
+
+  const [selectedCoachId, setSelectedCoachId] = useState<string | undefined>();
+
+  const handleCoachSelect = (coachId: string) => {
+    // If clicking the same coach, deselect it
+    if (selectedCoachId === coachId) {
+      setSelectedCoachId(undefined);
+      return;
+    }
+
+    setSelectedCoachId(coachId);
+    // You can also store additional coach information if needed
+    const selectedCoach = mockCoaches.find(coach => coach.id === coachId);
+    
+    if (selectedCoach) {
+      // Handle the selected coach data
+      console.log('Selected coach:', selectedCoach);
+    }
   };
   
   return (
@@ -163,145 +192,138 @@ const CreateQuest = () => {
       <div className="max-w-3xl mx-auto">
         <Link to="/explore" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-6">
           <ArrowLeft size={16} className="mr-2" />
-          Back to Explore
+          {t('create-quest.Back to Explore')}
         </Link>
         
         <div className="glass rounded-2xl overflow-hidden">
           <div className="p-8">
-            <h1 className="text-2xl font-bold mb-8">
-              {prefilledTitle ? "Creating a Copy of Quest" : "Creating a Quest for myself"}
+            <h1 className="text-2xl font-bold mb-8 text-center">
+              {
+                title 
+                  ? t('create-quest.New Quest') + ': ' + title 
+                  : prefilledTitle 
+                    ? t('create-quest.Creating a Copy of Quest') 
+                    : t('create-quest.Creating a Quest for myself')
+              }
             </h1>
+
+            <QuestCreationSteps steps={steps} />
             
-            <form onSubmit={handleSubmit}>
-              {/* Template Selection - only show if not from copied quest */}
-              {!prefilledTitle && <QuestTemplateSelector onSelectTemplate={applyTemplate} />}
-              
-              {/* Quest Title */}
-              <div className="mb-6">
-                <label htmlFor="title" className="block text-sm font-medium mb-2">
-                  Title
-                </label>
-                <Input
-                  type="text"
-                  id="title"
-                  placeholder="What is your quest?"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
-              </div>
-              
-              {/* Quest Description */}
-              <div className="mb-6">
-                <label htmlFor="description" className="block text-sm font-medium mb-2">
-                  Description
-                </label>
-                <Textarea
-                  id="description"
-                  rows={5}
-                  placeholder="Describe your quest in detail. What do you want to accomplish?"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                />
-              </div>
-              
-              {/* Visibility */}
-              <div className="mb-6">
-                <div className="block text-sm font-medium mb-2">Visibility</div>
-                <RadioGroup 
-                  value={visibility} 
-                  onValueChange={setVisibility}
-                  className="flex space-x-4"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="public" id="public" />
-                    <Label htmlFor="public">Public</Label>
+            <div>
+              {currentStep === 1 && (
+                <div className="space-y-6">
+                  {/* Template Selection - only show if not from copied quest */}
+                  {!prefilledTitle && <QuestTemplateSelector onSelectTemplate={applyTemplate} />}
+                  
+                  {/* Quest Title */}
+                  <div>
+                    <label htmlFor="title" className="block text-sm font-medium mb-2">
+                      {t('create-quest.form.title')}
+                    </label>
+                    <Input
+                      type="text"
+                      id="title"
+                      placeholder={t('create-quest.form.title-placeholder')}
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                    />
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="private" id="private" />
-                    <Label htmlFor="private">Private</Label>
+                  
+                  {/* Quest Description */}
+                  <div>
+                    <label htmlFor="description" className="block text-sm font-medium mb-2">
+                      {t('create-quest.form.description')}
+                    </label>
+                    <Textarea
+                      id="description"
+                      rows={5}
+                      placeholder={t('create-quest.form.description-placeholder')}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      required
+                    />
                   </div>
-                </RadioGroup>
-              </div>
-              
-              {/* How to prove? - Show for both public and private quests */}
-              <div className="mb-6">
-                <label htmlFor="proofMethod" className="block text-sm font-medium mb-2">
-                  How will you prove completion?
-                </label>
-                <Textarea
-                  id="proofMethod"
-                  rows={3}
-                  placeholder="I will provide a video showing my completed work"
-                  value={proofMethod}
-                  onChange={(e) => setProofMethod(e.target.value)}
+                  
+                  {/* Tags */}
+                  <TagsInput tags={tags} setTags={setTags} />
+                  
+                  {/* Due Date */}
+                  <DateSelector dueDate={dueDate} setDueDate={setDueDate} />
+                  
+                  {/* Media Section */}
+                  <MediaUpload 
+                    onMediaChange={files => setMediaFiles(files)}
+                    previewUrl={prefilledImageUrl}
+                  />
+                </div>
+              )}
+
+              {currentStep === 2 && (
+                <div className="space-y-8">
+                  <VisibilitySelector
+                    visibility={visibility}
+                    onVisibilityChange={setVisibility}
+                    proofChallenger={proofChallenger}
+                    onProofChallengerChange={setProofChallenger}
+                  />
+                  
+                  {proofChallenger === 'coach' && (
+                    <CoachDirectory
+                      onSelectCoach={handleCoachSelect}
+                      selectedCoachId={selectedCoachId}
+                      questTags={tags}
+                    />
+                  )}
+                </div>
+              )}
+
+              {currentStep === 3 && (
+                <QuestEscrow
+                  type="quest"
+                  questTitle={title}
+                  questDescription={description}
+                  questId="random-id"
+                  questRewardAmount={lockAmount}
+                  questLockedAmount={lockAmount + (isPremium ? 0 : platformFee)}
+                  onConfirm={handleSubmit}
                 />
-              </div>
+              )}
               
-              {/* Tags */}
-              <TagsInput tags={tags} setTags={setTags} />
-              
-              {/* Due Date */}
-              <DateSelector dueDate={dueDate} setDueDate={setDueDate} />
-              
-              {/* Who can challenge a proof */}
-              <div className="mb-6">
-                <div className="block text-sm font-medium mb-2">Who can review your proof</div>
-                
-                {validationError && (
-                  <Alert variant="destructive" className="mb-3">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>{validationError}</AlertDescription>
-                  </Alert>
+              {/* Navigation Buttons */}
+              <div className="flex justify-between mt-8">
+                {currentStep === 1 && (
+                  <Button
+                    type="button"
+                    onClick={handleNext}
+                    className="ml-auto"
+                  >
+                    {t('create-quest.navigation.next')}
+                  </Button>
                 )}
-                
-                <RadioGroup 
-                  value={proofChallenger} 
-                  onValueChange={handleProofChallengerChange}
-                  className="grid grid-cols-1 gap-2"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="no-one" id="no-one" />
-                    <Label htmlFor="no-one">No one (only private)</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="anyone" id="anyone" />
-                    <Label htmlFor="anyone">Anyone (only public)</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="coach" id="coach" />
-                    <Label htmlFor="coach">Find a coach</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="ai" id="ai" />
-                    <Label htmlFor="ai">AI (only private)</Label>
-                  </div>
-                </RadioGroup>
+
+                {currentStep === 2 && (
+                  <>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleBack}
+                    >
+                      {t('create-quest.navigation.back')}
+                    </Button>
+
+                    <Button
+                      type="button"
+                      onClick={handleNext}
+                      className="ml-auto"
+                      disabled={visibility === '' || proofChallenger === '' || (proofChallenger === 'coach' && !selectedCoachId)}
+                    >
+                      {t('create-quest.navigation.next')}
+                    </Button>
+                  </>
+                )}
               </div>
-              
-              {/* Media Section */}
-              <MediaUpload 
-                onMediaChange={files => setMediaFiles(files)}
-                previewUrl={prefilledImageUrl}
-              />
-              
-              {/* Submit Button */}
-              <div className="flex justify-start">
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="px-8"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creating Quest...
-                    </>
-                  ) : 'Save & Preview'}
-                </Button>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>

@@ -140,7 +140,7 @@ export const mockQuests: { [key: string]: DraftQuest | LockedQuest } = {
     savedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day from now
     specializations: [mockTags.get("Learning")],
-    status: 'saved',
+    status: 'draft',
     imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format',
     visibility: 'public',
   },
@@ -191,7 +191,7 @@ export const mockSavedQuests: { [key: string]: DraftQuest } = {
     createdAt: '2023-04-20T09:00:00Z',
     dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
     specializations: [mockTags.get("Music")],
-    status: 'saved',
+    status: 'draft',
     imageUrl: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=600&auto=format',
     visibility: 'public',
     savedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
@@ -549,5 +549,64 @@ export const questTemplates: QuestTemplate[] = [
     name: 'Daily meditation practice', 
     description: 'I\'m building a daily meditation habit. I\'ll start with just 5 minutes per day and work my way up to longer sessions.',
     suggestedTags: ['Mindfulness', 'Wellness', 'Mental Health']
+  }
+];
+
+export const mockCoaches = [
+  {
+    id: 'coach1',
+    name: 'Alex Thompson',
+    username: 'coach_alex',
+    profileImage: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80',
+    bio: 'Certified fitness coach with 8+ years experience. Specializing in strength training and habit formation.',
+    specializations: ['Fitness', 'Nutrition', 'Wellness'],
+    pricingOption: 'hourly',
+    rateAmount: 25000,
+    rating: 4.9,
+    reviewCount: 127,
+    followers: 1234,
+    verified: true
+  },
+  {
+    id: 'coach2',
+    name: 'Maya Williams',
+    username: 'mindful_maya',
+    profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+    bio: 'Mindfulness expert and meditation teacher. I help people reduce stress and build healthy mental habits.',
+    specializations: ['Wellness', 'Meditation', 'Productivity'],
+    pricingOption: 'one-time',
+    rateAmount: 50000,
+    rating: 4.8,
+    reviewCount: 93,
+    followers: 856,
+    verified: true
+  },
+  {
+    id: 'coach3',
+    name: 'Daniel Chen',
+    username: 'tech_daniel',
+    profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+    bio: 'Software engineer and coding mentor. Specialized in helping people build coding habits and learn new programming skills.',
+    specializations: ['Coding', 'Technology', 'Education'],
+    pricingOption: 'hourly',
+    rateAmount: 35000,
+    rating: 4.7,
+    reviewCount: 81,
+    followers: 654,
+    verified: true
+  },
+  {
+    id: 'coach4',
+    name: 'Sarah Johnson',
+    username: 'finance_sarah',
+    profileImage: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1361&q=80',
+    bio: 'Financial advisor helping people develop better money habits and reach their financial goals.',
+    specializations: ['Finance', 'Productivity', 'Education'],
+    pricingOption: 'one-time',
+    rateAmount: 45000,
+    rating: 4.6,
+    reviewCount: 62,
+    followers: 432,
+    verified: true
   }
 ];

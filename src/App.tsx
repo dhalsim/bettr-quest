@@ -37,7 +37,7 @@ const App = () => (
                 <Route path="/explore" element={<Explore />} />
                 <Route path="/timeline" element={<Timeline />} />
                 <Route path="/quest/:id" element={<QuestPage />} />
-                <Route path="/create" element={<CreateQuest />} />
+                <Route path="/create-quest" element={<CreateQuest />} />
                 <Route path="/escrow-deposit" element={<EscrowDeposit />} />
                 <Route path="/my-quests" element={<MyQuest />} />
                 <Route path="/connect" element={<ConnectNostr />} />

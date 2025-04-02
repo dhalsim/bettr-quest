@@ -3,7 +3,10 @@
     "language": "Idioma",
     "profile": "Perfil",
     "settings": "Configuración",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "Back": "Atrás",
+    "Next": "Siguiente",
+    "Quest Platform": "Plataforma de Misiones"
   },
   "header": {
     "New Quest": "Nueva Misión",
@@ -43,7 +46,6 @@
     "Explore Quests": "Explorar Quests",
     "Create Your Own": "Crear Propio",
     "Featured Quests": "Quests Destacados",
-    "View all": "Ver todo",
     "How It Works": "Cómo Funciona",
     "Ready to Become Better?": "¿Listo para Mejorar?",
     "Start Your First Quest": "Inicia tu Primera Quest",
@@ -174,7 +176,6 @@
     "Explore Quests": "Explorar Quests",
     "Discover quests created by users and follow their journeys": "Descubre quests creados por usuarios y sigue sus viajes",
     "Search quests...": "Buscar quests...",
-    "Search by typing": "Buscar escribiendo",
     "Search": "Buscar",
     "No quests found": "No se encontraron quests",
     "Try adjusting your search or category filters": "Intenta ajustar tu búsqueda o filtros de categoría"
@@ -216,7 +217,22 @@
     "Entrepreneurship": "Emprendimiento",
     "Planning": "Planificación",
     "Mindfulness": "Atención Plena",
-    "Mental Health": "Salud Mental"
+    "Mental Health": "Salud Mental",
+
+    "Tags": "Etiquetas",
+    "View all": "Ver todas",
+    "title": "Etiquetas",
+    "description": "Añade etiquetas para ayudar a otros a encontrar tu misión",
+    "placeholder": "Escribe una etiqueta y presiona enter",
+    "popular": "Etiquetas populares",
+    "selected": "Etiquetas seleccionadas",
+    "no-tags": "No se encontraron etiquetas",
+    "Reset Filters": "Restablecer Filtros",
+    "Reset Filter": "Restablecer Filtro",
+    "Show Filters": "Mostrar Filtros",
+    "Hide Filters": "Ocultar Filtros",
+    "All Available Tags": "Todas las Etiquetas Disponibles",
+    "Search tags...": "Buscar etiquetas..."
   },
   "upload": {
     "Add Media (Optional)": "Agregar Medios (Opcional)",
@@ -383,5 +399,122 @@
     "Join thousands of users who are already enjoying the benefits of bettr.quest Premium": "Únete a miles de usuarios que ya están disfrutando de los beneficios de bettr.quest Premium",
     "Get Premium Now": "Obtener Premium Ahora",
     "Back to Home": "Volver al Inicio"
+  },
+  "create-quest": {
+    "Creating a Copy of Quest": "Creando una copia de la misión",
+    "Creating a Quest for myself": "Creando una misión para mí",
+    "Back to Explore": "Volver a Explorar",
+    "New Quest": "Nueva Misión",
+    "toast": {
+      "Your quest is saved as a draft.": "Tu misión ha sido guardada como borrador.",
+      "Please enter a quest title": "Por favor, introduce un título para la misión",
+      "Please enter a quest description": "Por favor, introduce una descripción para la misión",
+      "Please enter a quest due date": "Por favor, introduce una fecha límite para la misión",
+      "Please select quest visibility": "Por favor, selecciona la visibilidad de la misión",
+      "Please select who can verify your proof": "Por favor, selecciona quién puede verificar tu prueba",
+      "Please select a coach": "Por favor, selecciona un coach"
+    },
+    "steps": {
+      "basic": {
+        "title": "Información básica",
+        "description": "Ingresa los detalles de la misión"
+      },
+      "visibility": {
+        "title": "Visibilidad",
+        "description": "Elige quién puede verificar"
+      },
+      "escrow": {
+        "title": "Bloquear Depósito",
+        "description": "Establece recompensas y tarifas"
+      }
+    },
+    "form": {
+      "title": "Título",
+      "title-placeholder": "¿Cuál es tu misión?",
+      "description": "Descripción",
+      "description-placeholder": "Describe tu misión en detalle. ¿Qué quieres lograr?",
+      "due-date": "Fecha límite",
+      "due-date-placeholder": "Selecciona fecha límite",
+      "validation": {
+        "due-date": "Por favor, establece una fecha límite para tu misión"
+      }
+    },
+    "visibility": {
+      "title": "Elige la Visibilidad de tu Misión",
+      "description": "Selecciona si tu misión será pública o privada",
+      "public": {
+        "title": "Pública",
+        "description": "Cualquiera puede ver y verificar tu misión"
+      },
+      "private": {
+        "title": "Privada",
+        "description": "Solo tú y los verificadores seleccionados pueden ver tu misión"
+      },
+      "verification": {
+        "title": "¿Quién puede verificar tu prueba?",
+        "anyone": "Cualquiera puede verificar",
+        "coach": {
+          "title": "Encuentra un coach",
+          "select": "Elige un coach"
+        },
+        "ai": "Usar verificación de IA"
+      },
+      "validation": {
+        "visibility": "Por favor, selecciona la visibilidad de la misión",
+        "verifier": "Por favor, selecciona quién puede verificar tu prueba"
+      }
+    },
+    "escrow": {
+      "title": "Bloquear Depósito",
+      "description": "Revisa y confirma los detalles de tu depósito",
+      "summary": {
+        "title": "Resumen del Depósito",
+        "description": "Revisa los montos antes de bloquear",
+        "lock-amount": "Monto a Bloquear",
+        "platform-fees": "Tarifas de Plataforma",
+        "coach-fee": "Tarifa de Coach",
+        "ai-fee": "Tarifa de Verificación de IA",
+        "total": "Total a Bloquear",
+        "button": "Bloquear y Publicar"
+      },
+      "creating": "Creando Misión..."
+    },
+    "navigation": {
+      "back": "Atrás",
+      "next": "Siguiente"
+    }
+  },
+  "coach-directory": {
+    "Title": "Directorio de Coaches",
+    "Description": "Elige un coach para verificar tu misión",
+    "Register as Coach": "Registrarse como Coach",
+    "search-placeholder": "Buscar coach...",
+    "reviews": "reseñas",
+    "followers": "seguidores",
+    "hour": "hora",
+    "showing": "Mostrando",
+    "of": "de",
+    "coaches": "coaches",
+    "filters": {
+      "Showing {{count}} of {{total}} coaches": "Mostrando {{count}} de {{total}} coaches",
+      "Search placeholder": "Buscar coach...",
+      "Title": "Filtros",
+      "Reset": "Restablecer",
+      "Show": "Mostrar",
+      "Hide": "Ocultar",
+      "Specializations": "Especializaciones",
+      "Search by typing": "Buscar por escribir",
+      "Search by selecting": "Buscar por seleccionar",
+      "Pricing option": "Opción de Precio",
+      "Rate range": "Rango de Precio"
+    }
+  },
+  "toast": {
+    "wallet-connection-required": "Por favor, conecta tu billetera para continuar",
+    "quest-creation-success": "¡Misión creada con éxito!",
+    "quest-creation-error": "Error al crear la misión. Por favor, inténtalo de nuevo.",
+    "coach-selection-success": "¡Coach seleccionado con éxito!",
+    "coach-selection-error": "Error al seleccionar el coach. Por favor, inténtalo de nuevo.",
+    "Your quest is created as a draft.": "Tu misión ha sido creada como borrador."
   }
 }

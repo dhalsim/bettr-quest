@@ -95,13 +95,15 @@ const Header = () => {
               <div className="flex items-center gap-4">
                 <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
                 
-                <Link 
-                  to="/create" 
-                  className="btn-primary flex items-center gap-2"
-                >
-                  <PlusCircle size={18} />
-                  <span>{t('header.New Quest')}</span>
-                </Link>
+                {location.pathname !== '/create-quest' && (
+                  <Link 
+                    to="/create-quest" 
+                    className="btn-primary flex items-center gap-2"
+                  >
+                    <PlusCircle size={18} />
+                    <span>{t('header.New Quest')}</span>
+                  </Link>
+                )}
                 
                 <UserMenu 
                   logout={handleLogout} 
@@ -161,13 +163,15 @@ const Header = () => {
             
             {isLoggedIn ? (
               <>
-                <Link 
-                  to="/create" 
-                  className="btn-primary flex items-center justify-center gap-2"
-                >
-                  <PlusCircle size={18} />
-                  <span>{t('header.New Quest')}</span>
-                </Link>
+                {location.pathname !== '/create-quest' && (
+                  <Link 
+                    to="/create-quest" 
+                    className="btn-primary flex items-center justify-center gap-2"
+                  >
+                    <PlusCircle size={18} />
+                    <span>{t('header.New Quest')}</span>
+                  </Link>
+                )}
                 <Link
                   to="/my-quests"
                   className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"

@@ -26,7 +26,7 @@ const MyQuest = () => {
   const getEmptyStateMessage = (filter: Status) => {
     switch (filter) {
       case 'all': return "You haven't created any quests yet.";
-      case 'saved': return "You don't have any saved quests.";
+      case 'draft': return "You don't have any draft quests.";
       case 'on_review': return "You don't have any quests under review.";
       case 'success': return "You haven't completed any quests successfully yet.";
       case 'failed': return "You don't have any failed quests.";
@@ -81,7 +81,7 @@ const MyQuest = () => {
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={16} />
             </div>
             
-            <Link to="/create">
+            <Link to="/create-quest">
               <Button className="flex items-center gap-2">
                 <PlusCircle size={18} />
                 Create Quest
@@ -111,7 +111,7 @@ const MyQuest = () => {
             <p className="text-muted-foreground mb-6">
               {getEmptyStateMessage(filter)}
             </p>
-            <Link to="/create">
+            <Link to="/create-quest">
               <Button className="flex items-center gap-2">
                 <PlusCircle size={18} />
                 Create Your First Quest

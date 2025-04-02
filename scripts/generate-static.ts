@@ -8,13 +8,14 @@ const routes = [
   '/',
   '/explore',
   '/timeline',
-  '/create',
+  '/create-quest',
   '/escrow-deposit',
   '/my-quests',
   '/connect',
   '/coach-directory',
   '/register-coach',
-  '/notifications'
+  '/notifications',
+  '/premium'
 ].concat(
   // Quest routes
   Array.from({ length: 5 }, (_, i) => `/quest/${i + 1}`),

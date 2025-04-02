@@ -3,7 +3,9 @@
     "language": "Language",
     "profile": "Profile",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "Back": "Back",
+    "Next": "Next"
   },
   "header": {
     "New Quest": "New Quest",
@@ -44,7 +46,6 @@
     "Explore Quests": "Explore Quests",
     "Create Your Own": "Create Your Own",
     "Featured Quests": "Featured Quests",
-    "View all": "View all",
     "How It Works": "How It Works",
     "Ready to Become Better?": "Ready to Become Better?",
     "Start Your First Quest": "Start Your First Quest",
@@ -174,13 +175,40 @@
     "Donations": "Donations",
     "Donation Information": "Donation Information",
     "Total Donated": "Total Donated",
-    "This amount will be awarded to the quest owner when the quest is successfully completed.": "This amount will be awarded to the quest owner when the quest is successfully completed."
+    "This amount will be awarded to the quest owner when the quest is successfully completed.": "This amount will be awarded to the quest owner when the quest is successfully completed.",
+    "Create Quest": "Create Quest",
+    "Basic information": "Basic information",
+    "Choose who can verify": "Choose who can verify",
+    "Set rewards and fees": "Set rewards and fees",
+    "Choose Quest Visibility": "Choose Quest Visibility",
+    "Select whether your quest will be public or private": "Select whether your quest will be public or private",
+    "Anyone can view and verify your quest": "Anyone can view and verify your quest",
+    "Only you and selected verifiers can view your quest": "Only you and selected verifiers can view your quest",
+    "Anyone can verify": "Anyone can verify",
+    "Find a coach (optional)": "Find a coach (optional)",
+    "Choose a coach": "Choose a coach",
+    "Use AI verification": "Use AI verification",
+    "Who can verify your proof?": "Who can verify your proof?",
+    "Please select quest visibility": "Please select quest visibility",
+    "Please select who can verify your proof": "Please select who can verify your proof",
+    "Lock Escrow": "Lock Escrow",
+    "Review and confirm your escrow details": "Review and confirm your escrow details",
+    "Escrow Summary": "Escrow Summary",
+    "Review the amounts before locking": "Review the amounts before locking",
+    "Lock Amount": "Lock Amount",
+    "Platform Fees": "Platform Fees",
+    "Total to Lock": "Total to Lock",
+    "Lock & Publish": "Lock & Publish",
+    "Creating Quest...": "Creating Quest...",
+    "Back": "Back",
+    "Next": "Next",
+    "Coach Fee": "Coach Fee",
+    "AI Verification Fee": "AI Verification Fee"
   },
   "explore": {
     "Explore Quests": "Explore Quests",
     "Discover quests created by users and follow their journeys": "Discover quests created by users and follow their journeys",
     "Search quests...": "Search quests...",
-    "Search by typing": "Search by typing",
     "Search": "Search",
     "No quests found": "No quests found",
     "Try adjusting your search or category filters": "Try adjusting your search or category filters"
@@ -222,7 +250,22 @@
     "Entrepreneurship": "Entrepreneurship",
     "Planning": "Planning",
     "Mindfulness": "Mindfulness",
-    "Mental Health": "Mental Health"
+    "Mental Health": "Mental Health",
+
+    "Tags": "Tags",
+    "View all": "View all",
+    "title": "Tags",
+    "description": "Add tags to help others find your quest",
+    "placeholder": "Type a tag and press enter",
+    "popular": "Popular tags",
+    "selected": "Selected tags",
+    "no-tags": "No tags found",
+    "Reset Filters": "Reset Filters",
+    "Reset Filter": "Reset Filter",
+    "Show Filters": "Show Filters",
+    "Hide Filters": "Hide Filters",
+    "All Available Tags": "All Available Tags",
+    "Search tags...": "Search tags..."
   },
   "upload": {
     "Add Media (Optional)": "Add Media (Optional)",
@@ -389,5 +432,128 @@
     "Join thousands of users who are already enjoying the benefits of bettr.quest Premium": "Join thousands of users who are already enjoying the benefits of bettr.quest Premium",
     "Get Premium Now": "Get Premium Now",
     "Back to Home": "Back to Home"
+  },
+  "create-quest": {
+    "Creating a Copy of Quest": "Creating a Copy of Quest",
+    "Creating a Quest for myself": "Creating a Quest for myself",
+    "New Quest": "New Quest",
+    "Back to Explore": "Back to Explore",
+    "toast": {
+      "Your quest is saved as a draft.": "Your quest is saved as a draft.",
+      "Please enter a quest title": "Please enter a quest title",
+      "Please enter a quest description": "Please enter a quest description",
+      "Please enter a quest due date": "Please enter a quest due date",
+      "Please select quest visibility": "Please select quest visibility",
+      "Please select who can verify your proof": "Please select who can verify your proof",
+      "Please select a coach": "Please select a coach"
+    },
+    "steps": {
+      "basic": {
+        "title": "Basic information",
+        "description": "Enter quest details"
+      },
+      "visibility": {
+        "title": "Visibility",
+        "description": "Choose who can verify"
+      },
+      "escrow": {
+        "title": "Lock Escrow",
+        "description": "Set rewards and fees"
+      }
+    },
+    "form": {
+      "title": "Title",
+      "title-placeholder": "What is your quest?",
+      "description": "Description",
+      "description-placeholder": "Describe your quest in detail. What do you want to accomplish?",
+      "due-date": "Due Date",
+      "due-date-placeholder": "Select due date",
+      "validation": {
+        "due-date": "Please set a due date for your quest"
+      }
+    },
+    "visibility": {
+      "title": "Choose Quest Visibility",
+      "description": "Select whether your quest will be public or private",
+      "public": {
+        "title": "Public",
+        "description": "Anyone can view and verify your quest"
+      },
+      "private": {
+        "title": "Private",
+        "description": "Only you and selected verifiers can view your quest"
+      },
+      "verification": {
+        "title": "Who can verify your proof?",
+        "anyone": "Anyone can verify",
+        "coach": {
+          "title": "Find a coach",
+          "select": "Choose a coach"
+        },
+        "ai": "Use AI verification"
+      },
+      "validation": {
+        "visibility": "Please select quest visibility",
+        "verifier": "Please select who can verify your proof"
+      }
+    },
+    "escrow": {
+      "title": "Lock Escrow",
+      "description": "Review and confirm your escrow details",
+      "summary": {
+        "title": "Escrow Summary",
+        "description": "Review the amounts before locking",
+        "lock-amount": "Lock Amount",
+        "platform-fees": "Platform Fees",
+        "coach-fee": "Coach Fee",
+        "ai-fee": "AI Verification Fee",
+        "total": "Total to Lock",
+        "button": "Lock & Publish"
+      },
+      "creating": "Creating Quest..."
+    },
+    "navigation": {
+      "back": "Back",
+      "next": "Next"
+    }
+  },
+  "coach-directory": {
+    "Title": "Coach Directory",
+    "Description": "Choose a coach to verify your quest",
+    "Register as Coach": "Register as Coach",
+    "search-placeholder": "Search coaches...",
+    "reviews": "reviews",
+    "followers": "followers",
+    "hour": "hour",
+    "showing": "Showing",
+    "of": "of",
+    "coaches": "coaches",
+    "filters": {
+      "Showing {{count}} of {{total}} coaches": "Showing {{count}} of {{total}} coaches",
+      "Search": "Search",
+      "Search placeholder": "Search coaches...",
+      "Title": "Filters",
+      "Reset": "Reset",
+      "Show": "Show",
+      "Hide": "Hide",
+      "Specializations": "Specializations",
+      "Search by typing": "Search by typing",
+      "Search by selecting": "Search by selecting",
+      "Pricing option": "Pricing option",
+      "Rate range": "Rate range"
+    }
+  },
+  "toast": {
+    "quest-title-required": "Please enter a quest title",
+    "quest-description-required": "Please enter a quest description",
+    "quest-due-date-required": "Please select a due date",
+    "quest-visibility-required": "Please select a visibility option",
+    "wallet-connection-required": "Please connect your wallet to continue",
+    "quest-creation-success": "Quest created successfully!",
+    "quest-creation-error": "Failed to create quest. Please try again.",
+    "coach-selection-success": "Coach selected successfully!",
+    "coach-selection-error": "Failed to select coach. Please try again.",
+    "Quest created! Please set up the escrow deposit.": "Quest created! Please set up the escrow deposit.",
+    "Your quest is created as a draft.": "Your quest is created as a draft."
   }
 }
