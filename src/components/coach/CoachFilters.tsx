@@ -80,8 +80,15 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
     }
   };
 
+  const isAnyFilterApplied = 
+    searchQuery || 
+    selectedSpecializations.length > 0 || 
+    selectedPricingOption !== 'any' || 
+    rateRange[0] !== minRate || 
+    rateRange[1] !== maxRate;
+
   return (
-    <div className="glass rounded-xl p-6 h-fit lg:sticky lg:top-32 border-2 border-gray-300">
+    <div className="glass rounded-xl p-6 h-fit border-2 border-gray-300 mb-4">
       {/* Show total items vs filtered items if provided */}
       {totalCoaches !== undefined && filteredCoaches !== undefined && (
         <div className="text-sm text-muted-foreground mb-4">
@@ -90,10 +97,10 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
       )}
       
       {/* Header with show/hide filters button */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">{t('coach-directory.filters.Title')}</h2>
         <div className="flex items-center gap-2">
-          {resetFilters && (
+          {resetFilters && isAnyFilterApplied && (
             <Button 
               variant="ghost" 
               size="sm" 
@@ -161,7 +168,7 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
             searchPlaceholder={t('coach-directory.filters.Search by typing')}
             totalItems={totalCoaches}
             filteredItems={filteredCoaches}
-            onReset={() => toggleSpecialization(selectedSpecializations[0])}
+            onReset={() => selectedSpecializations.forEach(tag => toggleSpecialization(tag))}
           />
         </div>
       )}

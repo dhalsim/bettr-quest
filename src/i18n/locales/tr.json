@@ -416,13 +416,11 @@
     "Access valid for 30 days from purchase": "Erişim satın alma tarihinden itibaren 30 gün geçerlidir",
     "Frequently Asked Questions": "Sıkça Sorulan Sorular",
     "How long does premium access last?": "Premium erişim ne kadar sürer?",
-    "Premium access is valid for 30 days from the date of purchase. You can purchase again anytime to extend your access.": "Premium erişim satın alma tarihinden itibaren 30 gün geçerlidir. Erişiminizi uzatmak için istediğiniz zaman tekrar satın alabilirsiniz.",
+    "Premium access is valid for 30 days from the date of purchase.": "Premium erişim satın alma tarihinden itibaren 30 gün geçerlidir.",
     "Can I purchase premium access again?": "Premium erişimi tekrar satın alabilir miyim?",
-    "Yes, you can purchase premium access at any time. Each purchase gives you 30 days of access from the date of purchase.": "Evet, premium erişimi istediğiniz zaman satın alabilirsiniz. Her satın alma size satın alma tarihinden itibaren 30 günlük erişim sağlar.",
+    "Yes, you can purchase premium access once your current access expires.": "Evet, mevcut erişiminiz sona erdiğinde premium erişim satın alabilirsiniz.",
     "What payment methods are accepted?": "Hangi ödeme yöntemleri kabul ediliyor?",
     "We accept Bitcoin payments through the Lightning Network. All payments are processed securely.": "Lightning Network üzerinden Bitcoin ödemelerini kabul ediyoruz. Tüm ödemeler güvenli bir şekilde işlenir.",
-    "Is the payment refundable?": "Ödeme iade edilebilir mi?",
-    "Yes, we offer a 30-day money-back guarantee if you're not satisfied with your premium access.": "Evet, premium erişiminizden memnun değilseniz 30 günlük para iade garantisi sunuyoruz.",
     "Ready to Get Premium?": "Premium Almaya Hazır mısınız?",
     "Join thousands of users who are already enjoying the benefits of bettr.quest Premium": "bettr.quest Premium'ın avantajlarından yararlanan binlerce kullanıcıya katılın",
     "Get Premium Now": "Şimdi Premium Al",
@@ -505,16 +503,13 @@
     }
   },
   "coach-directory": {
-    "Title": "Koç Dizini",
-    "Description": "Bir koç seçin ve görevinizi doğrulayın",
+    "Coach Directory": "Koç Dizini",
+    "Find the perfect coach for your journey": "Yolculuğunuz için mükemmel koçu bulun",
     "Register as Coach": "Koç Olarak Kaydol",
     "search-placeholder": "Koç ara...",
     "reviews": "yorumlar",
     "followers": "takipçiler",
     "hour": "saat",
-    "showing": "Gösteriliyor",
-    "of": "/",
-    "coaches": "koç",
     "filters": {
       "Showing {{count}} of {{total}} coaches": "{{count}} / {{total}} koç",
       "Search placeholder": "Koç ara...",
@@ -527,6 +522,12 @@
       "Search by selecting": "Seçerek Ara",
       "Pricing option": "Fiyat Seçeneği",
       "Rate range": "Fiyat Aralığı"
+    },
+    "sorting": {
+      "Sort by": "Sırala",
+      "ByRating": "Puana Göre",
+      "ByPriceDesc": "Fiyat: Yüksekten Düşüğe",
+      "ByPriceAsc": "Fiyat: Düşükten Yükseğe"
     }
   },
   "toast": {

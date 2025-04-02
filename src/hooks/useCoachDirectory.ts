@@ -1,41 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mockCoaches } from '@/mock/data';
-import CoachList from '@/components/coach/CoachList';
-import CoachFilters from '@/components/coach/CoachFilters';
-import CoachSorting, { SortOption } from '@/components/coach/CoachSorting';
 import { getMinMaxRates, getSmartRating, filterCoaches } from '@/lib/coach-directory';
+import { SortOption } from '@/components/coach/CoachSorting';
 
-interface CoachDirectoryProps {
-  onSelectCoach?: (coachId: string) => void;
-  selectedCoachId?: string;
-  questTags?: string[];
-}
-
-const CoachDirectory: React.FC<CoachDirectoryProps> = ({ 
-  onSelectCoach,
-  selectedCoachId,
-  questTags = []
-}) => {
+export const useCoachDirectory = (initialSpecializations: string[] = []) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSpecializations, setSelectedSpecializations] = useState<string[]>([]);
+  const [selectedSpecializations, setSelectedSpecializations] = useState<string[]>(initialSpecializations);
   const [selectedPricingOption, setSelectedPricingOption] = useState('any');
   const { minRate, maxRate } = getMinMaxRates();
   const [rateRange, setRateRange] = useState([minRate, maxRate]);
   const [sortBy, setSortBy] = useState<SortOption>('ByRating');
-
-  useEffect(() => {
-    if (questTags.length > 0) {
-      const validSpecializations = questTags.filter(tag => 
-        mockCoaches.some(coach => coach.specializations.includes(tag))
-      );
-      
-      if (validSpecializations.length > 0) {
-        setSelectedSpecializations(validSpecializations);
-      }
-    }
-  }, [questTags]);
 
   const toggleSpecialization = (tag: string) => {
     setSelectedSpecializations(prev =>
@@ -47,7 +23,7 @@ const CoachDirectory: React.FC<CoachDirectoryProps> = ({
 
   const resetFilters = () => {
     setSearchQuery('');
-    setSelectedSpecializations([]);
+    setSelectedSpecializations(initialSpecializations);
     setSelectedPricingOption('any');
     setRateRange([minRate, maxRate]);
   };
@@ -94,21 +70,12 @@ const CoachDirectory: React.FC<CoachDirectoryProps> = ({
     filteredCoaches: filteredCoaches.length
   };
 
-  return (
-    <div className="space-y-6">
-      <CoachFilters {...filterProps} />
-      <div className="flex justify-end">
-        <CoachSorting sortBy={sortBy} onSortChange={setSortBy} />
-      </div>
-      <CoachList 
-        coaches={sortedCoaches}
-        mode="select"
-        selectedCoachId={selectedCoachId}
-        onSelectCoach={onSelectCoach}
-        resetFilters={resetFilters}
-      />
-    </div>
-  );
-};
-
-export default CoachDirectory; 
+  return {
+    filterProps,
+    sortedCoaches,
+    sortBy,
+    setSortBy,
+    resetFilters,
+    t
+  };
+}; 

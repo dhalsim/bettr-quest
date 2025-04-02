@@ -39,14 +39,16 @@ const CoachCard: React.FC<CoachCardProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-xl font-semibold">{coach.name}</h3>
-                  <a 
-                    href={`/profile/${coach.username}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
+                  { mode === 'select' && (
+                    <a 
+                      href={`/profile/${coach.username}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  )}
                 </div>
                 <p className="text-muted-foreground">@{coach.username}</p>
               </div>
@@ -83,9 +85,11 @@ const CoachCard: React.FC<CoachCardProps> = ({
 
   if (mode === 'link') {
     return (
-      <Link to={`/profile/${coach.username}`}>
-        {cardContent}
-      </Link>
+      <div>
+        <Link to={`/profile/${coach.username}`}>
+          {cardContent}
+        </Link>
+      </div>
     );
   }
 

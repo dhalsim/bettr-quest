@@ -388,13 +388,11 @@
     "Access valid for 30 days from purchase": "Acceso válido por 30 días desde la compra",
     "Frequently Asked Questions": "Preguntas Frecuentes",
     "How long does premium access last?": "¿Cuánto dura el acceso premium?",
-    "Premium access is valid for 30 days from the date of purchase. You can purchase again anytime to extend your access.": "El acceso premium es válido por 30 días desde la fecha de compra. Puedes comprar nuevamente en cualquier momento para extender tu acceso.",
+    "Premium access is valid for 30 days from the date of purchase.": "El acceso premium es válido por 30 días desde la fecha de compra.",
     "Can I purchase premium access again?": "¿Puedo comprar acceso premium nuevamente?",
-    "Yes, you can purchase premium access at any time. Each purchase gives you 30 days of access from the date of purchase.": "Sí, puedes comprar acceso premium en cualquier momento. Cada compra te da 30 días de acceso desde la fecha de compra.",
+    "Yes, you can purchase premium access once your current access expires.": "Sí, puedes comprar acceso premium una vez que expire tu acceso actual.",
     "What payment methods are accepted?": "¿Qué métodos de pago se aceptan?",
     "We accept Bitcoin payments through the Lightning Network. All payments are processed securely.": "Aceptamos pagos en Bitcoin a través de la red Lightning. Todos los pagos se procesan de forma segura.",
-    "Is the payment refundable?": "¿El pago es reembolsable?",
-    "Yes, we offer a 30-day money-back guarantee if you're not satisfied with your premium access.": "Sí, ofrecemos una garantía de reembolso de 30 días si no estás satisfecho con tu acceso premium.",
     "Ready to Get Premium?": "¿Listo para Obtener Premium?",
     "Join thousands of users who are already enjoying the benefits of bettr.quest Premium": "Únete a miles de usuarios que ya están disfrutando de los beneficios de bettr.quest Premium",
     "Get Premium Now": "Obtener Premium Ahora",
@@ -485,16 +483,13 @@
     }
   },
   "coach-directory": {
-    "Title": "Directorio de Coaches",
-    "Description": "Elige un coach para verificar tu misión",
+    "Coach Directory": "Directorio de Coaches",
+    "Find the perfect coach for your journey": "Encuentra el coach perfecto para tu viaje",
     "Register as Coach": "Registrarse como Coach",
     "search-placeholder": "Buscar coach...",
     "reviews": "reseñas",
     "followers": "seguidores",
     "hour": "hora",
-    "showing": "Mostrando",
-    "of": "de",
-    "coaches": "coaches",
     "filters": {
       "Showing {{count}} of {{total}} coaches": "Mostrando {{count}} de {{total}} coaches",
       "Search placeholder": "Buscar coach...",
@@ -507,6 +502,12 @@
       "Search by selecting": "Buscar por seleccionar",
       "Pricing option": "Opción de Precio",
       "Rate range": "Rango de Precio"
+    },
+    "sorting": {
+      "Sort by": "Ordenar por",
+      "ByRating": "Por Calificación Inteligente",
+      "ByPriceDesc": "Precio: Alto a Bajo",
+      "ByPriceAsc": "Precio: Bajo a Alto"
     }
   },
   "toast": {

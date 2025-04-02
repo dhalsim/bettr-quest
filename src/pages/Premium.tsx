@@ -34,6 +34,21 @@ const Premium = () => {
     }
   ];
 
+  const faq = [
+    {
+      question: t('How long does premium access last?'),
+      answer: t('Premium access is valid for 30 days from the date of purchase.')
+    },
+    {
+      question: t('Can I purchase premium access again?'),
+      answer: t('Yes, you can purchase premium access once your current access expires.')
+    },
+    {
+      question: t('What payment methods are accepted?'),
+      answer: t('We accept Bitcoin payments through the Lightning Network. All payments are processed securely.')
+    }
+  ];
+
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
@@ -97,30 +112,12 @@ const Premium = () => {
         <div className="glass rounded-3xl p-8 md:p-12">
           <h2 className="text-2xl font-bold mb-8 text-center">{t('Frequently Asked Questions')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-semibold mb-2">{t('How long does premium access last?')}</h3>
-              <p className="text-muted-foreground">
-                {t('Premium access is valid for 30 days from the date of purchase. You can purchase again anytime to extend your access.')}
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2">{t('Can I purchase premium access again?')}</h3>
-              <p className="text-muted-foreground">
-                {t('Yes, you can purchase premium access at any time. Each purchase gives you 30 days of access from the date of purchase.')}
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2">{t('What payment methods are accepted?')}</h3>
-              <p className="text-muted-foreground">
-                {t('We accept Bitcoin payments through the Lightning Network. All payments are processed securely.')}
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2">{t('Is the payment refundable?')}</h3>
-              <p className="text-muted-foreground">
-                {t('Yes, we offer a 30-day money-back guarantee if you\'re not satisfied with your premium access.')}
-              </p>
-            </div>
+            {faq.map((item, index) => (
+              <div key={index}>
+                <h3 className="font-semibold mb-2">{item.question}</h3>
+                <p className="text-muted-foreground">{item.answer}</p>
+              </div>
+            ))}
           </div>
         </div>
 

@@ -19,18 +19,17 @@ const CoachList: React.FC<CoachListProps> = ({
   onSelectCoach
 }) => {
   return (
-    <div className="lg:col-span-3">
+    <div>
       {coaches.length > 0 ? (
-        <div className="flex flex-col space-y-5">
+        <div className="space-y-6">
           {coaches.map(coach => (
-            <div key={coach.id}>
-              <CoachCard 
-                coach={coach}
-                mode={mode}
-                selected={selectedCoachId === coach.id}
-                onSelect={onSelectCoach}
-              />
-            </div>
+            <CoachCard 
+              key={coach.id} 
+              coach={coach}
+              mode={mode}
+              selected={selectedCoachId === coach.id}
+              onSelect={onSelectCoach}
+            />
           ))}
         </div>
       ) : (
