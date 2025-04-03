@@ -15,7 +15,6 @@ import { Switch } from '@/components/ui/switch';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import NotificationBadge from '@/components/ui/NotificationBadge';
 import { useNotifications } from '@/hooks/useNotifications';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
@@ -23,42 +22,13 @@ import { pages } from '@/lib/pages';
 
 const Header = () => {
   const { t } = useTranslation();
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { isLoggedIn, logout, profile } = useNostrAuth();
   const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { getUnreadCount, hasUnread } = useNotifications();
-  const isMobile = useIsMobile();
 
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    let isScrolling = false;
-  
-    const handleScroll = () => {
-      if (!isScrolling) {
-        isScrolling = true;
-        setIsScrolled(true);
-      }
-  
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        isScrolling = false;
-        setIsScrolled(false);
-      }, 150);
-    };
-    
-    window.addEventListener("wheel", handleScroll);
-    window.addEventListener("touchmove", handleScroll);
-    
-    return () => {
-      window.removeEventListener('wheel', handleScroll);
-      window.removeEventListener('touchmove', handleScroll);
-      
-      clearTimeout(timeoutId);
-    };
-  }, []);
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -66,12 +36,24 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    
+    navigate(pages.home.location);
   };
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
   return (
-    <div className={`fixed top-0 left-0 right-0 z-50 transition-all duration-100 
-      ${isScrolled ? 'py-5 invisible' : 'py-3 glass'}`}>
+    <div className={`fixed top-0 left-0 right-0 z-50 transition-all duration-100 py-3 glass`}>
       <header className="px-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link 
@@ -144,77 +126,79 @@ const Header = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="px-6 py-6 custom-header-md:hidden">
-          <nav className="flex flex-col space-y-6">
-            <NavLinks mobile isLoggedIn={isLoggedIn} />
-            
-            <div className="flex items-center justify-between border-t border-foreground/10 pt-4">
-              <span className="text-sm text-foreground/80">{t('header.Dark Mode')}</span>
-              <Switch 
-                checked={isDarkMode}
-                onCheckedChange={toggleDarkMode}
-                aria-label="Toggle dark mode"
-              />
-            </div>
+        <div className="fixed top-[72px] left-0 right-0 bottom-0 bg-background overflow-y-auto h-[calc(100vh-72px)]">
+          <div className="px-6 py-6">
+            <nav className="flex flex-col space-y-6">
+              <NavLinks mobile isLoggedIn={isLoggedIn} />
+              
+              <div className="flex items-center justify-between border-t border-foreground/10 pt-4">
+                <span className="text-sm text-foreground/80">{t('header.Dark Mode')}</span>
+                <Switch 
+                  checked={isDarkMode}
+                  onCheckedChange={toggleDarkMode}
+                  aria-label="Toggle dark mode"
+                />
+              </div>
 
-            <div className="flex items-center justify-between border-t border-foreground/10 pt-4">
-              <span className="text-sm text-foreground/80">Language</span>
-              <LanguageSelector variant="ghost" />
-            </div>
-            
-            {isLoggedIn ? (
-              <>
-                {location.pathname !== '/create-quest' && (
-                  <Link 
-                    to="/create-quest" 
-                    className="btn-primary flex items-center justify-center gap-2"
-                  >
-                    <PlusCircle size={18} />
-                    <span>{t('header.New Quest')}</span>
-                  </Link>
-                )}
-                <Link
-                  to="/my-quests"
-                  className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
-                >
-                  <User size={18} />
-                  <span>{t('header.My Quests')}</span>
-                </Link>
-                <Link
-                  to={pages.notifications.location}
-                  className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2 relative"
-                >
-                  <Bell size={18} />
-                  <span>{t('header.Notifications')}</span>
-                  {getUnreadCount() > 0 && (
-                    <NotificationBadge count={getUnreadCount()} className="static ml-2 -mt-0" />
+              <div className="flex items-center justify-between border-t border-foreground/10 pt-4">
+                <span className="text-sm text-foreground/80">Language</span>
+                <LanguageSelector variant="ghost" />
+              </div>
+              
+              {isLoggedIn ? (
+                <>
+                  {location.pathname !== '/create-quest' && (
+                    <Link 
+                      to="/create-quest" 
+                      className="btn-primary flex items-center justify-center gap-2"
+                    >
+                      <PlusCircle size={18} />
+                      <span>{t('header.New Quest')}</span>
+                    </Link>
                   )}
-                </Link>
-                <Link
-                  to={`/profile/${profile?.username || 'user'}`}
-                  className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
+                  <Link
+                    to="/my-quests"
+                    className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
+                  >
+                    <User size={18} />
+                    <span>{t('header.My Quests')}</span>
+                  </Link>
+                  <Link
+                    to={pages.notifications.location}
+                    className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2 relative"
+                  >
+                    <Bell size={18} />
+                    <span>{t('header.Notifications')}</span>
+                    {getUnreadCount() > 0 && (
+                      <NotificationBadge count={getUnreadCount()} className="static ml-2 -mt-0" />
+                    )}
+                  </Link>
+                  <Link
+                    to={`/profile/${profile?.username || 'user'}`}
+                    className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
+                  >
+                    <Settings size={18} />
+                    <span>{t('header.Profile')}</span>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
+                  >
+                    <LogOut size={18} />
+                    <span>{t('header.Log Out')}</span>
+                  </button>
+                </>
+              ) : (
+                <Link 
+                  to="/connect" 
+                  className="btn-primary flex items-center justify-center gap-2"
                 >
-                  <Settings size={18} />
-                  <span>{t('header.Profile')}</span>
+                  <UserCircle size={18} />
+                  <span>{t('header.Connect with Nostr')}</span>
                 </Link>
-                <button
-                  onClick={handleLogout}
-                  className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2"
-                >
-                  <LogOut size={18} />
-                  <span>{t('header.Log Out')}</span>
-                </button>
-              </>
-            ) : (
-              <Link 
-                to="/connect" 
-                className="btn-primary flex items-center justify-center gap-2"
-              >
-                <UserCircle size={18} />
-                <span>{t('header.Connect with Nostr')}</span>
-              </Link>
-            )}
-          </nav>
+              )}
+            </nav>
+          </div>
         </div>
       )}
     </div>
