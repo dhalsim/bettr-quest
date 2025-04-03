@@ -597,5 +597,14 @@
     "Escrow Deposit": "Escrow Deposit",
     "Notifications": "Notifications",
     "Register Coach": "Register Coach"
+  },
+  "threads": {
+    "Comments": "Comments",
+    "Write a comment...": "Write a comment...",
+    "Write a reply...": "Write a reply...",
+    "Post Comment": "Post Comment",
+    "Reply": "Reply",
+    "Send": "Send",
+    "Please enter a comment": "Please enter a comment"
   }
 }

@@ -12,11 +12,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ZapModal from '@/components/quest/ZapModal';
 import { LockedQuest, DraftQuest } from '@/types/quest';
-import { mockQuests, mockProofs } from '@/mock/data';
+import { mockQuests, mockProofs, mockThreadComments } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 import { formatDate, calculateDaysRemaining } from '@/lib/utils';
 import { languages } from '@/i18n/i18n';
 import { pages, getPreviousPageName } from '@/lib/pages';
+import Threads from '@/components/threads/Threads';
+import { ThreadComment } from '@/types/thread';
 
 const QuestPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,7 +31,8 @@ const QuestPage = () => {
   const [activeTab, setActiveTab] = useState('details');
   const [zapModalOpen, setZapModalOpen] = useState(false);
   const { t, i18n } = useTranslation();
-  
+  const [threadComments, setThreadComments] = useState<ThreadComment[]>(mockThreadComments);
+
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
     video: File | null,
@@ -206,6 +209,24 @@ const QuestPage = () => {
   const contestReward = questData ? getLockedAmount(questData) : 0;
   const totalZapped = questData ? getTotalZapped(questData) : 0;
   
+  const handleAddComment = (content: string, parentId?: string) => {
+    // Here you would typically make an API call to save the comment
+    // For now, we'll just update the local state
+    const newComment: ThreadComment = {
+      id: `comment_${Date.now()}`,
+      author: {
+        username: profile?.username || '',
+        displayName: profile?.displayName || '',
+        profileImage: profile?.profileImage || ''
+      },
+      content,
+      createdAt: new Date().toISOString(),
+      replies: []
+    };
+
+    setThreadComments([newComment, ...threadComments]);
+  };
+
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
@@ -589,6 +610,85 @@ const QuestPage = () => {
           onZapComplete={handleZapComplete}
         />
       )}
+      
+      <div className="max-w-4xl mx-auto">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="details">{t('quest.Details')}</TabsTrigger>
+            <TabsTrigger value="escrow">{t('quest.Escrow & Rewards')}</TabsTrigger>
+            <TabsTrigger value="proofs">{t('quest.Submitted Proofs')}</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="details" className="mt-6">
+            <div className="mt-8">
+              <Threads
+                threadId={questData.id}
+                comments={threadComments}
+                onAddComment={handleAddComment}
+              />
+            </div>
+          </TabsContent>
+          
+          {!isDraftQuest && (
+            <TabsContent value="escrow" className="space-y-4">
+              <div className="bg-secondary/20 p-6 rounded-lg">
+                <h3 className="text-lg font-medium mb-4">{t('quest.Escrow Information')}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">{t('quest.Creator Locked Amount')}</p>
+                    <p className="text-xl font-semibold">{getLockedAmount(questData).toLocaleString() || 0} sats</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">{t('quest.Escrow Status')}</p>
+                    <p className="text-xl font-semibold capitalize">{getEscrowStatus(questData) || 'Locked'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">{t('quest.Quest Status')}</p>
+                    <p className="text-xl font-semibold capitalize">{getStatusText()}</p>
+                  </div>
+                  {isInDispute(questData) && (
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-2">{t('quest.Dispute Status')}</p>
+                      <p className="text-xl font-semibold text-orange-500">{t('quest.Under Review')}</p>
+                    </div>
+                  )}
+                </div>
+                
+                <Separator className="my-6" />
+                
+                <div>
+                  <h4 className="text-md font-medium mb-3">{t('quest.Reward Distribution')}</h4>
+                  <p className="text-sm text-muted-foreground">
+                    {t('quest.If the proof is accepted, the acceptor will receive a reward from the locked amount. Multiple acceptors will split the reward equally')}
+                  </p>
+                </div>
+              </div>
+            </TabsContent>
+          )}
+          
+          {!isDraftQuest && totalZapped > 0 && (
+            <TabsContent value="donations" className="space-y-4" id="donations-tab">
+              <div className="bg-secondary/20 p-6 rounded-lg">
+                <h3 className="text-lg font-medium mb-4">{t('quest.Donation Information')}</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Zap size={20} className="text-yellow-500" />
+                      <span className="text-lg font-semibold">{totalZapped.toLocaleString()} sats</span>
+                    </div>
+                    <span className="text-sm text-muted-foreground">{t('quest.Total Donated')}</span>
+                  </div>
+                  <div className="bg-yellow-500/10 p-4 rounded-lg">
+                    <p className="text-sm text-yellow-500">
+                      {t('quest.This amount will be awarded to the quest owner when the quest is successfully completed.')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          )}
+        </Tabs>
+      </div>
     </div>
   );
 };

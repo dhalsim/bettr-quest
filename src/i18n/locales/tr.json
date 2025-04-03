@@ -587,5 +587,14 @@
     "Escrow Deposit": "Teminat Yatırma",
     "Notifications": "Bildirimler",
     "Register Coach": "Koç Olarak Kaydol"
+  },
+  "threads": {
+    "Comments": "Yorumlar",
+    "Write a comment...": "Yorum yaz...",
+    "Write a reply...": "Yanıt yaz...",
+    "Post Comment": "Yorum Yap",
+    "Reply": "Yanıtla",
+    "Send": "Gönder",
+    "Please enter a comment": "Lütfen bir yorum girin"
   }
 }

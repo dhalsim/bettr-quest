@@ -2,6 +2,7 @@ import { LockedQuest, DraftQuest, TagItem } from '@/types/quest';
 import { Proof } from '@/types/proof';
 import { CalendarEvent } from '@/types/calendar';
 import { UserProfile } from '@/types/user';
+import { ThreadComment } from '@/types/thread';
 
 // All available tags for quests and coach specializations
 export const mockTags = new Map<string, TagItem>([
@@ -771,3 +772,52 @@ export const mockCalendarEvents: Record<string, CalendarEvent[]> = {
     }
   ]
 };
+
+// Mock thread data
+export const mockThreadComments: ThreadComment[] = [
+  {
+    id: "comment_1",
+    author: {
+      username: "mindfulness_guru",
+      displayName: "Mindfulness Guru",
+      profileImage: "https://i.pravatar.cc/150?img=1"
+    },
+    content: "Great quest! I've been practicing meditation for years and this is a perfect starting point.",
+    createdAt: "2024-03-15T10:30:00Z",
+    replies: [
+      {
+        id: "reply_1",
+        author: {
+          username: "polyglot_learner",
+          displayName: "Sarah Chen",
+          profileImage: "https://i.pravatar.cc/150?img=3"
+        },
+        content: "Thanks for the encouragement! Do you have any tips for beginners?",
+        createdAt: "2024-03-15T11:15:00Z",
+        replies: []
+      }
+    ]
+  },
+  {
+    id: "comment_2",
+    author: {
+      username: "runner_joe",
+      displayName: "Runner Joe",
+      profileImage: "https://i.pravatar.cc/150?img=4"
+    },
+    content: "I've been meaning to start meditation. This quest is exactly what I needed!",
+    createdAt: "2024-03-16T08:45:00Z",
+    replies: []
+  },
+  {
+    id: "comment_3",
+    author: {
+      username: "zen_master",
+      displayName: "Zen Master",
+      profileImage: "https://i.pravatar.cc/150?img=5"
+    },
+    content: "Great job on completing the meditation session! Keep up the good work.",
+    createdAt: "2024-03-16T14:30:00Z",
+    replies: []
+  }
+];

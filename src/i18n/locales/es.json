@@ -563,5 +563,14 @@
     "Escrow Deposit": "Depósito en Garantía",
     "Notifications": "Notificaciones",
     "Register Coach": "Registrar Entrenador"
+  },
+  "threads": {
+    "Comments": "Comentarios",
+    "Write a comment...": "Escribe un comentario...",
+    "Write a reply...": "Escribe una respuesta...",
+    "Post Comment": "Publicar Comentario",
+    "Reply": "Responder",
+    "Send": "Enviar",
+    "Please enter a comment": "Por favor ingresa un comentario"
   }
 }
