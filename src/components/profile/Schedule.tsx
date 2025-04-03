@@ -89,9 +89,9 @@ const Schedule: React.FC<ScheduleProps> = ({ profile, isOwnProfile }) => {
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">{t('Schedule')}</h2>
       
-      <div className="flex gap-8">
+      <div className="flex flex-col md:flex-row gap-8">
         {/* Calendar */}
-        <div className="w-96">
+        <div className="w-full md:w-96">
           <div className="flex justify-between items-center mb-4">
             <button
               onClick={() => setCurrentDate(currentDate.minus({ month: 1 }))}
@@ -147,7 +147,7 @@ const Schedule: React.FC<ScheduleProps> = ({ profile, isOwnProfile }) => {
 
         {/* Time Slots */}
         {selectedDate && (
-          <div className="flex-1">
+          <div className="w-full md:flex-1">
             <h3 className="font-semibold mb-4">
               {selectedDate.toFormat('EEEE, MMMM d', { locale: i18n.language })}
             </h3>

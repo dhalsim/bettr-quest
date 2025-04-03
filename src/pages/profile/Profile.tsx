@@ -179,8 +179,8 @@ const Profile = () => {
                 {profileData.isCoach && profileData.hasCalendar && !isOwnProfile && (
                   <Button
                     onClick={handleScheduleClick}
-                    variant="outline"
-                    className="w-full"
+                    variant="primary"
+                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     {t('schedule.Schedule a Call')}
                   </Button>

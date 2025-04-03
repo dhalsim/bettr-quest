@@ -25,7 +25,7 @@ const Footer = () => {
           
           <div>
             <h3 className="font-medium text-lg mb-4">{t('footer.Navigation')}</h3>
-            <div className="grid grid-cols-3 gap-20">
+            <div className="grid grid-cols-3 gap-6 space-x-10">
               <nav className="flex flex-col space-y-3 text-nowrap">
                 <FooterLink to={pages.home.location}>{t(`pages.${pages.home.name}`)}</FooterLink>
                 <FooterLink to={pages.explore.location}>{t(`pages.${pages.explore.name}`)}</FooterLink>
