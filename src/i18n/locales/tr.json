@@ -13,8 +13,8 @@
     "Connect with Nostr": "Nostr ile Bağlan",
     "Explore": "Keşfet",
     "Timeline": "Zaman Çizelgesi",
-    "Coach Directory": "Koç Dizini",
-    "Register as Coach": "Koç Olarak Kaydol",
+    "Coach Directory": "Eğitmen Dizini",
+    "Register as Coach": "Eğitmen Olarak Kaydol",
     "My Quests": "Görevlerim",
     "Notifications": "Bildirimler",
     "Profile": "Profil",
@@ -61,16 +61,16 @@
     "Verify or Contest proofs of others and earn Bitcoin rewards for your participation": "Diğerlerinin kanıtlarını doğrula veya itiraz et. Katılımınız için Bitcoin ödülleri kazanın",
     "Our platform makes it easy to challenge yourself and get community validation for your achievements": "Platformumuz, kendinizi geliştirmenizi ve başarılarınız için topluluk doğrulaması almanızı kolaylaştırır",
     "Start your personal growth journey today by creating your first quest or exploring what others are achieving": "İlk görevinizi oluşturarak veya başkalarının başarılarını keşfederek kişisel gelişim yolculuğunuza bugün başlayın",
-    "Become a Coach": "Koç Olun",
+    "Become a Coach": "Eğitmen Olun",
     "Help others achieve their goals and earn rewards": "Başkalarının hedeflerine ulaşmasına yardımcı olun ve ödüller kazanın",
-    "As a coach, you can guide, verify, and support others on their quests": "Bir koç olarak, başkalarını görevlerinde yönlendirebilir, doğrulayabilir ve destekleyebilirsiniz",
-    "Register as Coach": "Koç Olarak Kaydol",
+    "As a coach, you can guide, verify, and support others on their quests": "Bir Eğitmen olarak, başkalarını görevlerinde yönlendirebilir, doğrulayabilir ve destekleyebilirsiniz",
+    "Register as Coach": "Eğitmen Olarak Kaydol",
     "Review & Guide": "İncele ve Yönlendir",
-    "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.": "Görev sunumlarını incele, yapıcı geri bildirim sağla ve kullanıcıları hedeflerine doğru yönlendir. Özel koçluk seçen kullanıcılarla birebir çalış.",
+    "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.": "Görev sunumlarını incele, yapıcı geri bildirim sağla ve kullanıcıları hedeflerine doğru yönlendir. Özel Eğitmenlik seçen kullanıcılarla birebir çalış.",
     "Verify Achievements": "Başarıları Doğrula",
     "Validate proof submissions and ensure users meet their quest requirements. Provide detailed feedback for private quests.": "Kanıt sunumlarını doğrula ve kullanıcıların görev gereksinimlerini karşıladığından emin ol. Özel görevler için detaylı geri bildirim sağla.",
     "Earn Rewards": "Ödüller Kazan",
-    "Get compensated in Bitcoin for your expertise. Earn higher rewards for private coaching sessions and detailed guidance.": "Uzmanlığın için Bitcoin ile ödeme al. Özel koçluk oturumları ve detaylı rehberlik için daha yüksek ödüller kazan.",
+    "Get compensated in Bitcoin for your expertise. Earn higher rewards for private coaching sessions and detailed guidance.": "Uzmanlığın için Bitcoin ile ödeme al. Özel Eğitmenlik oturumları ve detaylı rehberlik için daha yüksek ödüller kazan.",
     "Quest Yourself to": "Kendini Görevlendir",
     "Become Better": "Daha İyi Ol",
     "Bettr.Quest Premium": "Bettr.Quest Premium",
@@ -78,7 +78,7 @@
     "Premium Benefits": "Premium Avantajlar",
     "Only 10,000 sats per month": "Aylık sadece 10,000 sats",
     "Zero Platform Fees": "Sıfır Platform Ücreti",
-    "No fees for quest creation, AI services, or private coaching": "Görev oluşturma, yapay zeka hizmetleri veya özel koçluk için ücret yok",
+    "No fees for quest creation, AI services, or private coaching": "Görev oluşturma, yapay zeka hizmetleri veya özel Eğitmenlik için ücret yok",
     "Exclusive Events": "Özel Etkinlikler",
     "Access to special bettr.quest events and contests": "Özel bettr.quest etkinliklerine ve yarışmalarına erişim",
     "Prize Opportunities": "Ödül Fırsatları",
@@ -107,7 +107,28 @@
     "a proof from": "bir kanıt",
     "for the quest": "görev için",
     "created a new quest": "yeni bir görev oluşturdu",
-    "No reviews yet": "Henüz değerlendirme yok"
+    "No reviews yet": "Henüz değerlendirme yok",
+    "schedule": {
+      "Schedule a Call": "Görüşme Planla",
+      "Schedule": "Takvim",
+      "Unavailable": "Müsait Değil",
+      "New Appointment": "Yeni Randevu",
+      "Pending": "Bekliyor",
+      "Approved": "Onaylandı",
+      "Rejected": "Reddedildi"
+    },
+    "Follow": "Takip Et",
+    "Following": "Takip Ediliyor",
+    "upcoming-events": {
+      "Upcoming Events": "Yaklaşan Etkinlikler",
+      "No upcoming events": "Yaklaşan etkinlik bulunmuyor",
+      "View All": "Tümünü Gör",
+      "Today": "Bugün",
+      "Tomorrow": "Yarın",
+      "This Week": "Bu Hafta",
+      "Next Week": "Gelecek Hafta",
+      "Later": "Daha Sonra"
+    }
   },
   "quest": {
     "Back to Explore": "Keşfetmeye Dön",
@@ -180,8 +201,8 @@
     "Anyone can view and verify your quest": "Herkes görevinizi görüntüleyebilir ve doğrulayabilir",
     "Only you and selected verifiers can view your quest": "Sadece siz ve seçilen doğrulayıcılar görevinizi görüntüleyebilir",
     "Anyone can verify": "Herkes doğrulayabilir",
-    "Find a coach (optional)": "Koç bul (isteğe bağlı)",
-    "Choose a coach": "Koç seç",
+    "Find a coach (optional)": "Eğitmen bul (isteğe bağlı)",
+    "Choose a coach": "Eğitmen seç",
     "Use AI verification": "AI doğrulama kullan",
     "Who can verify your proof?": "Kim kanıtınızı doğrulayabilir?",
     "Please select quest visibility": "Lütfen görev gizliliğini seçin",
@@ -197,7 +218,7 @@
     "Creating Quest...": "Görev Oluşturuluyor...",
     "Back": "Geri",
     "Next": "İleri",
-    "Coach Fee": "Koç Ücreti",
+    "Coach Fee": "Eğitmen Ücreti",
     "AI Verification Fee": "AI Doğrulama Ücreti"
   },
   "explore": {
@@ -371,8 +392,8 @@
     "My Quests": "Görevlerim",
     "Create Quest": "Görev Oluştur",
     "Timeline": "Zaman Çizelgesi",
-    "Coach Directory": "Koç Dizini",
-    "Register as Coach": "Koç Olarak Kaydol",
+    "Coach Directory": "Eğitmen Dizini",
+    "Register as Coach": "Eğitmen Olarak Kaydol",
     "© {{year}} bettr.quest. All rights reserved.": "© {{year}} bettr.quest. Tüm hakları saklıdır.",
     "Free Open Source Software": "Özgür Açık Kaynak Yazılım",
     "Get Premium": "Premium Satın Al"
@@ -397,11 +418,11 @@
     "Contest": "İtiraz Et"
   },
   "premium": {
-    "Unlock exclusive benefits and save on fees with our premium access": "Premium erişimimizle özel avantajların kilidini açın ve ücretlerden tasarruf edin",
+    "Unlock exclusive benefits and save on fees with our premium access": "Premium erişimimizle özel avantajların kilidini açın ve komisyonlardan tasarruf edin",
     "Premium Benefits": "Premium Avantajlar",
     "One-time payment of 10,000 sats for 30 days of access": "30 günlük erişim için tek seferlik 10,000 sats ödeme",
     "Zero Platform Fees": "Sıfır Platform Ücreti",
-    "No fees for quest creation, AI services, or private coaching": "Görev oluşturma, AI hizmetleri veya özel koçluk için ücret yok",
+    "No fees for quest creation, AI services, or private coaching": "Görev oluşturma, AI hizmetleri veya özel Eğitmenlik için komisyon yok",
     "Exclusive Events": "Özel Etkinlikler",
     "Access to special bettr.quest events and contests": "bettr.quest özel etkinliklerine ve yarışmalarına erişim",
     "Prize Opportunities": "Ödül Fırsatları",
@@ -472,8 +493,8 @@
         "title": "Kim kanıtınızı doğrulayabilir?",
         "anyone": "Herkes doğrulayabilir",
         "coach": {
-          "title": "Koç bul",
-          "select": "Koç seç"
+          "title": "Eğitmen bul",
+          "select": "Eğitmen seç"
         },
         "ai": "AI doğrulama kullan"
       },
@@ -490,7 +511,7 @@
         "description": "Kilitlemeden önce tutarları gözden geçirin",
         "lock-amount": "Kilit Tutarı",
         "platform-fees": "Platform Ücretleri",
-        "coach-fee": "Koç Ücreti",
+        "coach-fee": "Eğitmen Ücreti",
         "ai-fee": "AI Doğrulama Ücreti",
         "total": "Kilitlenecek Toplam",
         "button": "Kilitle ve Yayınla"
@@ -503,16 +524,16 @@
     }
   },
   "coach-directory": {
-    "Coach Directory": "Koç Dizini",
-    "Find the perfect coach for your journey": "Yolculuğunuz için mükemmel koçu bulun",
-    "Register as Coach": "Koç Olarak Kaydol",
-    "search-placeholder": "Koç ara...",
+    "Coach Directory": "Eğitmen Dizini",
+    "Find the perfect coach for your journey": "Yolculuğunuz için mükemmel Eğitmeni bulun",
+    "Register as Coach": "Eğitmen Olarak Kaydol",
+    "search-placeholder": "Eğitmen ara...",
     "reviews": "yorumlar",
     "followers": "takipçiler",
     "hour": "saat",
     "filters": {
-      "Showing {{count}} of {{total}} coaches": "{{count}} / {{total}} koç",
-      "Search placeholder": "Koç ara...",
+      "Showing {{count}} of {{total}} coaches": "{{count}} / {{total}} Eğitmen",
+      "Search placeholder": "Eğitmen ara...",
       "Title": "Filtreler",
       "Reset": "Sıfırla",
       "Show": "Göster",
@@ -538,8 +559,8 @@
     "wallet-connection-required": "Devam etmek için lütfen cüzdanınızı bağlayın",
     "quest-creation-success": "Görev başarıyla oluşturuldu!",
     "quest-creation-error": "Görev oluşturulamadı. Lütfen tekrar deneyin.",
-    "coach-selection-success": "Koç başarıyla seçildi!",
-    "coach-selection-error": "Koç seçilemedi. Lütfen tekrar deneyin.",
+    "coach-selection-success": "Eğitmen başarıyla seçildi!",
+    "coach-selection-error": "Eğitmen seçilemedi. Lütfen tekrar deneyin.",
     "Your quest is created as a draft.": "Görev taslak olarak kaydedildi."
   }
 }

@@ -1,5 +1,7 @@
 import { LockedQuest, DraftQuest, TagItem } from '@/types/quest';
 import { Proof } from '@/types/proof';
+import { CalendarEvent } from '@/types/calendar';
+import { UserProfile } from '@/types/user';
 
 // All available tags for quests and coach specializations
 export const mockTags = new Map<string, TagItem>([
@@ -305,44 +307,47 @@ export const mockSuggestedUsers = [
 ];
 
 // Mock user profiles data
-export const mockUserProfiles = {
+export const mockUserProfiles: Record<string, UserProfile> = {
   'coach_alex': {
     pubkey: 'user2',
     username: 'coach_alex',
-    displayName: 'Coach Alex',
-    bio: 'Certified fitness trainer with 7+ years of experience. Specializing in strength training and nutrition planning.',
-    joinedDate: '2022-05-10T08:20:00Z',
-    profileImage: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=300&auto=format',
-    followers: 1240,
-    following: 86,
+    displayName: 'Alex Johnson',
+    bio: 'Professional coach helping people achieve their goals through structured challenges.',
+    joinedDate: '2023-02-20',
+    profileImage: 'https://i.pravatar.cc/150?img=2',
+    followers: 850,
+    following: 120,
     isCoach: true,
+    hasCalendar: true,
     rating: 4.9,
-    reviewCount: 124
+    reviewCount: 56
   },
   'mindfulness_guru': {
     pubkey: 'user1',
     username: 'mindfulness_guru',
     displayName: 'Mindfulness Guru',
-    bio: 'Meditation instructor and wellness advocate. Creating challenges to help people improve their mental health and wellbeing.',
-    joinedDate: '2023-01-15T10:30:00Z',
-    profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format',
-    followers: 248,
-    following: 73,
+    bio: 'Helping you find inner peace through meditation and mindfulness practices.',
+    joinedDate: '2023-01-15',
+    profileImage: 'https://i.pravatar.cc/150?img=1',
+    followers: 1250,
+    following: 45,
     isCoach: true,
-    rating: 4.7,
-    reviewCount: 32
+    hasCalendar: true,
+    rating: 4.8,
+    reviewCount: 42
   },
   'polyglot_learner': {
-    pubkey: 'user2',
+    pubkey: 'user3',
     username: 'polyglot_learner',
-    displayName: 'Polyglot Learner',
-    bio: 'Language enthusiast learning multiple languages. Creating quests to track my progress and connect with other language learners.',
-    joinedDate: '2023-02-20T09:15:00Z',
-    profileImage: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=300&auto=format',
-    followers: 156,
-    following: 42,
+    displayName: 'Sarah Chen',
+    bio: 'Language enthusiast sharing my journey to learn 5 languages in 2 years.',
+    joinedDate: '2023-03-10',
+    profileImage: 'https://i.pravatar.cc/150?img=3',
+    followers: 320,
+    following: 45,
     isCoach: false,
-    rating: 0,
+    hasCalendar: false,
+    rating: 4.5,
     reviewCount: 0
   },
   'runner_joe': {
@@ -355,6 +360,7 @@ export const mockUserProfiles = {
     followers: 892,
     following: 128,
     isCoach: true,
+    hasCalendar: true,
     rating: 4.8,
     reviewCount: 67
   },
@@ -368,6 +374,7 @@ export const mockUserProfiles = {
     followers: 445,
     following: 89,
     isCoach: false,
+    hasCalendar: false,
     rating: 0,
     reviewCount: 0
   },
@@ -381,6 +388,7 @@ export const mockUserProfiles = {
     followers: 1234,
     following: 156,
     isCoach: true,
+    hasCalendar: true,
     rating: 4.9,
     reviewCount: 89
   },
@@ -394,6 +402,7 @@ export const mockUserProfiles = {
     followers: 0,
     following: 0,
     isCoach: false,
+    hasCalendar: false,
     rating: 0,
     reviewCount: 0
   },
@@ -407,6 +416,7 @@ export const mockUserProfiles = {
     followers: 234,
     following: 45,
     isCoach: false,
+    hasCalendar: false,
     rating: 0,
     reviewCount: 0
   },
@@ -420,8 +430,79 @@ export const mockUserProfiles = {
     followers: 45,
     following: 67,
     isCoach: false,
+    hasCalendar: false,
     rating: 0,
     reviewCount: 0
+  },
+  'fitness_coach': {
+    pubkey: 'user4',
+    username: 'fitness_coach',
+    displayName: 'Mike Thompson',
+    bio: 'Certified fitness trainer helping people transform their lives through exercise.',
+    joinedDate: '2023-01-05',
+    profileImage: 'https://i.pravatar.cc/150?img=4',
+    followers: 1500,
+    following: 200,
+    isCoach: true,
+    hasCalendar: true,
+    rating: 4.7,
+    reviewCount: 89
+  },
+  'coding_beginner': {
+    pubkey: 'user5',
+    username: 'coding_beginner',
+    displayName: 'Emma Wilson',
+    bio: 'Learning to code and documenting my journey to become a web developer.',
+    joinedDate: '2023-04-01',
+    profileImage: 'https://i.pravatar.cc/150?img=5',
+    followers: 150,
+    following: 30,
+    isCoach: false,
+    hasCalendar: false,
+    rating: 4.0,
+    reviewCount: 0
+  },
+  'nutrition_expert': {
+    pubkey: 'user6',
+    username: 'nutrition_expert',
+    displayName: 'Dr. Lisa Park',
+    bio: 'Registered dietitian helping people make sustainable changes to their eating habits.',
+    joinedDate: '2023-02-15',
+    profileImage: 'https://i.pravatar.cc/150?img=6',
+    followers: 2000,
+    following: 150,
+    isCoach: true,
+    hasCalendar: true,
+    rating: 4.9,
+    reviewCount: 120
+  },
+  'bookworm': {
+    pubkey: 'user7',
+    username: 'bookworm',
+    displayName: 'David Miller',
+    bio: 'Avid reader challenging myself to read 50 books this year.',
+    joinedDate: '2023-03-20',
+    profileImage: 'https://i.pravatar.cc/150?img=7',
+    followers: 180,
+    following: 25,
+    isCoach: false,
+    hasCalendar: false,
+    rating: 4.2,
+    reviewCount: 0
+  },
+  'yoga_instructor': {
+    pubkey: 'user8',
+    username: 'yoga_instructor',
+    displayName: 'Priya Sharma',
+    bio: 'Yoga teacher helping people find balance and strength through mindful movement.',
+    joinedDate: '2023-01-10',
+    profileImage: 'https://i.pravatar.cc/150?img=8',
+    followers: 3000,
+    following: 100,
+    isCoach: true,
+    hasCalendar: true,
+    rating: 4.8,
+    reviewCount: 95
   }
 };
 
@@ -610,3 +691,83 @@ export const mockCoaches = [
     verified: true
   }
 ];
+
+// Mock calendar events data
+export const mockCalendarEvents: Record<string, CalendarEvent[]> = {
+  'coach_alex': [
+    {
+      id: 'event1',
+      title: 'Training Session',
+      start: new Date(2024, 3, 1, 10, 0), // April 1, 2024, 10:00 AM
+      end: new Date(2024, 3, 1, 11, 0), // April 1, 2024, 11:00 AM
+      status: 'approved',
+      userId: 'user1',
+      username: 'fitness_enthusiast'
+    },
+    {
+      id: 'event2',
+      title: 'Nutrition Consultation',
+      start: new Date(2024, 3, 2, 14, 0), // April 2, 2024, 2:00 PM
+      end: new Date(2024, 3, 2, 15, 0), // April 2, 2024, 3:00 PM
+      status: 'pending',
+      userId: 'user2',
+      username: 'health_seeker'
+    },
+    {
+      id: 'event3',
+      title: 'Workout Planning',
+      start: new Date(2024, 3, 3, 16, 0), // April 3, 2024, 4:00 PM
+      end: new Date(2024, 3, 3, 17, 0), // April 3, 2024, 5:00 PM
+      status: 'approved',
+      userId: 'user3',
+      username: 'gym_rat'
+    }
+  ],
+  'mindfulness_guru': [
+    {
+      id: 'event4',
+      title: 'Morning Meditation Session',
+      start: new Date(Date.now() + 24 * 60 * 60 * 1000), // Tomorrow
+      end: new Date(Date.now() + 25 * 60 * 60 * 1000),
+      status: 'approved',
+      userId: 'user2',
+      username: 'stress_free'
+    },
+    {
+      id: 'event5',
+      title: 'Mindfulness Workshop',
+      start: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // Day after tomorrow
+      end: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000 + 90 * 60 * 1000),
+      status: 'approved',
+      userId: 'user3',
+      username: 'zen_seeker'
+    },
+    {
+      id: 'event6',
+      title: 'One-on-One Session',
+      start: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days from now
+      end: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000),
+      status: 'pending',
+      userId: 'user4',
+      username: 'peace_lover'
+    },
+    {
+      id: 'event7',
+      title: 'Group Meditation',
+      start: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000), // 4 days from now
+      end: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000),
+      status: 'approved',
+      userId: 'user5',
+      username: 'mindful_beginner'
+    },
+    {
+      id: 'event8',
+      title: 'Stress Management Consultation',
+      start: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
+      end: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000),
+      status: 'pending',
+      userId: 'user6',
+      username: 'anxiety_free'
+    }
+  ]
+};

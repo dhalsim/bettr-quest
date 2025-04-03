@@ -16,7 +16,7 @@ import MyQuest from "./pages/MyQuest";
 import NotFound from "./pages/NotFound";
 import Timeline from "./pages/Timeline";
 import ConnectNostr from "./pages/ConnectNostr";
-import Profile from "./pages/Profile";
+import Profile from "./pages/profile/Profile";
 import CoachDirectory from "./pages/coach-directory";
 import RegisterCoach from "./pages/RegisterCoach";
 import EscrowDeposit from "./pages/escrow-deposit/EscrowDeposit";

@@ -112,7 +112,28 @@
     "a proof from": "a proof from",
     "for the quest": "for the quest",
     "created a new quest": "created a new quest",
-    "No reviews yet": "No reviews yet"
+    "No reviews yet": "No reviews yet",
+    "schedule": {
+      "Schedule a Call": "Schedule a Call",
+      "Schedule": "Schedule",
+      "Unavailable": "Unavailable",
+      "New Appointment": "New Appointment",
+      "Pending": "Pending",
+      "Approved": "Approved",
+      "Rejected": "Rejected"
+    },
+    "Follow": "Follow",
+    "Following": "Following",
+    "upcoming-events": {
+      "Upcoming Events": "Upcoming Events",
+      "No upcoming events": "No upcoming events",
+      "View All": "View All",
+      "Today": "Today",
+      "Tomorrow": "Tomorrow",
+      "This Week": "This Week",
+      "Next Week": "Next Week",
+      "Later": "Later"
+    }
   },
   "quest": {
     "Back to Explore": "Back to Explore",

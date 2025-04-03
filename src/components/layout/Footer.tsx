@@ -23,13 +23,14 @@ const Footer = () => {
           
           <div>
             <h3 className="font-medium text-lg mb-4">{t('Navigation')}</h3>
-            <div className="grid grid-cols-2 gap-10">
+            <div className="grid grid-cols-3 gap-10">
               <nav className="flex flex-col space-y-3 text-nowrap">
                 <FooterLink to="/">{t('Home')}</FooterLink>
                 <FooterLink to="/explore">{t('Explore')}</FooterLink>
                 <FooterLink to="/coach-directory">{t('Coach Directory')}</FooterLink>
                 <FooterLink to="/register-coach">{t('Register as Coach')}</FooterLink>
               </nav>
+              <nav></nav>
               <nav className="flex flex-col space-y-3 text-nowrap">
                 <FooterLink to="/my-quests">{t('My Quests')}</FooterLink>
                 <FooterLink to="/create-quest">{t('Create Quest')}</FooterLink>

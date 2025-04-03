@@ -107,7 +107,28 @@
     "a proof from": "una prueba de",
     "for the quest": "para el quest",
     "created a new quest": "creó un nuevo quest",
-    "No reviews yet": "Aún no hay reseñas"
+    "No reviews yet": "Aún no hay reseñas",
+    "schedule": {
+      "Schedule a Call": "Programar Llamada",
+      "Schedule": "Calendario",
+      "Unavailable": "No Disponible",
+      "New Appointment": "Nueva Cita",
+      "Pending": "Pendiente",
+      "Approved": "Aprobado",
+      "Rejected": "Rechazado"
+    },
+    "Follow": "Seguir",
+    "Following": "Siguiendo",
+    "upcoming-events": {
+      "Upcoming Events": "Próximos Eventos",
+      "No upcoming events": "No hay eventos próximos",
+      "View All": "Ver Todos",
+      "Today": "Hoy",
+      "Tomorrow": "Mañana",
+      "This Week": "Esta Semana",
+      "Next Week": "Próxima Semana",
+      "Later": "Más Tarde"
+    }
   },
   "quest": {
     "Back to Explore": "Volver a Explorar",

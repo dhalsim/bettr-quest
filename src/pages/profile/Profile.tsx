@@ -7,12 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import StarRating from '@/components/ui/StarRating';
-import { mockUserProfiles, mockUserActivities, mockReviews, mockQuests, mockProofs } from '@/mock/data';
+import { mockUserProfiles, mockUserActivities, mockReviews, mockQuests, mockProofs, mockCalendarEvents } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 import { formatDate, formatDateTime } from '@/lib/utils';
 import { languages } from '@/i18n/i18n';
 import { isLockedQuest } from '@/types/quest';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
+import Schedule from '@/components/profile/Schedule';
+import UpcomingEvents from '@/components/profile/UpcomingEvents';
 
 interface Review {
   id: string;
@@ -33,7 +35,8 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('quests');
   const reviewsRef = useRef<HTMLDivElement>(null);
   const { t, i18n } = useTranslation(null, { keyPrefix: "profile" });
-  const { profile } = useNostrAuth();
+  const { profile: currentUserProfile } = useNostrAuth();
+  const scheduleRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     // If we have a username and it exists in our user profiles, use that data
@@ -79,8 +82,30 @@ const Profile = () => {
     }, 100);
   };
 
+  const handleScheduleClick = () => {
+    setTimeout(() => {
+      scheduleRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
   // Filter quests for the current user
   const userQuests = Object.values(mockQuests).filter(quest => quest.username === profileData.username);
+  
+  const isOwnProfile = currentUserProfile?.username === profileData.username;
+
+  console.log("isOwnProfile", isOwnProfile)
+  
+  console.log('Profile Data:', {
+    username: profileData.username,
+    isCoach: profileData.isCoach,
+    hasCalendar: profileData.hasCalendar,
+    isOwnProfile,
+  });
+  
+  console.log('Calendar Events:', {
+    events: mockCalendarEvents[profileData.username],
+    hasEvents: mockCalendarEvents[profileData.username]?.length > 0
+  });
   
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
@@ -144,12 +169,32 @@ const Profile = () => {
                 </div>
               </div>
               
-              <Button
-                variant={isFollowing ? "outline" : "primary"}
-                onClick={handleFollowToggle}
-              >
-                {isFollowing ? t('Following') : t('Follow')}
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button
+                  variant={isFollowing ? "outline" : "primary"}
+                  onClick={handleFollowToggle}
+                >
+                  {isFollowing ? t('Following') : t('Follow')}
+                </Button>
+                {profileData.isCoach && profileData.hasCalendar && !isOwnProfile && (
+                  <Button
+                    onClick={handleScheduleClick}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    {t('schedule.Schedule a Call')}
+                  </Button>
+                )}
+                {profileData.isCoach && profileData.hasCalendar && isOwnProfile && (
+                  <Button
+                    onClick={handleScheduleClick}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    {t('upcoming-events.Upcoming Events')}
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -181,7 +226,7 @@ const Profile = () => {
                     key={quest.id} 
                     quest={quest}
                     proof={isLockedQuest(quest) ? mockProofs[quest.id]?.[0] : undefined}
-                    isOwnedByCurrentUser={quest.userId === profile?.pubkey}
+                    isOwnedByCurrentUser={quest.userId === currentUserProfile?.pubkey}
                     isFollowing={isFollowing}
                     onSpecializationClick={handleSpecializationClick}
                     onFollowToggle={handleFollowToggle}
@@ -297,6 +342,16 @@ const Profile = () => {
             </TabsContent>
           )}
         </Tabs>
+        
+        {profileData.isCoach && profileData.hasCalendar && (
+          <div ref={scheduleRef} className="mt-8">
+            {isOwnProfile ? (
+              <UpcomingEvents events={mockCalendarEvents[profileData.username] || []} />
+            ) : (
+              <Schedule profile={profileData} isOwnProfile={isOwnProfile} />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
