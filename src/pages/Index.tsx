@@ -193,14 +193,24 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             <div className="feature-item glass rounded-2xl p-8 text-center">
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
                 <Target size={24} />
               </div>
               <h3 className="text-xl font-semibold mb-3">{t('Create Quest')}</h3>
               <p className="text-muted-foreground">
-                {t('Define your personal quest with clear goals, choose between public or private validation')}
+                {t('Define your quest with title, description, tags and set a due date')}
+              </p>
+            </div>
+            
+            <div className="feature-item glass rounded-2xl p-8 text-center">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
+                <Globe size={24} />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">{t('Choose Visibility')}</h3>
+              <p className="text-muted-foreground">
+                {t('Select public or private visibility. Choose a coach or AI to assist your goal. Lock your Bitcoin as motivation')}
               </p>
             </div>
             
@@ -210,7 +220,7 @@ const Index = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">{t('Take Action')}</h3>
               <p className="text-muted-foreground">
-                {t('Work on your quest consistently and track your progress')}
+                {t('Work on your quest and collect relevant metrics to track your progress')}
               </p>
             </div>
             
@@ -220,7 +230,17 @@ const Index = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">{t('Submit Proof')}</h3>
               <p className="text-muted-foreground">
-                {t('When completed, share evidence of your achievement with the community')}
+                {t('Upload your proof of completion - data, images, or videos showing your achievement')}
+              </p>
+            </div>
+            
+            <div className="feature-item glass rounded-2xl p-8 text-center">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
+                <Users size={24} />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">{t('Get Validated')}</h3>
+              <p className="text-muted-foreground">
+                {t('Receive community validation and get your locked Bitcoin back (minus fees)')}
               </p>
             </div>
             
@@ -228,9 +248,9 @@ const Index = () => {
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
                 <Award size={24} />
               </div>
-              <h3 className="text-xl font-semibold mb-3">{t('Get Validated')}</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('Get Your Bitcoin Back')}</h3>
               <p className="text-muted-foreground">
-                {t('Receive community validation and earn Bitcoin rewards for your participation')}
+                {t('Get your locked Bitcoin back and receive donations from supporters when you complete your quest successfully')}
               </p>
             </div>
           </div>
