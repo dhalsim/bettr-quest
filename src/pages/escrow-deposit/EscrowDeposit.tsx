@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from 'react-i18next';
 import QuestEscrow from '@/components/quest/QuestEscrow';
 import { decodeLocationState, type LocationState } from './validation';
 import { validateLocationState } from '@/lib/validation-utils';
+import { pages } from '@/lib/pages';
 
 const EscrowDeposit = () => {
   const location = useLocation();
@@ -19,14 +20,14 @@ const EscrowDeposit = () => {
         toast,
         navigate,
         log: true,
-        navigateOnError: '/explore'
+        navigateOnError: pages.explore.location
       });
       
       if (validatedState) {
         setState(validatedState);
       }
     } else {
-      navigate('/explore');
+      navigate(pages.explore.location);
     }
   }, [location, navigate, toast]);
   

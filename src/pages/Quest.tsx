@@ -16,6 +16,7 @@ import { mockQuests, mockProofs } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 import { formatDate, calculateDaysRemaining } from '@/lib/utils';
 import { languages } from '@/i18n/i18n';
+import { pages, getPreviousPageName } from '@/lib/pages';
 
 const QuestPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,6 +41,9 @@ const QuestPage = () => {
     audio: null,
     recordedVideo: null
   });
+  
+  const previousPageName = getPreviousPageName();
+  const previousPageLabel = previousPageName ? t(`pages.${previousPageName}`) : t(`pages.${pages.explore.name}`);
   
   useEffect(() => {
     if (id && mockQuests[id]) {
@@ -134,7 +138,7 @@ const QuestPage = () => {
   const handleSpecializationClick = (e: React.MouseEvent, tag: string) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate(`/explore?specialization=${tag}`);
+    navigate(`${pages.explore.location}?specialization=${tag}`);
   };
   
   const handleCopyQuest = () => {
@@ -145,8 +149,9 @@ const QuestPage = () => {
       imageUrl: questData.imageUrl || ''
     });
     
-    navigate(`/create?${params.toString()}`);
-    toast.success("Quest details copied! Customize your new quest.");
+    navigate(`${pages.createQuest.location}?${params.toString()}`);
+    
+    toast.success(t('quest.Quest details copied! Customize your new quest.'));
   };
   
   const handleZapComplete = (amount: number) => {
@@ -205,10 +210,16 @@ const QuestPage = () => {
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
-          <Link to="/explore" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-4">
-            <ArrowLeft size={16} className="mr-2" />
-            {t('quest.Back to Explore')}
-          </Link>
+          <div className="flex items-center gap-4 mb-8">
+            <Button
+              variant="ghost"
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {t('common.Back to {{page}}', { page: previousPageLabel })}
+            </Button>
+          </div>
           
           <div className="flex flex-col lg:flex-row gap-10">
             <div className="flex-grow lg:w-2/3">
@@ -272,7 +283,7 @@ const QuestPage = () => {
                           className="flex items-center gap-1 bg-yellow-500/10 text-yellow-500 border-yellow-500/20 hover:bg-yellow-500/20"
                         >
                           <Zap size={16} className="mr-1" />
-                          Zap ⚡️
+                          {t('quest.Zap ⚡️')}
                         </Button>
                       )}
                       
@@ -283,7 +294,7 @@ const QuestPage = () => {
                           onClick={handleCopyQuest}
                         >
                           <Copy size={16} className="mr-2" />
-                          Copy Quest
+                          {t('quest.Copy Quest')}
                         </Button>
                       )}
                     </div>
@@ -446,7 +457,7 @@ const QuestPage = () => {
                         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                           <Button 
                             variant="primary"
-                            onClick={() => navigate(`/escrow-deposit`, {
+                            onClick={() => navigate(pages.escrowDeposit.location, {
                               state: {
                                 type: 'quest',
                                 questId: questData.id,

@@ -32,6 +32,12 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<BlobPart[]>([]);
   const videoPreviewRef = useRef<HTMLVideoElement>(null);
+  const onMediaChangeRef = useRef(onMediaChange);
+  
+  // Update the ref when onMediaChange changes
+  useEffect(() => {
+    onMediaChangeRef.current = onMediaChange;
+  }, [onMediaChange]);
   
   // Handle prefilled image URL when provided
   useEffect(() => {
@@ -42,13 +48,13 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onMediaChange, previewUrl }) 
   
   // Notify parent component when media changes
   useEffect(() => {
-    onMediaChange({
+    onMediaChangeRef.current({
       image: selectedImage,
       video: selectedVideo,
       audio: recordedAudio,
       recordedVideo: recordedVideo
     });
-  }, [selectedImage, selectedVideo, recordedAudio, recordedVideo, onMediaChange]);
+  }, [selectedImage, selectedVideo, recordedAudio, recordedVideo]);
   
   // Clean up media streams when component unmounts
   useEffect(() => {

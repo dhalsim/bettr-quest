@@ -7,6 +7,7 @@ import { Proof } from '@/types/proof';
 import { Button } from '@/components/ui/button';
 import { formatDateTime } from '@/lib/utils';
 import { languages } from '@/i18n/i18n';
+import { pages } from '@/lib/pages';
 
 interface QuestCardProofProps {
   quest: LockedQuest;
@@ -23,7 +24,7 @@ const QuestCardProof: React.FC<QuestCardProofProps> = ({
   const navigate = useNavigate();
 
   const handleVerify = () => {
-    navigate('/escrow-deposit', {
+    navigate(pages.escrowDeposit.location, {
       state: {
         type: 'proof-verify',
         proofTitle: proof.title,
@@ -39,7 +40,7 @@ const QuestCardProof: React.FC<QuestCardProofProps> = ({
   };
 
   const handleContest = () => {
-    navigate('/escrow-deposit', {
+    navigate(pages.escrowDeposit.location, {
       state: {
         type: 'proof-contest',
         proofTitle: proof.title,

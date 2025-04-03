@@ -6,7 +6,8 @@
     "logout": "Cerrar sesión",
     "Back": "Atrás",
     "Next": "Siguiente",
-    "Quest Platform": "Plataforma de Misiones"
+    "Quest Platform": "Plataforma de Misiones",
+    "Back to {{page}}": "Volver a {{page}}"
   },
   "header": {
     "New Quest": "Nueva Misión",
@@ -85,7 +86,8 @@
     "Chance to win exclusive prizes in premium contests": "Oportunidad de ganar premios exclusivos en concursos premium",
     "sats per month": "sats por mes",
     "Upgrade to Premium": "Actualizar a Premium",
-    "View Premium Benefits": "Ver Beneficios Premium"
+    "View Premium Benefits": "Ver Beneficios Premium",
+    "View all": "Ver todos"
   },
   "profile": {
     "Back to Explore": "Volver a Explorar",
@@ -167,7 +169,7 @@
     "No proofs have been submitted yet": "Aún no se han enviado pruebas",
     "Report Quest": "Reportar Quest",
     "Thank you for your report. Our moderators will review this quest": "Gracias por tu reporte. Nuestros moderadores revisarán este quest",
-    "Zap": "Zap",
+    "Zap ⚡️": "Zap ⚡️",
     "Copy Quest": "Copiar Quest",
     "Quest details copied! Customize your new quest": "¡Detalles del quest copiados! Personaliza tu nuevo quest",
     "You've zapped": "Has enviado",
@@ -538,5 +540,19 @@
     "coach-selection-success": "¡Coach seleccionado con éxito!",
     "coach-selection-error": "Error al seleccionar el coach. Por favor, inténtalo de nuevo.",
     "Your quest is created as a draft.": "Tu misión ha sido creada como borrador."
+  },
+  "pages": {
+    "Home": "Inicio",
+    "Explore": "Explorar",
+    "Timeline": "Cronología",
+    "Connect": "Conectar",
+    "Coach Directory": "Directorio de Entrenadores",
+    "Profile": "Perfil",
+    "My Quest": "Mi Misión",
+    "Create Quest": "Crear Misión",
+    "Quest": "Misión",
+    "Escrow Deposit": "Depósito en Garantía",
+    "Notifications": "Notificaciones",
+    "Register Coach": "Registrar Entrenador"
   }
 }

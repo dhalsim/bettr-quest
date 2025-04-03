@@ -11,6 +11,7 @@ import { languages } from '@/i18n/i18n';
 import { formatDateTime } from '@/lib/utils';
 import { Proof } from '@/types/proof';
 import { QuestStatus } from '@/types/quest';
+import { pages } from '@/lib/pages';
 
 interface ProofCardProps {
   proof: Proof;
@@ -51,7 +52,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
       return;
     }
     
-    navigate('/escrow-deposit', {
+    navigate(pages.escrowDeposit.location, {
       state: createLocationState('proof-verify')
     });
   };
@@ -62,7 +63,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
       return;
     }
     
-    navigate('/escrow-deposit', {
+    navigate(pages.escrowDeposit.location, {
       state: createLocationState('proof-contest')
     });
   };

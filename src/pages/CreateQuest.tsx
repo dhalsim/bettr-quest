@@ -17,6 +17,7 @@ import { mockQuests, questTemplates } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 import CoachDirectory from '@/components/quest/CoachDirectory';
 import { mockCoaches } from '@/mock/data';
+import { pages } from '@/lib/pages';
 
 const CreateQuest = () => {
   const navigate = useNavigate();
@@ -164,7 +165,7 @@ const CreateQuest = () => {
       const questIndex = Math.floor(Math.random() * Object.keys(mockQuests).length);
       const questId = Object.keys(mockQuests)[questIndex];
       
-      navigate(`/quest/${questId}`);
+      navigate(`${pages.quest.location}/${questId}`);
     }, 200);
   };
 

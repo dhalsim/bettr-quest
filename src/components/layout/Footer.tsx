@@ -2,10 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import GitHubIcon from '@/components/icons/GitHubIcon';
 import { useTranslation } from 'react-i18next';
+import { pages } from '@/lib/pages';
 
 const Footer = () => {
-  const { t } = useTranslation(null, { keyPrefix: "footer" });
-  
+  const { t } = useTranslation();
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="py-12 px-6 bg-secondary/50">
       <div className="max-w-7xl mx-auto">
@@ -17,27 +19,27 @@ const Footer = () => {
               quest
             </Link>
             <p className="mt-4 text-muted-foreground max-w-md">
-              {t('Quest yourself to be better, one quest at a time. Create, share, and complete personal quests with a community that supports your growth.')}
+              {t('footer.Quest yourself to be better, one quest at a time. Create, share, and complete personal quests with a community that supports your growth.')}
             </p>
           </div>
           
           <div>
-            <h3 className="font-medium text-lg mb-4">{t('Navigation')}</h3>
+            <h3 className="font-medium text-lg mb-4">{t('footer.Navigation')}</h3>
             <div className="grid grid-cols-3 gap-10">
               <nav className="flex flex-col space-y-3 text-nowrap">
-                <FooterLink to="/">{t('Home')}</FooterLink>
-                <FooterLink to="/explore">{t('Explore')}</FooterLink>
-                <FooterLink to="/coach-directory">{t('Coach Directory')}</FooterLink>
-                <FooterLink to="/register-coach">{t('Register as Coach')}</FooterLink>
+                <FooterLink to={pages.home.location}>{t(`pages.${pages.home.name}`)}</FooterLink>
+                <FooterLink to={pages.explore.location}>{t(`pages.${pages.explore.name}`)}</FooterLink>
+                <FooterLink to={pages.coachDirectory.location}>{t(`pages.${pages.coachDirectory.name}`)}</FooterLink>
+                <FooterLink to={pages.registerCoach.location}>{t(`pages.${pages.registerCoach.name}`)}</FooterLink>
               </nav>
               <nav></nav>
               <nav className="flex flex-col space-y-3 text-nowrap">
-                <FooterLink to="/my-quests">{t('My Quests')}</FooterLink>
-                <FooterLink to="/create-quest">{t('Create Quest')}</FooterLink>
-                <FooterLink to="/timeline">{t('Timeline')}</FooterLink>
+                <FooterLink to={pages.myQuest.location}>{t(`pages.${pages.myQuest.name}`)}</FooterLink>
+                <FooterLink to={pages.createQuest.location}>{t(`pages.${pages.createQuest.name}`)}</FooterLink>
+                <FooterLink to={pages.timeline.location}>{t(`pages.${pages.timeline.name}`)}</FooterLink>
                 <FooterLink to="/premium">
                   <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                    {t('Get Premium')}
+                    {t('footer.Get Premium')}
                   </span>
                 </FooterLink>
               </nav>
@@ -47,7 +49,7 @@ const Footer = () => {
         
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-center md:justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            {t('© {{year}} bettr.quest. All rights reserved.', { year: new Date().getFullYear() })}
+            {t('footer.© {{year}} bettr.quest. All rights reserved.', { year: currentYear })}
           </p>
           <a 
             href="https://github.com/dhalsim/bettr-quest"
@@ -55,7 +57,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
           >
-            {t('Free Open Source Software')} <GitHubIcon size={16} />
+            {t('footer.Free Open Source Software')} <GitHubIcon size={16} />
           </a>
         </div>
       </div>

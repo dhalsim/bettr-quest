@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { NostrAuthProvider } from "@/contexts/NostrAuthProvider";
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/i18n';
@@ -22,10 +22,33 @@ import RegisterCoach from "./pages/RegisterCoach";
 import EscrowDeposit from "./pages/escrow-deposit/EscrowDeposit";
 import Notifications from "./pages/Notifications";
 import Premium from "./pages/Premium";
+import { useRef, useEffect } from 'react';
+
+const HistoryHandler = () => {
+  const location = useLocation();
+  const previousPathRef = useRef(location.pathname);
+
+  useEffect(() => {
+    // Store the previous path in history state
+    const newState = { 
+      ...window.history.state,
+      previousPath: previousPathRef.current 
+    };
+
+    console.log('newState', newState);
+    window.history.replaceState(newState, '', window.location.href);
+
+    // Update the ref for next navigation
+    previousPathRef.current = location.pathname;
+  }, [location]);
+
+  return null;
+};
 
 const App = () => (
   <I18nextProvider i18n={i18n}>
     <BrowserRouter>
+      <HistoryHandler />
       <TooltipProvider>
         <NostrAuthProvider>
           <ScrollToTop />

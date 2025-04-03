@@ -2,26 +2,20 @@ import Prerenderer from '@prerenderer/prerenderer';
 import JSDOMRenderer from '@prerenderer/renderer-jsdom';
 import fs from 'fs';
 import path from 'path';
-import { mockUserProfiles } from '../src/mock/data';
+import { mockUserProfiles, mockQuests } from '../src/mock/data';
+import { pages } from '../src/lib/pages';
+
+// Get all static routes from pages map, excluding quest and profile
+const staticRoutes = Object.values(pages)
+  .filter(page => !['quest', 'profile'].includes(page.name.toLowerCase()))
+  .map(page => page.location);
 
 const routes = [
-  '/',
-  '/explore',
-  '/timeline',
-  '/create-quest',
-  '/escrow-deposit',
-  '/my-quests',
-  '/connect',
-  '/coach-directory',
-  '/register-coach',
-  '/notifications',
-  '/premium'
-].concat(
-  // Quest routes
-  Array.from({ length: 5 }, (_, i) => `/quest/${i + 1}`),
-  // Profile routes
-  Object.keys(mockUserProfiles).map(username => `/profile/${username}`)
-);
+  ...staticRoutes,
+  // Add dynamic routes
+  ...Object.keys(mockQuests).map(id => `/quest/${id}`),
+  ...Object.keys(mockUserProfiles).map(username => `/profile/${username}`)
+];
 
 async function generateStatic() {
   const prerenderer = new Prerenderer({

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
+import { pages } from '@/lib/pages';
 
 const ConnectNostr = () => {
   const [nsec, setNsec] = useState('');
@@ -19,7 +20,7 @@ const ConnectNostr = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/timeline');
+      navigate(pages.timeline.location);
     }
   }, [isLoggedIn, navigate]);
 
@@ -47,7 +48,7 @@ const ConnectNostr = () => {
       
       login();
       toast.success("Successfully connected to Nostr!");
-      navigate('/timeline');
+      navigate(pages.timeline.location);
     } catch (err) {
       setError('Failed to connect. Please check your credentials and try again.');
       console.error('Connection error:', err);

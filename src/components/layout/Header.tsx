@@ -19,6 +19,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
+import { pages } from '@/lib/pages';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -180,7 +181,7 @@ const Header = () => {
                   <span>{t('header.My Quests')}</span>
                 </Link>
                 <Link
-                  to="/notifications"
+                  to={pages.notifications.location}
                   className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2 relative"
                 >
                   <Bell size={18} />
@@ -275,7 +276,7 @@ const UserMenu = ({
             <span>{t('header.My Quests')}</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate("/notifications")} className="flex items-center gap-2 cursor-pointer relative">
+        <DropdownMenuItem onClick={() => navigate(pages.notifications.location)} className="flex items-center gap-2 cursor-pointer relative">
           <Bell size={16} />
           <span>{t('header.Notifications')}</span>
           {unreadCount > 0 && (
@@ -309,10 +310,10 @@ const NavLinks = ({ mobile = false, isLoggedIn = false }: { mobile?: boolean, is
   const isActive = (path: string) => location.pathname === path;
   
   const links = [
-    { to: "/explore", label: t('header.Explore') },
-    ...(isLoggedIn ? [{ to: "/timeline", label: t('header.Timeline') }] : []),
-    { to: "/coach-directory", label: t('header.Coach Directory') },
-    ...(isLoggedIn ? [{ to: "/register-coach", label: t('header.Register as Coach') }] : []),
+    { to: pages.explore.location, label: t(`pages.${pages.explore.name}`) },
+    ...(isLoggedIn ? [{ to: pages.timeline.location, label: t(`pages.${pages.timeline.name}`) }] : []),
+    { to: pages.coachDirectory.location, label: t(`pages.${pages.coachDirectory.name}`) },
+    ...(isLoggedIn ? [{ to: pages.registerCoach.location, label: t(`pages.${pages.registerCoach.name}`) }] : []),
     { 
       to: "/premium", 
       label: (

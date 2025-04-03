@@ -6,7 +6,8 @@
     "logout": "Çıkış Yap",
     "Back": "Geri",
     "Next": "İleri",
-    "Quest Platform": "Görev Platformu"
+    "Quest Platform": "Görev Platformu",
+    "Back to {{page}}": "{{page}}'e Geri Dön"
   },
   "header": {
     "New Quest": "Yeni Görev",
@@ -85,7 +86,8 @@
     "Chance to win exclusive prizes in premium contests": "Premium yarışmalarda özel ödüller kazanma şansı",
     "sats per month": "aylık sats",
     "Upgrade to Premium": "Premium'a Yükselt",
-    "View Premium Benefits": "Premium Avantajlarını Görüntüle"
+    "View Premium Benefits": "Premium Avantajlarını Görüntüle",
+    "View all": "Tümünü Gör"
   },
   "profile": {
     "Back to Explore": "Keşfetmeye Dön",
@@ -167,7 +169,7 @@
     "No proofs have been submitted yet": "Henüz kanıt gönderilmedi",
     "Report Quest": "Görevi Bildir",
     "Thank you for your report. Our moderators will review this quest": "Bildiriminiz için teşekkürler. Moderatörlerimiz bu görevi inceleyecek",
-    "Zap": "Zap",
+    "Zap ⚡️": "Zap ⚡️",
     "Copy Quest": "Görevi Kopyala",
     "Quest details copied! Customize your new quest": "Görev detayları kopyalandı! Yeni görevinizi özelleştirin",
     "You've zapped": "Zapladınız",
@@ -562,5 +564,19 @@
     "coach-selection-success": "Eğitmen başarıyla seçildi!",
     "coach-selection-error": "Eğitmen seçilemedi. Lütfen tekrar deneyin.",
     "Your quest is created as a draft.": "Görev taslak olarak kaydedildi."
+  },
+  "pages": {
+    "Home": "Ana Sayfa",
+    "Explore": "Keşfet",
+    "Timeline": "Zaman Çizelgesi",
+    "Connect": "Bağlan",
+    "Coach Directory": "Koç Dizini",
+    "Profile": "Profil",
+    "My Quest": "Görevim",
+    "Create Quest": "Görev Oluştur",
+    "Quest": "Görev",
+    "Escrow Deposit": "Teminat Yatırma",
+    "Notifications": "Bildirimler",
+    "Register Coach": "Koç Olarak Kaydol"
   }
 }

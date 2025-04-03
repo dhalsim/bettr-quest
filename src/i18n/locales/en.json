@@ -5,7 +5,8 @@
     "settings": "Settings",
     "logout": "Logout",
     "Back": "Back",
-    "Next": "Next"
+    "Next": "Next",
+    "Back to {{page}}": "Back to {{page}}"
   },
   "header": {
     "New Quest": "New Quest",
@@ -90,7 +91,8 @@
     "Chance to win exclusive prizes in premium contests": "Chance to win exclusive prizes in premium contests",
     "sats per month": "sats per month",
     "Upgrade to Premium": "Upgrade to Premium",
-    "View Premium Benefits": "View Premium Benefits"
+    "View Premium Benefits": "View Premium Benefits",
+    "View all": "View all"
   },
   "profile": {
     "Back to Explore": "Back to Explore",
@@ -172,7 +174,7 @@
     "No proofs have been submitted yet": "No proofs have been submitted yet",
     "Report Quest": "Report Quest",
     "Thank you for your report. Our moderators will review this quest": "Thank you for your report. Our moderators will review this quest",
-    "Zap": "Zap",
+    "Zap ⚡️": "Zap ⚡️",
     "Copy Quest": "Copy Quest",
     "Quest details copied! Customize your new quest": "Quest details copied! Customize your new quest",
     "You've zapped": "You've zapped",
@@ -580,5 +582,19 @@
     "coach-selection-error": "Failed to select coach. Please try again.",
     "Quest created! Please set up the escrow deposit.": "Quest created! Please set up the escrow deposit.",
     "Your quest is created as a draft.": "Your quest is created as a draft."
+  },
+  "pages": {
+    "Home": "Home",
+    "Explore": "Explore",
+    "Timeline": "Timeline",
+    "Connect": "Connect",
+    "Coach Directory": "Coach Directory",
+    "Profile": "Profile",
+    "My Quest": "My Quest",
+    "Create Quest": "Create Quest",
+    "Quest": "Quest",
+    "Escrow Deposit": "Escrow Deposit",
+    "Notifications": "Notifications",
+    "Register Coach": "Register Coach"
   }
 }

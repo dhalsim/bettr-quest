@@ -24,6 +24,7 @@ import TagsSelector from '@/components/TagsSelector';
 import * as t from 'io-ts';
 import { isRight } from 'fp-ts/Either';
 import { mockTags } from '@/mock/data';
+import { pages } from '@/lib/pages';
 
 // Form validation schema using io-ts
 const PricingOption = t.union([
@@ -86,7 +87,7 @@ const RegisterCoach = () => {
   // Check if user is logged in
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate('/connect', { replace: true });
+      navigate(pages.connect.location, { replace: true });
       toast({
         title: "Login Required",
         description: "You need to connect with Nostr to register as a coach.",
@@ -134,7 +135,7 @@ const RegisterCoach = () => {
     });
     
     // Redirect to coach directory
-    navigate('/coach-directory');
+    navigate(pages.coachDirectory.location);
   };
   
   // Toggle a specialization tag
