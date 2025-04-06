@@ -1,8 +1,10 @@
-import { LockedQuest, DraftQuest, TagItem } from '@/types/quest';
 import { Proof } from '@/types/proof';
-import { CalendarEvent } from '@/types/calendar';
 import { UserProfile } from '@/types/user';
 import { ThreadComment } from '@/types/thread';
+import { TagItem, DraftQuest, LockedQuest } from '@/types/quest';
+import { mockBookedSchedules, mockCalendarSchedule } from '@/mock/schedule';
+
+export { mockBookedSchedules, mockCalendarSchedule };
 
 // All available tags for quests and coach specializations
 export const mockTags = new Map<string, TagItem>([
@@ -692,86 +694,6 @@ export const mockCoaches = [
     verified: true
   }
 ];
-
-// Mock calendar events data
-export const mockCalendarEvents: Record<string, CalendarEvent[]> = {
-  'coach_alex': [
-    {
-      id: 'event1',
-      title: 'Training Session',
-      start: new Date(2024, 3, 1, 10, 0), // April 1, 2024, 10:00 AM
-      end: new Date(2024, 3, 1, 11, 0), // April 1, 2024, 11:00 AM
-      status: 'approved',
-      userId: 'user1',
-      username: 'fitness_enthusiast'
-    },
-    {
-      id: 'event2',
-      title: 'Nutrition Consultation',
-      start: new Date(2024, 3, 2, 14, 0), // April 2, 2024, 2:00 PM
-      end: new Date(2024, 3, 2, 15, 0), // April 2, 2024, 3:00 PM
-      status: 'pending',
-      userId: 'user2',
-      username: 'health_seeker'
-    },
-    {
-      id: 'event3',
-      title: 'Workout Planning',
-      start: new Date(2024, 3, 3, 16, 0), // April 3, 2024, 4:00 PM
-      end: new Date(2024, 3, 3, 17, 0), // April 3, 2024, 5:00 PM
-      status: 'approved',
-      userId: 'user3',
-      username: 'gym_rat'
-    }
-  ],
-  'mindfulness_guru': [
-    {
-      id: 'event4',
-      title: 'Morning Meditation Session',
-      start: new Date(Date.now() + 24 * 60 * 60 * 1000), // Tomorrow
-      end: new Date(Date.now() + 25 * 60 * 60 * 1000),
-      status: 'approved',
-      userId: 'user2',
-      username: 'stress_free'
-    },
-    {
-      id: 'event5',
-      title: 'Mindfulness Workshop',
-      start: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // Day after tomorrow
-      end: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000 + 90 * 60 * 1000),
-      status: 'approved',
-      userId: 'user3',
-      username: 'zen_seeker'
-    },
-    {
-      id: 'event6',
-      title: 'One-on-One Session',
-      start: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days from now
-      end: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000),
-      status: 'pending',
-      userId: 'user4',
-      username: 'peace_lover'
-    },
-    {
-      id: 'event7',
-      title: 'Group Meditation',
-      start: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000), // 4 days from now
-      end: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000),
-      status: 'approved',
-      userId: 'user5',
-      username: 'mindful_beginner'
-    },
-    {
-      id: 'event8',
-      title: 'Stress Management Consultation',
-      start: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
-      end: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000),
-      status: 'pending',
-      userId: 'user6',
-      username: 'anxiety_free'
-    }
-  ]
-};
 
 // Mock thread data
 export const mockThreadComments: ThreadComment[] = [

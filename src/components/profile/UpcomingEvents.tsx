@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { DateTime } from 'luxon';
-import { CalendarEvent } from '@/types/calendar';
+import { BookedSchedule } from '@/types/schedule';
 
 interface UpcomingEventsProps {
-  events: CalendarEvent[];
+  events: BookedSchedule[];
 }
 
 const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ events }) => {
@@ -26,13 +26,7 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ events }) => {
   });
 
   const groupedEvents = events.reduce((acc, event) => {
-    const eventDate = DateTime.fromJSDate(event.start);
-    console.log('Processing event:', {
-      title: event.title,
-      eventDate: eventDate.toISO(),
-      start: event.start,
-      end: event.end
-    });
+    const eventDate = DateTime.fromJSDate(event.date);
     
     if (eventDate >= today && eventDate < tomorrow) {
       acc.today.push(event);
@@ -46,15 +40,15 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ events }) => {
     
     return acc;
   }, {
-    today: [] as CalendarEvent[],
-    thisWeek: [] as CalendarEvent[],
-    nextWeek: [] as CalendarEvent[],
-    later: [] as CalendarEvent[]
+    today: [] as BookedSchedule[],
+    thisWeek: [] as BookedSchedule[],
+    nextWeek: [] as BookedSchedule[],
+    later: [] as BookedSchedule[]
   });
 
   console.log('Grouped events:', groupedEvents);
 
-  const renderEventGroup = (title: string, events: CalendarEvent[]) => {
+  const renderEventGroup = (title: string, events: BookedSchedule[]) => {
     if (events.length === 0) return null;
 
     return (
@@ -62,18 +56,18 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ events }) => {
         <h3 className="text-lg font-semibold mb-2">{title}</h3>
         <div className="space-y-3">
           {events.map((event) => {
-            const eventDate = DateTime.fromJSDate(event.start);
+            const eventDate = DateTime.fromJSDate(event.date);
             return (
               <div key={event.id} className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h4 className="font-medium">{event.title}</h4>
+                    <h4 className="font-medium">{event.username}</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       {eventDate.toFormat('EEEE, MMMM d, yyyy', { locale: i18n.language })}
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       {eventDate.toFormat('h:mm a', { locale: i18n.language })} - 
-                      {DateTime.fromJSDate(event.end).toFormat('h:mm a', { locale: i18n.language })}
+                      {DateTime.fromJSDate(event.date).plus({ minutes: event.duration }).toFormat('h:mm a', { locale: i18n.language })}
                     </p>
                   </div>
                   <span className={`px-2 py-1 text-xs rounded-full ${

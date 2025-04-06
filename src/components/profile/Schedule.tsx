@@ -1,27 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DateTime } from 'luxon';
 import { UserProfile } from '@/types/user';
-import { CalendarEvent } from '@/types/calendar';
-import { mockCalendarEvents } from '@/mock/data';
+import { ScheduleCallOption, BookedSchedule, CalendarSchedule } from '@/types/schedule';
+import { isTimeSlotAvailable, getAvailableOptions } from '@/lib/schedule';
+import BookingFlow from './BookingFlow';
 
 interface ScheduleProps {
   profile: UserProfile;
   isOwnProfile: boolean;
+  calendarSchedule: CalendarSchedule;
+  bookedSchedules: BookedSchedule[];
+  onScheduleSelect?: (dateTime: DateTime, option: ScheduleCallOption) => void;
+  onBook?: (booking: Omit<BookedSchedule, 'id'>) => void;
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ profile, isOwnProfile }) => {
+const Schedule: React.FC<ScheduleProps> = ({
+  profile,
+  isOwnProfile,
+  calendarSchedule,
+  bookedSchedules,
+  onScheduleSelect,
+  onBook
+}) => {
   const { t, i18n } = useTranslation(null, { keyPrefix: 'profile.schedule' });
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [currentDate, setCurrentDate] = useState(DateTime.now());
   const [selectedDate, setSelectedDate] = useState<DateTime | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [availableOptions, setAvailableOptions] = useState<ScheduleCallOption[]>([]);
+  const [selectedOption, setSelectedOption] = useState<ScheduleCallOption | null>(null);
+  
+  const timeSlotsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (profile.isCoach && mockCalendarEvents[profile.username]) {
-      setEvents(mockCalendarEvents[profile.username]);
-    }
-  }, [profile]);
+  const createTimeSlotOverlapChecker = (dateTimeStart: DateTime, dateTimeEnd: DateTime) => {
+    return (booking: BookedSchedule) => {
+      const bookingStart = DateTime.fromJSDate(booking.date);
+      const bookingEnd = bookingStart.plus({ minutes: booking.duration });
+      
+      return (
+        // Case 1: dateTimeStart falls within the booking period
+        (dateTimeStart >= bookingStart && dateTimeStart < bookingEnd) ||
+        // Case 2: dateTimeEnd falls within the booking period
+        (dateTimeEnd > bookingStart && dateTimeEnd <= bookingEnd) ||
+        // Case 3: booking period completely contains our time slot
+        (dateTimeStart <= bookingStart && dateTimeEnd >= bookingEnd)
+      );
+    };
+  };
 
   const daysInMonth = currentDate.daysInMonth || 30;
   const firstDayOfMonth = currentDate.startOf('month');
@@ -34,55 +59,104 @@ const Schedule: React.FC<ScheduleProps> = ({ profile, isOwnProfile }) => {
     return date.toFormat('EEE', { locale: i18n.language });
   });
 
-  const hours = Array.from({ length: 12 }, (_, i) => i + 9); // 9 AM to 8 PM
+  const hours = Array.from({ length: 24 }, (_, i) => i); // 0 AM to 23 PM
 
   const handleDateClick = (date: DateTime) => {
     setSelectedDate(date);
     setSelectedTime(null);
+    setAvailableOptions([]);
+    setSelectedOption(null);
+    
+    // Scroll to time slots
+    if (timeSlotsRef.current) {
+      timeSlotsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleTimeClick = (hour: number) => {
     if (!selectedDate) return;
-    setSelectedTime(hour.toString());
     
-    if (!isOwnProfile) {
-      const newEvent: CalendarEvent = {
-        id: `event-${Date.now()}`,
-        title: t('New Appointment'),
-        start: selectedDate.set({ hour, minute: 0 }).toJSDate(),
-        end: selectedDate.set({ hour: hour + 1, minute: 0 }).toJSDate(),
-        status: 'pending',
-        userId: 'current-user',
-        username: 'current-user'
-      };
-      setEvents([...events, newEvent]);
+    const selectedDateTime = selectedDate.set({ hour });
+    const options = getAvailableOptions(calendarSchedule, selectedDateTime);
+    
+    setSelectedTime(hour.toString());
+    setAvailableOptions(options);
+    setSelectedOption(null);
+  };
+
+  const handleOptionSelect = (option: ScheduleCallOption) => {
+    if (!selectedDate || !selectedTime) return;
+    
+    setSelectedOption(option);
+    
+    if (onScheduleSelect) {
+      const selectedDateTime = selectedDate.set({ hour: parseInt(selectedTime) });
+      onScheduleSelect(selectedDateTime, option);
     }
   };
 
-  const isTimeSlotAvailable = (date: DateTime, hour: number) => {
-    if (hour < 9 || hour >= 21) return false; // Outside business hours
-    
-    const slotStart = date.set({ hour, minute: 0 });
-    const slotEnd = date.set({ hour: hour + 1, minute: 0 });
-    
-    return !events.some(event => {
-      const eventStart = DateTime.fromJSDate(event.start);
-      const eventEnd = DateTime.fromJSDate(event.end);
-      return (
-        (slotStart >= eventStart && slotStart < eventEnd) ||
-        (slotEnd > eventStart && slotEnd <= eventEnd) ||
-        (slotStart <= eventStart && slotEnd >= eventEnd)
-      );
-    });
+  const handleBook = (booking: Omit<BookedSchedule, 'id'>) => {
+    if (onBook) {
+      onBook(booking);
+    }
   };
 
-  const getEventStatus = (date: DateTime, hour: number) => {
-    const slotStart = date.set({ hour, minute: 0 });
-    const event = events.find(event => {
-      const eventStart = DateTime.fromJSDate(event.start);
-      return eventStart.equals(slotStart);
+  const isTimeSlotValid = (date: DateTime, hour: number) => {
+    // Create a new DateTime object with the selected date's components
+    const dateTimeStart = DateTime.fromObject({
+      year: date.year,
+      month: date.month,
+      day: date.day,
+      hour: hour,
+      minute: 0,
+      second: 0,
+      millisecond: 0
     });
-    return event?.status;
+    
+    const dateTimeEnd = dateTimeStart.plus({ hours: 1 });
+
+    // Check if date is in the past
+    if (dateTimeStart < DateTime.now().startOf('hour')) {
+      return false;
+    }
+
+    const isAvailable = isTimeSlotAvailable({ 
+      calendarRules: calendarSchedule.calendarRules, 
+      dateTime: dateTimeStart 
+    });
+
+    // Check if slot is available according to calendar rules
+    if (!isAvailable) {
+      return false;
+    }
+
+    // Check if slot is already booked or has a collision
+    const hasCollision = bookedSchedules.some(createTimeSlotOverlapChecker(dateTimeStart, dateTimeEnd));
+
+    return !hasCollision;
+  };
+
+  // Check if any time slot is available for a given date
+  const hasAvailableSlots = (date: DateTime) => {
+    return hours.some(hour => isTimeSlotValid(date, hour));
+  };
+
+  const getBookingStatus = (date: DateTime, hour: number) => {
+    const dateTimeStart = DateTime.fromObject({
+      year: date.year,
+      month: date.month,
+      day: date.day,
+      hour: hour,
+      minute: 0,
+      second: 0,
+      millisecond: 0
+    });
+    
+    const dateTimeEnd = dateTimeStart.plus({ hours: 1 });
+    
+    const booking = bookedSchedules.find(createTimeSlotOverlapChecker(dateTimeStart, dateTimeEnd));
+
+    return booking?.status;
   };
 
   return (
@@ -122,20 +196,22 @@ const Schedule: React.FC<ScheduleProps> = ({ profile, isOwnProfile }) => {
             {monthDays.map(day => {
               const date = currentDate.set({ day });
               const isSelected = selectedDate?.day === day && selectedDate?.month === currentDate.month;
-              const hasEvents = events.some(event => 
-                DateTime.fromJSDate(event.start).day === day && 
-                DateTime.fromJSDate(event.start).month === currentDate.month
+              const hasBookings = bookedSchedules.some(booking => 
+                DateTime.fromJSDate(booking.date).hasSame(date, 'day')
               );
+              const isPastDate = date < DateTime.now().startOf('day');
+              const isDisabled = isPastDate || (!isPastDate && !hasAvailableSlots(date));
 
               return (
                 <button
                   key={day}
-                  onClick={() => handleDateClick(date)}
+                  onClick={() => !isDisabled && handleDateClick(date)}
+                  disabled={isDisabled}
                   className={`
                     h-10 rounded flex items-center justify-center
                     ${isSelected ? 'bg-primary text-white' : ''}
-                    ${hasEvents ? 'border-2 border-primary' : ''}
-                    hover:bg-gray-100 dark:hover:bg-gray-700
+                    ${hasBookings ? 'border-2 border-primary' : ''}
+                    ${isDisabled ? 'opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}
                   `}
                 >
                   {day}
@@ -145,42 +221,123 @@ const Schedule: React.FC<ScheduleProps> = ({ profile, isOwnProfile }) => {
           </div>
         </div>
 
-        {/* Time Slots */}
+        {/* Time Slots and Options */}
         {selectedDate && (
-          <div className="w-full md:flex-1">
+          <div className="w-full md:flex-1" ref={timeSlotsRef}>
             <h3 className="font-semibold mb-4">
               {selectedDate.toFormat('EEEE, MMMM d', { locale: i18n.language })}
             </h3>
-            <div className="grid grid-cols-1 gap-2">
-              {hours.map(hour => {
-                const isAvailable = isTimeSlotAvailable(selectedDate, hour);
-                const status = getEventStatus(selectedDate, hour);
-                const isSelected = selectedTime === hour.toString();
+            <div className="flex gap-8">
+              {/* Time Slots */}
+              <div className="w-50">
+                <div className="grid grid-cols-1 gap-2">
+                  {hours.map(hour => {
+                    const dateTimeStart = DateTime.fromObject({
+                      year: selectedDate.year,
+                      month: selectedDate.month,
+                      day: selectedDate.day,
+                      hour: hour,
+                      minute: 0,
+                      second: 0,
+                      millisecond: 0
+                    });
 
-                return (
-                  <button
-                    key={hour}
-                    onClick={() => handleTimeClick(hour)}
-                    disabled={!isAvailable || isOwnProfile}
-                    className={`
-                      p-2 rounded text-left
-                      ${!isAvailable ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed' : ''}
-                      ${status === 'pending' ? 'bg-yellow-100 dark:bg-yellow-900' : ''}
-                      ${status === 'approved' ? 'bg-green-100 dark:bg-green-900' : ''}
-                      ${status === 'rejected' ? 'bg-red-100 dark:bg-red-900' : ''}
-                      ${isSelected ? 'ring-2 ring-primary' : ''}
-                      ${isAvailable && !status ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}
-                    `}
-                  >
-                    {hour}:00 - {hour + 1}:00
-                    {status && (
-                      <span className="ml-2 text-sm">
-                        ({t(status.charAt(0).toUpperCase() + status.slice(1))})
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+                    // First check if the slot is available according to calendar rules
+                    const isAvailable = isTimeSlotAvailable({ 
+                      calendarRules: calendarSchedule.calendarRules, 
+                      dateTime: dateTimeStart 
+                    });
+
+                    // If not available according to calendar rules, don't show the slot
+                    if (!isAvailable) {
+                      return null;
+                    }
+
+                    // Check if the slot is valid (not in past and no collisions)
+                    const isValid = isTimeSlotValid(selectedDate, hour);
+                    const status = getBookingStatus(selectedDate, hour);
+                    const isSelected = selectedTime === hour.toString();
+                    const isDisabled = !isValid || !!status || isOwnProfile;
+
+                    return (
+                      <button
+                        key={hour}
+                        onClick={() => handleTimeClick(hour)}
+                        disabled={isDisabled}
+                        className={`
+                          p-2 rounded text-left
+                          ${status === 'pending' ? 'bg-yellow-100 dark:bg-yellow-900' : ''}
+                          ${status === 'approved' ? 'bg-green-100 dark:bg-green-900' : ''}
+                          ${status === 'rejected' ? 'bg-red-100 dark:bg-red-900' : ''}
+                          ${!isValid && !status ? 'opacity-50 bg-gray-100 dark:bg-gray-800' : ''}
+                          ${isSelected ? 'ring-2 ring-primary' : ''}
+                          ${isValid && !status ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}
+                        `}
+                      >
+                        {hour.toString().padStart(2, '0')}:00 - {(hour + 1).toString().padStart(2, '0')}:00
+                        {status && (
+                          <span className="ml-2 text-sm">
+                            ({t(status.charAt(0).toUpperCase() + status.slice(1))})
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Available Options or Booking Flow */}
+              <div className="flex-1">
+                {selectedTime && !selectedOption && availableOptions.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold mb-2">{t('Available Options')}</h4>
+                    <div className="space-y-2">
+                      {availableOptions.map(option => (
+                        <button
+                          key={option.id}
+                          onClick={() => handleOptionSelect(option)}
+                          className="w-full p-3 border rounded hover:border-primary text-left transition-colors"
+                        >
+                          <div className="font-medium">{option.description}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">
+                            {option.duration} {t('minutes')} - {option.price ? `${option.price} sats` : t('Free')}
+                          </div>
+                          {option.firstCall && (
+                            <div className="text-sm text-green-600 dark:text-green-400">
+                              {t('First consultation free')}
+                            </div>
+                          )}
+                          {option.needsApproval && (
+                            <div className="text-sm text-yellow-600 dark:text-yellow-400">
+                              {t('Requires approval')}
+                            </div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {selectedTime && selectedOption && (
+                  <BookingFlow
+                    selectedDateTime={selectedDate.set({ hour: parseInt(selectedTime) })}
+                    selectedOption={selectedOption}
+                    onBook={handleBook}
+                  />
+                )}
+                
+                {selectedTime && !selectedOption && availableOptions.length === 0 && (
+                  <div className="text-muted-foreground">
+                    {t('No available options for this time slot')}
+                  </div>
+                )}
+                
+                {!selectedTime && (
+                  <div className="text-muted-foreground">
+                    {t('Select a time slot to see available options')}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}

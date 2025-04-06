@@ -7,7 +7,15 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import StarRating from '@/components/ui/StarRating';
-import { mockUserProfiles, mockUserActivities, mockReviews, mockQuests, mockProofs, mockCalendarEvents } from '@/mock/data';
+import { 
+  mockUserProfiles, 
+  mockUserActivities, 
+  mockReviews, 
+  mockQuests, 
+  mockProofs, 
+  mockBookedSchedules,
+  mockCalendarSchedule
+} from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 import { formatDate, formatDateTime } from '@/lib/utils';
 import { languages } from '@/i18n/i18n';
@@ -100,11 +108,6 @@ const Profile = () => {
     isCoach: profileData.isCoach,
     hasCalendar: profileData.hasCalendar,
     isOwnProfile,
-  });
-  
-  console.log('Calendar Events:', {
-    events: mockCalendarEvents[profileData.username],
-    hasEvents: mockCalendarEvents[profileData.username]?.length > 0
   });
   
   return (
@@ -346,9 +349,14 @@ const Profile = () => {
         {profileData.isCoach && profileData.hasCalendar && (
           <div ref={scheduleRef} className="mt-8">
             {isOwnProfile ? (
-              <UpcomingEvents events={mockCalendarEvents[profileData.username] || []} />
+              <UpcomingEvents events={mockBookedSchedules} />
             ) : (
-              <Schedule profile={profileData} isOwnProfile={isOwnProfile} />
+              <Schedule 
+                profile={profileData} 
+                isOwnProfile={isOwnProfile} 
+                calendarSchedule={mockCalendarSchedule}
+                bookedSchedules={mockBookedSchedules} 
+              />
             )}
           </div>
         )}

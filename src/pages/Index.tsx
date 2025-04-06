@@ -264,7 +264,7 @@ const Index = () => {
             <div className="w-full lg:w-1/2 text-center lg:text-left">
               <h2 className="text-3xl font-bold mb-6">{t('Become a Coach')}</h2>
               <p className="text-xl text-muted-foreground mb-6">
-                {t('Help others achieve their goals and earn rewards')}
+                {t('Help others achieve their goals and earn Bitcoin')}
               </p>
               <p className="text-muted-foreground mb-8">
                 {t('As a coach, you can guide, verify, and support others on their quests')}
@@ -313,9 +313,9 @@ const Index = () => {
                     <span className="text-primary font-semibold">3</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-2">{t('Earn Rewards')}</h3>
+                    <h3 className="font-semibold mb-2">{t('Monetize Your Expertise')}</h3>
                     <p className="text-muted-foreground text-sm">
-                      {t('Get compensated in Bitcoin for your expertise. Earn higher rewards for private coaching sessions and detailed guidance.')}
+                      {t('Get paid in Bitcoin by helping users achieve their goals. Schedule text, audio, or video coaching sessions and monetize your time.')}
                     </p>
                   </div>
                 </div>
@@ -336,7 +336,7 @@ const Index = () => {
               </span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t('Unlock exclusive benefits and save on fees with our premium subscription')}
+              {t('Save on platform fees and unlock exclusive benefits with our premium membership')}
             </p>
           </div>
           
@@ -349,7 +349,7 @@ const Index = () => {
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold">{t('Premium Benefits')}</h3>
-                    <p className="text-muted-foreground">{t('Only 10,000 sats per month')}</p>
+                    <p className="text-muted-foreground">{t('Only 10,000 sats for 30 days')}</p>
                   </div>
                 </div>
                 
@@ -373,8 +373,16 @@ const Index = () => {
                   <div className="flex items-start gap-3">
                     <CheckCircle className="text-primary mt-1" size={20} />
                     <div>
-                      <h4 className="font-semibold">{t('Prize Opportunities')}</h4>
-                      <p className="text-muted-foreground text-sm">{t('Chance to win exclusive prizes in premium contests')}</p>
+                      <h4 className="font-semibold">{t('Get Out of Jail Free Card')}</h4>
+                      <p className="text-muted-foreground text-sm">{t('You can once get your funds back before due date and proof submission')}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="text-primary mt-1" size={20} />
+                    <div>
+                      <h4 className="font-semibold">{t('Give Reference')}</h4>
+                      <p className="text-muted-foreground text-sm">{t('Share a reference code and win 5% of their premium subscription')}</p>
                     </div>
                   </div>
                 </div>
@@ -382,11 +390,14 @@ const Index = () => {
               
               <div className="flex flex-col items-center justify-center">
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-primary mb-2">10,000</div>
-                  <div className="text-muted-foreground mb-6">{t('sats per month')}</div>
+                  <div className="text-4xl font-bold text-primary mb-2 flex items-end justify-center">
+                    10,000
+                    <span className="text-lg ml-1">sats</span>
+                  </div>
+                  <div className="text-muted-foreground mb-6">{t('For 30 days')}</div>
                   <Link to="/premium">
                     <Button size="lg" className="w-full max-w-xs">
-                      {t('Upgrade to Premium')}
+                      {t('Get Premium Access')}
                       <ArrowRight size={18} className="ml-2" />
                     </Button>
                   </Link>

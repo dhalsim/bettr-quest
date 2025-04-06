@@ -19,13 +19,13 @@ const Premium = () => {
     },
     {
       icon: <Gift className="text-primary" size={24} />,
-      title: t('Prize Opportunities'),
-      description: t('Chance to win exclusive prizes in premium contests')
+      title: t('Get Out of Jail Free Card'),
+      description: t('You can once get your funds back before due date and proof submission')
     },
     {
       icon: <Star className="text-primary" size={24} />,
-      title: t('Early Access'),
-      description: t('Be the first to try new features and improvements')
+      title: t('Give Reference'),
+      description: t('Share a reference code and win 5% of their premium subscription')
     },
     {
       icon: <Sparkles className="text-primary" size={24} />,
