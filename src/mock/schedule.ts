@@ -13,7 +13,8 @@ import type {
 // Example call options
 const freeConsultation = createScheduleCallOption({
   duration: 30,
-  description: 'Free 30-minute consultation call',
+  title: 'Free 30-minute consultation call',
+  description: 'Use this link to join the video call\n\nhttps://meet.google.com/abc-xyz-123',
   type: 'VideoCall',
   firstCall: true,
   needsApproval: true
@@ -21,7 +22,8 @@ const freeConsultation = createScheduleCallOption({
 
 const paidVideoCall = createScheduleCallOption({
   duration: 60,
-  description: '1-hour video coaching session',
+  title: '1-hour video coaching session',
+  description: 'Use this link to join the video call\n\nhttps://meet.google.com/abc-xyz-123',
   price: 10000, // 10,000 sats
   type: 'VideoCall',
   needsApproval: false
@@ -29,7 +31,8 @@ const paidVideoCall = createScheduleCallOption({
 
 const paidAudioCall = createScheduleCallOption({
   duration: 30,
-  description: '30-minute audio coaching session',
+  title: '30-minute audio coaching session',
+  description: 'Use this link to join the audio call\n\nhttps://meet.google.com/abc-xyz-123',
   price: 5000, // 5,000 sats
   type: 'AudioCall',
   needsApproval: false

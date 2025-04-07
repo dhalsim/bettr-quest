@@ -114,14 +114,12 @@
     "Quests by": "Görevler:",
     "No quests created yet": "Henüz görev oluşturulmadı",
     "Recent Activity": "Son Aktiviteler",
-    "No recent activity": "Son aktivite yok",
     "accepted": "kabul etti",
     "rejected": "reddetti",
-    "a proof from": "bir kanıt",
-    "for the quest": "görev için",
-    "created a new quest": "yeni bir görev oluşturdu",
+    "No recent activity": "Son aktivite yok",
     "No reviews yet": "Henüz değerlendirme yok",
     "schedule": {
+      "Schedule a Call": "Görüşme Ayarla",
       "Schedule": "Takvim",
       "Available Options": "Mevcut Seçenekler",
       "minutes": "dakika",
@@ -132,6 +130,8 @@
       "Select a time slot to see available options": "Müsait seçenekleri görmek için bir zaman dilimi seçin",
       "Book Call": "Görüşme Ayarla",
       "Reserve Slot": "Yer Ayırt",
+      "Please pay the invoice to confirm the booking": "Lütfen faturayı onaylamak için ödemeyi yapın",
+      "QR Code for Lightning Payment": "Lightning Ödeme QR Kodu",
       "Invoice copied to clipboard": "Fatura panoya kopyalandı",
       "Copied": "Kopyalandı",
       "Copy": "Kopyala"
@@ -147,7 +147,9 @@
       "This Week": "Bu Hafta",
       "Next Week": "Gelecek Hafta",
       "Later": "Daha Sonra"
-    }
+    },
+    "activity.proof_review": "<0>{{username}}</0>, <2>@{{activityUsername}}</2> kullanıcısından <3>{{challengeTitle}}</3> görevi için bir kanıtı <1>{{action}}</1>",
+    "activity.challenge_created": "<0>{{username}}</0> yeni bir görev oluşturdu: <1>{{challengeTitle}}</1>"
   },
   "quest": {
     "Back to Explore": "Keşfetmeye Dön",

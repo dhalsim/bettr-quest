@@ -114,12 +114,9 @@
     "Quests by": "Quests por",
     "No quests created yet": "Aún no se han creado quests",
     "Recent Activity": "Actividad Reciente",
-    "No recent activity": "Sin actividad reciente",
     "accepted": "aceptó",
     "rejected": "rechazó",
-    "a proof from": "una prueba de",
-    "for the quest": "para el quest",
-    "created a new quest": "creó un nuevo quest",
+    "No recent activity": "Sin actividad reciente",
     "No reviews yet": "Aún no hay reseñas",
     "schedule": {
       "Schedule a Call": "Programar Llamada",
@@ -134,7 +131,14 @@
       "Free": "Gratis",
       "First consultation free": "Primera consulta gratis",
       "Requires approval": "Requiere aprobación",
-      "Select a time slot to see available options": "Selecciona un horario para ver las opciones disponibles"
+      "Select a time slot to see available options": "Selecciona un horario para ver las opciones disponibles",
+      "Book Call": "Reservar Llamada",
+      "Reserve Slot": "Reservar Slot",
+      "Please pay the invoice to confirm the booking": "Por favor, paga la factura para confirmar la cita",
+      "QR Code for Lightning Payment": "Código QR para Pago en Lightning",
+      "Invoice copied to clipboard": "Factura copiada al portapapeles",
+      "Copied": "Copiado",
+      "Copy": "Copiar"
     },
     "Follow": "Seguir",
     "Following": "Siguiendo",
@@ -147,7 +151,9 @@
       "This Week": "Esta Semana",
       "Next Week": "Próxima Semana",
       "Later": "Más Tarde"
-    }
+    },
+    "activity.proof_review": "<0>{{username}}</0> <1>{{action}}</1> a proof from <2>@{{activityUsername}}</2> for the quest <3>{{challengeTitle}}</3>",
+    "activity.challenge_created": "<0>{{username}}</0> created a new quest: <1>{{challengeTitle}}</1>"
   },
   "quest": {
     "Back to Explore": "Volver a Explorar",

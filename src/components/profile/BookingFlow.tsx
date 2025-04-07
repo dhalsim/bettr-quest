@@ -63,7 +63,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
           </div>
           {/* This would be a QR code in a real implementation */}
           <div className="border-2 border-dashed border-border p-12 rounded-lg text-center text-muted-foreground">
-            QR Code for Lightning Payment
+            {t('QR Code for Lightning Payment')}
           </div>
         </div>
         

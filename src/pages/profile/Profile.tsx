@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, Calendar, Activity, Award, MessageSquare, Star } from 'lucide-react';
+import { ArrowLeft, User, Calendar, Activity, Award, MessageSquare } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import QuestCard from '@/components/quest-card/QuestCard';
 import { Button } from '@/components/ui/button';
@@ -16,7 +16,7 @@ import {
   mockBookedSchedules,
   mockCalendarSchedule
 } from '@/mock/data';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { formatDate, formatDateTime } from '@/lib/utils';
 import { languages } from '@/i18n/i18n';
 import { isLockedQuest } from '@/types/quest';
@@ -252,34 +252,35 @@ const Profile = () => {
                   <div key={activity.id} className="glass rounded-xl p-6">
                     {activity.type === 'proof_review' ? (
                       <div>
-                        <p>
-                          <span className="font-medium">{profileData.username}</span>
-                          {' '}
-                          {activity.action === 'accepted' ? (
-                            <span className="text-green-500">{t('accepted')}</span>
-                          ) : (
-                            <span className="text-red-500">{t('rejected')}</span>
-                          )}
-                          {' '}
-                          {t('a proof from')}{' '}
-                          <Link to={`/profile/${activity.username}`} className="text-primary hover:underline">
-                            @{activity.username}
-                          </Link>
-                          {' '}{t('for the quest')}{' '}
-                          <Link to={`/quest/${activity.challengeId}`} className="text-primary hover:underline">
-                            {activity.challengeTitle}
-                          </Link>
-                        </p>
+                        <Trans
+                          i18nKey="profile.activity.proof_review"
+                          values={{
+                            username: profileData.username,
+                            action: activity.action === 'accepted' ? t('accepted') : t('rejected'),
+                            activityUsername: activity.username,
+                            challengeTitle: activity.challengeTitle
+                          }}
+                          components={[
+                            <span className="font-medium" />,
+                            <span className={activity.action === 'accepted' ? 'text-green-500' : 'text-red-500'} />,
+                            <Link to={`/profile/${activity.username}`} className="text-primary hover:underline" />,
+                            <Link to={`/quest/${activity.challengeId}`} className="text-primary hover:underline" />
+                          ]}
+                        />
                       </div>
                     ) : activity.type === 'challenge_created' && (
                       <div>
-                        <p>
-                          <span className="font-medium">{profileData.username}</span>
-                          {' '}{t('created a new quest')}:{' '}
-                          <Link to={`/quest/${activity.challengeId}`} className="text-primary hover:underline">
-                            {activity.challengeTitle}
-                          </Link>
-                        </p>
+                        <Trans
+                          i18nKey="profile.activity.challenge_created"
+                          values={{
+                            username: profileData.username,
+                            challengeTitle: activity.challengeTitle
+                          }}
+                          components={[
+                            <span className="font-medium" />,
+                            <Link to={`/quest/${activity.challengeId}`} className="text-primary hover:underline" />
+                          ]}
+                        />
                       </div>
                     )}
                     <p className="text-xs text-muted-foreground mt-2">
@@ -352,10 +353,9 @@ const Profile = () => {
               <UpcomingEvents events={mockBookedSchedules} />
             ) : (
               <Schedule 
-                profile={profileData} 
                 isOwnProfile={isOwnProfile} 
                 calendarSchedule={mockCalendarSchedule}
-                bookedSchedules={mockBookedSchedules} 
+                initialBookedSchedules={mockBookedSchedules} 
               />
             )}
           </div>

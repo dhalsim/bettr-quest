@@ -16,6 +16,7 @@ const generateId = (): string => {
 // Function to create a schedule call option
 export const createScheduleCallOption = ({
   duration,
+  title,
   description,
   price = 0,
   type,
@@ -24,6 +25,7 @@ export const createScheduleCallOption = ({
 }: Omit<ScheduleCallOption, 'id'>): ScheduleCallOption => ({
   id: generateId(),
   duration,
+  title,
   description,
   price,
   type,

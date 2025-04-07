@@ -116,21 +116,25 @@
     "No recent activity": "No recent activity",
     "accepted": "accepted",
     "rejected": "rejected",
-    "a proof from": "a proof from",
-    "for the quest": "for the quest",
-    "created a new quest": "created a new quest",
     "No reviews yet": "No reviews yet",
     "schedule": {
+      "Schedule a Call": "Schedule a Call",
       "Schedule": "Schedule",
+      "Unavailable": "Unavailable",
+      "New Appointment": "New Appointment",
+      "Pending": "Pending",
+      "Approved": "Approved",
+      "Rejected": "Rejected",
       "Available Options": "Available Options",
       "minutes": "minutes",
       "Free": "Free",
       "First consultation free": "First consultation free",
       "Requires approval": "Requires approval",
-      "No available options for this time slot": "No available options for this time slot",
       "Select a time slot to see available options": "Select a time slot to see available options",
       "Book Call": "Book Call",
       "Reserve Slot": "Reserve Slot",
+      "Please pay the invoice to confirm the booking": "Please pay the invoice to confirm the booking",
+      "QR Code for Lightning Payment": "QR Code for Lightning Payment",
       "Invoice copied to clipboard": "Invoice copied to clipboard",
       "Copied": "Copied",
       "Copy": "Copy"
@@ -146,7 +150,9 @@
       "This Week": "This Week",
       "Next Week": "Next Week",
       "Later": "Later"
-    }
+    },
+    "activity.proof_review": "<0>{{username}}</0> <1>{{action}}</1> a proof from <2>@{{activityUsername}}</2> for the quest <3>{{challengeTitle}}</3>",
+    "activity.challenge_created": "<0>{{username}}</0> created a new quest: <1>{{challengeTitle}}</1>"
   },
   "quest": {
     "Back to Explore": "Back to Explore",

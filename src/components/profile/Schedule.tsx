@@ -1,27 +1,21 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DateTime } from 'luxon';
-import { UserProfile } from '@/types/user';
 import { ScheduleCallOption, BookedSchedule, CalendarSchedule } from '@/types/schedule';
 import { isTimeSlotAvailable, getAvailableOptions } from '@/lib/schedule';
 import BookingFlow from './BookingFlow';
 
 interface ScheduleProps {
-  profile: UserProfile;
   isOwnProfile: boolean;
   calendarSchedule: CalendarSchedule;
-  bookedSchedules: BookedSchedule[];
-  onScheduleSelect?: (dateTime: DateTime, option: ScheduleCallOption) => void;
-  onBook?: (booking: Omit<BookedSchedule, 'id'>) => void;
+  initialBookedSchedules: BookedSchedule[];
 }
 
 const Schedule: React.FC<ScheduleProps> = ({
-  profile,
   isOwnProfile,
   calendarSchedule,
-  bookedSchedules,
-  onScheduleSelect,
-  onBook
+  initialBookedSchedules,
+
 }) => {
   const { t, i18n } = useTranslation(null, { keyPrefix: 'profile.schedule' });
   const [currentDate, setCurrentDate] = useState(DateTime.now());
@@ -29,6 +23,7 @@ const Schedule: React.FC<ScheduleProps> = ({
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [availableOptions, setAvailableOptions] = useState<ScheduleCallOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<ScheduleCallOption | null>(null);
+  const [bookedSchedules, setBookedSchedules] = useState<BookedSchedule[]>(initialBookedSchedules);
   
   const timeSlotsRef = useRef<HTMLDivElement>(null);
 
@@ -88,17 +83,20 @@ const Schedule: React.FC<ScheduleProps> = ({
     if (!selectedDate || !selectedTime) return;
     
     setSelectedOption(option);
-    
-    if (onScheduleSelect) {
-      const selectedDateTime = selectedDate.set({ hour: parseInt(selectedTime) });
-      onScheduleSelect(selectedDateTime, option);
-    }
   };
 
   const handleBook = (booking: Omit<BookedSchedule, 'id'>) => {
-    if (onBook) {
-      onBook(booking);
-    }
+    // Add the new booking to the local state
+    const newBooking: BookedSchedule = {
+      ...booking,
+      id: Math.random().toString(36).substr(2, 9) // Generate a simple unique ID
+    };
+    
+    setBookedSchedules(prev => [...prev, newBooking]);
+    
+    // Reset the selected time and option to hide the BookingFlow
+    setSelectedTime(null);
+    setSelectedOption(null);
   };
 
   const isTimeSlotValid = (date: DateTime, hour: number) => {
@@ -196,11 +194,9 @@ const Schedule: React.FC<ScheduleProps> = ({
             {monthDays.map(day => {
               const date = currentDate.set({ day });
               const isSelected = selectedDate?.day === day && selectedDate?.month === currentDate.month;
-              const hasBookings = bookedSchedules.some(booking => 
-                DateTime.fromJSDate(booking.date).hasSame(date, 'day')
-              );
               const isPastDate = date < DateTime.now().startOf('day');
               const isDisabled = isPastDate || (!isPastDate && !hasAvailableSlots(date));
+              const isToday = date.hasSame(DateTime.now(), 'day');
 
               return (
                 <button
@@ -210,7 +206,7 @@ const Schedule: React.FC<ScheduleProps> = ({
                   className={`
                     h-10 rounded flex items-center justify-center
                     ${isSelected ? 'bg-primary text-white' : ''}
-                    ${hasBookings ? 'border-2 border-primary' : ''}
+                    ${isToday ? 'border-2 border-primary' : ''}
                     ${isDisabled ? 'opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}
                   `}
                 >

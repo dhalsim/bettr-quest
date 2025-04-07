@@ -20,6 +20,7 @@ export type CallType = 'Text' | 'VideoCall' | 'AudioCall';
 export type ScheduleCallOption = {
   id: string;
   duration: number; // in minutes
+  title: string;
   description: string;
   price?: number; // in sats, optional
   type: CallType;
