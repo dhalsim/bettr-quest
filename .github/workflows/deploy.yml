@@ -25,10 +25,6 @@ jobs:
         
       - name: Build
         run: npm run build
-
-      - name: Create CNAME file
-        run: |
-          echo "demo.bettr.quest" > ./dist/CNAME
         
       - name: Generate static pages
         run: npx tsx scripts/generate-static.ts
