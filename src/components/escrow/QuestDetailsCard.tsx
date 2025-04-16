@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 interface QuestDetailsCardProps {
-  title: string;
+  title?: string;
   description: string;
   questLink: string;
   proofTitle?: string;
@@ -21,11 +21,13 @@ const QuestDetailsCard: React.FC<QuestDetailsCardProps> = ({
 
   return (
     <div className="mb-8">
-      <Link to={questLink} className="block mb-4">
-        <h2 className="text-xl font-semibold text-primary hover:underline">
-          {title}
-        </h2>
-      </Link>
+      {title && (
+        <Link to={questLink} className="block mb-4">
+          <h2 className="text-xl font-semibold text-primary hover:underline">
+            {title}
+          </h2>
+        </Link>
+      )}
       
       <p className="text-muted-foreground mb-4">
         {description}

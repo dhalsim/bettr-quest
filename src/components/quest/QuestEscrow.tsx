@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 
 interface QuestEscrowProps {
   visibility: 'public' | 'private';
-  getTitle: () => string;
   questDescription: string;
   questId: string;
   questRewardAmount: number;  
@@ -19,7 +18,6 @@ interface QuestEscrowProps {
 }
 
 const QuestEscrow: React.FC<QuestEscrowProps> = ({
-  getTitle,
   questDescription,
   questId,
   questRewardAmount,
@@ -50,7 +48,6 @@ const QuestEscrow: React.FC<QuestEscrowProps> = ({
   return (
     <div className="glass rounded-2xl p-8 border border-border/50">
       <QuestDetailsCard 
-        title={getTitle()}
         description={questDescription}
         questLink={getQuestLink()}
       />

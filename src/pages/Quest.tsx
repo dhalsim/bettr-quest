@@ -299,9 +299,9 @@ const QuestPage = () => {
                     {questData.title}
                   </h1>
                   
-                  {isLoggedIn && isQuestActive && !isDraftQuest && (
+                  {isLoggedIn && (
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {!isQuestCreator && (
+                      {!isQuestCreator && isQuestActive && !isDraftQuest && (
                         <Button 
                           variant="outline" 
                           size="sm"

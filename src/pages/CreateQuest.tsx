@@ -262,7 +262,6 @@ const CreateQuest = () => {
               {currentStep === 'escrow' && (
                 <QuestEscrow
                   visibility={visibility}
-                  getTitle={getTitle}
                   questDescription={description}
                   questId="random-id"
                   questRewardAmount={lockAmount}
