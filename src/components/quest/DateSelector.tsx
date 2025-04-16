@@ -11,9 +11,16 @@ import { cn } from "@/lib/utils";
 interface DateSelectorProps {
   dueDate: string;
   setDueDate: (date: string) => void;
+  label?: string;
+  placeholder?: string;
 }
 
-const DateSelector: React.FC<DateSelectorProps> = ({ dueDate, setDueDate }) => {
+const DateSelector: React.FC<DateSelectorProps> = ({ 
+  dueDate, 
+  setDueDate,
+  label,
+  placeholder 
+}) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -33,7 +40,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ dueDate, setDueDate }) => {
   return (
     <div className="mb-6">
       <label htmlFor="dueDate" className="block text-sm font-medium mb-2">
-        {t('create-quest.form.due-date')}
+        {label || t('create-quest.form.Due Date')}
       </label>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
@@ -45,7 +52,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ dueDate, setDueDate }) => {
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {dueDate ? format(new Date(dueDate), "PPP") : <span>{t('create-quest.form.due-date-placeholder')}</span>}
+            {dueDate ? format(new Date(dueDate), "PPP") : <span>{placeholder || t('create-quest.form.Select due date')}</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">

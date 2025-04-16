@@ -257,6 +257,50 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Verification Rewards Section */}
+      <section className="py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">{t('Earn Bitcoin by Verifying')}</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              {t('Help validate quests and earn rewards for your participation')}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div className="feature-item glass rounded-2xl p-8 text-center">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
+                <CheckCircle size={24} />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">{t('Lock Funds to Verify')}</h3>
+              <p className="text-muted-foreground">
+                {t('Lock a small amount of Bitcoin to participate in quest verification')}
+              </p>
+            </div>
+            
+            <div className="feature-item glass rounded-2xl p-8 text-center">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
+                <Award size={24} />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">{t('Earn Rewards')}</h3>
+              <p className="text-muted-foreground">
+                {t('Get rewarded for verifying legitimate proofs and split the quest rewards')}
+              </p>
+            </div>
+            
+            <div className="feature-item glass rounded-2xl p-8 text-center">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mx-auto mb-6">
+                <Users size={24} />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">{t('Community Driven')}</h3>
+              <p className="text-muted-foreground">
+                {t('Help maintain the integrity of the platform through community verification')}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Become a Coach Section */}
       <section ref={coachSectionRef} className="py-20 px-6 bg-gradient-to-b from-background to-primary/10">
         <div className="max-w-7xl mx-auto">
@@ -267,7 +311,7 @@ const Index = () => {
                 {t('Help others achieve their goals and earn Bitcoin')}
               </p>
               <p className="text-muted-foreground mb-8">
-                {t('As a coach, you can guide, verify, and support others on their quests')}
+                {t('As a coach, you can guide and support others on their quests')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link to="/register-coach">
@@ -291,7 +335,7 @@ const Index = () => {
                   <div>
                     <h3 className="font-semibold mb-2">{t('Review & Guide')}</h3>
                     <p className="text-muted-foreground text-sm">
-                      {t('Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.')}
+                      {t('Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users on their quests.')}
                     </p>
                   </div>
                 </div>
@@ -299,18 +343,6 @@ const Index = () => {
                 <div className="flex items-start gap-4">
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <span className="text-primary font-semibold">2</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">{t('Verify Achievements')}</h3>
-                    <p className="text-muted-foreground text-sm">
-                      {t('Validate proof submissions and ensure users meet their quest requirements. Provide detailed feedback for private quests.')}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <span className="text-primary font-semibold">3</span>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">{t('Monetize Your Expertise')}</h3>

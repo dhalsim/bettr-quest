@@ -8,11 +8,12 @@ import ConfirmButton from '@/components/escrow/ConfirmButton';
 import { Button } from '@/components/ui/button';
 
 interface QuestEscrowProps {
-  type: 'quest' | 'proof-verify' | 'proof-contest';
-  questTitle: string;
+  type: 'quest' | 'proof-accept' | 'proof-reject';
+  visibility: 'public' | 'private';
+  getTitle: () => string;
   questDescription: string;
   questId: string;
-  questRewardAmount: number;
+  questRewardAmount: number;  
   questLockedAmount: number;
   onConfirm: () => void;
   onSkip?: () => void;
@@ -20,20 +21,22 @@ interface QuestEscrowProps {
 
 const QuestEscrow: React.FC<QuestEscrowProps> = ({
   type,
-  questTitle,
+  getTitle,
   questDescription,
   questId,
   questRewardAmount,
   questLockedAmount,
+  visibility,
   onConfirm,
   onSkip
 }) => {
   const { t } = useTranslation();
   const [rewardPercentage, setRewardPercentage] = useState(5);
   
-  const isProofVerification = type === 'proof-verify' || type === 'proof-contest';
-  const userLockAmount = isProofVerification ? 10000 : 20000;
+  const isProofVerification = type === 'proof-accept' || type === 'proof-reject';
+  const userLockAmount = 10000;
   const platformFees = 1000;
+  const aiServiceFee = 1000;
   
   const calculateCommunityReward = () => {
     return Math.floor(userLockAmount * (rewardPercentage / 100));
@@ -53,13 +56,13 @@ const QuestEscrow: React.FC<QuestEscrowProps> = ({
     <div className="glass rounded-2xl p-8 border border-border/50">
       {isProofVerification ? (
         <QuestDetailsCard 
-          title={questTitle}
+          title={getTitle()}
           description={questDescription}
           questLink={getQuestLink()}
         />
       ) : (
         <QuestDetailsCard 
-          title={questTitle}
+          title={getTitle()}
           description={questDescription}
           questLink={getQuestLink()}
         />
@@ -71,7 +74,7 @@ const QuestEscrow: React.FC<QuestEscrowProps> = ({
           isProofVerification={isProofVerification} 
         />
         
-        {!isProofVerification && (
+        {!isProofVerification && visibility === 'public' && (
           <RewardsSlider 
             percentage={rewardPercentage}
             onPercentageChange={setRewardPercentage}
@@ -82,12 +85,14 @@ const QuestEscrow: React.FC<QuestEscrowProps> = ({
         <SummarySection 
           userLockAmount={userLockAmount}
           communityReward={calculateCommunityReward()}
+          aiServiceFee={aiServiceFee}
           platformFees={platformFees}
           totalToLock={calculateTotalToLock()}
           isProofVerification={isProofVerification}
-          verificationType={type === 'proof-verify' ? 'verify' : 'contest'}
+          verificationType={type === 'proof-accept' ? 'accept' : 'reject'}
           questRewardAmount={questRewardAmount}
           questLockedAmount={questLockedAmount}
+          visibility={visibility}
         />
         
         <div className="flex flex-col gap-4">

@@ -76,12 +76,11 @@
     "Ready to Become Better?": "¿Listo para Ser Mejor?",
     "Start Your First Quest": "Comienza tu Primera Misión",
     "Help others achieve their goals and earn Bitcoin": "Ayuda a otros a alcanzar sus metas y gana Bitcoins",
-    "As a coach, you can guide, verify, and support others on their quests": "Como coach, puedes guiar, verificar y apoyar a otros en sus misiones",
+    "As a coach, you can guide and support others on their quests": "Como coach, puedes guiar y apoyar a otros en sus misiones",
     "Register as Coach": "Registrarse como Coach",
     "Review & Guide": "Revisar y Guiar",
-    "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.": "Revisa las misiones enviadas, proporciona retroalimentación constructiva y guía a los usuarios hacia sus metas. Trabaja uno a uno con usuarios que elijan coaching privado.",
+    "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users on their quests.": "Revisa las misiones enviadas, proporciona retroalimentación constructiva y guía a los usuarios hacia sus metas. Trabaja uno a uno con usuarios en sus misiones.",
     "Verify Achievements": "Verificar Logros",
-    "Validate proof submissions and ensure users meet their quest requirements. Provide detailed feedback for private quests.": "Valida las pruebas enviadas y asegúrate de que los usuarios cumplan con los requisitos de su misión. Proporciona retroalimentación detallada para misiones privadas.",
     "Monetize Your Expertise": "Monetiza tu Experiencia",
     "Get paid in Bitcoin by helping users achieve their goals. Schedule text, audio, or video coaching sessions and monetize your time.": "Recibe pagos en Bitcoin ayudando a usuarios a alcanzar sus metas. Programa sesiones de coaching por texto, audio o video y monetiza tu tiempo.",
     "Premium Benefits": "Beneficios Premium",
@@ -98,7 +97,15 @@
     "Show off your premium status with special profile badges": "Muestra tu estatus premium con insignias especiales de perfil",
     "Get Premium Access": "Obtener Acceso Premium",
     "Save on platform fees and unlock exclusive benefits with our premium membership": "Ahorra en tarifas de plataforma y desbloquea beneficios exclusivos con nuestra membresía premium",
-    "Only 10,000 sats for 30 days": "Solo 10,000 sats por 30 días"
+    "Only 10,000 sats for 30 days": "Solo 10,000 sats por 30 días",
+    "Earn Bitcoin by Verifying": "Gana Bitcoin Verificando",
+    "Help validate quests and earn rewards for your participation": "Ayuda a validar misiones y gana recompensas por tu participación",
+    "Lock Funds to Verify": "Bloquea Fondos para Verificar",
+    "Lock a small amount of Bitcoin to participate in quest verification": "Bloquea una pequeña cantidad de Bitcoin para participar en la verificación de misiones",
+    "Earn Rewards": "Gana Recompensas",
+    "Get rewarded for verifying legitimate proofs and split the quest rewards": "Recibe recompensas por verificar pruebas legítimas y comparte las recompensas de la misión",
+    "Community Driven": "Impulsado por la Comunidad",
+    "Help maintain the integrity of the platform through community verification": "Ayuda a mantener la integridad de la plataforma a través de la verificación comunitaria"
   },
   "profile": {
     "Back to Explore": "Volver a Explorar",
@@ -342,16 +349,15 @@
       "Summary": "Resumen",
       "Your Lock Amount": "Tu Cantidad Bloqueada",
       "Community Rewards": "Recompensas de la Comunidad",
-      "Contest Reward": "Recompensa por Impugnación",
-      "Verification Reward": "Recompensa por Verificación",
-      "Platform Fees": "Comisiones de la Plataforma",
+      "AI Service Fee": "Tarifa del Servicio de IA",
+      "Platform Fees": "Tarifas de la Plataforma",
       "Total to Lock": "Total a Bloquear",
       "What's at stake:": "Lo que está en juego:",
       "If your verification is correct: You'll receive {{amount}} sats": "Si tu verificación es correcta: Recibirás {{amount}} sats",
       "If your verification is incorrect: You'll lose your locked amount ({{amount}} sats)": "Si tu verificación es incorrecta: Perderás tu cantidad bloqueada ({{amount}} sats)",
       "If your contest is valid: You'll receive {{total}} sats (+{{quest}} sats from the quest)": "Si tu impugnación es válida: Recibirás {{total}} sats (+{{quest}} sats de la misión)",
-      "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)": "Si tu impugnación no es válida: Perderás tu cantidad bloqueada ({{amount}} sats)",
-      "You'll get back {{amount}} sats upon successful completion": "Recuperarás {{amount}} sats al completar exitosamente"
+      "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)": "Si tu impugnación es inválida: Perderás tu cantidad bloqueada ({{amount}} sats)",
+      "You'll get back {{amount}} sats upon successful completion": "Recibirás de vuelta {{amount}} sats al completar exitosamente"
     },
     "rewards": {
       "rewardInfo": {
@@ -359,8 +365,8 @@
         "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest": "Si tu impugnación es válida, recibirás tu cantidad bloqueada + la cantidad total bloqueada del quest"
       },
       "confirmButton": {
-        "Confirm Verification": "Confirmar Verificación",
-        "Confirm Contest": "Confirmar Impugnación",
+        "Confirm Accept": "Confirmar Aceptar",
+        "Confirm Reject": "Confirmar Rechazar",
         "Lock {{amount}} sats": "Bloquear {{amount}} sats"
       },
       "proofDetails": {
@@ -450,82 +456,86 @@
     "Back to Explore": "Volver a Explorar",
     "New Quest": "Nueva Misión",
     "toast": {
-      "Your quest is saved as a draft.": "Tu misión ha sido guardada como borrador.",
-      "Please enter a quest title": "Por favor, introduce un título para la misión",
-      "Please enter a quest description": "Por favor, introduce una descripción para la misión",
-      "Please enter a quest due date": "Por favor, introduce una fecha límite para la misión",
-      "Please select quest visibility": "Por favor, selecciona la visibilidad de la misión",
-      "Please select who can verify your proof": "Por favor, selecciona quién puede verificar tu prueba",
-      "Please select a coach": "Por favor, selecciona un coach"
+      "Your quest is saved as a draft.": "Tu misión se guardó como borrador.",
+      "Please enter a quest title": "Por favor ingresa un título para la misión",
+      "Please enter a quest description": "Por favor ingresa una descripción para la misión",
+      "Please enter a quest due date": "Por favor ingresa una fecha límite para la misión",
+      "Please select quest visibility": "Por favor selecciona la visibilidad de la misión"
     },
     "steps": {
       "basic": {
-        "title": "Información básica",
-        "description": "Ingresa los detalles de la misión"
+        "Basic Information": "Información Básica",
+        "Enter quest details": "Ingresa los detalles de la misión"
       },
       "visibility": {
-        "title": "Visibilidad",
-        "description": "Elige quién puede verificar"
+        "Choose Quest Visibility": "Elige la Visibilidad de la Misión",
+        "Select if your quest will be public or private": "Selecciona si tu misión será pública o privada",
+        "public": {
+          "Public": "Pública",
+          "Anyone can view and verify your quest": "Cualquiera puede ver y verificar tu misión",
+          "How proof verification works on public quests": "Cómo funciona la verificación de pruebas en misiones públicas",
+          "The bettr.quest community will review your quest proof and validate. You would need to set some rewards in order to motivate the community for reviewing your proof.": "La comunidad de bettr.quest revisará y validará la prueba de tu misión. Necesitarás establecer algunas recompensas para motivar a la comunidad a revisar tu prueba."
+        },
+        "private": {
+          "Private": "Privada",
+          "Only you can view your quest": "Solo tú puedes ver tu misión",
+          "How proof verification works on private quests": "Cómo funciona la verificación de pruebas en misiones privadas",
+          "Our AI service will validate your proof. You would need to pay for the fee (1,000 sats)": "Nuestro servicio de IA validará tu prueba. Necesitarás pagar la tarifa (1,000 sats)"
+        }
       },
       "escrow": {
-        "title": "Bloquear Depósito",
-        "description": "Establece recompensas y tarifas"
+        "Lock Escrow": "Bloquear Escrow",
+        "Set rewards and fees": "Establecer recompensas y tarifas"
       }
     },
     "form": {
-      "title": "Título",
-      "title-placeholder": "¿Cuál es tu misión?",
-      "description": "Descripción",
-      "description-placeholder": "Describe tu misión en detalle. ¿Qué quieres lograr?",
-      "due-date": "Fecha límite",
-      "due-date-placeholder": "Selecciona fecha límite",
+      "Quest Title": "Título de la Misión",
+      "What is your quest?": "¿Cuál es tu misión?",
+      "Quest Description": "Descripción de la Misión",
+      "Describe your quest in detail. What do you want to achieve?": "Describe tu misión en detalle. ¿Qué quieres lograr?",
+      "Due Date": "Fecha Límite",
+      "Select due date": "Selecciona la fecha límite",
       "validation": {
-        "due-date": "Por favor, establece una fecha límite para tu misión"
+        "Please set a due date for your quest": "Por favor establece una fecha límite para tu misión"
       }
     },
     "visibility": {
-      "title": "Elige la Visibilidad de tu Misión",
-      "description": "Selecciona si tu misión será pública o privada",
+      "Choose Quest Visibility": "Elige la Visibilidad de la Misión",
+      "Select if your quest will be public or private": "Selecciona si tu misión será pública o privada",
       "public": {
-        "title": "Pública",
-        "description": "Cualquiera puede ver y verificar tu misión"
+        "Public": "Pública",
+        "Anyone can view and verify your quest": "Cualquiera puede ver y verificar tu misión",
+        "How proof verification works on public quests": "Cómo funciona la verificación de pruebas en misiones públicas",
+        "The bettr.quest community will review your quest proof and validate. You would need to set some rewards in order to motivate the community for reviewing your proof.": "La comunidad de bettr.quest revisará y validará la prueba de tu misión. Necesitarás establecer algunas recompensas para motivar a la comunidad a revisar tu prueba."
       },
       "private": {
-        "title": "Privada",
-        "description": "Solo tú y los verificadores seleccionados pueden ver tu misión"
-      },
-      "verification": {
-        "title": "¿Quién puede verificar tu prueba?",
-        "anyone": "Cualquiera puede verificar",
-        "coach": {
-          "title": "Encuentra un coach",
-          "select": "Elige un coach"
-        },
-        "ai": "Usar verificación de IA"
+        "Private": "Privada",
+        "Only you can view your quest": "Solo tú puedes ver tu misión",
+        "How proof verification works on private quests": "Cómo funciona la verificación de pruebas en misiones privadas",
+        "Our AI service will validate your proof. You would need to pay for the fee (1,000 sats)": "Nuestro servicio de IA validará tu prueba. Necesitarás pagar la tarifa (1,000 sats)"
       },
       "validation": {
-        "visibility": "Por favor, selecciona la visibilidad de la misión",
-        "verifier": "Por favor, selecciona quién puede verificar tu prueba"
+        "Please select quest visibility": "Por favor selecciona la visibilidad de la misión"
       }
     },
     "escrow": {
-      "title": "Bloquear Depósito",
-      "description": "Revisa y confirma los detalles de tu depósito",
+      "Lock Escrow": "Bloquear Escrow",
+      "Review and confirm your escrow details": "Revisa y confirma los detalles de tu escrow",
       "summary": {
-        "title": "Resumen del Depósito",
-        "description": "Revisa los montos antes de bloquear",
-        "lock-amount": "Monto a Bloquear",
-        "platform-fees": "Tarifas de Plataforma",
-        "coach-fee": "Tarifa de Coach",
-        "ai-fee": "Tarifa de Verificación de IA",
-        "total": "Total a Bloquear",
-        "button": "Bloquear y Publicar"
+        "Escrow Summary": "Resumen del Escrow",
+        "Review the amounts before locking": "Revisa los montos antes de bloquear",
+        "Lock Amount": "Monto a Bloquear",
+        "Platform Fees": "Tarifas de la Plataforma",
+        "Coach Fee": "Tarifa del Entrenador",
+        "AI Verification Fee": "Tarifa de Verificación IA",
+        "Total to Lock": "Total a Bloquear",
+        "Lock & Publish": "Bloquear y Publicar"
       },
-      "creating": "Creando Misión..."
+      "creating": "Creando misión..."
     },
     "navigation": {
-      "back": "Atrás",
-      "next": "Siguiente"
+      "Back": "Atrás",
+      "Next": "Siguiente"
     }
   },
   "coach-directory": {

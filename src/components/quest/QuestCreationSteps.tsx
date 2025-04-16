@@ -1,6 +1,5 @@
 import React from 'react';
 import { Check } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 interface Step {
   title: string;
@@ -14,8 +13,6 @@ interface QuestCreationStepsProps {
 }
 
 const QuestCreationSteps: React.FC<QuestCreationStepsProps> = ({ steps }) => {
-  const { t } = useTranslation();
-
   return (
     <div className="flex justify-between mb-8">
       {steps.map((step, index) => (

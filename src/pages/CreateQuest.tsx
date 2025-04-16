@@ -12,7 +12,6 @@ import DateSelector from '@/components/quest/DateSelector';
 import QuestCreationSteps from '@/components/quest/QuestCreationSteps';
 import VisibilitySelector from '@/components/quest/VisibilitySelector';
 import QuestEscrow from '@/components/quest/QuestEscrow';
-import { QuestLocationState } from './escrow-deposit/validation';
 import { mockQuests, questTemplates } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 import CoachDirectory from '@/components/quest/CoachDirectory';
@@ -34,8 +33,7 @@ const CreateQuest = () => {
   // Form states
   const [title, setTitle] = useState(prefilledTitle);
   const [description, setDescription] = useState(prefilledDescription);
-  const [visibility, setVisibility] = useState('');
-  const [proofChallenger, setProofChallenger] = useState('');
+  const [visibility, setVisibility] = useState<'public' | 'private' | null>(null);
   const [tags, setTags] = useState<string[]>(prefilledTags ? prefilledTags.split(',') : []);
   const [dueDate, setDueDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,20 +60,20 @@ const CreateQuest = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const steps = [
     {
-      title: t('create-quest.steps.basic.title'),
-      description: t('create-quest.steps.basic.description'),
+      title: t('create-quest.steps.basic.Basic Information'),
+      description: t('create-quest.steps.basic.Enter quest details'),
       isCompleted: currentStep > 1,
       isActive: currentStep === 1
     },
     {
-      title: t('create-quest.steps.visibility.title'),
-      description: t('create-quest.steps.visibility.description'),
+      title: t('create-quest.steps.visibility.Choose Quest Visibility'),
+      description: t('create-quest.steps.visibility.Select if your quest will be public or private'),
       isCompleted: currentStep > 2,
       isActive: currentStep === 2
     },
     {
-      title: t('create-quest.steps.escrow.title'),
-      description: t('create-quest.steps.escrow.description'),
+      title: t('create-quest.steps.escrow.Lock Escrow'),
+      description: t('create-quest.steps.escrow.Set rewards and fees'),
       isCompleted: currentStep > 3,
       isActive: currentStep === 3
     }
@@ -94,6 +92,22 @@ const CreateQuest = () => {
       document.title = `${t('create-quest.Creating a Quest for myself')}`;
     }
   }, [prefilledTitle, t]);
+
+  const getTitle = () => {
+    const defaultTitle = prefilledTitle 
+      ? t('create-quest.Creating a Copy of Quest') 
+      : t('create-quest.Creating a Quest for myself');
+    
+    const baseTitle = title || defaultTitle;
+
+    if (visibility) {
+      const visibilityText = t(`create-quest.visibility.${visibility}.${visibility.charAt(0).toUpperCase() + visibility.slice(1)}`);
+      
+      return `${baseTitle} (${visibilityText})`;
+    } 
+    
+    return baseTitle;
+  };
   
   // Apply template
   const applyTemplate = (templateId: string) => {
@@ -136,14 +150,6 @@ const CreateQuest = () => {
         toast.error(t('create-quest.toast.Please select quest visibility'));
         return;
       }
-      if (!proofChallenger) {
-        toast.error(t('create-quest.toast.Please select who can verify your proof'));
-        return;
-      }
-      if (proofChallenger === 'coach' && !selectedCoachId) {
-        toast.error(t('create-quest.toast.Please select a coach'));
-        return;
-      }
     }
     
     setCurrentStep(prev => Math.min(prev + 1, 3));
@@ -169,25 +175,6 @@ const CreateQuest = () => {
     }, 200);
   };
 
-  const [selectedCoachId, setSelectedCoachId] = useState<string | undefined>();
-
-  const handleCoachSelect = (coachId: string) => {
-    // If clicking the same coach, deselect it
-    if (selectedCoachId === coachId) {
-      setSelectedCoachId(undefined);
-      return;
-    }
-
-    setSelectedCoachId(coachId);
-    // You can also store additional coach information if needed
-    const selectedCoach = mockCoaches.find(coach => coach.id === coachId);
-    
-    if (selectedCoach) {
-      // Handle the selected coach data
-      console.log('Selected coach:', selectedCoach);
-    }
-  };
-  
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-3xl mx-auto">
@@ -199,13 +186,7 @@ const CreateQuest = () => {
         <div className="glass rounded-2xl overflow-hidden">
           <div className="p-8">
             <h1 className="text-2xl font-bold mb-8 text-center">
-              {
-                title 
-                  ? t('create-quest.New Quest') + ': ' + title 
-                  : prefilledTitle 
-                    ? t('create-quest.Creating a Copy of Quest') 
-                    : t('create-quest.Creating a Quest for myself')
-              }
+              {getTitle()}
             </h1>
 
             <QuestCreationSteps steps={steps} />
@@ -219,12 +200,12 @@ const CreateQuest = () => {
                   {/* Quest Title */}
                   <div>
                     <label htmlFor="title" className="block text-sm font-medium mb-2">
-                      {t('create-quest.form.title')}
+                      {t('create-quest.form.Quest Title')}
                     </label>
                     <Input
                       type="text"
                       id="title"
-                      placeholder={t('create-quest.form.title-placeholder')}
+                      placeholder={t('create-quest.form.What is your quest?')}
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       required
@@ -234,12 +215,12 @@ const CreateQuest = () => {
                   {/* Quest Description */}
                   <div>
                     <label htmlFor="description" className="block text-sm font-medium mb-2">
-                      {t('create-quest.form.description')}
+                      {t('create-quest.form.Quest Description')}
                     </label>
                     <Textarea
                       id="description"
                       rows={5}
-                      placeholder={t('create-quest.form.description-placeholder')}
+                      placeholder={t('create-quest.form.Describe your quest in detail. What do you want to achieve?')}
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       required
@@ -250,7 +231,12 @@ const CreateQuest = () => {
                   <TagsInput tags={tags} setTags={setTags} />
                   
                   {/* Due Date */}
-                  <DateSelector dueDate={dueDate} setDueDate={setDueDate} />
+                  <DateSelector 
+                    dueDate={dueDate} 
+                    setDueDate={setDueDate} 
+                    label={t('create-quest.form.Due Date')}
+                    placeholder={t('create-quest.form.Select due date')}
+                  />
                   
                   {/* Media Section */}
                   <MediaUpload 
@@ -265,24 +251,15 @@ const CreateQuest = () => {
                   <VisibilitySelector
                     visibility={visibility}
                     onVisibilityChange={setVisibility}
-                    proofChallenger={proofChallenger}
-                    onProofChallengerChange={setProofChallenger}
                   />
-                  
-                  {proofChallenger === 'coach' && (
-                    <CoachDirectory
-                      onSelectCoach={handleCoachSelect}
-                      selectedCoachId={selectedCoachId}
-                      questTags={tags}
-                    />
-                  )}
                 </div>
               )}
 
               {currentStep === 3 && (
                 <QuestEscrow
                   type="quest"
-                  questTitle={title}
+                  visibility={visibility}
+                  getTitle={getTitle}
                   questDescription={description}
                   questId="random-id"
                   questRewardAmount={lockAmount}
@@ -293,35 +270,24 @@ const CreateQuest = () => {
               
               {/* Navigation Buttons */}
               <div className="flex justify-between mt-8">
-                {currentStep === 1 && (
+                {(currentStep === 2 || currentStep === 3) && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleBack}
+                    >
+                      {t('create-quest.navigation.Back')}
+                    </Button>
+                )}
+
+                {(currentStep === 1 || currentStep === 2) && (
                   <Button
                     type="button"
                     onClick={handleNext}
                     className="ml-auto"
-                  >
-                    {t('create-quest.navigation.next')}
-                  </Button>
-                )}
-
-                {currentStep === 2 && (
-                  <>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handleBack}
                     >
-                      {t('create-quest.navigation.back')}
+                      {t('create-quest.navigation.Next')}
                     </Button>
-
-                    <Button
-                      type="button"
-                      onClick={handleNext}
-                      className="ml-auto"
-                      disabled={visibility === '' || proofChallenger === '' || (proofChallenger === 'coach' && !selectedCoachId)}
-                    >
-                      {t('create-quest.navigation.next')}
-                    </Button>
-                  </>
                 )}
               </div>
             </div>

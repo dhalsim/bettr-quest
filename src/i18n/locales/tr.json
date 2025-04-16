@@ -76,12 +76,11 @@
     "Ready to Become Better?": "Daha İyi Olmaya Hazır mısın?",
     "Start Your First Quest": "İlk Görevinize Başlayın",
     "Help others achieve their goals and earn rewards": "Başkalarının hedeflerine ulaşmasına yardımcı olun ve ödüller kazanın",
-    "As a coach, you can guide, verify, and support others on their quests": "Bir koç olarak, başkalarının görevlerinde rehberlik edebilir, doğrulayabilir ve destek olabilirsiniz",
+    "As a coach, you can guide and support others on their quests": "Bir koç olarak, başkalarının görevlerinde rehberlik edebilir ve destek olabilirsiniz",
     "Register as Coach": "Koç Olarak Kaydol",
     "Review & Guide": "İncele ve Yönlendir",
-    "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.": "Görev gönderimlerini inceleyin, yapıcı geri bildirimler sağlayın ve kullanıcıları hedeflerine yönlendirin. Özel koçluk seçen kullanıcılarla bire bir çalışın.",
+    "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users on their quests.": "Görev gönderimlerini inceleyin, yapıcı geri bildirimler sağlayın ve kullanıcıları hedeflerine yönlendirin. Kullanıcıların görevleri üzerine bire bir çalışın.",
     "Verify Achievements": "Başarıları Doğrula",
-    "Validate proof submissions and ensure users meet their quest requirements. Provide detailed feedback for private quests.": "Kanıt gönderimlerini doğrulayın ve kullanıcıların görev gereksinimlerini karşıladığından emin olun. Özel görevler için detaylı geri bildirim sağlayın.",
     "Monetize Your Expertise": "Uzmanlığınızı Paraya Dönüştürün",
     "Get paid in Bitcoin by helping users achieve their goals. Schedule text, audio, or video coaching sessions and monetize your time.": "Kullanıcıların hedeflerine ulaşmasına yardımcı olarak Bitcoin kazanın. Metin, ses veya video koçluk seansları planlayın ve zamanınızı paraya dönüştürün.",
     "Premium Benefits": "Premium Avantajlar",
@@ -98,7 +97,15 @@
     "Show off your premium status with special profile badges": "Premium durumunuzu özel profil rozetleriyle sergileyin",
     "Get Premium Access": "Premium Erişimi Al",
     "Save on platform fees and unlock exclusive benefits with our premium membership": "Premium üyeliğimizle platform ücretlerinden tasarruf edin ve özel avantajların kilidini açın",
-    "Only 10,000 sats for 30 days": "30 gün için sadece 10,000 sats"
+    "Only 10,000 sats for 30 days": "30 gün için sadece 10,000 sats",
+    "Earn Bitcoin by Verifying": "Doğrulayarak Bitcoin Kazan",
+    "Help validate quests and earn rewards for your participation": "Görevleri doğrulamaya yardımcı ol ve katılımın için ödüller kazan",
+    "Lock Funds to Verify": "Doğrulamak İçin Fonları Kilitle",
+    "Lock a small amount of Bitcoin to participate in quest verification": "Görev doğrulamasına katılmak için küçük bir miktar Bitcoin kilitle",
+    "Earn Rewards": "Ödüller Kazan",
+    "Get rewarded for verifying legitimate proofs and split the quest rewards": "Geçerli kanıtları doğrulayarak ödül kazan ve görev ödüllerini paylaş",
+    "Community Driven": "Topluluk Odaklı",
+    "Help maintain the integrity of the platform through community verification": "Topluluk doğrulaması ile platformun bütünlüğünü korumaya yardımcı ol"
   },
   "profile": {
     "Back to Explore": "Keşfetmeye Dön",
@@ -366,16 +373,15 @@
       "Summary": "Özet",
       "Your Lock Amount": "Kilitlenecek Miktarınız",
       "Community Rewards": "Topluluk Ödülleri",
-      "Contest Reward": "İtiraz Ödülü",
-      "Verification Reward": "Doğrulama Ödülü",
+      "AI Service Fee": "Yapay Zeka Servis Ücreti",
       "Platform Fees": "Platform Ücretleri",
-      "Total to Lock": "Toplam Kilitlenecek",
-      "What's at stake:": "Risk Altında Olan:",
-      "If your verification is correct: You'll receive {{amount}} sats": "Doğrulamanız doğruysa: {{amount}} sats alacaksınız",
-      "If your verification is incorrect: You'll lose your locked amount ({{amount}} sats)": "Doğrulamanız yanlışsa: Kilitli miktarınızı ({{amount}} sats) kaybedeceksiniz",
-      "If your contest is valid: You'll receive {{total}} sats (+{{quest}} sats from the quest)": "İtirazınız geçerliyse: {{total}} sats alacaksınız (+{{quest}} sats görevden)",
-      "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)": "İtirazınız geçersizse: Kilitli miktarınızı ({{amount}} sats) kaybedeceksiniz",
-      "You'll get back {{amount}} sats upon successful completion": "Başarılı tamamlama durumunda {{amount}} sats geri alacaksınız"
+      "Total to Lock": "Toplam Kilitlenecek Miktar",
+      "What's at stake:": "Neler söz konusu:",
+      "If your verification is correct: You'll receive {{amount}} sats": "Eğer doğrulamanız doğruysa: {{amount}} sats alacaksınız",
+      "If your verification is incorrect: You'll lose your locked amount ({{amount}} sats)": "Eğer doğrulamanız yanlışsa: Kilitlenen miktarınızı ({{amount}} sats) kaybedeceksiniz",
+      "If your contest is valid: You'll receive {{total}} sats (+{{quest}} sats from the quest)": "Eğer itirazınız geçerliyse: {{total}} sats (+{{quest}} sats görevden) alacaksınız",
+      "If your contest is invalid: You'll lose your locked amount ({{amount}} sats)": "Eğer itirazınız geçersizse: Kilitlenen miktarınızı ({{amount}} sats) kaybedeceksiniz",
+      "You'll get back {{amount}} sats upon successful completion": "Başarılı tamamlamada {{amount}} sats geri alacaksınız"
     },
     "rewards": {
       "rewardInfo": {
@@ -383,8 +389,8 @@
         "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest": "İtirazınız geçerliyse, kilitli miktarınızı + görevin tüm kilitli miktarını alacaksınız"
       },
       "confirmButton": {
-        "Confirm Verification": "Doğrulamayı Onayla",
-        "Confirm Contest": "İtirazı Onayla",
+        "Confirm Accept": "Kabul Et",
+        "Confirm Reject": "Reddet",
         "Lock {{amount}} sats": "{{amount}} sats Kilitle"
       },
       "proofDetails": {
@@ -469,79 +475,91 @@
     "Back to Home": "Ana Sayfaya Dön"
   },
   "create-quest": {
-    "title": "Görev Oluştur",
-    "copy-title": "Görev Kopyası Oluşturuluyor",
-    "new-title": "Kendim için Görev Oluşturuyorum",
-    "back-to-explore": "Keşfet'e Dön",
-    "new-quest": "Yeni Görev",
+    "Creating a Copy of Quest": "Görev Kopyası Oluşturuluyor",
+    "Creating a Quest for myself": "Kendim için Görev Oluşturuyorum",
+    "Back to Explore": "Keşfet'e Dön",
+    "New Quest": "Yeni Görev",
+    "toast": {
+      "Your quest is saved as a draft.": "Göreviniz taslak olarak kaydedildi.",
+      "Please enter a quest title": "Lütfen bir görev başlığı girin",
+      "Please enter a quest description": "Lütfen bir görev açıklaması girin",
+      "Please enter a quest due date": "Lütfen bir görev bitiş tarihi girin",
+      "Please select quest visibility": "Lütfen görev görünürlüğünü seçin"
+    },
     "steps": {
       "basic": {
-        "title": "Temel bilgiler",
-        "description": "Görev detaylarını girin"
+        "Basic Information": "Temel Bilgiler",
+        "Enter quest details": "Görev detaylarını girin"
       },
       "visibility": {
-        "title": "Gizlilik",
-        "description": "Kim doğrulayabilir seçin"
+        "Choose Quest Visibility": "Görev Görünürlüğünü Seçin",
+        "Select if your quest will be public or private": "Görevinizin herkese açık veya özel olup olmayacağını seçin",
+        "public": {
+          "Public": "Herkese Açık",
+          "Anyone can view and verify your quest": "Herkes görevinizi görüntüleyebilir ve doğrulayabilir",
+          "How proof verification works on public quests": "Kamu görevlerinde kanıt doğrulama nasıl çalışır",
+          "The bettr.quest community will review your quest proof and validate. You would need to set some rewards in order to motivate the community for reviewing your proof.": "bettr.quest topluluğu görev kanıtınızı inceleyecek ve doğrulayacaktır. Topluluğu kanıtınızı incelemeye motive etmek için bazı ödüller belirlemeniz gerekecektir."
+        },
+        "private": {
+          "Private": "Özel",
+          "Only you can view your quest": "Sadece siz görevinizi görüntüleyebilirsiniz",
+          "How proof verification works on private quests": "Özel görevlerde kanıt doğrulama nasıl çalışır",
+          "Our AI service will validate your proof. You would need to pay for the fee (1,000 sats)": "Yapay zeka servisimiz kanıtınızı doğrulayacaktır. Ücreti ödemeniz gerekecektir (1,000 sats)"
+        }
       },
       "escrow": {
-        "title": "Escrow Kilitle",
-        "description": "Ödülleri ve ücretleri ayarlayın"
+        "Lock Escrow": "Escrow Kilitle",
+        "Set rewards and fees": "Ödülleri ve ücretleri ayarlayın"
       }
     },
     "form": {
-      "title": "Görev Başlığı",
-      "title-placeholder": "Görevinize bir başlık verin",
-      "description": "Görev Açıklaması",
-      "description-placeholder": "Görevinizi detaylı bir şekilde açıklayın. Ne başarmak istiyorsunuz?",
-      "due-date": "Son Tarih",
-      "due-date-placeholder": "Son tarih seçin",
+      "Quest Title": "Görev Başlığı",
+      "What is your quest?": "Göreviniz nedir?",
+      "Quest Description": "Görev Açıklaması",
+      "Describe your quest in detail. What do you want to achieve?": "Görevinizi detaylı bir şekilde açıklayın. Ne başarmak istiyorsunuz?",
+      "Due Date": "Son Tarih",
+      "Select due date": "Son tarih seçin",
       "validation": {
-        "due-date": "Lütfen göreviniz için bir son tarih belirleyin"
+        "Please set a due date for your quest": "Lütfen göreviniz için bir son tarih belirleyin"
       }
     },
     "visibility": {
-      "title": "Görev Gizliliğini Seçin",
-      "description": "Görevinizin herkese açık veya özel olup olmayacağını seçin",
+      "Choose Quest Visibility": "Görev Görünürlüğünü Seçin",
+      "Select if your quest will be public or private": "Görevinizin herkese açık veya özel olup olmayacağını seçin",
       "public": {
-        "title": "Herkese Açık",
-        "description": "Herkes görevinizi görüntüleyebilir ve doğrulayabilir"
+        "Public": "Herkese Açık",
+        "Anyone can view and verify your quest": "Herkes görevinizi görüntüleyebilir ve doğrulayabilir",
+        "How proof verification works on public quests": "Kamu görevlerinde kanıt doğrulama nasıl çalışır",
+        "The bettr.quest community will review your quest proof and validate. You would need to set some rewards in order to motivate the community for reviewing your proof.": "bettr.quest topluluğu görev kanıtınızı inceleyecek ve doğrulayacaktır. Topluluğu kanıtınızı incelemeye motive etmek için bazı ödüller belirlemeniz gerekecektir."
       },
       "private": {
-        "title": "Özel",
-        "description": "Sadece siz ve seçilen doğrulayıcılar görevinizi görüntüleyebilir"
-      },
-      "verification": {
-        "title": "Kim kanıtınızı doğrulayabilir?",
-        "anyone": "Herkes doğrulayabilir",
-        "coach": {
-          "title": "Eğitmen bul",
-          "select": "Eğitmen seç"
-        },
-        "ai": "AI doğrulama kullan"
+        "Private": "Özel",
+        "Only you can view your quest": "Sadece siz görevinizi görüntüleyebilirsiniz",
+        "How proof verification works on private quests": "Özel görevlerde kanıt doğrulama nasıl çalışır",
+        "Our AI service will validate your proof. You would need to pay for the fee (1,000 sats)": "Yapay zeka servisimiz kanıtınızı doğrulayacaktır. Ücreti ödemeniz gerekecektir (1,000 sats)"
       },
       "validation": {
-        "visibility": "Lütfen görev gizliliğini seçin",
-        "verifier": "Lütfen kanıtınızı kimin doğrulayabileceğini seçin"
+        "Please select quest visibility": "Lütfen görev görünürlüğünü seçin"
       }
     },
     "escrow": {
-      "title": "Escrow Kilitle",
-      "description": "Escrow detaylarınızı gözden geçirin ve onaylayın",
+      "Lock Escrow": "Escrow Kilitle",
+      "Review and confirm your escrow details": "Escrow detaylarınızı gözden geçirin ve onaylayın",
       "summary": {
-        "title": "Escrow Özeti",
-        "description": "Kilitlemeden önce tutarları gözden geçirin",
-        "lock-amount": "Kilit Tutarı",
-        "platform-fees": "Platform Ücretleri",
-        "coach-fee": "Eğitmen Ücreti",
-        "ai-fee": "AI Doğrulama Ücreti",
-        "total": "Kilitlenecek Toplam",
-        "button": "Kilitle ve Yayınla"
+        "Escrow Summary": "Escrow Özeti",
+        "Review the amounts before locking": "Kilitlemeden önce tutarları gözden geçirin",
+        "Lock Amount": "Kilit Tutarı",
+        "Platform Fees": "Platform Ücretleri",
+        "Coach Fee": "Eğitmen Ücreti",
+        "AI Verification Fee": "AI Doğrulama Ücreti",
+        "Total to Lock": "Kilitlenecek Toplam",
+        "Lock & Publish": "Kilitle ve Yayınla"
       },
       "creating": "Görev Oluşturuluyor..."
     },
     "navigation": {
-      "back": "Geri",
-      "next": "İleri"
+      "Back": "Geri",
+      "Next": "İleri"
     }
   },
   "coach-directory": {

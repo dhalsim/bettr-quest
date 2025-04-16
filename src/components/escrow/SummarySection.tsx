@@ -5,23 +5,27 @@ import { useTranslation } from 'react-i18next';
 interface SummarySectionProps {
   userLockAmount: number;
   communityReward: number;
+  aiServiceFee: number;
   platformFees: number;
   totalToLock: number;
   isProofVerification: boolean;
-  verificationType?: 'verify' | 'contest';
+  verificationType?: 'accept' | 'reject';
   questRewardAmount?: number;
   questLockedAmount?: number;
+  visibility: 'public' | 'private';
 }
 
 const SummarySection: React.FC<SummarySectionProps> = ({
   userLockAmount,
   communityReward,
+  aiServiceFee,
   platformFees,
   totalToLock,
   isProofVerification,
   verificationType,
   questRewardAmount = 0,
-  questLockedAmount = 0
+  questLockedAmount = 0,
+  visibility
 }) => {
   const { t } = useTranslation();
 
@@ -38,21 +42,30 @@ const SummarySection: React.FC<SummarySectionProps> = ({
           <span>{userLockAmount.toLocaleString()} sats</span>
         </div>
         
-        {!isProofVerification && (
+        {!isProofVerification && visibility === 'public' && (
           <div className="flex justify-between items-center text-sm">
             <span>{t('escrow.summary.Community Rewards')}</span>
             <span>{communityReward.toLocaleString()} sats</span>
           </div>
         )}
+
+        {!isProofVerification && visibility === 'private' && (
+          <div className="flex justify-between items-center text-sm">
+            <span>{t('escrow.summary.AI Service Fee')}</span>
+            <span>{aiServiceFee.toLocaleString()} sats</span>
+          </div>
+        )}
         
-        {isProofVerification && verificationType === 'contest' && (
+        { // TODO: This is rather dynamic, it depends of disputes, can't show it here
+        
+        isProofVerification && verificationType === 'reject' && (
           <div className="flex justify-between items-center text-sm text-red-500">
             <span>{t('escrow.summary.Contest Reward')}</span>
             <span>{(userLockAmount + questLockedAmount).toLocaleString()} sats</span>
           </div>
         )}
         
-        {isProofVerification && verificationType === 'verify' && (
+        {isProofVerification && verificationType === 'accept' && (
           <div className="flex justify-between items-center text-sm text-green-500">
             <span>{t('escrow.summary.Verification Reward')}</span>
             <span>{questRewardAmount.toLocaleString()} sats</span>
@@ -73,8 +86,11 @@ const SummarySection: React.FC<SummarySectionProps> = ({
           {isProofVerification ? (
             <div className="mt-4 space-y-2">
               <h4 className="font-medium text-sm">{t('escrow.summary.What\'s at stake:')}</h4>
-              {verificationType === 'verify' ? (
+              {verificationType === 'accept' ? (
                 <>
+                  {
+                    // TODO: This is rather dynamic, it depends of disputes, can't show it here
+                  }
                   <p className="text-sm text-green-500">
                     ✓ {t('escrow.summary.If your verification is correct: You\'ll receive {{amount}} sats', { amount: questRewardAmount.toLocaleString() })}
                   </p>

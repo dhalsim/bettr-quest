@@ -75,12 +75,11 @@
     "Ready to Become Better?": "Ready to Become Better?",
     "Start Your First Quest": "Start Your First Quest",
     "Help others achieve their goals and earn Bitcoin": "Help others achieve their goals and earn Bitcoin",
-    "As a coach, you can guide, verify, and support others on their quests": "As a coach, you can guide, verify, and support others on their quests",
+    "As a coach, you can guide and support others on their quests": "As a coach, you can guide and support others on their quests",
     "Register as Coach": "Register as Coach",
     "Review & Guide": "Review & Guide",
-    "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.": "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users who choose private coaching.",
+    "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users on their quests.": "Review quest submissions, provide constructive feedback, and guide users towards their goals. Work one-on-one with users on their quests.",
     "Verify Achievements": "Verify Achievements",
-    "Validate proof submissions and ensure users meet their quest requirements. Provide detailed feedback for private quests.": "Validate proof submissions and ensure users meet their quest requirements. Provide detailed feedback for private quests.",
     "Monetize Your Expertise": "Monetize Your Expertise",
     "Get paid in Bitcoin by helping users achieve their goals. Schedule text, audio, or video coaching sessions and monetize your time.": "Get paid in Bitcoin by helping users achieve their goals. Schedule text, audio, or video coaching sessions and monetize your time.",
     "Premium Benefits": "Premium Benefits",
@@ -97,7 +96,15 @@
     "Show off your premium status with special profile badges": "Show off your premium status with special profile badges",
     "Get Premium Access": "Get Premium Access",
     "Save on platform fees and unlock exclusive benefits with our premium membership": "Save on platform fees and unlock exclusive benefits with our premium membership",
-    "Only 10,000 sats for 30 days": "Only 10,000 sats for 30 days"
+    "Only 10,000 sats for 30 days": "Only 10,000 sats for 30 days",
+    "Earn Bitcoin by Verifying": "Earn Bitcoin by Verifying",
+    "Help validate quests and earn rewards for your participation": "Help validate quests and earn rewards for your participation",
+    "Lock Funds to Verify": "Lock Funds to Verify",
+    "Lock a small amount of Bitcoin to participate in quest verification": "Lock a small amount of Bitcoin to participate in quest verification",
+    "Earn Rewards": "Earn Rewards",
+    "Get rewarded for verifying legitimate proofs and split the quest rewards": "Get rewarded for verifying legitimate proofs and split the quest rewards",
+    "Community Driven": "Community Driven",
+    "Help maintain the integrity of the platform through community verification": "Help maintain the integrity of the platform through community verification"
   },
   "profile": {
     "Back to Explore": "Back to Explore",
@@ -369,8 +376,7 @@
       "Summary": "Summary",
       "Your Lock Amount": "Your Lock Amount",
       "Community Rewards": "Community Rewards",
-      "Contest Reward": "Contest Reward",
-      "Verification Reward": "Verification Reward",
+      "AI Service Fee": "AI Service Fee",
       "Platform Fees": "Platform Fees",
       "Total to Lock": "Total to Lock",
       "What's at stake:": "What's at stake:",
@@ -386,8 +392,8 @@
         "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest": "If your contest is valid, you'll receive your locked amount + the entire locked amount of the quest"
       },
       "confirmButton": {
-        "Confirm Verification": "Confirm Verification",
-        "Confirm Contest": "Confirm Contest",
+        "Confirm Accept": "Confirm Accept",
+        "Confirm Reject": "Confirm Reject",
         "Lock {{amount}} sats": "Lock {{amount}} sats"
       },
       "proofDetails": {
@@ -474,85 +480,89 @@
   "create-quest": {
     "Creating a Copy of Quest": "Creating a Copy of Quest",
     "Creating a Quest for myself": "Creating a Quest for myself",
-    "New Quest": "New Quest",
     "Back to Explore": "Back to Explore",
+    "New Quest": "New Quest",
     "toast": {
       "Your quest is saved as a draft.": "Your quest is saved as a draft.",
       "Please enter a quest title": "Please enter a quest title",
       "Please enter a quest description": "Please enter a quest description",
       "Please enter a quest due date": "Please enter a quest due date",
-      "Please select quest visibility": "Please select quest visibility",
-      "Please select who can verify your proof": "Please select who can verify your proof",
-      "Please select a coach": "Please select a coach"
+      "Please select quest visibility": "Please select quest visibility"
     },
     "steps": {
       "basic": {
-        "title": "Basic information",
-        "description": "Enter quest details"
+        "Basic Information": "Basic Information",
+        "Enter quest details": "Enter quest details"
       },
       "visibility": {
-        "title": "Visibility",
-        "description": "Choose who can verify"
+        "Choose Quest Visibility": "Choose Quest Visibility",
+        "Select if your quest will be public or private": "Select if your quest will be public or private",
+        "public": {
+          "Public": "Public",
+          "Anyone can view and verify your quest": "Anyone can view and verify your quest",
+          "How proof verification works on public quests": "How proof verification works on public quests",
+          "The bettr.quest community will review your quest proof and validate. You would need to set some rewards in order to motivate the community for reviewing your proof.": "The bettr.quest community will review your quest proof and validate. You would need to set some rewards in order to motivate the community for reviewing your proof."
+        },
+        "private": {
+          "Private": "Private",
+          "Only you can view your quest": "Only you can view your quest",
+          "How proof verification works on private quests": "How proof verification works on private quests",
+          "Our AI service will validate your proof. You would need to pay for the fee (1,000 sats)": "Our AI service will validate your proof. You would need to pay for the fee (1,000 sats)"
+        }
       },
       "escrow": {
-        "title": "Lock Escrow",
-        "description": "Set rewards and fees"
+        "Lock Escrow": "Lock Escrow",
+        "Set rewards and fees": "Set rewards and fees"
       }
     },
     "form": {
-      "title": "Title",
-      "title-placeholder": "What is your quest?",
-      "description": "Description",
-      "description-placeholder": "Describe your quest in detail. What do you want to accomplish?",
-      "due-date": "Due Date",
-      "due-date-placeholder": "Select due date",
+      "Quest Title": "Quest Title",
+      "What is your quest?": "What is your quest?",
+      "Quest Description": "Quest Description",
+      "Describe your quest in detail. What do you want to achieve?": "Describe your quest in detail. What do you want to achieve?",
+      "Due Date": "Due Date",
+      "Select due date": "Select due date",
       "validation": {
-        "due-date": "Please set a due date for your quest"
+        "Please set a due date for your quest": "Please set a due date for your quest"
       }
     },
     "visibility": {
-      "title": "Choose Quest Visibility",
-      "description": "Select whether your quest will be public or private",
+      "Choose Quest Visibility": "Choose Quest Visibility",
+      "Select if your quest will be public or private": "Select if your quest will be public or private",
       "public": {
-        "title": "Public",
-        "description": "Anyone can view and verify your quest"
+        "Public": "Public",
+        "Anyone can view and verify your quest": "Anyone can view and verify your quest",
+        "How proof verification works on public quests": "How proof verification works on public quests",
+        "The bettr.quest community will review your quest proof and validate. You would need to set some rewards in order to motivate the community for reviewing your proof.": "The bettr.quest community will review your quest proof and validate. You would need to set some rewards in order to motivate the community for reviewing your proof."
       },
       "private": {
-        "title": "Private",
-        "description": "Only you and selected verifiers can view your quest"
-      },
-      "verification": {
-        "title": "Who can verify your proof?",
-        "anyone": "Anyone can verify",
-        "coach": {
-          "title": "Find a coach",
-          "select": "Choose a coach"
-        },
-        "ai": "Use AI verification"
+        "Private": "Private",
+        "Only you can view your quest": "Only you can view your quest",
+        "How proof verification works on private quests": "How proof verification works on private quests",
+        "Our AI service will validate your proof. You would need to pay for the fee (1,000 sats)": "Our AI service will validate your proof. You would need to pay for the fee (1,000 sats)"
       },
       "validation": {
-        "visibility": "Please select quest visibility",
-        "verifier": "Please select who can verify your proof"
+        "Please select quest visibility": "Please select quest visibility"
       }
     },
     "escrow": {
-      "title": "Lock Escrow",
-      "description": "Review and confirm your escrow details",
+      "Lock Escrow": "Lock Escrow",
+      "Review and confirm your escrow details": "Review and confirm your escrow details",
       "summary": {
-        "title": "Escrow Summary",
-        "description": "Review the amounts before locking",
-        "lock-amount": "Lock Amount",
-        "platform-fees": "Platform Fees",
-        "coach-fee": "Coach Fee",
-        "ai-fee": "AI Verification Fee",
-        "total": "Total to Lock",
-        "button": "Lock & Publish"
+        "Escrow Summary": "Escrow Summary",
+        "Review the amounts before locking": "Review the amounts before locking",
+        "Lock Amount": "Lock Amount",
+        "Platform Fees": "Platform Fees",
+        "Coach Fee": "Coach Fee",
+        "AI Verification Fee": "AI Verification Fee",
+        "Total to Lock": "Total to Lock",
+        "Lock & Publish": "Lock & Publish"
       },
       "creating": "Creating Quest..."
     },
     "navigation": {
-      "back": "Back",
-      "next": "Next"
+      "Back": "Back",
+      "Next": "Next"
     }
   },
   "coach-directory": {
