@@ -1,16 +1,16 @@
 import React from 'react';
 import { User, Lock, UserPlus, UserCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { DraftQuest, LockedQuest } from '@/types/quest';
 import { Button } from '@/components/ui/button';
+import { pages } from '@/lib/pages';
 
 interface QuestCardContentProps {
   quest: DraftQuest | LockedQuest;
   isOwnedByCurrentUser: boolean;
   isFollowing: boolean;
   onFollowToggle: (e: React.MouseEvent) => void;
-  onLockSats: (e: React.MouseEvent) => void;
 }
 
 const QuestCardContent: React.FC<QuestCardContentProps> = ({
@@ -18,9 +18,27 @@ const QuestCardContent: React.FC<QuestCardContentProps> = ({
   isOwnedByCurrentUser,
   isFollowing,
   onFollowToggle,
-  onLockSats
 }) => {
   const { t } = useTranslation(null, { keyPrefix: "quest-card" });
+  const navigate = useNavigate();
+
+  const handleLockSats = (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    navigate(pages.createQuest.path.replace(':id', quest.id), {
+      state: {
+        step: 'escrow',
+        prefilledData: {
+          title: quest.title,
+          description: quest.description,
+          dueDate: quest.dueDate,
+          visibility: quest.visibility,
+          imageUrl: quest.imageUrl,
+          specializations: quest.specializations,
+        }
+      }
+    });
+  };
 
   return (
     <>
@@ -45,7 +63,7 @@ const QuestCardContent: React.FC<QuestCardContentProps> = ({
             <Button
               variant="secondary"
               size="sm"
-              onClick={onLockSats}
+              onClick={handleLockSats}
               className="flex items-center gap-2"
             >
               <Lock size={16} />

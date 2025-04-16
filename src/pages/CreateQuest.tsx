@@ -17,26 +17,24 @@ import { useTranslation } from 'react-i18next';
 import CoachDirectory from '@/components/quest/CoachDirectory';
 import { mockCoaches } from '@/mock/data';
 import { pages } from '@/lib/pages';
+import { DraftQuest, LockedQuest } from '@/types/quest';
 
 const CreateQuest = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
   
-  // Parse query parameters for prefilled data
-  const queryParams = new URLSearchParams(location.search);
-  const prefilledTitle = queryParams.get('title') || '';
-  const prefilledDescription = queryParams.get('description') || '';
-  const prefilledTags = queryParams.get('tags') || '';
-  const prefilledImageUrl = queryParams.get('imageUrl') || '';
+  // Get prefilled data from state
+  const { prefilledData, step } = location.state || {};
   
   // Form states
-  const [title, setTitle] = useState(prefilledTitle);
-  const [description, setDescription] = useState(prefilledDescription);
-  const [visibility, setVisibility] = useState<'public' | 'private' | null>(null);
-  const [tags, setTags] = useState<string[]>(prefilledTags ? prefilledTags.split(',') : []);
-  const [dueDate, setDueDate] = useState('');
+  const [title, setTitle] = useState(prefilledData?.title || '');
+  const [description, setDescription] = useState(prefilledData?.description || '');
+  const [visibility, setVisibility] = useState<'public' | 'private' | null>(prefilledData?.visibility || null);
+  const [tags, setTags] = useState<string[]>(prefilledData?.specializations?.map(s => s.name) || []);
+  const [dueDate, setDueDate] = useState(prefilledData?.dueDate || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentStep, setCurrentStep] = useState<'basic' | 'visibility' | 'escrow'>(step || 'basic');
   
   // Media states
   const [mediaFiles, setMediaFiles] = useState<{
@@ -57,25 +55,27 @@ const CreateQuest = () => {
   const [isPremium] = useState(false); // This should come from user context
   
   // Step navigation
-  const [currentStep, setCurrentStep] = useState(1);
   const steps = [
     {
+      id: 'basic',
       title: t('create-quest.steps.basic.Basic Information'),
       description: t('create-quest.steps.basic.Enter quest details'),
-      isCompleted: currentStep > 1,
-      isActive: currentStep === 1
+      isCompleted: currentStep !== 'basic',
+      isActive: currentStep === 'basic'
     },
     {
+      id: 'visibility',
       title: t('create-quest.steps.visibility.Choose Quest Visibility'),
       description: t('create-quest.steps.visibility.Select if your quest will be public or private'),
-      isCompleted: currentStep > 2,
-      isActive: currentStep === 2
+      isCompleted: currentStep !== 'basic' && currentStep !== 'visibility',
+      isActive: currentStep === 'visibility'
     },
     {
+      id: 'escrow',
       title: t('create-quest.steps.escrow.Lock Escrow'),
       description: t('create-quest.steps.escrow.Set rewards and fees'),
-      isCompleted: currentStep > 3,
-      isActive: currentStep === 3
+      isCompleted: currentStep === 'escrow',
+      isActive: currentStep === 'escrow'
     }
   ];
   
@@ -84,17 +84,17 @@ const CreateQuest = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentStep]);
   
-  // Update page title
+  // Update page title based on whether we're copying a quest
   useEffect(() => {
-    if (prefilledTitle) {
+    if (prefilledData?.title) {
       document.title = `${t('create-quest.Creating a Copy of Quest')}`;
     } else {
       document.title = `${t('create-quest.Creating a Quest for myself')}`;
     }
-  }, [prefilledTitle, t]);
+  }, [prefilledData?.title, t]);
 
   const getTitle = () => {
-    const defaultTitle = prefilledTitle 
+    const defaultTitle = prefilledData?.title 
       ? t('create-quest.Creating a Copy of Quest') 
       : t('create-quest.Creating a Quest for myself');
     
@@ -130,7 +130,7 @@ const CreateQuest = () => {
       e.preventDefault();
     }
 
-    if (currentStep === 1) {
+    if (currentStep === 'basic') {
       if (!title.trim()) {
         toast.error(t('create-quest.toast.Please enter a quest title'));
         return;
@@ -145,18 +145,22 @@ const CreateQuest = () => {
       }
 
       toast.success(t('create-quest.toast.Your quest is saved as a draft.'));
-    } else if (currentStep === 2) {
+      setCurrentStep('visibility');
+    } else if (currentStep === 'visibility') {
       if (!visibility) {
         toast.error(t('create-quest.toast.Please select quest visibility'));
         return;
       }
+      setCurrentStep('escrow');
     }
-    
-    setCurrentStep(prev => Math.min(prev + 1, 3));
   };
 
   const handleBack = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+    if (currentStep === 'visibility') {
+      setCurrentStep('basic');
+    } else if (currentStep === 'escrow') {
+      setCurrentStep('visibility');
+    }
   };
 
   // Handle form submission
@@ -192,10 +196,10 @@ const CreateQuest = () => {
             <QuestCreationSteps steps={steps} />
             
             <div>
-              {currentStep === 1 && (
+              {currentStep === 'basic' && (
                 <div className="space-y-6">
                   {/* Template Selection - only show if not from copied quest */}
-                  {!prefilledTitle && <QuestTemplateSelector onSelectTemplate={applyTemplate} />}
+                  {!prefilledData?.title && <QuestTemplateSelector onSelectTemplate={applyTemplate} />}
                   
                   {/* Quest Title */}
                   <div>
@@ -241,12 +245,12 @@ const CreateQuest = () => {
                   {/* Media Section */}
                   <MediaUpload 
                     onMediaChange={files => setMediaFiles(files)}
-                    previewUrl={prefilledImageUrl}
+                    previewUrl={prefilledData?.imageUrl}
                   />
                 </div>
               )}
 
-              {currentStep === 2 && (
+              {currentStep === 'visibility' && (
                 <div className="space-y-8">
                   <VisibilitySelector
                     visibility={visibility}
@@ -255,7 +259,7 @@ const CreateQuest = () => {
                 </div>
               )}
 
-              {currentStep === 3 && (
+              {currentStep === 'escrow' && (
                 <QuestEscrow
                   visibility={visibility}
                   getTitle={getTitle}
@@ -270,7 +274,7 @@ const CreateQuest = () => {
               
               {/* Navigation Buttons */}
               <div className="flex justify-between mt-8">
-                {(currentStep === 2 || currentStep === 3) && (
+                {(currentStep === 'visibility' || currentStep === 'escrow') && (
                   <Button
                     type="button"
                     variant="outline"
@@ -280,7 +284,7 @@ const CreateQuest = () => {
                     </Button>
                 )}
 
-                {(currentStep === 1 || currentStep === 2) && (
+                {(currentStep === 'basic' || currentStep === 'visibility') && (
                   <Button
                     type="button"
                     onClick={handleNext}

@@ -12,7 +12,7 @@ import Index from "./pages/Index";
 import Explore from "./pages/Explore";
 import QuestPage from "./pages/Quest";
 import CreateQuest from "./pages/CreateQuest";
-import MyQuest from "./pages/MyQuest";
+import MyQuests from "./pages/MyQuests";
 import NotFound from "./pages/NotFound";
 import Timeline from "./pages/Timeline";
 import ConnectNostr from "./pages/ConnectNostr";
@@ -62,8 +62,9 @@ const App = () => (
                 <Route path={pages.timeline.location} element={<Timeline />} />
                 <Route path={pages.quest.path} element={<QuestPage />} />
                 <Route path={pages.createQuest.location} element={<CreateQuest />} />
+                <Route path={pages.createQuest.path} element={<CreateQuest />} />
                 <Route path={pages.verifyProof.path} element={<VerifyProof />} />
-                <Route path={pages.myQuest.location} element={<MyQuest />} />
+                <Route path={pages.myQuests.location} element={<MyQuests />} />
                 <Route path={pages.connect.location} element={<ConnectNostr />} />
                 <Route path={pages.profile.location} element={<Profile />} />
                 <Route path={pages.coachDirectory.location} element={<CoachDirectory />} />

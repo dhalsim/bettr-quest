@@ -13,7 +13,6 @@ interface QuestCardProps {
   isFollowing: boolean;
   onSpecializationClick: (e: React.MouseEvent, specialization: string) => void;
   onFollowToggle: (e: React.MouseEvent) => void;
-  onLockSats: (e: React.MouseEvent) => void;
 }
 
 const QuestCard: React.FC<QuestCardProps> = ({
@@ -23,7 +22,6 @@ const QuestCard: React.FC<QuestCardProps> = ({
   isFollowing,
   onSpecializationClick,
   onFollowToggle,
-  onLockSats
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -47,7 +45,6 @@ const QuestCard: React.FC<QuestCardProps> = ({
               isOwnedByCurrentUser={isOwnedByCurrentUser}
               isFollowing={isFollowing}
               onFollowToggle={onFollowToggle}
-              onLockSats={onLockSats}
             />
             
             <QuestCardFooter

@@ -145,14 +145,19 @@ const QuestPage = () => {
   };
   
   const handleCopyQuest = () => {
-    const params = new URLSearchParams({
-      title: questData.title,
-      description: questData.description,
-      tags: questData.specializations.map(s => s.name).join(','),
-      imageUrl: questData.imageUrl || ''
+    navigate(pages.createQuest.location, {
+      state: {
+        prefilledData: {
+          title: questData.title,
+          description: questData.description,
+          specializations: questData.specializations,
+          imageUrl: questData.imageUrl,
+          dueDate: questData.dueDate,
+          visibility: questData.visibility,
+          step: 'details'
+        }
+      }
     });
-    
-    navigate(`${pages.createQuest.location}?${params.toString()}`);
     
     toast.success(t('quest.Quest details copied! Customize your new quest.'));
   };

@@ -73,12 +73,6 @@ const Index = () => {
     // TODO: Implement follow toggle functionality
   };
 
-  const handleLockSats = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // TODO: Implement lock sats functionality
-  };
-  
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
@@ -167,7 +161,6 @@ const Index = () => {
                 isFollowing={false}
                 onSpecializationClick={handleSpecializationClick}
                 onFollowToggle={handleFollowToggle}
-                onLockSats={handleLockSats}
               />
             ))}
           </div>

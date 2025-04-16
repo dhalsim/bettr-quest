@@ -76,12 +76,6 @@ const Profile = () => {
     setIsFollowing(!isFollowing);
   };
 
-  const handleLockSats = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // TODO: Implement lock sats functionality
-  };
-
   const handleReviewsClick = () => {
     setActiveTab('reviews');
     // Use setTimeout to ensure the tab content is rendered before scrolling
@@ -233,7 +227,6 @@ const Profile = () => {
                     isFollowing={isFollowing}
                     onSpecializationClick={handleSpecializationClick}
                     onFollowToggle={handleFollowToggle}
-                    onLockSats={handleLockSats}
                   />
                 ))}
               </div>

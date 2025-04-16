@@ -10,7 +10,7 @@ import { assertNever } from '@/lib/utils';
 
 type Status = 'all' | QuestStatus;
 
-const MyQuest = () => {
+const MyQuests = () => {
   const { profile } = useNostrAuth();
   const navigate = useNavigate();
 
@@ -45,12 +45,6 @@ const MyQuest = () => {
     e.preventDefault();
     e.stopPropagation();
     // TODO: Implement follow toggle functionality
-  };
-
-  const handleLockSats = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // TODO: Implement lock sats functionality
   };
 
   return (
@@ -101,7 +95,6 @@ const MyQuest = () => {
                 isFollowing={false}
                 onSpecializationClick={handleSpecializationClick}
                 onFollowToggle={handleFollowToggle}
-                onLockSats={handleLockSats}
               />
             ))}
           </div>
@@ -124,4 +117,4 @@ const MyQuest = () => {
   );
 };
 
-export default MyQuest;
+export default MyQuests;

@@ -74,12 +74,6 @@ const Explore = () => {
     e.stopPropagation();
     // TODO: Implement follow toggle functionality
   };
-
-  const handleLockSats = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // TODO: Implement lock sats functionality
-  };
   
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">
@@ -132,7 +126,6 @@ const Explore = () => {
                 isFollowing={false}
                 onSpecializationClick={handleSpecializationClick}
                 onFollowToggle={handleFollowToggle}
-                onLockSats={handleLockSats}
               />
             ))}
           </div>

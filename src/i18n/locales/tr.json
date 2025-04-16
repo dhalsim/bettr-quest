@@ -428,6 +428,7 @@
   },
   "quest-card": {
     "Saved": "Kaydedildi",
+    "Draft": "Taslak",
     "On Review": "İncelemede",
     "Success": "Başarılı",
     "Failed": "Başarısız",
@@ -609,7 +610,7 @@
     "Connect": "Bağlan",
     "Coach Directory": "Koç Dizini",
     "Profile": "Profil",
-    "My Quest": "Görevim",
+    "My Quests": "Görevlerim",
     "Create Quest": "Görev Oluştur",
     "Quest": "Görev",
     "Escrow Deposit": "Teminat Yatırma",

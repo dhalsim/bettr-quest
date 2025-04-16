@@ -404,6 +404,7 @@
   },
   "quest-card": {
     "Saved": "Guardado",
+    "Draft": "Borrador",
     "On Review": "En Revisión",
     "Success": "Éxito",
     "Failed": "Fallido",
@@ -581,7 +582,7 @@
     "Connect": "Conectar",
     "Coach Directory": "Directorio de Entrenadores",
     "Profile": "Perfil",
-    "My Quest": "Mi Misión",
+    "My Quests": "Mis Misiones",
     "Create Quest": "Crear Misión",
     "Quest": "Misión",
     "Escrow Deposit": "Depósito en Garantía",

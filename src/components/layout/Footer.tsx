@@ -33,7 +33,7 @@ const Footer = () => {
                 <FooterLink to={pages.registerCoach.location}>{t(`pages.${pages.registerCoach.name}`)}</FooterLink>
               </nav>
               <nav className="flex flex-col space-y-3 text-nowrap">
-                <FooterLink to={pages.myQuest.location}>{t(`pages.${pages.myQuest.name}`)}</FooterLink>
+                <FooterLink to={pages.myQuests.location}>{t(`pages.${pages.myQuests.name}`)}</FooterLink>
                 <FooterLink to={pages.createQuest.location}>{t(`pages.${pages.createQuest.name}`)}</FooterLink>
                 <FooterLink to={pages.timeline.location}>{t(`pages.${pages.timeline.name}`)}</FooterLink>
                 <FooterLink to="/premium">

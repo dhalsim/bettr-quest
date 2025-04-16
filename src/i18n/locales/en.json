@@ -431,6 +431,7 @@
   },
   "quest-card": {
     "Saved": "Saved",
+    "Draft": "Draft",
     "On Review": "On Review",
     "Success": "Success",
     "Failed": "Failed",
@@ -617,7 +618,7 @@
     "Connect": "Connect",
     "Coach Directory": "Coach Directory",
     "Profile": "Profile",
-    "My Quest": "My Quest",
+    "My Quests": "My Quests",
     "Create Quest": "Create Quest",
     "Quest": "Quest",
     "Escrow Deposit": "Escrow Deposit",
