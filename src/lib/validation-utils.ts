@@ -8,7 +8,7 @@ interface ValidationOptions {
   navigateOnError?: string;
 }
 
-export function validateLocationState<T>(
+export function validateState<T>(
   decodeStateFunction: (input: unknown) => T,
   input: unknown,
   options: ValidationOptions = {}

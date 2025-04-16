@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { toast } from 'sonner';
-import { ProofLocationState } from '@/pages/escrow-deposit/validation';
+import { type VerifyProofState } from '@/pages/VerifyProof/validation';
 import { useTranslation } from 'react-i18next';
 import { languages } from '@/i18n/i18n';
 import { formatDateTime } from '@/lib/utils';
@@ -34,7 +34,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
   const navigate = useNavigate();
   const { t, i18n } = useTranslation(null, { keyPrefix: "proof" });
   
-  const createLocationState = (type: 'proof-verify' | 'proof-contest'): ProofLocationState => ({
+  const createProofVerificationState = (type: 'proof-accept' | 'proof-reject'): VerifyProofState => ({
     type,
     proofTitle: proof.title,
     proofDescription: proof.description,
@@ -52,8 +52,8 @@ const ProofCard: React.FC<ProofCardProps> = ({
       return;
     }
     
-    navigate(pages.escrowDeposit.location, {
-      state: createLocationState('proof-verify')
+    navigate(pages.verifyProof.location, {
+      state: createProofVerificationState('proof-accept')
     });
   };
   
@@ -63,8 +63,8 @@ const ProofCard: React.FC<ProofCardProps> = ({
       return;
     }
     
-    navigate(pages.escrowDeposit.location, {
-      state: createLocationState('proof-contest')
+    navigate(pages.verifyProof.location, {
+      state: createProofVerificationState('proof-reject')
     });
   };
   

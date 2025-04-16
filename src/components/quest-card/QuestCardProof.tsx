@@ -24,9 +24,9 @@ const QuestCardProof: React.FC<QuestCardProofProps> = ({
   const navigate = useNavigate();
 
   const handleVerify = () => {
-    navigate(pages.escrowDeposit.location, {
+    navigate(pages.verifyProof.path.replace(':id', proof.id), {
       state: {
-        type: 'proof-verify',
+        type: 'proof-accept',
         proofTitle: proof.title,
         proofDescription: proof.description,
         questTitle: quest.title,
@@ -40,9 +40,9 @@ const QuestCardProof: React.FC<QuestCardProofProps> = ({
   };
 
   const handleContest = () => {
-    navigate(pages.escrowDeposit.location, {
+    navigate(pages.verifyProof.path.replace(':id', proof.id), {
       state: {
-        type: 'proof-contest',
+        type: 'proof-reject',
         proofTitle: proof.title,
         proofDescription: proof.description,
         questTitle: quest.title,

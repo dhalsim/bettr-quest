@@ -257,7 +257,6 @@ const CreateQuest = () => {
 
               {currentStep === 3 && (
                 <QuestEscrow
-                  type="quest"
                   visibility={visibility}
                   getTitle={getTitle}
                   questDescription={description}
@@ -265,6 +264,7 @@ const CreateQuest = () => {
                   questRewardAmount={lockAmount}
                   questLockedAmount={lockAmount + (isPremium ? 0 : platformFee)}
                   onConfirm={handleSubmit}
+                  onSkip={handleSubmit}
                 />
               )}
               

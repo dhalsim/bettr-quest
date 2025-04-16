@@ -478,23 +478,19 @@ const QuestPage = () => {
                         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                           <Button 
                             variant="primary"
-                            onClick={() => navigate(pages.escrowDeposit.location, {
+                            onClick={() => navigate(pages.createQuest.location, {
                               state: {
-                                type: 'quest',
                                 questId: questData.id,
-                                questTitle: questData.title,
-                                questDescription: questData.description,
-                                questLockedAmount: 0,
-                                questRewardAmount: 0,
-                                questDueDate: questData.dueDate,
-                                questCreatedAt: questData.createdAt,
-                                questSpecializations: questData.specializations,
-                                questVisibility: questData.visibility
+                                title: questData.title,
+                                description: questData.description,
+                                tags: questData.specializations,
+                                dueDate: questData.dueDate,
+                                imageUrl: questData.imageUrl,
+                                initialStep: 3 // Start at the escrow step
                               }
                             })}
                           >
-                            <Lock size={16} className="mr-2" />
-                            {t('quest.Lock sats')}
+                            {t('quest.Lock Funds')}
                           </Button>
                           <p className="text-sm text-muted-foreground max-w-md">
                             {t('escrow.Lock some sats to publish your quest. This ensures accountability and helps the community validate your achievements')}

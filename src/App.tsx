@@ -19,10 +19,11 @@ import ConnectNostr from "./pages/ConnectNostr";
 import Profile from "./pages/profile/Profile";
 import CoachDirectory from "./pages/coach-directory";
 import RegisterCoach from "./pages/RegisterCoach";
-import EscrowDeposit from "./pages/escrow-deposit/EscrowDeposit";
 import Notifications from "./pages/Notifications";
 import Premium from "./pages/Premium";
 import { useRef, useEffect } from 'react';
+import VerifyProof from "./pages/VerifyProof";
+import { pages } from '@/lib/pages';
 
 const HistoryHandler = () => {
   const location = useLocation();
@@ -56,19 +57,19 @@ const App = () => (
             <Header />
             <main className="flex-grow">
               <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/explore" element={<Explore />} />
-                <Route path="/timeline" element={<Timeline />} />
-                <Route path="/quest/:id" element={<QuestPage />} />
-                <Route path="/create-quest" element={<CreateQuest />} />
-                <Route path="/escrow-deposit" element={<EscrowDeposit />} />
-                <Route path="/my-quests" element={<MyQuest />} />
-                <Route path="/connect" element={<ConnectNostr />} />
-                <Route path="/profile/:username" element={<Profile />} />
-                <Route path="/coach-directory" element={<CoachDirectory />} />
-                <Route path="/register-coach" element={<RegisterCoach />} />
-                <Route path="/notifications" element={<Notifications />} />
-                <Route path="/premium" element={<Premium />} />
+                <Route path={pages.home.location} element={<Index />} />
+                <Route path={pages.explore.location} element={<Explore />} />
+                <Route path={pages.timeline.location} element={<Timeline />} />
+                <Route path={pages.quest.path} element={<QuestPage />} />
+                <Route path={pages.createQuest.location} element={<CreateQuest />} />
+                <Route path={pages.verifyProof.path} element={<VerifyProof />} />
+                <Route path={pages.myQuest.location} element={<MyQuest />} />
+                <Route path={pages.connect.location} element={<ConnectNostr />} />
+                <Route path={pages.profile.location} element={<Profile />} />
+                <Route path={pages.coachDirectory.location} element={<CoachDirectory />} />
+                <Route path={pages.registerCoach.location} element={<RegisterCoach />} />
+                <Route path={pages.notifications.location} element={<Notifications />} />
+                <Route path={pages.premium.location} element={<Premium />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

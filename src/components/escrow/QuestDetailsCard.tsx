@@ -1,35 +1,49 @@
 import React from 'react';
-import { ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 interface QuestDetailsCardProps {
   title: string;
   description: string;
   questLink: string;
+  proofTitle?: string;
+  proofDescription?: string;
 }
 
 const QuestDetailsCard: React.FC<QuestDetailsCardProps> = ({
   title,
   description,
-  questLink
+  questLink,
+  proofTitle,
+  proofDescription
 }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-secondary/10 rounded-lg p-4 border border-border/50 mb-8">
-      <div className="text-sm text-muted-foreground mb-2">{t('escrow.rewards.questDetails.Of the Quest:')}</div>
-      <div className="flex items-center gap-3">
-        <a 
-          href={questLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 hover:text-primary transition-colors group"
-        >
-          <ExternalLink size={18} className="group-hover:text-primary" />
-          <h2 className="text-xl font-semibold">{title}</h2>
-        </a>
-      </div>
-      <p className="text-muted-foreground mt-2">{description}</p>
+    <div className="mb-8">
+      <Link to={questLink} className="block mb-4">
+        <h2 className="text-xl font-semibold text-primary hover:underline">
+          {title}
+        </h2>
+      </Link>
+      
+      <p className="text-muted-foreground mb-4">
+        {description}
+      </p>
+      
+      {proofTitle && proofDescription && (
+        <div className="mt-4 pt-4 border-t border-border/50">
+          <h3 className="text-lg font-medium mb-2">
+            {t('escrow.Proof Details')}
+          </h3>
+          <h4 className="text-base font-medium mb-1">
+            {proofTitle}
+          </h4>
+          <p className="text-muted-foreground">
+            {proofDescription}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

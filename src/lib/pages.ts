@@ -7,10 +7,11 @@ export const pages = {
   profile: { name: "Profile", location: "/profile" },
   myQuest: { name: "My Quest", location: "/my-quest" },
   createQuest: { name: "Create Quest", location: "/create-quest" },
-  quest: { name: "Quest", location: "/quest" },
-  escrowDeposit: { name: "Escrow Deposit", location: "/escrow-deposit" },
+  quest: { name: "Quest", location: "/quest", path: "/quest/:id" },
   notifications: { name: "Notifications", location: "/notifications" },
-  registerCoach: { name: "Register Coach", location: "/register-coach" }
+  registerCoach: { name: "Register Coach", location: "/register-coach" },
+  verifyProof: { name: "Verify Proof", location: "/verify-proof", path: "/verify-proof/:id" },
+  premium: { name: "Premium", location: "/premium" }
 } as const;
 
 export type PageKey = keyof typeof pages;
