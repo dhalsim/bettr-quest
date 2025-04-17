@@ -142,7 +142,7 @@ const Header = () => {
 
               <div className="flex items-center justify-between border-t border-foreground/10 pt-4">
                 <span className="text-sm text-foreground/80">Language</span>
-                <LanguageSelector variant="ghost" />
+                <LanguageSelector variant="ghost" closeParent={() => setIsMenuOpen(false)} />
               </div>
               
               {isLoggedIn ? (
