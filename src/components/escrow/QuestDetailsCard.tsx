@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 interface QuestDetailsCardProps {
   title?: string;
   description: string;
-  questLink: string;
+  questLink?: string;
   proofTitle?: string;
   proofDescription?: string;
 }
@@ -21,7 +21,7 @@ const QuestDetailsCard: React.FC<QuestDetailsCardProps> = ({
 
   return (
     <div className="mb-8">
-      {title && (
+      {title && questLink && (
         <Link to={questLink} className="block mb-4">
           <h2 className="text-xl font-semibold text-primary hover:underline">
             {title}

@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next';
 
 interface ConfirmButtonProps {
   type: 'quest' | 'proof-accept' | 'proof-reject';
-  totalAmount: number;
+  userLockAmount: number;
   onConfirm: () => void;
 }
 
 const ConfirmButton = ({ 
   type, 
-  totalAmount, 
+  userLockAmount,
   onConfirm 
 }: ConfirmButtonProps) => {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ const ConfirmButton = ({
     text = t('escrow.rewards.confirmButton.Confirm Reject');
     icon = <X size={16} />;
   } else if (type === 'quest') {
-    text = t('escrow.rewards.confirmButton.Lock {{amount}} sats', { amount: totalAmount.toLocaleString() });
+    text = t('escrow.rewards.confirmButton.Lock {{amount}} sats', { amount: userLockAmount.toLocaleString() });
     icon = <LockIcon size={16} />;
   }
   

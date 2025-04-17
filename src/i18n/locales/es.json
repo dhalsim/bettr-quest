@@ -200,6 +200,7 @@
     "Report Quest": "Reportar Quest",
     "Thank you for your report. Our moderators will review this quest": "Gracias por tu reporte. Nuestros moderadores revisarán este quest",
     "Zap ⚡️": "Zap ⚡️",
+    "Comments": "Comentarios",
     "Copy Quest": "Copiar Quest",
     "Quest details copied! Customize your new quest.": "¡Detalles del quest copiados! Personaliza tu nuevo quest.",
     "You've zapped": "Has enviado",
@@ -378,15 +379,37 @@
       },
       "rewardsSlider": {
         "Community Rewards": "Recompensas de la Comunidad",
-        "Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion. Higher rewards attract more verifiers and faster responses.": "Reserva un porcentaje de tu cantidad bloqueada como recompensas para los miembros de la comunidad que verifiquen tu prueba de finalización. Las recompensas más altas atraen más verificadores y respuestas más rápidas.",
-        "Reward: {{percentage}}%": "Recompensa: {{percentage}}%"
+        "Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion. Higher rewards attract more verifiers and faster responses.": "Reserva un porcentaje de tu cantidad bloqueada como recompensa para los miembros de la comunidad que verifiquen tu prueba de finalización. Recompensas más altas atraen a más verificadores y respuestas más rápidas.",
+        "Reward: {{percentage}}%": "Recompensa: {{percentage}}%",
+        "Low reward warning": "Advertencia: Si la recompensa es demasiado baja, la comunidad puede no elegir verificar tu prueba. En ese caso, perderás tus fondos bloqueados."
       },
       "lockAmount": {
         "Lock amount": "Cantidad a Bloquear",
         "This amount will be locked until the proof verification is complete.": "Esta cantidad estará bloqueada hasta que se complete la verificación de la prueba.",
         "This amount will be locked in escrow until you complete your quest.": "Esta cantidad estará bloqueada en depósito hasta que completes tu quest."
       }
-    }
+    },
+    "What you will get back": "Cuánto recuperarás",
+    "If your proof is verified, you will get back": "Si tu prueba es verificada, recuperarás",
+    "If your quest fails, you will lose": "Si tu misión falla, perderás",
+    "Premium Benefits": "Beneficios Premium",
+    "Zero Platform Fees": "Sin tarifas de plataforma",
+    "Zero AI Service Fees": "Sin tarifas de servicio de IA",
+    "Get Out of Jail Free Card": "Tarjeta de Salvación",
+    "Get Premium": "Obtener Premium",
+    "Summary of Quest Lock": "Resumen del Bloqueo de Misión",
+    "Platform Fee": "Tarifa de Plataforma",
+    "Other Premium Benefits": "Otros Beneficios Premium",
+    "If you are a premium member, you will get back": "Si eres miembro premium, recuperarás",
+    "No Platform Fees": "Sin tarifas de plataforma",
+    "Refer to a friend": "Recomienda a un amigo",
+    "And more...": "Y más...",
+    "Only 10,000 sats for 30 days": "Solo 10,000 sats por 30 días",
+    "Affordable premium membership with exclusive benefits": "Membresía premium asequible con beneficios exclusivos",
+    "Save on platform fees for all your quests and services": "Ahorra en tarifas de plataforma para todas tus misiones y servicios",
+    "You can once get your funds back before due date and proof submission": "Puedes recuperar tus fondos una vez antes de la fecha límite y la presentación de pruebas",
+    "Earn 5% of your referrals premium payments": "Gana el 5% de los pagos premium de tus referidos",
+    "Special events, contests, and exclusive features": "Eventos especiales, concursos y características exclusivas"
   },
   "footer": {
     "Quest yourself to be better, one quest at a time. Create, share, and complete personal quests with a community that supports your growth.": "Desafíate a ser mejor, una misión a la vez. Crea, comparte y completa misiones personales con una comunidad que apoya tu crecimiento.",
@@ -461,7 +484,9 @@
       "Please enter a quest title": "Por favor ingresa un título para la misión",
       "Please enter a quest description": "Por favor ingresa una descripción para la misión",
       "Please enter a quest due date": "Por favor ingresa una fecha límite para la misión",
-      "Please select quest visibility": "Por favor selecciona la visibilidad de la misión"
+      "Please select quest visibility": "Por favor selecciona la visibilidad de la misión",
+      "Quest is published.": "Misión publicada.",
+      "Your quest is saved as draft. Lock funds to publish it.": "Tu misión se guardó como borrador. Bloquea fondos para publicarla."
     },
     "steps": {
       "basic": {

@@ -5,7 +5,7 @@ import { useNostrAuth } from '@/hooks/useNostrAuth';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { formatDistanceToNow } from 'date-fns';
-import { Send } from 'lucide-react';
+import { MessageSquare, Send } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ThreadsProps {
@@ -84,7 +84,13 @@ const Threads: React.FC<ThreadsProps> = ({ threadId, comments, onAddComment }) =
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">{t('threads.Comments')}</h3>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-semibold">{t('threads.Comments')}</h2>
+        <div className="flex items-center gap-2">
+          <MessageSquare size={16} />
+          <span>{comments.length}</span>
+        </div>
+      </div>
       {comments.map((comment) => renderComment(comment))}
       {profile && (
         <form onSubmit={(e) => handleSubmit(e)} className="mt-4">

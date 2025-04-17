@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users } from 'lucide-react';
+import { Users, AlertTriangle } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { useTranslation } from 'react-i18next';
 
@@ -36,6 +36,15 @@ const RewardsSlider = ({ percentage, onPercentageChange, rewardAmount }: Rewards
           step={1}
           className="w-full"
         />
+
+        {percentage < 5 && (
+          <div className="flex items-start gap-2 p-3 bg-yellow-500/10 rounded-lg text-yellow-600 dark:text-yellow-400">
+            <AlertTriangle size={16} className="mt-0.5 flex-shrink-0" />
+            <p className="text-sm">
+              {t('escrow.rewards.rewardsSlider.Low reward warning')}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

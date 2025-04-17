@@ -199,6 +199,7 @@
     "Report Quest": "Report Quest",
     "Thank you for your report. Our moderators will review this quest": "Thank you for your report. Our moderators will review this quest",
     "Zap ⚡️": "Zap ⚡️",
+    "Comments": "Comments",
     "Copy Quest": "Copy Quest",
     "Quest details copied! Customize your new quest.": "Quest details copied! Customize your new quest.",
     "You've zapped": "You've zapped",
@@ -406,14 +407,36 @@
       "rewardsSlider": {
         "Community Rewards": "Community Rewards",
         "Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion. Higher rewards attract more verifiers and faster responses.": "Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion. Higher rewards attract more verifiers and faster responses.",
-        "Reward: {{percentage}}%": "Reward: {{percentage}}%"
+        "Reward: {{percentage}}%": "Reward: {{percentage}}%",
+        "Low reward warning": "Warning: If the reward is too low, community may not pick it up to verify your proof. In that case you will lose your locked funds."
       },
       "lockAmount": {
         "Lock amount": "Lock amount",
         "This amount will be locked until the proof verification is complete.": "This amount will be locked until the proof verification is complete.",
         "This amount will be locked in escrow until you complete your quest.": "This amount will be locked in escrow until you complete your quest."
       }
-    }
+    },
+    "What you will get back": "What you will get back",
+    "If your proof is verified, you will get back": "If your proof is verified, you will get back",
+    "If your quest fails, you will lose": "If your quest fails, you will lose",
+    "Premium Benefits": "Premium Benefits",
+    "Zero Platform Fees": "Zero Platform Fees",
+    "Zero AI Service Fees": "Zero AI Service Fees",
+    "Get Out of Jail Free Card": "Get Out of Jail Free Card",
+    "Get Premium": "Get Premium",
+    "Summary of Quest Lock": "Summary of Quest Lock",
+    "Platform Fee": "Platform Fee",
+    "Other Premium Benefits": "Other Premium Benefits",
+    "If you are a premium member, you will get back": "If you are a premium member, you will get back",
+    "No Platform Fees": "No Platform Fees",
+    "Refer to a friend": "Refer to a friend",
+    "And more...": "And more...",
+    "Only 10,000 sats for 30 days": "Only 10,000 sats for 30 days",
+    "Affordable premium membership with exclusive benefits": "Affordable premium membership with exclusive benefits",
+    "Save on platform fees for all your quests and services": "Save on platform fees for all your quests and services",
+    "You can once get your funds back before due date and proof submission": "You can once get your funds back before due date and proof submission",
+    "Earn 5% of your referrals premium payments": "Earn 5% of your referrals premium payments",
+    "Special events, contests, and exclusive features": "Special events, contests, and exclusive features"
   },
   "footer": {
     "Quest yourself to be better, one quest at a time. Create, share, and complete personal quests with a community that supports your growth.": "Quest yourself to be better, one quest at a time. Create, share, and complete personal quests with a community that supports your growth.",
@@ -488,7 +511,9 @@
       "Please enter a quest title": "Please enter a quest title",
       "Please enter a quest description": "Please enter a quest description",
       "Please enter a quest due date": "Please enter a quest due date",
-      "Please select quest visibility": "Please select quest visibility"
+      "Please select quest visibility": "Please select quest visibility",
+      "Quest is published.": "Quest is published.",
+      "Your quest is saved as draft. Lock funds to publish it.": "Your quest is saved as draft. Lock funds to publish it."
     },
     "steps": {
       "basic": {

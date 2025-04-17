@@ -163,13 +163,23 @@ const CreateQuest = () => {
     }
   };
 
+  const handleSkip = () => {    
+    // TODO: Add quest ID
+    const questIndex = Math.floor(Math.random() * Object.keys(mockQuests).length);
+    const questId = Object.keys(mockQuests)[questIndex];
+
+    toast.success(t('create-quest.toast.Your quest is saved as draft. Lock funds to publish it.'));
+
+    navigate(`${pages.quest.location}/${questId}`);
+  }
+
   // Handle form submission
   const handleSubmit = () => {
     setIsSubmitting(true);
     
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success(t('create-quest.toast.Quest created! Please set up the escrow deposit.'));
+      toast.success(t('create-quest.toast.Quest is published.'));
 
       // TODO: Add quest ID
       const questIndex = Math.floor(Math.random() * Object.keys(mockQuests).length);

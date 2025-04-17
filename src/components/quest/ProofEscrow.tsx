@@ -60,18 +60,17 @@ const ProofEscrow: React.FC<ProofEscrowProps> = ({
         
         <SummarySection 
           userLockAmount={userLockAmount}
+          communityReward={0}
+          aiServiceFee={0}
           platformFees={platformFees}
-          totalToLock={calculateTotalToLock()}
           isProofVerification={true}
-          verificationType={type === 'proof-accept' ? 'accept' : 'reject'}
-          questRewardAmount={questRewardAmount}
-          questLockedAmount={questLockedAmount}
+          visibility="private"
         />
         
         <div className="flex flex-col gap-4">
           <ConfirmButton 
             type={type}
-            totalAmount={calculateTotalToLock()}
+            userLockAmount={userLockAmount}
             onConfirm={onConfirm}
           />
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX, Zap, Lock } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, Tag, Send, Flag, Check, ArrowDown, Copy, CircleCheck, CircleX, Zap, Lock, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProofCard from '@/components/ui/ProofCard';
 import { Proof } from '@/types/proof';
@@ -293,6 +293,15 @@ const QuestPage = () => {
                         {totalZapped.toLocaleString()} sats
                       </span>
                     )}
+                    <span 
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+                      onClick={() => {
+                        document.getElementById('comments-section')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      <MessageSquare size={12} />
+                      {threadComments.length} {t('quest.Comments')}
+                    </span>
                   </div>
                   
                   <h1 className="text-3xl font-bold mb-4">
@@ -600,6 +609,14 @@ const QuestPage = () => {
             </div>
           </div>
         )}
+
+        <div className="mt-16" id="comments-section">          
+          <Threads
+            threadId={questData.id}
+            comments={threadComments}
+            onAddComment={handleAddComment}
+          />
+        </div>
       </div>
       
       {isLoggedIn && !isDraftQuest && (
@@ -611,85 +628,6 @@ const QuestPage = () => {
           onZapComplete={handleZapComplete}
         />
       )}
-      
-      <div className="max-w-4xl mx-auto">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="details">{t('quest.Details')}</TabsTrigger>
-            <TabsTrigger value="escrow">{t('quest.Escrow & Rewards')}</TabsTrigger>
-            <TabsTrigger value="proofs">{t('quest.Submitted Proofs')}</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="details" className="mt-6">
-            <div className="mt-8">
-              <Threads
-                threadId={questData.id}
-                comments={threadComments}
-                onAddComment={handleAddComment}
-              />
-            </div>
-          </TabsContent>
-          
-          {!isDraftQuest && (
-            <TabsContent value="escrow" className="space-y-4">
-              <div className="bg-secondary/20 p-6 rounded-lg">
-                <h3 className="text-lg font-medium mb-4">{t('quest.Escrow Information')}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">{t('quest.Creator Locked Amount')}</p>
-                    <p className="text-xl font-semibold">{getLockedAmount(questData).toLocaleString() || 0} sats</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">{t('quest.Escrow Status')}</p>
-                    <p className="text-xl font-semibold capitalize">{getEscrowStatus(questData) || 'Locked'}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">{t('quest.Quest Status')}</p>
-                    <p className="text-xl font-semibold capitalize">{getStatusText()}</p>
-                  </div>
-                  {isInDispute(questData) && (
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-2">{t('quest.Dispute Status')}</p>
-                      <p className="text-xl font-semibold text-orange-500">{t('quest.Under Review')}</p>
-                    </div>
-                  )}
-                </div>
-                
-                <Separator className="my-6" />
-                
-                <div>
-                  <h4 className="text-md font-medium mb-3">{t('quest.Reward Distribution')}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {t('quest.If the proof is accepted, the acceptor will receive a reward from the locked amount. Multiple acceptors will split the reward equally')}
-                  </p>
-                </div>
-              </div>
-            </TabsContent>
-          )}
-          
-          {!isDraftQuest && totalZapped > 0 && (
-            <TabsContent value="donations" className="space-y-4" id="donations-tab">
-              <div className="bg-secondary/20 p-6 rounded-lg">
-                <h3 className="text-lg font-medium mb-4">{t('quest.Donation Information')}</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Zap size={20} className="text-yellow-500" />
-                      <span className="text-lg font-semibold">{totalZapped.toLocaleString()} sats</span>
-                    </div>
-                    <span className="text-sm text-muted-foreground">{t('quest.Total Donated')}</span>
-                  </div>
-                  <div className="bg-yellow-500/10 p-4 rounded-lg">
-                    <p className="text-sm text-yellow-500">
-                      {t('quest.This amount will be awarded to the quest owner when the quest is successfully completed.')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-          )}
-        </Tabs>
-      </div>
     </div>
   );
 };

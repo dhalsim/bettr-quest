@@ -36,20 +36,11 @@ const QuestEscrow: React.FC<QuestEscrowProps> = ({
   const calculateCommunityReward = () => {
     return visibility === 'public' ? Math.floor(userLockAmount * (rewardPercentage / 100)) : 0;
   };
-  
-  const calculateTotalToLock = () => {
-    return userLockAmount + calculateCommunityReward() + platformFees + aiServiceFee;
-  };
-  
-  const getQuestLink = () => {
-    return `/quest/${questId}`;
-  };
 
   return (
     <div className="glass rounded-2xl p-8 border border-border/50">
       <QuestDetailsCard 
         description={questDescription}
-        questLink={getQuestLink()}
       />
       
       <div className="space-y-8">
@@ -71,18 +62,15 @@ const QuestEscrow: React.FC<QuestEscrowProps> = ({
           communityReward={calculateCommunityReward()}
           aiServiceFee={aiServiceFee}
           platformFees={platformFees}
-          totalToLock={calculateTotalToLock()}
           isProofVerification={false}
-          questRewardAmount={questRewardAmount}
-          questLockedAmount={questLockedAmount}
           visibility={visibility}
         />
         
         <div className="flex flex-col gap-4">
           <ConfirmButton 
             type="quest"
-            totalAmount={calculateTotalToLock()}
             onConfirm={onConfirm}
+            userLockAmount={userLockAmount}
           />
           
           {onSkip && (

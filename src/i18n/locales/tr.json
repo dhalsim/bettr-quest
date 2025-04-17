@@ -196,6 +196,7 @@
     "Report Quest": "Görevi Bildir",
     "Thank you for your report. Our moderators will review this quest": "Bildiriminiz için teşekkürler. Moderatörlerimiz bu görevi inceleyecek",
     "Zap ⚡️": "Zap ⚡️",
+    "Comments": "Yorumlar",
     "Copy Quest": "Görevi Kopyala",
     "Quest details copied! Customize your new quest.": "Görev detayları kopyalandı! Yeni görevinizi özelleştirin.",
     "You've zapped": "Zapladınız",
@@ -403,14 +404,36 @@
       "rewardsSlider": {
         "Community Rewards": "Topluluk Ödülleri",
         "Set aside a percentage of your locked amount as rewards for community members who verify your proof of completion. Higher rewards attract more verifiers and faster responses.": "Tamamlama kanıtınızı doğrulayan topluluk üyeleri için kilitli miktarınızın bir yüzdesini ödül olarak ayırın. Daha yüksek ödüller daha fazla doğrulayıcı ve daha hızlı yanıtlar çeker.",
-        "Reward: {{percentage}}%": "Ödül: {{percentage}}%"
+        "Reward: {{percentage}}%": "Ödül: {{percentage}}%",
+        "Low reward warning": "Uyarı: Eğer ödül çok düşükse, topluluk kanıtınızı doğrulamak için seçmeyebilir. Bu durumda kilitli fonlarınızı kaybedersiniz."
       },
       "lockAmount": {
         "Lock amount": "Kilitlenecek Miktar",
         "This amount will be locked until the proof verification is complete.": "Bu miktar kanıt doğrulaması tamamlanana kadar kilitli kalacak.",
         "This amount will be locked in escrow until you complete your quest.": "Bu miktar göreviniz tamamlanana kadar emanette kilitli kalacak."
       }
-    }
+    },
+    "What you will get back": "Ne kadar geri alacaksınız",
+    "If your proof is verified, you will get back": "Kanıtınız doğrulanırsa geri alacağınız miktar",
+    "If your quest fails, you will lose": "Göreviniz başarısız olursa kaybedeceğiniz miktar",
+    "Premium Benefits": "Premium Avantajları",
+    "Zero Platform Fees": "Sıfır Platform Ücreti",
+    "Zero AI Service Fees": "Sıfır AI Servis Ücreti",
+    "Get Out of Jail Free Card": "Kurtuluş Kartı",
+    "Get Premium": "Premium Ol",
+    "Summary of Quest Lock": "Görev Kilitleme Özeti",
+    "Platform Fee": "Platform Ücreti",
+    "Other Premium Benefits": "Diğer Premium Avantajları",
+    "If you are a premium member, you will get back": "Premium üyeyseniz geri alacağınız miktar",
+    "No Platform Fees": "Platform Ücreti Yok",
+    "Refer to a friend": "Arkadaşınıza Referans Verin",
+    "And more...": "Ve daha fazlası...",
+    "Only 10,000 sats for 30 days": "30 gün için sadece 10,000 sats",
+    "Affordable premium membership with exclusive benefits": "Özel avantajlarla uygun fiyatlı premium üyelik",
+    "Save on platform fees for all your quests and services": "Tüm görevleriniz ve hizmetleriniz için platform ücretlerinden tasarruf edin",
+    "You can once get your funds back before due date and proof submission": "Son tarih ve kanıt gönderimi öncesinde bir kez fonlarınızı geri alabilirsiniz",
+    "Earn 5% of your referrals premium payments": "Referanslarınızın premium ödemelerinin %5'ini kazanın",
+    "Special events, contests, and exclusive features": "Özel etkinlikler, yarışmalar ve özel özellikler"
   },
   "footer": {
     "Quest yourself to be better, one quest at a time. Create, share, and complete personal quests with a community that supports your growth.": "Kendini geliştirmek için görevler yap. Kişisel görevlerini oluştur, paylaş ve gelişimini destekleyen bir toplulukla tamamla.",
@@ -485,7 +508,9 @@
       "Please enter a quest title": "Lütfen bir görev başlığı girin",
       "Please enter a quest description": "Lütfen bir görev açıklaması girin",
       "Please enter a quest due date": "Lütfen bir görev bitiş tarihi girin",
-      "Please select quest visibility": "Lütfen görev görünürlüğünü seçin"
+      "Please select quest visibility": "Lütfen görev görünürlüğünü seçin",
+      "Quest is published.": "Görev yayınlandı.",
+      "Your quest is saved as draft. Lock funds to publish it.": "Görev taslak olarak kaydedildi. Fonları kilitleyerek yayınlayın."
     },
     "steps": {
       "basic": {
