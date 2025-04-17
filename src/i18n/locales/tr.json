@@ -257,7 +257,10 @@
     "Search": "Ara",
     "No quests found": "Görev bulunamadı",
     "Try adjusting your search or category filters": "Arama veya kategori filtrelerinizi ayarlamayı deneyin",
-    "Search by typing": "Arama yapmak için yazın"
+    "Search by typing": "Arama yapmak için yazın",
+    "Filters": "Filtreler",
+    "Show Filters": "Filtreleri Göster",
+    "Hide Filters": "Filtreleri Gizle"
   },
   "tags": {
     "Fitness": "Fitness",

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/quest-card/QuestCard';
 import { useSearchParams, useNavigate } from 'react-router-dom';
@@ -16,13 +16,14 @@ const Explore = () => {
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
   const { profile } = useNostrAuth();
   
   // Convert mockQuests object to array for explore page
-  const exploreQuests = Object.values(mockQuests)
+  const exploreQuests = useMemo(() => Object.values(mockQuests)
     .filter((quest): quest is LockedQuest => { 
       return isLockedQuest(quest) && quest.userId !== profile?.pubkey;
-    });
+    }), [profile?.pubkey]);
 
   const [filteredQuests, setFilteredQuests] = useState(exploreQuests);
   
@@ -49,7 +50,7 @@ const Explore = () => {
     });
     
     setFilteredQuests(filtered);
-  }, [selectedTags, searchQuery]);
+  }, [selectedTags, searchQuery, exploreQuests]);
   
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -85,34 +86,56 @@ const Explore = () => {
           </p>
         </div>
         
-        <div className="glass rounded-2xl p-6 mb-10">
-          <form onSubmit={handleSearch} className="space-y-4">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <Search className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <input
-                type="text"
-                className="pl-10 px-4 py-3 w-full bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
-                placeholder={t('Search quests...')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            
-            <TagsSelector
-              selectedTags={selectedTags}
-              availableTags={mockTags}
-              onTagToggle={toggleTag}
-              allowCustomTags={false}
-              maxVisibleTags={5}
-              searchPlaceholder={t('Search by typing')}
-            />
-            
-            <Button type="submit" className="w-full md:w-auto">
-              {t('Search')}
+        <div className={`glass rounded-2xl px-6 pt-3 ${showFilters ? 'pb-6' : ''} mb-5`}>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">{t('Filters')}</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+              className="text-sm flex items-center gap-1"
+            >
+              {showFilters ? (
+                <>
+                  {t('Hide Filters')} <ChevronUp size={16} />
+                </>
+              ) : (
+                <>
+                  {t('Show Filters')} <ChevronDown size={16} />
+                </>
+              )}
             </Button>
-          </form>
+          </div>
+
+          {showFilters && (
+            <form onSubmit={handleSearch} className="space-y-4">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Search className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <input
+                  type="text"
+                  className="pl-10 px-4 py-3 w-full bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  placeholder={t('Search quests...')}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              
+              <TagsSelector
+                selectedTags={selectedTags}
+                availableTags={mockTags}
+                onTagToggle={toggleTag}
+                allowCustomTags={false}
+                maxVisibleTags={5}
+                searchPlaceholder={t('Search by typing')}
+              />
+              
+              <Button type="submit" className="w-full md:w-auto">
+                {t('Search')}
+              </Button>
+            </form>
+          )}
         </div>
         
         {filteredQuests.length > 0 ? (

@@ -233,7 +233,10 @@
     "Search": "Buscar",
     "No quests found": "No se encontraron quests",
     "Try adjusting your search or category filters": "Intenta ajustar tu búsqueda o filtros de categoría",
-    "Search by typing": "Buscar escribiendo"
+    "Search by typing": "Buscar escribiendo",
+    "Filters": "Filtros",
+    "Show Filters": "Mostrar Filtros",
+    "Hide Filters": "Ocultar Filtros"
   },
   "tags": {
     "Fitness": "Fitness",
