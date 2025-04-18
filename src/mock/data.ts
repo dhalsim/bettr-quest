@@ -75,10 +75,10 @@ export const mockQuests: { [key: string]: DraftQuest | LockedQuest } = {
     createdAt: '2023-04-08T14:20:00Z',
     dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
     specializations: [mockTags.get("Learning")],
-    status: 'on_review',
+    status: 'in_dispute',
     imageUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600&auto=format',
     visibility: 'public',
-    lockedAmount: 20000,
+    lockedAmount: 10000,
     rewardAmount: 1000,
     escrowStatus: 'locked',
     totalZapped: 1500
@@ -95,7 +95,7 @@ export const mockQuests: { [key: string]: DraftQuest | LockedQuest } = {
     status: 'success',
     imageUrl: 'https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=600&auto=format',
     visibility: 'public',
-    lockedAmount: 20000,
+    lockedAmount: 10000,
     rewardAmount: 200,
     escrowStatus: 'distributed',
     totalZapped: 5000
@@ -112,7 +112,7 @@ export const mockQuests: { [key: string]: DraftQuest | LockedQuest } = {
     status: 'failed',
     imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=600&auto=format',
     visibility: 'public',
-    lockedAmount: 20000,
+    lockedAmount: 10000,
     rewardAmount: 400,
     escrowStatus: 'in_process',
     totalZapped: 10000
@@ -129,7 +129,7 @@ export const mockQuests: { [key: string]: DraftQuest | LockedQuest } = {
     status: 'in_dispute',
     imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=600&auto=format',
     visibility: 'public',
-    lockedAmount: 20000,
+    lockedAmount: 10000,
     rewardAmount: 2000,
     escrowStatus: 'in_process',
     inDispute: true,
@@ -161,7 +161,7 @@ export const mockQuests: { [key: string]: DraftQuest | LockedQuest } = {
     status: 'success',
     imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format',
     visibility: 'public',
-    lockedAmount: 20000,
+    lockedAmount: 10000,
     rewardAmount: 200,
     escrowStatus: 'distributed',
     totalZapped: 850
@@ -178,7 +178,7 @@ export const mockQuests: { [key: string]: DraftQuest | LockedQuest } = {
     specializations: [mockTags.get("Sustainability")],
     imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format',
     visibility: 'public',
-    lockedAmount: 20000,
+    lockedAmount: 10000,
     rewardAmount: 200,
     escrowStatus: 'distributed',
     totalZapped: 2500
@@ -230,7 +230,7 @@ export const mockProofs: Record<string, Proof[]> = {
       title: 'Italian Phrases Mastered',
       createdAt: '2023-04-12T10:30:00Z',
       description: "I've learned these 5 Italian phrases: 'Buongiorno' (Good morning), 'Grazie' (Thank you), 'Per favore' (Please), 'Mi scusi' (Excuse me), and 'Dov'è il bagno?' (Where is the bathroom?). I practiced with an Italian friend who confirmed my pronunciation.",
-      imageUrl: 'https://images.unsplash.com/photo-1530538095376-a4936b5c6c4b?q=80&w=600&auto=format',
+      imageUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600&auto=format',
       votes: {
         accept: 2,
         reject: 1

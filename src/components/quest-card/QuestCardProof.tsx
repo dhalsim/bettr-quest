@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Check, X, Clock } from 'lucide-react';
+import { ArrowLeft, Check, X, Clock, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
 import { LockedQuest } from '@/types/quest';
@@ -13,12 +13,14 @@ interface QuestCardProofProps {
   quest: LockedQuest;
   proof: Proof;
   onBack: () => void;
+  onViewRewards: () => void;
 }
 
 const QuestCardProof: React.FC<QuestCardProofProps> = ({
   quest,
   proof,
-  onBack
+  onBack,
+  onViewRewards
 }) => {
   const { t, i18n } = useTranslation(null, { keyPrefix: "quest-card" });
   const navigate = useNavigate();
@@ -103,17 +105,6 @@ const QuestCardProof: React.FC<QuestCardProofProps> = ({
             </div>
           </div>
 
-          <div className="space-y-2 mb-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">{t('Locked amount')}</span>
-              <span className="font-medium">{quest.lockedAmount.toLocaleString()} {t('sats')}</span>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">{t('Reward amount')}</span>
-              <span className="font-medium">{quest.rewardAmount.toLocaleString()} {t('sats')}</span>
-            </div>
-          </div>
-
           {quest.status === 'on_review' && (
             <div className="flex gap-3">
               <Button 
@@ -134,6 +125,18 @@ const QuestCardProof: React.FC<QuestCardProofProps> = ({
               </Button>
             </div>
           )}
+
+          <div className="mt-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onViewRewards}
+              className="w-full flex items-center justify-center gap-2"
+            >
+              <Zap size={16} />
+              {t('View Rewards')}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
