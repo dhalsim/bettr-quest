@@ -20,6 +20,7 @@ const MyQuests = () => {
   
   const filteredQuests = userQuests.filter(quest => {
     if (filter === 'all') return true;
+
     return quest.status === filter;
   });
   

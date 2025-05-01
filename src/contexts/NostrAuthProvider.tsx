@@ -9,6 +9,7 @@ export const NostrAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   
   const [profile, setProfile] = useState<NostrProfile | null>(() => {
     const savedProfile = localStorage.getItem('nostr_profile');
+
     return savedProfile ? JSON.parse(savedProfile) : isLoggedIn ? defaultProfile : null;
   });
 
@@ -50,6 +51,7 @@ export const NostrAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     };
 
     window.addEventListener('storage', handleStorageChange);
+
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 

@@ -23,6 +23,7 @@ export function formatDate(dateString: string, language: keyof typeof languages 
 }) {
   const date = new Date(dateString);
   const locale = languages[language].locale;
+
   return date.toLocaleDateString(locale, options);
 }
 
@@ -41,6 +42,7 @@ export function formatDateTime(dateString: string, language: keyof typeof langua
 }) {
   const date = new Date(dateString);
   const locale = languages[language].locale;
+
   return date.toLocaleString(locale, options);
 }
 
@@ -76,5 +78,6 @@ export function calculateDaysRemaining(dueDate: string) {
   const today = new Date();
   const differenceInTime = due.getTime() - today.getTime();
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
   return differenceInDays > 0 ? differenceInDays : 0;
 }

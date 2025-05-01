@@ -16,6 +16,7 @@ export const languages = {
 const getStoredLanguage = () => {
   const stored = localStorage.getItem('i18nextLng');
   console.log('Stored language:', stored);
+
   return stored && Object.keys(languages).includes(stored) ? stored : 'en';
 };
 

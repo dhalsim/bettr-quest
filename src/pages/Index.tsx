@@ -1,19 +1,14 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Target, Zap, Award, PlusCircle, Globe, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import QuestCard from '@/components/quest-card/QuestCard';
 import { useTranslation } from 'react-i18next';
-import { mockQuests, mockProofs } from '@/mock/data';
 import { isLockedQuest } from '@/types/quest';
 import { useNostrAuth } from '@/hooks/useNostrAuth';
-
-// Use existing quests from mockQuests
-const featuredQuests = [
-  mockQuests["1"], // Meditate for 20 minutes
-  mockQuests["2"], // Learn 5 phrases in Italian
-  mockQuests["8"]  // Zero Waste Day
-];
+import { dataFetcher } from '@/lib/fetcher';
+import type { DraftQuest, LockedQuest } from '@/types/quest';
+import type { Proof } from '@/types/proof';
 
 const Index = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
@@ -22,6 +17,9 @@ const Index = () => {
   const { t } = useTranslation(null, { keyPrefix: "home" });
   const navigate = useNavigate();
   const { profile } = useNostrAuth();
+  const [featuredQuests, setFeaturedQuests] = useState<(DraftQuest | LockedQuest)[]>([]);
+  const [questProofs, setQuestProofs] = useState<Record<string, Proof[]>>({});
+  const [isLoading, setIsLoading] = useState(true);
   
   // Scroll to coach section functionality
   const scrollToCoachSection = () => {
@@ -59,6 +57,35 @@ const Index = () => {
         observer.unobserve(el);
       });
     };
+  }, []);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const quests = await dataFetcher.getQuests();
+        
+        // Get first 3 quests as featured
+        setFeaturedQuests(quests.slice(0, 3));
+
+        // Load proofs for locked quests
+        const proofs: Record<string, Proof[]> = {};
+        
+        for (const quest of quests) {
+          if (isLockedQuest(quest)) {
+            const questProofs = await dataFetcher.getProofs(quest.id);
+            proofs[quest.id] = questProofs;
+          }
+        }
+        
+        setQuestProofs(proofs);
+      } catch (error) {
+        console.error('Failed to load featured quests:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
   const handleSpecializationClick = (e: React.MouseEvent, specialization: string) => {
@@ -151,19 +178,23 @@ const Index = () => {
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredQuests.map((quest) => (
-              <QuestCard 
-                key={quest.id} 
-                quest={quest}
-                proof={isLockedQuest(quest) ? mockProofs[quest.id]?.[0] : undefined}
-                isOwnedByCurrentUser={quest.userId === profile?.pubkey}
-                isFollowing={false}
-                onSpecializationClick={handleSpecializationClick}
-                onFollowToggle={handleFollowToggle}
-              />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="text-center py-8">Loading featured quests...</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredQuests.map((quest) => (
+                <QuestCard 
+                  key={quest.id} 
+                  quest={quest}
+                  proof={isLockedQuest(quest) ? questProofs[quest.id]?.[0] : undefined}
+                  isOwnedByCurrentUser={quest.userId === profile?.pubkey}
+                  isFollowing={false}
+                  onSpecializationClick={handleSpecializationClick}
+                  onFollowToggle={handleFollowToggle}
+                />
+              ))}
+            </div>
+          )}
           
           <div className="mt-12 text-center md:hidden">
             <Link to="/explore">

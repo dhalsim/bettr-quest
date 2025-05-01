@@ -23,7 +23,7 @@ interface CoachFiltersProps {
   minRate: number;
   maxRate: number;
   resetFilters?: () => void;
-  mockCoaches: Coach[];
+  coaches: Coach[];
   totalCoaches?: number;
   filteredCoaches?: number;
 }
@@ -40,7 +40,7 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
   minRate,
   maxRate,
   resetFilters,
-  mockCoaches,
+  coaches,
   totalCoaches,
   filteredCoaches
 }) => {
@@ -51,7 +51,7 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
   const specializationTags = useMemo(() => {
     const specializationCounts = new Map<string, number>();
     
-    mockCoaches.forEach(coach => {
+    coaches.forEach(coach => {
       coach.specializations.forEach(spec => {
         const count = specializationCounts.get(spec) || 0;
         specializationCounts.set(spec, count + 1);
@@ -62,7 +62,7 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
       name: spec,
       popularity: specializationCounts.get(spec) || 0
     }));
-  }, [mockCoaches]);
+  }, [coaches]);
 
   // Convert specializationTags array to a Map for TagsSelector
   const specializationTagsMap = useMemo(() => {
@@ -70,6 +70,7 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
     specializationTags.forEach(tag => {
       map.set(tag.name, tag);
     });
+
     return map;
   }, [specializationTags]);
 
@@ -216,11 +217,11 @@ const CoachFilters: React.FC<CoachFiltersProps> = ({
               {[...Array(10)].map((_, i) => {
                 const rangeStart = minRate + (i * (maxRate - minRate) / 10);
                 const rangeEnd = minRate + ((i + 1) * (maxRate - minRate) / 10);
-                const coachesInRange = mockCoaches.filter(
+                const coachesInRange = coaches.filter(
                   coach => coach.rateAmount >= rangeStart && coach.rateAmount <= rangeEnd
                 ).length;
                 const maxHeight = 64; // 16px * 4
-                const height = coachesInRange ? (coachesInRange / mockCoaches.length) * maxHeight : 4;
+                const height = coachesInRange ? (coachesInRange / coaches.length) * maxHeight : 4;
                 
                 return (
                   <div 

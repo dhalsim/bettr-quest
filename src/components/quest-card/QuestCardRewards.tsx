@@ -39,6 +39,7 @@ const QuestCardRewards: React.FC<QuestCardRewardsProps> = ({
         invalid: 0
       };
     }
+
     return 0;
   };
 
@@ -52,6 +53,7 @@ const QuestCardRewards: React.FC<QuestCardRewardsProps> = ({
         invalid: 0
       };
     }
+
     return 0;
   };
 
@@ -59,22 +61,26 @@ const QuestCardRewards: React.FC<QuestCardRewardsProps> = ({
     if (quest.status === 'in_dispute') {
       // Only show for disputed quests
       const questOwnerAmount = quest.lockedAmount - platformFees - quest.rewardAmount;
+
       return {
         valid: 0,
         invalid: ((questOwnerAmount / 2) + (verifierLockAmount / 2)) / (rejectorsCount || 1) // Split among rejectors
       };
     }
+
     return { valid: 0, invalid: 0 };
   };
 
   const calculateCommunityFund = (): Rewards => {
     if (quest.status === 'in_dispute') {
       const questOwnerAmount = quest.lockedAmount - platformFees - quest.rewardAmount;
+
       return {
         valid: 0,
         invalid: (questOwnerAmount / 2) + (verifierLockAmount / 2) // Half of quest owner's funds + half of verifier's locked funds
       };
     }
+
     return { valid: 0, invalid: 0 };
   };
 

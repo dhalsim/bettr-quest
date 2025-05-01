@@ -1,7 +1,7 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TagsSelector from '@/components/TagsSelector';
-import { mockTags } from '@/mock/data';
+import { dataFetcher } from '@/lib/fetcher';
+import type { TagItem } from '@/types/quest';
 
 interface TagsInputProps {
   tags: string[];
@@ -9,6 +9,25 @@ interface TagsInputProps {
 }
 
 const TagsInput: React.FC<TagsInputProps> = ({ tags, setTags }) => {
+  const [availableTags, setAvailableTags] = useState<Map<string, TagItem>>(new Map());
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadTags = async () => {
+      try {
+        const tags = await dataFetcher.getTags();
+        const tagsMap = new Map(tags.map(tag => [tag.name, tag]));
+        setAvailableTags(tagsMap);
+      } catch (error) {
+        console.error('Failed to load tags:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadTags();
+  }, []);
+
   // Handle toggling a tag
   const toggleTag = (tag: string) => {
     if (tags.includes(tag)) {
@@ -25,10 +44,14 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags, setTags }) => {
     }
   };
 
+  if (isLoading) {
+    return <div>Loading tags...</div>;
+  }
+
   return (
     <TagsSelector
       selectedTags={tags}
-      availableTags={mockTags}
+      availableTags={availableTags}
       onTagToggle={toggleTag}
       onCustomTagAdd={addCustomTag}
       maxVisibleTags={5}

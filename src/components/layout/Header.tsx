@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun, Bell, BadgeCheck } from 'lucide-react';
+import { Menu, X, PlusCircle, UserCircle, LogOut, User, Settings, Moon, Sun, Bell } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -28,7 +28,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { getUnreadCount, hasUnread } = useNotifications();
-
+  const isDemo = __DEMO__;
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -65,10 +65,11 @@ const Header = () => {
               <span className="text-primary">.</span>
               quest
             </div>
-            <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-medium leading-none shadow-md">
-              <BadgeCheck size={12} className="mr-1" />
-              DEMO
-            </div>
+            {isDemo && (
+              <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-xs leading-none shadow-md font-mono font-bold text-darkblue">
+                DEMO
+              </div>
+            )}
           </Link>
           
           <div className="hidden custom-header-md:flex items-center space-x-8">

@@ -12,13 +12,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ZapModal from '@/components/quest/ZapModal';
 import { LockedQuest, DraftQuest } from '@/types/quest';
-import { mockQuests, mockProofs, mockThreadComments } from '@/mock/data';
 import { useTranslation } from 'react-i18next';
 import { formatDate, calculateDaysRemaining } from '@/lib/utils';
 import { languages } from '@/i18n/i18n';
 import { pages, getPreviousPageName } from '@/lib/pages';
 import Threads from '@/components/threads/Threads';
 import { ThreadComment } from '@/types/thread';
+import { dataFetcher } from '@/lib/fetcher';
 
 const QuestPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,7 +31,8 @@ const QuestPage = () => {
   const [activeTab, setActiveTab] = useState('details');
   const [zapModalOpen, setZapModalOpen] = useState(false);
   const { t, i18n } = useTranslation();
-  const [threadComments, setThreadComments] = useState<ThreadComment[]>(mockThreadComments);
+  const [threadComments, setThreadComments] = useState<ThreadComment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [mediaFiles, setMediaFiles] = useState<{
     image: File | null,
@@ -49,17 +50,52 @@ const QuestPage = () => {
   const previousPageLabel = previousPageName ? t(`pages.${previousPageName}`) : t(`pages.${pages.explore.name}`);
   
   useEffect(() => {
-    if (id && mockQuests[id]) {
-      setQuestData(mockQuests[id]);
-      setProofs(mockProofs[id] || []);
-    } else {
-      setQuestData(mockQuests["1"]);
-      setProofs(mockProofs["1"] || []);
-    }
-  }, [id]);
+    const loadQuestData = async () => {
+      setIsLoading(true);
+      
+      try {
+        if (id) {
+          const quest = await dataFetcher.getQuest(id);
+          if (quest) {
+            setQuestData(quest);
+            const questProofs = await dataFetcher.getProofs(id);
+            setProofs(questProofs);
+            const comments = await dataFetcher.getThreadComments(id);
+            setThreadComments(comments);
+          } else {
+            // If quest not found, redirect to explore page
+            // navigate(pages.explore.location);
+            toast.error(t('quest.Quest not found'));
+          }
+        }
+      } catch (error) {
+        console.error('Error loading quest:', error);
+        toast.error(t('quest.Error loading quest'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadQuestData();
+  }, [id, navigate, t]);
   
-  if (!questData) {
-    return <div className="min-h-screen pt-32 pb-20 px-6">Loading quest...</div>;
+  if (isLoading || !questData) {
+    return (
+      <div className="min-h-screen pt-32 pb-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-10">
+            <div className="flex items-center gap-4 mb-8">
+              {isLoading && (
+                <div className="min-h-screen pt-32 pb-20 px-6">Loading quest...</div>
+              )}
+              {!questData && (
+                <div className="min-h-screen pt-32 pb-20 px-6">Quest not found</div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
   
   const daysRemaining = calculateDaysRemaining(questData.dueDate);
@@ -99,6 +135,7 @@ const QuestPage = () => {
     
     if (!newProof.trim()) {
       toast.error("Please describe how you completed your quest");
+
       return;
     }
     

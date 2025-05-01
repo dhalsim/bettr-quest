@@ -594,48 +594,6 @@ export const mockReviews = {
 // Default profile for testing purposes
 export const defaultProfile = mockUserProfiles.mindfulness_guru;
 
-// Quest template type
-export interface QuestTemplate {
-  id: string;
-  name: string;
-  description: string;
-  suggestedTags: string[];
-}
-
-// Quest templates data
-export const questTemplates: QuestTemplate[] = [
-  { 
-    id: 'book', 
-    name: 'Finish Economics Book Chapter 4', 
-    description: 'I want to complete Chapter 4 of my economics textbook by the end of this week. I\'ll track my progress and take notes on key concepts.',
-    suggestedTags: ['Reading', 'Learning', 'Economics']
-  },
-  { 
-    id: 'run', 
-    name: 'Run 3 km', 
-    description: 'I\'m challenging myself to run 3 kilometers within a specific timeframe. I\'ll start slow and build up my stamina day by day.',
-    suggestedTags: ['Fitness', 'Running', 'Health']
-  },
-  { 
-    id: 'closet', 
-    name: 'Organize My Closet', 
-    description: 'I need to declutter and organize my entire closet. I\'ll sort items into keep, donate, and discard piles. I\'ll document my progress!',
-    suggestedTags: ['Organization', 'Home', 'Lifestyle']
-  },
-  { 
-    id: 'business', 
-    name: 'Write a business plan', 
-    description: 'I want to create a comprehensive business plan for my idea or startup. I\'ll include market analysis, financial projections, and marketing strategy.',
-    suggestedTags: ['Business', 'Entrepreneurship', 'Planning']
-  },
-  { 
-    id: 'meditation', 
-    name: 'Daily meditation practice', 
-    description: 'I\'m building a daily meditation habit. I\'ll start with just 5 minutes per day and work my way up to longer sessions.',
-    suggestedTags: ['Mindfulness', 'Wellness', 'Mental Health']
-  }
-];
-
 export const mockCoaches = [
   {
     id: 'coach1',
@@ -644,7 +602,7 @@ export const mockCoaches = [
     profileImage: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80',
     bio: 'Certified fitness coach with 8+ years experience. Specializing in strength training and habit formation.',
     specializations: ['Fitness', 'Nutrition', 'Wellness'],
-    pricingOption: 'hourly',
+    pricingOption: 'hourly' as const,
     rateAmount: 25000,
     rating: 4.9,
     reviewCount: 127,
@@ -658,7 +616,7 @@ export const mockCoaches = [
     profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
     bio: 'Mindfulness expert and meditation teacher. I help people reduce stress and build healthy mental habits.',
     specializations: ['Wellness', 'Meditation', 'Productivity'],
-    pricingOption: 'one-time',
+    pricingOption: 'one-time' as const,
     rateAmount: 50000,
     rating: 4.8,
     reviewCount: 93,
@@ -672,7 +630,7 @@ export const mockCoaches = [
     profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
     bio: 'Software engineer and coding mentor. Specialized in helping people build coding habits and learn new programming skills.',
     specializations: ['Coding', 'Technology', 'Education'],
-    pricingOption: 'hourly',
+    pricingOption: 'hourly' as const,
     rateAmount: 35000,
     rating: 4.7,
     reviewCount: 81,
@@ -686,7 +644,7 @@ export const mockCoaches = [
     profileImage: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1361&q=80',
     bio: 'Financial advisor helping people develop better money habits and reach their financial goals.',
     specializations: ['Finance', 'Productivity', 'Education'],
-    pricingOption: 'one-time',
+    pricingOption: 'one-time' as const,
     rateAmount: 45000,
     rating: 4.6,
     reviewCount: 62,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { isLoggedIn } from '@/pages/coach-directory/utils';
@@ -6,10 +6,60 @@ import { useCoachDirectory } from '@/hooks/useCoachDirectory';
 import CoachList from '@/components/coach/CoachList';
 import CoachSorting from '@/components/coach/CoachSorting';
 import CoachFilters from '@/components/coach/CoachFilters';
+import { dataFetcher } from '@/lib/fetcher';
+import type { Coach } from '@/types/coach';
 
 const CoachDirectoryPageWrapper: React.FC = () => {
   const { t } = useTranslation();
-  const { filterProps, sortedCoaches, sortBy, setSortBy, resetFilters } = useCoachDirectory();
+  const [coaches, setCoaches] = useState<Coach[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const { 
+    filterProps, 
+    sortedCoaches, 
+    sortBy, 
+    setSortBy, 
+    resetFilters 
+  } = useCoachDirectory(coaches);
+
+  useEffect(() => {
+    const loadCoaches = async () => {
+      try {
+        const fetchedCoaches = await dataFetcher.getCoaches();
+        
+        setCoaches(fetchedCoaches);
+      } catch (error) {
+        console.error('Failed to load coaches:', error);
+        
+        setError(t('Failed to load coaches'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadCoaches();
+  }, [t]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-32 pb-20 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          Loading coaches...
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen pt-32 pb-20 px-6">
+        <div className="max-w-7xl mx-auto text-center text-red-500">
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-32 pb-20 px-6">

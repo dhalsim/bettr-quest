@@ -72,6 +72,7 @@ const ioResolver = (schema: t.Type<FormValues>) => async (values: FormValues) =>
       type: 'manual',
       message: error.message || 'Invalid value'
     };
+
     return acc;
   }, {} as Record<string, { type: string; message: string }>);
   
@@ -116,6 +117,7 @@ const RegisterCoach = () => {
         description: "Please add at least one specialization tag.",
         variant: "destructive",
       });
+
       return;
     }
     

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:demo": "vite --mode demo",
     "build": "vite build",
     "build:demo": "vite build --mode demo",
     "build:static": "npm run build:demo && tsx scripts/generate-static.ts",

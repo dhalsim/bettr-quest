@@ -24,6 +24,7 @@ const Threads: React.FC<ThreadsProps> = ({ threadId, comments, onAddComment }) =
     e.preventDefault();
     if (!newComment.trim()) {
       toast.error(t('threads.Please enter a comment'));
+
       return;
     }
     onAddComment(newComment, parentId);

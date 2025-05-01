@@ -1,12 +1,13 @@
 import { SortOption } from '@/components/coach/CoachSorting';
-import { mockCoaches } from '@/mock/data';
+import type { Coach } from '@/types/coach';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-// Get min and max rates from the mock data
-export const getMinMaxRates = () => {
-  const minRate = Math.min(...mockCoaches.map(coach => coach.rateAmount));
-  const maxRate = Math.max(...mockCoaches.map(coach => coach.rateAmount));
+// Get min and max rates from the provided coaches
+export const getMinMaxRates = (coaches: Coach[]) => {
+  const minRate = Math.min(...coaches.map(coach => coach.rateAmount));
+  const maxRate = Math.max(...coaches.map(coach => coach.rateAmount));
+
   return { minRate, maxRate };
 };
 
@@ -19,6 +20,7 @@ export const getSmartRating = (rating: number, reviewCount: number) => {
   const denominator = 1 + z * z / reviewCount;
   const center = (p + z * z / (2 * reviewCount)) / denominator;
   const interval = z * Math.sqrt((p * (1 - p) + z * z / (4 * reviewCount)) / reviewCount) / denominator;
+
   return center + interval; // Use upper bound of interval
 };
 
@@ -27,9 +29,10 @@ export const filterCoaches = (
   searchQuery: string,
   selectedSpecializations: string[],
   selectedPricingOption: string,
-  rateRange: number[]
+  rateRange: number[],
+  coaches: Coach[]
 ) => {
-  return mockCoaches.filter((coach) => {
+  return coaches.filter((coach) => {
     // Filter by search query
     const matchesSearch = 
       coach.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

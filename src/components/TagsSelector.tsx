@@ -54,6 +54,7 @@ const TagsSelector: React.FC<TagsSelectorProps> = ({
       if (a.popularity !== undefined && b.popularity !== undefined) {
         return b.popularity - a.popularity;
       }
+
       return a.name.localeCompare(b.name);
     });
   

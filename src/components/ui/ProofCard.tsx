@@ -49,6 +49,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
   const handleVerify = () => {
     if (!isLoggedIn) {
       toast.error(t('Please connect your wallet to verify proofs'));
+
       return;
     }
     
@@ -60,6 +61,7 @@ const ProofCard: React.FC<ProofCardProps> = ({
   const handleContest = () => {
     if (!isLoggedIn) {
       toast.error(t('Please connect your wallet to contest proofs'));
+
       return;
     }
     

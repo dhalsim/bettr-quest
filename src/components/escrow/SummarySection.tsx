@@ -30,6 +30,7 @@ const SummarySection: React.FC<SummarySectionProps> = ({
     if (hasPremium) {
       return userLockAmount - communityReward;
     }
+
     return userLockAmount - communityReward - aiServiceFee - platformFees;
   };
 

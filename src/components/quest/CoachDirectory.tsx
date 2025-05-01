@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mockCoaches } from '@/mock/data';
+import { dataFetcher } from '@/lib/fetcher';
 import CoachList from '@/components/coach/CoachList';
 import CoachFilters from '@/components/coach/CoachFilters';
 import CoachSorting, { SortOption } from '@/components/coach/CoachSorting';
 import { getMinMaxRates, getSmartRating, filterCoaches } from '@/lib/coach-directory';
+import type { Coach } from '@/types/coach';
 
 interface CoachDirectoryProps {
   onSelectCoach?: (coachId: string) => void;
@@ -21,21 +22,39 @@ const CoachDirectory: React.FC<CoachDirectoryProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecializations, setSelectedSpecializations] = useState<string[]>([]);
   const [selectedPricingOption, setSelectedPricingOption] = useState('any');
-  const { minRate, maxRate } = getMinMaxRates();
-  const [rateRange, setRateRange] = useState([minRate, maxRate]);
+  const [coaches, setCoaches] = useState<Coach[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [rateRange, setRateRange] = useState([0, 0]);
   const [sortBy, setSortBy] = useState<SortOption>('ByRating');
 
   useEffect(() => {
-    if (questTags.length > 0) {
+    const loadCoaches = async () => {
+      try {
+        const fetchedCoaches = await dataFetcher.getCoaches();
+        setCoaches(fetchedCoaches);
+        const { minRate, maxRate } = getMinMaxRates(fetchedCoaches);
+        setRateRange([minRate, maxRate]);
+      } catch (error) {
+        console.error('Failed to load coaches:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadCoaches();
+  }, []);
+
+  useEffect(() => {
+    if (questTags.length > 0 && coaches.length > 0) {
       const validSpecializations = questTags.filter(tag => 
-        mockCoaches.some(coach => coach.specializations.includes(tag))
+        coaches.some(coach => coach.specializations.includes(tag))
       );
       
       if (validSpecializations.length > 0) {
         setSelectedSpecializations(validSpecializations);
       }
     }
-  }, [questTags]);
+  }, [questTags, coaches]);
 
   const toggleSpecialization = (tag: string) => {
     setSelectedSpecializations(prev =>
@@ -49,14 +68,15 @@ const CoachDirectory: React.FC<CoachDirectoryProps> = ({
     setSearchQuery('');
     setSelectedSpecializations([]);
     setSelectedPricingOption('any');
-    setRateRange([minRate, maxRate]);
+    setRateRange([0, 0]);
   };
 
   const filteredCoaches = filterCoaches(
     searchQuery,
     selectedSpecializations,
     selectedPricingOption,
-    rateRange
+    rateRange,
+    coaches
   );
 
   // Sort the filtered coaches
@@ -67,6 +87,7 @@ const CoachDirectory: React.FC<CoachDirectoryProps> = ({
       case 'ByRating':
         smartRatingA = getSmartRating(a.rating, a.reviewCount);
         smartRatingB = getSmartRating(b.rating, b.reviewCount);
+
         return smartRatingB - smartRatingA;
       case 'ByPriceDesc':
         return b.rateAmount - a.rateAmount;
@@ -77,6 +98,10 @@ const CoachDirectory: React.FC<CoachDirectoryProps> = ({
     }
   });
 
+  if (isLoading) {
+    return <div>Loading coaches...</div>;
+  }
+
   const filterProps = {
     searchQuery,
     setSearchQuery,
@@ -86,17 +111,17 @@ const CoachDirectory: React.FC<CoachDirectoryProps> = ({
     setSelectedPricingOption,
     rateRange,
     setRateRange,
-    minRate,
-    maxRate,
-    mockCoaches,
+    minRate: rateRange[0],
+    maxRate: rateRange[1],
+    mockCoaches: coaches,
     resetFilters,
-    totalCoaches: mockCoaches.length,
+    totalCoaches: coaches.length,
     filteredCoaches: filteredCoaches.length
   };
 
   return (
     <div className="space-y-6">
-      <CoachFilters {...filterProps} />
+      <CoachFilters {...filterProps} coaches={coaches} />
       <div className="flex justify-end">
         <CoachSorting sortBy={sortBy} onSortChange={setSortBy} />
       </div>

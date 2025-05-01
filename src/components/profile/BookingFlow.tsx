@@ -36,6 +36,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
       // For now, we'll just simulate it
       const mockInvoice = `lnbc${selectedOption.price}n1p3k3vmxpp5ygvwruvt4xjj6vce4qlp2g4u5p6m7fxfxx5vxxcfkfnkz5fzqhp5fq3jkj0z6qskvvd7uurjqpwkvvl2y8njfsmwgpl3j9yfcy79t53dcsxqyjw5qcqpjrzjq027tu7ha5xfdx9u6d3997d5thwm3hhlwxjw82rmn8f834kefjkjn77y6sp57tucqqqgqqyqqqqqpqqqqqqgq9q9qxpqysgq667zl224lvmyj3r59xyg4a4jl7ups97qkmqnwa4457jja39qkunsfukcmkqwf3u5nk4q92z6sk5475s2cndlnmqucdz0rgqpnpnv3m`;
       setLnInvoice(mockInvoice);
+
       return;
     }
 

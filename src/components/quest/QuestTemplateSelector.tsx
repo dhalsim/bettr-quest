@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { questTemplates } from '@/mock/data';
+import { QuestTemplates } from '../../lib/quest-templates';
 
 interface TemplateSelectorProps {
   onSelectTemplate: (templateId: string) => void;
@@ -21,7 +21,7 @@ const QuestTemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTempla
           <SelectValue placeholder="I want to..." />
         </SelectTrigger>
         <SelectContent>
-          {questTemplates.map(template => (
+          {QuestTemplates.map(template => (
             <SelectItem key={template.id} value={template.id}>
               {template.name}
             </SelectItem>

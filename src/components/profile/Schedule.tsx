@@ -51,6 +51,7 @@ const Schedule: React.FC<ScheduleProps> = ({
   // Get localized weekday names
   const weekDays = Array.from({ length: 7 }, (_, i) => {
     const date = DateTime.local().startOf('week').plus({ days: i });
+
     return date.toFormat('EEE', { locale: i18n.language });
   });
 

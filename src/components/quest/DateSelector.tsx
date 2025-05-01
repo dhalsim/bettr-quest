@@ -27,6 +27,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   // Calculate minimum date (today)
   const getMinDate = () => {
     const today = new Date();
+
     return today;
   };
 

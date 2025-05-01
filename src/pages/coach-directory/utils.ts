@@ -19,6 +19,7 @@ export const formatSats = (sats: number) => {
   } else if (sats >= 1000) {
     return `${(sats / 1000).toFixed(0)}K sats`;
   }
+
   return `${sats} sats`;
 };
 

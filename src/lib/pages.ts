@@ -31,9 +31,11 @@ export const getPreviousPageName = (): string | null => {
     if (page.location === '/') {
       return previousPath === '/';
     }
+
     return previousPath.startsWith(page.location);
   });
 
   console.log('previousPage found', previousPage?.name);
+
   return previousPage?.name || null;
 };

@@ -57,6 +57,7 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ events }) => {
         <div className="space-y-3">
           {events.map((event) => {
             const eventDate = DateTime.fromJSDate(event.date);
+
             return (
               <div key={event.id} className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
                 <div className="flex justify-between items-start">

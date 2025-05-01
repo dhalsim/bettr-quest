@@ -77,6 +77,7 @@ const ZapModal: React.FC<ZapModalProps> = ({
   const getAmount = (): number => {
     if (selectedAmount) return selectedAmount;
     if (customAmount) return parseInt(customAmount, 10);
+
     return 0;
   };
 
@@ -85,6 +86,7 @@ const ZapModal: React.FC<ZapModalProps> = ({
     
     if (!amount || amount <= 0) {
       toast.error("Please select or enter a valid amount");
+
       return;
     }
 

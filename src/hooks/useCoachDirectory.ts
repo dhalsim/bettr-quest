@@ -1,17 +1,22 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { mockCoaches } from '@/mock/data';
+import { useState, useEffect } from 'react';
 import { getMinMaxRates, getSmartRating, filterCoaches } from '@/lib/coach-directory';
 import { SortOption } from '@/components/coach/CoachSorting';
+import { Coach } from '@/types/coach';
 
-export const useCoachDirectory = (initialSpecializations: string[] = []) => {
-  const { t } = useTranslation();
+export const useCoachDirectory = (coaches: Coach[], initialSpecializations: string[] = []) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecializations, setSelectedSpecializations] = useState<string[]>(initialSpecializations);
   const [selectedPricingOption, setSelectedPricingOption] = useState('any');
-  const { minRate, maxRate } = getMinMaxRates();
-  const [rateRange, setRateRange] = useState([minRate, maxRate]);
+  const [rateRange, setRateRange] = useState([0, 0]);
   const [sortBy, setSortBy] = useState<SortOption>('ByRating');
+
+  // Update rate range when coaches change
+  useEffect(() => {
+    if (coaches.length > 0) {
+      const { minRate, maxRate } = getMinMaxRates(coaches);
+      setRateRange([minRate, maxRate]);
+    }
+  }, [coaches]);
 
   const toggleSpecialization = (tag: string) => {
     setSelectedSpecializations(prev =>
@@ -25,14 +30,18 @@ export const useCoachDirectory = (initialSpecializations: string[] = []) => {
     setSearchQuery('');
     setSelectedSpecializations(initialSpecializations);
     setSelectedPricingOption('any');
-    setRateRange([minRate, maxRate]);
+    if (coaches.length > 0) {
+      const { minRate, maxRate } = getMinMaxRates(coaches);
+      setRateRange([minRate, maxRate]);
+    }
   };
 
   const filteredCoaches = filterCoaches(
     searchQuery,
     selectedSpecializations,
     selectedPricingOption,
-    rateRange
+    rateRange,
+    coaches
   );
 
   // Sort the filtered coaches
@@ -43,6 +52,7 @@ export const useCoachDirectory = (initialSpecializations: string[] = []) => {
       case 'ByRating':
         smartRatingA = getSmartRating(a.rating, a.reviewCount);
         smartRatingB = getSmartRating(b.rating, b.reviewCount);
+
         return smartRatingB - smartRatingA;
       case 'ByPriceDesc':
         return b.rateAmount - a.rateAmount;
@@ -62,11 +72,11 @@ export const useCoachDirectory = (initialSpecializations: string[] = []) => {
     setSelectedPricingOption,
     rateRange,
     setRateRange,
-    minRate,
-    maxRate,
-    mockCoaches,
+    minRate: coaches.length > 0 ? getMinMaxRates(coaches).minRate : 0,
+    maxRate: coaches.length > 0 ? getMinMaxRates(coaches).maxRate : 0,
+    coaches,
     resetFilters,
-    totalCoaches: mockCoaches.length,
+    totalCoaches: coaches.length,
     filteredCoaches: filteredCoaches.length
   };
 
@@ -76,6 +86,5 @@ export const useCoachDirectory = (initialSpecializations: string[] = []) => {
     sortBy,
     setSortBy,
     resetFilters,
-    t
   };
 }; 

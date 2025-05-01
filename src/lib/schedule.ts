@@ -124,5 +124,6 @@ export const getAvailableOptions = (
   if (!isTimeSlotAvailable({ calendarRules: schedule.calendarRules, dateTime })) {
     return [];
   }
+
   return schedule.scheduleOptions;
 };

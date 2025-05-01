@@ -34,6 +34,7 @@ const ConnectNostr = () => {
         if (!bunkerUrl) {
           setError('Please enter a valid Bunker URL');
           setIsLoading(false);
+
           return;
         }
         localStorage.setItem('nostr_bunker_url', bunkerUrl);
@@ -41,6 +42,7 @@ const ConnectNostr = () => {
         if (!nsec) {
           setError('Please enter a valid private key');
           setIsLoading(false);
+
           return;
         }
         localStorage.setItem('nostr_private_key', nsec);
