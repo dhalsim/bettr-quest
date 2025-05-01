@@ -24,10 +24,15 @@ jobs:
         run: npm ci
         
       - name: Build
-        run: npm run build
-        
-      - name: Generate static pages
-        run: npx tsx scripts/generate-static.ts
+        # Use different build command based on repository name
+        run: |
+          if [[ "$GITHUB_REPOSITORY" == */bettr-quest-demo ]]; then
+            echo "Building demo version..."
+            npm run build:staic
+          else
+            echo "Building production version..."
+            npm run build
+          fi
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -35,7 +40,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          # Use different path based on repository name
+          path: ${{ endsWith(github.repository, '/bettr-quest-demo') && './demo-dist' || './dist' }}
           
   deploy:
     environment:
@@ -46,4 +52,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4

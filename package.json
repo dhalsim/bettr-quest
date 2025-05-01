@@ -6,10 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:dev": "vite build --mode development",
-    "build:static": "vite build && tsx scripts/generate-static.ts",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "build:demo": "vite build --mode demo",
+    "build:static": "npm run build:demo && tsx scripts/generate-static.ts",
+    "run:demo": "cd demo-dist && python -m http.server 8888 && open http://localhost:8888",
+    "run:prod": "cd dist && python -m http.server 8889 && open http://localhost:8889",
+    "preview": "vite preview",
+    "preview:demo": "vite preview --mode demo",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

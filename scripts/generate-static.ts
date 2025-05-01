@@ -5,6 +5,8 @@ import path from 'path';
 import { mockUserProfiles, mockQuests } from '../src/mock/data';
 import { pages } from '../src/lib/pages';
 
+const outputDir = path.join(process.cwd(), 'demo-dist');
+
 // Get all static routes from pages map, excluding quest and profile
 const staticRoutes = Object.values(pages)
   .filter(page => !['quest', 'profile'].includes(page.name.toLowerCase()))
@@ -19,7 +21,7 @@ const routes = [
 
 async function generateStatic() {
   const prerenderer = new Prerenderer({
-    staticDir: path.join(process.cwd(), 'dist'),
+    staticDir: outputDir,
     renderer: new JSDOMRenderer({
       renderAfterTime: 5000,
       // Add these options to handle CSS better
@@ -41,13 +43,10 @@ async function generateStatic() {
     // Initialize the prerenderer
     await prerenderer.initialize();
 
-    // Read the original index.html
-    const indexHtml = fs.readFileSync(path.join(process.cwd(), 'dist', 'index.html'), 'utf-8');
-
     // Create directories for each route
     for (const route of routes) {
       try {
-        const dirPath = path.join(process.cwd(), 'dist', route);
+        const dirPath = path.join(outputDir, route);
         if (!fs.existsSync(dirPath)) {
           fs.mkdirSync(dirPath, { recursive: true });
         }
