@@ -28,7 +28,7 @@ jobs:
         run: |
           if [[ "$GITHUB_REPOSITORY" == */bettr-quest-demo ]]; then
             echo "Building demo version..."
-            npm run build:staic
+            npm run build:static
           else
             echo "Building production version..."
             npm run build
